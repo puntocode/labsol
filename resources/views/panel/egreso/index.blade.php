@@ -1,6 +1,6 @@
 @extends('layouts.panel')
 
-@section('title')Egreso Instrumentos |@endsection
+@section('title')Salida de instrumento |@endsection
 
 	@section('styles')
 		{{--<link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />--}}
@@ -8,7 +8,7 @@
 
 	@section('content')
 		<div class="container-fluid">
-			<h3 class="card-label mb-8">Egreso Instrumentos <small class="font-weight-lighter">| Listado</small></h3>
+			<h3 class="card-label mb-8">Salida de instrumento <small class="font-weight-lighter">| Listado</small></h3>
 
 			<div class="card card-custom">
 				<div class="card-header border-0">

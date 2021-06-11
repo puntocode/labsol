@@ -1,13 +1,13 @@
 @extends('layouts.panel')
 
-@section('title')Egreso Instrumentos |@endsection
+@section('title')Salida de instrumento |@endsection
   @section('styles')
   	<link rel="stylesheet" href="{{asset('plugins/custom/kanban/kanban.bundle.css')}}">
   @endsection
 @section('content')
 	<!--begin::Container-->
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Egreso Instrumentos
+		<h3 class="card-label mb-8">Salida de instrumento
 			<small class="font-weight-lighter">
 				@if($entrada_instrumento != NULL)
 					| {{isset($view_mode) && $view_mode == 'readonly' ? 'Ver': 'Editar'}}: {{$entrada_instrumento->nro_expediente}} </strong>

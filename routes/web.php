@@ -9,7 +9,6 @@ use App\Http\Controllers\Panel\InstrumentoController;
 use App\Http\Controllers\Panel\ContratoController;
 use App\Http\Controllers\Panel\CalibracionController;
 use App\Http\Controllers\Panel\CertificadoController;
-use App\Http\Controllers\Panel\EgresoController;
 use App\Http\Controllers\Panel\TecnicoController;
 use App\Http\Controllers\Panel\PerfilController;
 use App\Http\Controllers\Panel\ActividadController;

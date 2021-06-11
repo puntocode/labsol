@@ -39,7 +39,7 @@
 		<!--begin::Item-->
 		<li class="nav-item mr-3">
 			<a href="#" class="nav-link py-4 px-6 @if (Request::is('panel/egreso-instrumentos*') || Request::is('panel/facturacion*')) active @endif" data-toggle="tab" data-target="#kt_header_tab_6" role="tab">
-				Egreso de instrumento
+				Salida de instrumento
 			</a>
 		</li>
 		<!--end::Item-->
