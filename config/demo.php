@@ -842,6 +842,7 @@ return  [
         'temperatura_final' => '20,5 °C',
         'humedad_final' => '58 %',
         'firma' => 'Andrea Fernandez',
+        'observaciones_estado' => 'Rechazado',
       ],
       (object)[
         'id' => 2,
@@ -874,6 +875,7 @@ return  [
         'temperatura_final' => '20,5 °C',
         'humedad_final' => '58 %',
         'firma' => 'Andrea Fernandez',
+        'observaciones_estado' => 'Rechazado',
       ],
       (object)[
         'id' => 3,
@@ -906,6 +908,7 @@ return  [
         'temperatura_final' => '20,5 °C',
         'humedad_final' => '58 %',
         'firma' => 'Andrea Fernandez',
+        'observaciones_estado' => 'Rechazado',
       ]
     ],
     'eventos' => [

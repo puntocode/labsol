@@ -60,8 +60,8 @@
 							<label>Modalidad</label>
 							<select class="form-control datatable-input" data-col-index="4">
 								<option value="">Todas</option>
-								<option value="Estándar">LS</option>
-								<option value="Urgente - 24 Horas">LSi</option>
+								<option value="LS">LS</option>
+								<option value="LSi">LSi</option>
 							</select>
 						</div>
 

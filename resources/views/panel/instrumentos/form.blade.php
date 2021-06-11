@@ -82,7 +82,7 @@
 				        @endif
 							<div class="row align-items-end">
                 @if($entrada_instrumento == NULL)
-								<div class="col-12 col-lg-6">
+								<div class="col-12 col-lg-5">
 									<div class="form-group">
 										<label>Cliente <span class="text-danger">*</span></label>
                     <select class="form-control datatable-input" name="cliente" id="clienteSelect">
@@ -93,14 +93,28 @@
                     </select>
 									</div>
 								</div>
-								<div class="col-12 col-lg-6">
+								<div class="col-12 col-lg-5">
 									<div class="form-group">
 										<label>Equipo <span class="text-danger">*</span></label>
 										<input type="text" class="form-control" name="equipo" required value="{{$entrada_instrumento != NULL ? $entrada_instrumento->equipo : old('equipo')}}">
 									</div>
 								</div>
-
-                <div class="col-12 col-lg-6">
+								<div class="col-12 col-lg-2">
+									<div class="form-group">
+										<label>Cantidad</label>
+										<input type="number" class="form-control" name="cantidad" @if($entrada_instrumento != NULL) value="{{$entrada_instrumento->cantidad}}" @endif/>
+									</div>
+								</div>
+                <div class="col-12 col-lg-3">
+                  <div class="form-group">
+                    <label>Tipo de expediente</label>
+										<select class="form-control datatable-input">
+											<option value="LS">LS</option>
+											<option value="LSi">LSi</option>
+										</select>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-3">
                   <div class="form-group">
                     <label>Servicio</label>
                     <input type="text" class="form-control" name="servicio" value="{{$entrada_instrumento != NULL ? $entrada_instrumento->servicio : old('servicio')}}">
@@ -109,7 +123,7 @@
                 <div class="col-12 col-lg-3">
                   <div class="form-group">
                     <label>Prioridad</label>
-                    <select class="form-control datatable-input" name="estado" id="prioridadSelect">
+                    <select class="form-control datatable-input" name="prioridad" id="prioridadSelect">
                       <option value="Estándar">Estándar</option>
                       <option value="Urgente - 24 horas">Urgente - 24 horas</option>
                     </select>
@@ -117,8 +131,12 @@
                 </div>
                 <div class="col-12 col-lg-3">
                   <div class="form-group">
-                    <label>Cantidad</label>
-                    <input type="number" class="form-control" name="cantidad" @if($entrada_instrumento != NULL) value="{{$entrada_instrumento->cantidad}}" @endif/>
+                    <label>Estado</label>
+										<select class="form-control datatable-input" name="estado" id="estadoSelect">
+											@foreach ($estados as $key => $estado)
+												<option value="{{$estado->codigo}}">{{$estado->titulo}}</option>
+											@endforeach
+										</select>
                   </div>
                 </div>
                 @endif
@@ -163,8 +181,8 @@
 @endsection
 @section('scripts')
 	<script>
-  $('#prioridadSelect').select2({
-    placeholder: "Seleccione una prioridad"
+  $('#estadoSelect').select2({
+    placeholder: "Seleccione un estado"
   });
 
   $('#clienteSelect').select2({

@@ -36,8 +36,9 @@ class InstrumentoController extends Controller
       $tecnicos = config('demo.tecnicos');
       $clientes = config('demo.clientesContacto');
       $usuarios = config('demo.usuarios');
+      $estados = config('demo.estados_calibraciones');
 
-      return view('panel.instrumentos.form', compact('entrada_instrumento', 'tecnicos', 'clientes', 'usuarios'));
+      return view('panel.instrumentos.form', compact('entrada_instrumento', 'tecnicos', 'clientes', 'usuarios', 'estados'));
     }
 
     /**

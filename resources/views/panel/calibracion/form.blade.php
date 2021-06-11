@@ -444,8 +444,25 @@
                               <input type="text" class="form-control" name="firma" value="{{$calibracion != NULL ? $calibracion->firma : old('firma')}}">
                             </div>
                           </div>
-
                         </div>
+                        @if(\Auth::user()->hasRole('administrador'))
+                          <div class="row">
+                            <div class="col-12 col-lg-6">
+                              <div class="form-group">
+                                <label for="firma">Estado<span class="text-danger">*</span></label>
+                                <select class="form-control" name="estado_calibracion" id="estado_calibracion">
+                                  <option value="Rechazar">Rechazar</option>
+                                  <option value="Posponer">Posponer</option>
+                                  <option value="Devolver">Devolver</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="firma">Observaciones<span class="text-danger">*</span></label>
+                                <textarea rows="3" cols="30" class="form-control" name="observaciones_estado" value="{{$calibracion != NULL ? $calibracion->firma : old('observaciones_estado')}}"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        @endif
                       </div>
 
                       <div class="d-flex justify-content-between border-top mt-5 pt-10">

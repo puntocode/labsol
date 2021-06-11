@@ -46,6 +46,7 @@
 								<th>Equipo</th>
 								<th>Servicio</th>
 								<th>Observación</th>
+								<th>Estado</th>
 								<th>Prioridad</th>
 								<th>Acciones</th>
 							</tr>
@@ -58,6 +59,7 @@
 									<td>{{$entrada->servicio}}</td>
 
 									<td>{{$entrada->observaciones}}</td>
+									<td>{{$entrada->estado}}</td>
 
 									<td>
 										<span class="badge
