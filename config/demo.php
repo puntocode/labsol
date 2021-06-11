@@ -692,6 +692,45 @@ return  [
       ]
     ],
 
+    'salida_instrumentos' =>[
+      (object)[
+        'id' => 1,
+        'nro_expediente' => 'LS-5748',
+        'equipo' => 'Equipo 784',
+        'servicio' => 'Magnitudes Eléctricas',
+        'retirado_por' => 'Carmen Acosta',
+        'cantidad' => '1',
+        'cliente' => 'Condel',
+        'prioridad' => 'Estándar',
+        'estado' => 'En espera',
+        'observaciones' => 'lorem ipsum'
+      ],
+      (object)[
+        'id' => 2,
+        'nro_expediente' => 'LS-8792',
+        'equipo' => 'Equipo 144',
+        'servicio' => 'Magnitudes Eléctricas',
+        'retirado_por' => 'Martin Britez',
+        'cantidad' => '1',
+        'cliente' => 'Alex S.A.',
+        'prioridad' => 'Urgente - 24 horas',
+        'estado' => 'En proceso',
+        'observaciones' => 'lorem ipsum'
+      ],
+      (object)[
+        'id' => 3,
+        'nro_expediente' => 'LS-8792',
+        'equipo' => 'Equipo 123',
+        'servicio' => 'Magnitud Temperatura',
+        'retirado_por' => 'Ruben Segovia',
+        'cantidad' => '1',
+        'cliente' => 'Petrobras',
+        'prioridad' => 'Urgente - 24 horas',
+        'estado' => 'Completada',
+        'observaciones' => 'lorem ipsum'
+      ]
+    ],
+
     'facturas' => [
       (object)[
         'id' => 1,

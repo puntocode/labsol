@@ -3,7 +3,7 @@
 @section('title')Salida de instrumento |@endsection
 
 	@section('styles')
-		{{--<link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />--}}
+		<link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
 	@endsection
 
 	@section('content')
@@ -45,18 +45,20 @@
 								<th>N° Exp</th>
 								<th>Equipo</th>
 								<th>Servicio</th>
+								<th>Retirado por</th>
 								<th>Observación</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($entrada_instrumentos as $i => $entrada)
+							@foreach ($salida_instrumentos as $i => $salida)
 								<tr>
-									<td>{{$entrada->nro_expediente}}</td>
-									<td>{{$entrada->equipo}}</td>
-									<td>{{$entrada->servicio}}</td>
+									<td>{{$salida->nro_expediente}}</td>
+									<td>{{$salida->equipo}}</td>
+									<td>{{$salida->servicio}}</td>
+									<td>{{$salida->retirado_por}}</td>
 
-									<td>{{$entrada->observaciones}}</td>
+									<td>{{$salida->observaciones}}</td>
 								<td>
 									@if(in_array('ver', $role_actions))
 										<a href="{{route('panel.egreso.show', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">
@@ -89,9 +91,18 @@
 	@endsection
 
 	@section('scripts')
-		{{--<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}"></script>--}}
+		<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}"></script>
 
 		<script>
+			$(function() {
+				oTable = $('#tableInstrumentos').DataTable({
+					responsive: true,
+					"bLengthChange": false
+				});
 
+				$('#tableInpuntSearch').keyup(function(){
+				    oTable.search($(this).val()).draw() ;
+				});
+			});
 		</script>
 	@endsection

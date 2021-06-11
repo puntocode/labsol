@@ -19,8 +19,8 @@ class EgresoController extends Controller
      */
     public function index()
     {
-        $entrada_instrumentos = config('demo.entrada_instrumentos');
-        return view('panel.egreso.index', compact('entrada_instrumentos'));
+        $salida_instrumentos = config('demo.salida_instrumentos');
+        return view('panel.egreso.index', compact('salida_instrumentos'));
     }
 
     /**
@@ -32,10 +32,11 @@ class EgresoController extends Controller
     {
       if (\Auth::user()->hasRole('administrador') === false) abort(403);
 
-      $entrada_instrumento = NULL;
+      $salida_instrumento = NULL;
       $tecnicos = config('demo.tecnicos');
+      $expedientes = config('demo.expedientes');
 
-      return view('panel.egreso.form', compact('entrada_instrumento', 'tecnicos'));
+      return view('panel.egreso.form', compact('salida_instrumento', 'tecnicos', 'expedientes'));
     }
 
     /**
@@ -47,8 +48,8 @@ class EgresoController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->hasRole('administrador') === false) abort(403);
-        $entrada_instrumentos = config('demo.entrada_instrumentos');
-        return view('panel.egreso.index', compact('entrada_instrumentos'));
+        $salida_instrumentos = config('demo.salida_instrumentos');
+        return view('panel.egreso.index', compact('salida_instrumentos'));
     }
 
     /**
@@ -60,10 +61,10 @@ class EgresoController extends Controller
     public function show($id)
     {
       $view_mode = 'readonly';
-      $entrada_instrumento = config('demo.entrada_instrumentos')[$id];
+      $salida_instrumento = config('demo.salida_instrumentos')[$id];
       $tecnicos = config('demo.tecnicos');
 
-      return view('panel.egreso.form', compact('entrada_instrumento', 'view_mode', 'tecnicos'));
+      return view('panel.egreso.form', compact('salida_instrumento', 'view_mode', 'tecnicos'));
     }
 
     /**
@@ -76,10 +77,10 @@ class EgresoController extends Controller
     {
       if (\Auth::user()->hasRole('administrador') === false) abort(403);
 
-      $entrada_instrumento = config('demo.entrada_instrumentos')[$id];
+      $salida_instrumento = config('demo.salida_instrumentos')[$id];
       $tecnicos = config('demo.tecnicos');
 
-      return view('panel.egreso.form', compact('entrada_instrumento', 'tecnicos'));
+      return view('panel.egreso.form', compact('salida_instrumento', 'tecnicos'));
     }
 
     /**

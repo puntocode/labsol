@@ -9,8 +9,8 @@
 	<div class="container-fluid">
 		<h3 class="card-label mb-8">Salida de instrumento
 			<small class="font-weight-lighter">
-				@if($entrada_instrumento != NULL)
-					| {{isset($view_mode) && $view_mode == 'readonly' ? 'Ver': 'Editar'}}: {{$entrada_instrumento->nro_expediente}} </strong>
+				@if($salida_instrumento != NULL)
+					| {{isset($view_mode) && $view_mode == 'readonly' ? 'Ver': 'Editar'}}: {{$salida_instrumento->nro_expediente}} </strong>
 				@else
 				 	| Crear
 				@endif
@@ -41,7 +41,7 @@
 									</li>
 								@endif
 
-								@if($entrada_instrumento != NULL && in_array('eliminar', $role_actions))
+								@if($salida_instrumento != NULL && in_array('eliminar', $role_actions))
 									<li><hr></li>
 
 									<li>
@@ -66,7 +66,7 @@
 							<p class="text-muted font-size-sm"><span class="text-danger">*</span> Campos requeridos</p>
 						</div>
 
-						@if($entrada_instrumento != NULL)
+						@if($salida_instrumento != NULL)
 							<div class="card-toolbar">
 								@include('layouts.partials.extras.dropdown._export_list')
 							</div>
@@ -74,27 +74,38 @@
 					</div>
 					<div class="card-body">
 						@if(!isset($view_mode) || $view_mode != 'readonly')
-						<form class="mb-5" method="POST" action="{{ $entrada_instrumento != NULL ? route('panel.egreso.update', ($entrada_instrumento->id -1)) : route('panel.egreso.store')}}">
+						<form class="mb-5" method="POST" action="{{ $salida_instrumento != NULL ? route('panel.egreso.update', ($salida_instrumento->id -1)) : route('panel.egreso.store')}}">
 							{{ csrf_field() }}
-							@if ($entrada_instrumento != NULL)
+							@if ($salida_instrumento != NULL)
 				              {{ method_field('PATCH') }}
 				            @endif
 				        @else
 				        	<div class="mb-5 form-readonly">
 				        @endif
 							<div class="row align-items-end">
-                @if($entrada_instrumento == NULL)
-								<div class="col-12 col-lg-8">
+                @if($salida_instrumento == NULL)
+                  <div class="col-12 col-lg-4">
+                    <div class="form-group">
+                      <label>Expediente Nro</label>
+                      <select class="form-control datatable-input" name="nro_expediente" id="expedienteSelect" multiple="multiple">
+                        @foreach ($expedientes as $i => $expediente)
+                          <option value=""></option>
+                          <option value="{{$expediente->nro_expediente}}">{{$expediente->nro_expediente}}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+								<div class="col-12 col-lg-4">
 									<div class="form-group">
 										<label>Equipo <span class="text-danger">*</span></label>
-										<input type="text" class="form-control" name="equipo" required value="{{$entrada_instrumento != NULL ? $entrada_instrumento->equipo : old('equipo')}}">
+										<input type="text" class="form-control" name="equipo" required value="{{$salida_instrumento != NULL ? $salida_instrumento->equipo : old('equipo')}}">
 									</div>
 								</div>
 
                 <div class="col-12 col-lg-4">
                   <div class="form-group">
                     <label>Servicio</label>
-                    <input type="text" class="form-control" name="servicio" value="{{$entrada_instrumento != NULL ? $entrada_instrumento->servicio : old('servicio')}}">
+                    <input type="text" class="form-control" name="servicio" value="{{$salida_instrumento != NULL ? $salida_instrumento->servicio : old('servicio')}}">
                   </div>
                 </div>
                 <div class="col-12 col-lg-4">
@@ -108,25 +119,29 @@
                 </div>
                 <div class="col-12 col-lg-4">
                   <div class="form-group">
-                    <label>Fecha de entrega</label>
-                    <input type="text" class="form-control" id="fecha_entrega" readonly="readonly" @if($entrada_instrumento != NULL) value="{{$entrada_instrumento->fecha_entrega}}" @endif/>
+                    <label>Retirado por</label>
+                    <input type="text" class="form-control" name="retirado_por" value="{{$salida_instrumento != NULL ? $salida_instrumento->retirado_por : old('retirado_por')}}">
                   </div>
                 </div>
-                  <div class="col-12 my-5">
-                    <div id="kanbanTecnicos"></div>
+                <div class="col-12 col-lg-4">
+                  <div class="form-group">
+                    <label>Fecha de entrega</label>
+                    <input type="text" class="form-control" id="fecha_entrega" readonly="readonly" @if($salida_instrumento != NULL) value="{{$salida_instrumento->fecha_entrega}}" @endif/>
                   </div>
+                </div>
+
                 @endif
 								<div class="col-12 col-lg-12">
 									<div class="form-group">
 										<label>Observaciones</label>
-                    <textarea name="observaciones" rows="8" cols="80" class="form-control">{{$entrada_instrumento != NULL ? $entrada_instrumento->observaciones : old('observaciones')}}</textarea>
+                    <textarea name="observaciones" rows="8" cols="80" class="form-control">{{$salida_instrumento != NULL ? $salida_instrumento->observaciones : old('observaciones')}}</textarea>
 									</div>
 								</div>
 
 							</div>
 							<div class="row mt-5">
 								@if(!isset($view_mode) || $view_mode != 'readonly')
-									<button class="btn btn-primary mx-auto">{{$entrada_instrumento != NULL ? 'Guardar' : 'Crear'}}</button>
+									<button class="btn btn-primary mx-auto">{{$salida_instrumento != NULL ? 'Guardar' : 'Crear'}}</button>
 								@else
 									<a href="{{route('panel.egreso.index')}}" class="btn btn-primary mx-auto" title="Volver a listado">Volver</a>
 								@endif
@@ -154,50 +169,8 @@
             orientation: "bottom left"
         });
 
-	</script>
-
-	<script src="{{asset('plugins/custom/kanban/kanban.bundle.js')}}"></script>
-
-	<script>
-
-	    var _kanbanTecnicos = function() {
-	        var kanban = new jKanban({
-	            element: '#kanbanTecnicos',
-	            gutter: '0',
-	            click: function(el) {
-	                /*alert(el.innerHTML);*/
-	            },
-	            dropEl :function(el){
-	            	if($(el).find('div.not-draggable').length !== 0){
-	            		return false;
-	            	}
-	            	return true;
-	            },
-	            dragBoards: false,
-	            boards: [{
-	                    'id': '_tecnicosDisponibles',
-	                    'title': 'Técnicos',
-	                    'class': 'light-sucess',
-	                    'item': [
-	                    	@foreach ($tecnicos as $i => $tecnico)
-		                    	{
-		                            'title': `
-		                             	@include('layouts.partials.extras.items.duallist_image_text', ['item' => $tecnico])
-		                            `
-		                         },
-	                    	@endforeach
-	                    ]
-	                },
-	                {
-	                    'id': '_tecnicosAsignados',
-	                    'title': 'Técnicos asignados',
-	                    'class': 'light-success',
-	                    'item': []
-	                }
-	            ]
-	        });
-	    }
-
-	    _kanbanTecnicos();
+	$('#expedienteSelect').select2({
+		placeholder: "Seleccione uno o varios expedientes"
+	});
 	</script>
 @endsection
