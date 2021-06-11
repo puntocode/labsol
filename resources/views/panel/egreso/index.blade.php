@@ -67,7 +67,11 @@
 											<i class="la la-edit"></i>
 										</a>
 									@endif
-
+									@if(in_array('imprimir', $role_actions))
+										<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Imprimir registro">
+											<i class="la la-print"></i>
+										</a>
+									@endif
 										@if(in_array('eliminar', $role_actions))
 											<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Eliminar registro">
 												<i class="la la-trash"></i>

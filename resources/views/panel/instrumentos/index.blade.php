@@ -77,11 +77,16 @@
 											<i class="la la-eye text-primary"></i>
 										</a>
 									@elseif(in_array('editar', $role_actions))
+
 										<a href="{{route('panel.instrumentos.edit', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Editar registro">
 											<i class="la la-edit"></i>
 										</a>
 									@endif
-
+									@if(in_array('imprimir', $role_actions))
+										<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Imprimir registro">
+											<i class="la la-print"></i>
+										</a>
+									@endif
 										@if(in_array('eliminar', $role_actions))
 											<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Eliminar registro">
 												<i class="la la-trash"></i>

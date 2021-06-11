@@ -24,10 +24,11 @@ class InjectActionsRole
 			if($this->user_auth->hasRole('administrador') == true ){
 				array_push($role_actions, 'editar');
 				array_push($role_actions, 'crear');
+				array_push($role_actions, 'imprimir');
 				array_push($role_actions, 'eliminar');
 
 			}else{
-				$role_actions = ['ver'];
+				$role_actions = ['ver', 'imprimir'];
 			}
 		}
 
