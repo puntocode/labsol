@@ -18,7 +18,7 @@
 					</div>
 					<div class="d-flex flex-column">
 						<a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary text-capitalize">{{Auth::user()->fullName()}}</a>
-						<div class="text-muted mt-1 text-capitalize">{{ Auth::user()->roles()->first() != NULL ? Auth::user()->roles()->first()->name : '' }}</div>
+						<div class="text-muted mt-1 text-capitalize">{{ Auth::user()->roles()->first() != NULL ? Auth::user()->rol : '' }}</div>
 						<div class="navi mt-2">
 							@if(Auth::user())
 								<a href="#" class="navi-item">

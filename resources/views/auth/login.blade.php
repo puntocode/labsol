@@ -13,7 +13,8 @@
         <link href="{{asset('css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('css/custom.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('css/pages/login/login-1.css')}}" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+        <link href="{{ asset('plugins/global/izitoast/css/iziToast.min.css') }}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 
         <!--end::Layout Themes-->
 
@@ -113,6 +114,9 @@
         <!--begin::Global Theme Bundle(used by all pages)-->
         <script src="{{asset('plugins/global/plugins.bundle.js')}}"></script>
         <script src="{{asset('js/scripts.bundle.js')}}"></script>
+        <script src="{{ asset('plugins/global/izitoast/js/iziToast.min.js') }}"></script>
+        <script src="{{ asset('js/pages/global/functions.js') }}"></script>
+
         <!--end::Global Theme Bundle-->
         <!--begin::Page Scripts(used by this page)-->
         <script src="{{--asset('js/pages/custom/login/login-general.js')--}}"></script>
@@ -136,7 +140,7 @@
                             console.log("logueado")
                             location.href="{{route('panel.index')}}"
                         }else {
-                            console.log("NO logueado")
+                            toastError('Usuario o contraseña incorrecto')
                         }
                     },
                     error:function(data){

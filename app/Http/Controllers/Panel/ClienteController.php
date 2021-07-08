@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -19,8 +16,7 @@ class ClienteController extends Controller
      */
 
     public function index(){
-        $clientes = config('demo.clientesContacto');
-
+        $clientes = Cliente::all();
         return view('panel.clientes.index', compact('clientes'));
     }
 

@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -19,7 +18,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $usuarios = config('demo.usuarios');
+        $usuarios = User::all();
         return view('panel.usuarios.index', compact('usuarios'));
     }
 
@@ -30,10 +29,10 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-      $usuario = NULL;
-      return view('panel.usuarios.form', compact('usuario'));
+        //if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+        $usuario = NULL;
+        $roles = Role::all();
+        return view('panel.usuarios.form', compact('usuario', 'roles'));
     }
 
     /**
@@ -44,9 +43,29 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-        $usuarios = config('demo.usuarios');
-        return view('panel.usuarios.index', compact('usuarios'));
+        // if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+        $data = $request->validate([
+            'name'      => 'required',
+            'last_name' => 'required',
+            'email'     => 'required|email|unique:users',
+            'password'  => 'required|confirmed|min:5',
+            'role'      => 'required',
+            'phone'     => 'nullable',
+            'uuid'      => 'nullable',
+        ]);
+
+        $user = new User;
+        $user->name       = $data['name'];
+        $user->last_name  = $data['last_name'];
+        $user->email      = $data['email'];
+        $user->phone      = $data['phone'];
+        $user->uuid       = $data['uuid'];
+        $user->password   = Hash::make($data['password']);
+        $user->save();
+
+        $user->assignRole($request->role);
+
+        return redirect()->route('panel.usuarios.index')->with('message', 'Usuario creado correctamente!!');
     }
 
     /**
@@ -57,10 +76,10 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-      $view_mode = 'readonly';
-      $usuario = config('demo.usuarios')[$id];
+        $view_mode = 'readonly';
+        $usuario = config('demo.usuarios')[$id];
 
-      return view('panel.usuarios.form', compact('usuario', 'view_mode'));
+        return view('panel.usuarios.form', compact('usuario', 'view_mode'));
     }
 
     /**
@@ -71,11 +90,10 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-      $usuario = config('demo.usuarios')[$id];
-
-      return view('panel.usuarios.form', compact('usuario'));
+        //   if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+        $usuario = User::find($id);
+        $roles = Role::all();
+        return view('panel.usuarios.form', compact('usuario', 'roles'));
     }
 
     /**
@@ -87,9 +105,35 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+        //   if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+        $user = User::with('roles')->whereId($id)->first();
 
-      return redirect(route('panel.usuarios.index'));
+        $data = $request->validate([
+            'name'      => 'required',
+            'last_name' => 'required',
+            'email'     => 'required|email|unique:users,email,'.$user->id,
+            'password'  => 'required|confirmed|min:5',
+            'role'      => 'required',
+            'phone'     => 'nullable',
+            'uuid'      => 'nullable',
+        ]);
+
+
+        if($user->password != $request->password){
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user->fill($data);
+        $user->save();
+
+        if($user->roles->first()->id != $data['role']) {
+            $user->roles()->detach();
+            $role = Role::find($data['role']);
+            $user->roles()->attach($role);
+        }
+
+        return redirect()->route('panel.usuarios.index')->with('message', 'Usuario modificado correctamente!!');
+
     }
 
     /**
@@ -100,12 +144,27 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+        $user = User::find($id);
+        $user->delete();
+        return response()->json('OK');
+
     }
 
-    public function historial(){
-
+    /**
+     * Update status the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function active($id)
+    {
+        $user = User::find($id);
+        $user->status = $user->status === 'ACTIVO' ? 0 : 1;
+        $user->save();
+        return response()->json($user->status);
     }
 
-
+    public function historial()
+    {
+    }
 }

@@ -49,16 +49,11 @@
 									<span class="menu-text">Listar clientes</span>
 								</a>
 							</li>
-								@if(\Auth::user()->hasRole('administrador'))
-
-								<li class="menu-item @if (Route::currentRouteName() == 'panel.clientes.create') menu-item-active @endif" aria-haspopup="true">
-									<a href="{{route('panel.clientes.create')}}" class="menu-link">
-										<span class="menu-text">Crear cliente</span>
-									</a>
-								</li>
-
-							@endif
-
+                            <li class="menu-item @if (Route::currentRouteName() == 'panel.clientes.create') menu-item-active @endif" aria-haspopup="true">
+                                <a href="{{route('panel.clientes.create')}}" class="menu-link">
+                                    <span class="menu-text">Crear cliente</span>
+                                </a>
+                            </li>
 						</ul>
 						<!--end::Nav-->
 					</div>
