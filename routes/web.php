@@ -67,7 +67,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'egreso.store',
         'show'  => 'egreso.show',
         'destroy' => 'egreso.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
+    ])->middleware('can:panel.admin');
 
     Route::resource('/facturacion', 'FacturacionController')->names([
         'index' => 'facturacion.index',
@@ -77,7 +77,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'facturacion.store',
         'show'  => 'facturacion.show',
         'destroy' => 'facturacion.destroy'
-    ])->middleware('can:gerencia_tecnica,secretaria');
+    ])->middleware('can:panel.admin');
 
 
 
@@ -93,7 +93,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'calibracion.store',
         'show'  => 'calibracion.show',
         'destroy' => 'calibracion.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calibracion');
+    ])->middleware('can:panel.admin');
 
 
     # -- Usuarios --
@@ -146,7 +146,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'incertidumbre.store',
         'show'  => 'incertidumbre.show',
         'destroy' => 'incertidumbre.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calidad');
+    ])->middleware('can:panel.admin');
 
     Route::resource('/incertidumbre', 'IncertidumbreController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
 
@@ -158,9 +158,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'servicios.store',
         'show'  => 'servicios.show',
         'destroy' => 'servicios.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calidad');
+    ])->middleware('can:panel.admin');
 
-    Route::resource('/servicios', 'ServicioController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
+    Route::resource('/servicios', 'ServicioController')->middleware('can:panel.admin');
 
     # -- Tecnico --
 
@@ -191,7 +191,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     # -- Expedientes --
 
-    Route::get('/expedientes/agenda', [ExpedienteController::class, 'agenda'])->name('expedientes.agenda')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,tecnico,jefatura_calidad');
+    Route::get('/expedientes/agenda', [ExpedienteController::class, 'agenda'])->name('expedientes.agenda')->middleware('can:panel.admin');
 
     /***************************************************************** Resources *****************************************************************/
 
@@ -206,15 +206,15 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'clientes.contratos.store',
         'show'  => 'clientes.contratos.show',
         'destroy' => 'clientes.contratos.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calidad');
+    ])->middleware('can:panel.admin');
 
     // Route::resource('/clientes', 'ClienteController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
     Route::resource('/clientes', 'ClienteController')->middleware('can:panel.database');
 
     # -- Expedientes (Resources) --
 
-    Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:gerencia_tecnica,jefatura_calibracion,tecnico');
-    Route::resource('/expedientes', 'ExpedienteController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,tecnico,jefatura_calidad');
+    Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:panel.admin');
+    Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');
 
     # -- Certificados (Resources) --
 
@@ -226,7 +226,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'calibracion.certificados.store',
         'destroy' => 'calibracion.certificados.destroy',
         'show' => 'calibracion.certificados.show'
-    ])->middleware('can:gerencia_tecnica,jefatura_calibracion');
+    ])->middleware('can:panel.admin');
 
     Route::resource('/mantenimientos/tecnicos/grupos', 'GrupoTecnicoController')->names([
         'index' => 'tecnicos.grupos.index',
@@ -236,9 +236,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'tecnicos.grupos.store',
         'destroy' => 'tecnicos.grupos.destroy',
         'show' => 'tecnicos.grupos.show'
-    ])->middleware('can:gerencia_tecnica,jefatura_calibracion');
+    ])->middleware('can:panel.admin');
 
-    Route::resource('/mantenimientos/tecnicos', 'TecnicoController')->middleware('can:gerencia_tecnica,jefatura_calibracion');
+    Route::resource('/mantenimientos/tecnicos', 'TecnicoController')->middleware('can:panel.admin');
 });
 
 // Quick search dummy route to display html elements in search dropdown (header search)

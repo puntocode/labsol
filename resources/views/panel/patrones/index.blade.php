@@ -74,7 +74,7 @@
                                         {{ $patron->error_max[0][0] }}
                                     @else
                                        @foreach ($patron->precision as $key => $precision )
-                                            {{-- {{ $patron->precision[$key][0] }} --}}
+                                            {{-- {{ $precision[0]['vac'] }} --}}
                                         @endforeach
                                     @endif
                                 </td>
