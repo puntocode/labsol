@@ -39,11 +39,8 @@
 
 				<!--begin::Tab Pane Clientes-->
 				<div class="tab-pane py-5 p-lg-0 @if (Request::is('panel/clientes*')) show active @endif" id="kt_header_tab_2">
-					<!--begin::Menu-->
 					<div class="header-menu header-menu-mobile header-menu-layout-default">
-						<!--begin::Nav-->
 						<ul class="menu-nav">
-
 							<li class="menu-item @if (Request::is('panel/clientes')) menu-item-active @endif" aria-haspopup="true">
 								<a href="{{route('panel.clientes.index')}}" class="menu-link">
 									<span class="menu-text">Listar clientes</span>
@@ -55,9 +52,7 @@
                                 </a>
                             </li>
 						</ul>
-						<!--end::Nav-->
 					</div>
-					<!--end::Menu-->
 				</div>
 				<!--begin::Tab Pane Clientes -->
 
@@ -72,13 +67,13 @@
 									<span class="menu-text">Listar entradas</span>
 								</a>
 							</li>
-							@if(\Auth::user()->hasRole('administrador'))
+							@can('panel.admin')
 							<li class="menu-item @if (Route::currentRouteName() == 'panel.instrumentos.create') menu-item-active @endif" aria-haspopup="true">
 								<a href="{{route('panel.instrumentos.create')}}" class="menu-link" title="Ir al listado de equipos">
 									<span class="menu-text">Crear entradas</span>
 								</a>
 							</li>
-							@endif
+							@endcan
 						</ul>
 						<!--end::Nav-->
 					</div>
@@ -93,33 +88,31 @@
 					<div class="header-menu header-menu-mobile header-menu-layout-default">
 						<!--begin::Nav-->
 						<ul class="menu-nav">
-							@if(\Auth::user()->hasAnyRole(['administrador', 'secretaria', 'jefatura_calibracion', 'jefatura_calidad']))
+							@can('panel.admin')
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.expedientes.index') menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.expedientes.index')}}" class="menu-link" title="Ir al listado de expedientes">
 										<span class="menu-text">Listar expedientes</span>
 									</a>
 								</li>
-							@endif
+							@endcan
+
 							<li class="menu-item @if (Route::currentRouteName() == 'panel.expedientes.agenda' || Request::is('panel/expedientes/agendamientos*')) menu-item-active @endif" aria-haspopup="true">
 								<a href="{{route('panel.expedientes.agenda')}}" class="menu-link" title="Explorar el calendario">
 									<span class="menu-text">Agenda</span>
 								</a>
 							</li>
-							@if(\Auth::user()->hasRole('tecnico'))
+							@can('panel.tecnico')
 								<li class="menu-item @if (Request::is('panel/perfil/actividades*')) menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.perfil.actividades.index')}}" class="menu-link" title="Ir al mis actividades asignadas">
 										<span class="menu-text">Mis Actividades</span>
 									</a>
 								</li>
-							@endif
+							@endcan
 						</ul>
 						<!--end::Nav-->
 					</div>
 					<!--end::Menu-->
 				</div>
-
-
-				<!--begin::Tab Pane Expedientes -->
 
 
 				<!--begin::Tab Pane Técnicos -->
@@ -134,13 +127,13 @@
 								</a>
 							</li>
 
-							@if(\Auth::user()->hasRole('administrador'))
+							@can('panel.admin')
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.calibracion.create') menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.calibracion.create')}}" class="menu-link" title="Crear calibración">
 										<span class="menu-text">Crear Calibración</span>
 									</a>
 								</li>
-							@endif
+							@endcan
 
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.calibracion.certificados.index') menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.calibracion.certificados.index')}}" class="menu-link" title="Ver certificados">
@@ -164,21 +157,21 @@
 								</a>
 							</li>
 
-							@if(\Auth::user()->hasRole('administrador'))
+							@can('panel.admin')
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.egreso.create') menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.egreso.create')}}" class="menu-link" title="Crear egreso">
 										<span class="menu-text">Crear egreso</span>
 									</a>
 								</li>
-							@endif
+							@endcan
 
-							@if(\Auth::user()->hasAnyRole(['administrador', 'secretaria']))
+							@can('panel.admin')
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.facturacion.index') menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.facturacion.index')}}" class="menu-link" title="Facturación">
 										<span class="menu-text">Facturación</span>
 									</a>
 								</li>
-							@endif
+							@endcan
 						</ul>
 						<!--end::Nav-->
 					</div>

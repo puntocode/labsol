@@ -14,6 +14,7 @@ use App\Http\Controllers\Panel\PerfilController;
 use App\Http\Controllers\Panel\ActividadController;
 use App\Http\Controllers\Ajax\AuthController;
 use App\Models\Cliente;
+use App\Models\Patron;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -41,10 +42,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     // Route::get('/', [PanelController::class, 'index'])->name('dashboard')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,tecnico,jefatura_calidad');
 
     # -- Clientes --
-    Route::get('/clientes/ficha/{id}', [ClienteController::class, 'ficha'])->name('clientes.ficha')->middleware('can:panel.admin');
-    Route::get('/cliente-contacto', function(){
-        return Cliente::all();
-    });
+    Route::get('/clientes/ficha/{id}', [ClienteController::class, 'ficha'])->name('clientes.ficha')->middleware('can:panel.database');
+
 
     # -- Instrumentos --
 
@@ -57,7 +56,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'show'  => 'instrumentos.show',
         'show'  => 'instrumentos.show',
         'destroy' => 'instrumentos.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
+    ])->middleware('can:panel.admin');
 
 
     Route::resource('/egreso-instrumentos', 'EgresoController')->names([
@@ -111,29 +110,33 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/usuario/active/{id}', 'UsuarioController@active')->name('usuarios.active')->middleware('can:panel.database');
 
     # -- Patrones --
-    Route::resource('/patrones', 'PatronController')->names([
-        'create' => 'patrones.create',
-        'edit'  => 'patrones.edit',
-        'update' => 'patrones.update',
-        'store' => 'patrones.store',
-        'show'  => 'patrones.show',
-        'destroy' => 'patrones.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calidad');
+    // Route::resource('/patrones', 'PatronController')->names([
+    //     'create' => 'patrones.create',
+    //     'edit'  => 'patrones.edit',
+    //     'update' => 'patrones.update',
+    //     'store' => 'patrones.store',
+    //     'show'  => 'patrones.show',
+    //     'destroy' => 'patrones.destroy'
+    // ])->middleware('can:gerencia_tecnica,jefatura_calidad');
 
-    Route::resource('/patrones', 'PatronController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
+    Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
+    Route::get('/patrones-test', function(){
+        return Patron::all();
+    });
+
 
     # -- Patrones --
-    Route::resource('/equipos', 'EquipoController')->names([
-        'create' => 'equipos.create',
-        'edit'  => 'equipos.edit',
-        'update' => 'equipos.update',
-        'store' => 'equipos.store',
-        'show'  => 'equipos.show',
-        'destroy' => 'equipos.destroy'
-    ])->middleware('can:gerencia_tecnica,jefatura_calidad');
+    // Route::resource('/equipos', 'EquipoController')->names([
+    //     'create' => 'equipos.create',
+    //     'edit'  => 'equipos.edit',
+    //     'update' => 'equipos.update',
+    //     'store' => 'equipos.store',
+    //     'show'  => 'equipos.show',
+    //     'destroy' => 'equipos.destroy'
+    // ])->middleware('can:gerencia_tecnica,jefatura_calidad');
 
-    Route::resource('/equipos', 'EquipoController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
-    Route::resource('/historial', 'HistorialController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
+    Route::resource('/equipos', 'EquipoController')->middleware('can:panel.database');
+    Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');
 
     # -- Incertidumbre --
     Route::resource('/incertidumbre', 'IncertidumbreController')->names([

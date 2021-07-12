@@ -10,8 +10,7 @@ class Cliente extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','ruc','adress','contact'];
-
+    protected $guarded = [];
 
     protected $casts = [
         'contact' => 'array'

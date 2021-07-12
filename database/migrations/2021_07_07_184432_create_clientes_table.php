@@ -17,9 +17,7 @@ class CreateClientesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('ruc')->nullable();
-            $table->string('adress')->nullable();
-            $table->string('phone')->nullable();
-            $table->uuid('code')->nullable();
+            $table->uuid('code');
             $table->json('contact')->nullable();
             $table->timestamps();
         });

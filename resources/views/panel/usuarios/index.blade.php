@@ -11,7 +11,6 @@
         <div class="d-flex justify-content-between mb-8">
             <h3 class="card-label">Usuarios <small class="font-weight-lighter">| Listado</small></h3>
             <a href="{{ route('panel.usuarios.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Crear Usuario</a>
-
         </div>
 
         <div class="card card-custom">

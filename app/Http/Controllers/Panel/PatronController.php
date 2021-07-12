@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Patron;
 use Illuminate\Http\Request;
 
 class PatronController extends Controller
@@ -19,7 +20,8 @@ class PatronController extends Controller
      */
     public function index()
     {
-        $patrones = config('demo.patrones');
+        $patrones = Patron::all();
+        // dd($patrones->toArray());
         return view('panel.patrones.index', compact('patrones'));
     }
 

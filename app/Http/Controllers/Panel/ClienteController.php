@@ -28,11 +28,7 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-        $cliente = NULL;
-
-        return view('panel.clientes.form', compact('cliente'));
+        return view('panel.clientes.create');
     }
 
     /**
@@ -43,9 +39,9 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-        $clientes = config('demo.clientesContacto');
-        return view('panel.clientes.index', compact('clientes'));
+        //dd($request->all());
+        $customer = Cliente::create($request->all());
+        return response()->json($customer);
     }
 
     /**
@@ -63,7 +59,7 @@ class ClienteController extends Controller
     }
 
     public function ficha($id){
-      $cliente = config('demo.clientesContacto')[$id];
+      $cliente = Cliente::find($id);
       $facturas = config('demo.facturas');
       $expedientes = config('demo.expedientes');
 
@@ -78,11 +74,10 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
 
-        $cliente = config('demo.clientesContacto')[$id];
+        $cliente = Cliente::find($id);
 
-        return view('panel.clientes.form', compact('cliente'));
+        return view('panel.clientes.edit', compact('cliente'));
     }
 
     /**
@@ -94,9 +89,13 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-        return redirect(route('panel.clientes.index'));
+        $cliente = Cliente::whereId($id)->update([
+            'name'    => $request->name,
+            'code'    => $request->code,
+            'ruc'     => $request->ruc,
+            'contact' => $request->contact,
+        ]);
+        return response()->json($cliente);
     }
 
     /**
@@ -107,13 +106,11 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
 
     }
 
     public function equipos(){
         $equipos = config('demo.equiposClientes');
-
         return view('panel.clientes.equipos.index', compact('equipos'));
     }
 }
