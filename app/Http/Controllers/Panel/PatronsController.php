@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Magnitude;
+use App\Models\Patron;
+use App\Models\StatusPattern;
 use Illuminate\Http\Request;
 
-class EgresoController extends Controller
+class PatronsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +17,9 @@ class EgresoController extends Controller
      */
     public function index()
     {
-        $salida_instrumentos = config('demo.salida_instrumentos');
-        return view('panel.egreso.index', compact('salida_instrumentos'));
+        $patrones = Patron::all();
+        // dd($patrones->toArray());
+        return view('panel.patrones.index', compact('patrones'));
     }
 
     /**
@@ -30,12 +29,9 @@ class EgresoController extends Controller
      */
     public function create()
     {
-
-      $salida_instrumento = NULL;
-      $tecnicos = config('demo.tecnicos');
-      $expedientes = config('demo.expedientes');
-
-      return view('panel.egreso.form', compact('salida_instrumento', 'tecnicos', 'expedientes'));
+        $statusPattern = StatusPattern::all();
+        $magnitudes = Magnitude::all();
+        return view('panel.patrones.create', compact('statusPattern','magnitudes'));
     }
 
     /**
@@ -46,9 +42,8 @@ class EgresoController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
-        $salida_instrumentos = config('demo.salida_instrumentos');
-        return view('panel.egreso.index', compact('salida_instrumentos'));
+        $patron = Patron::create($request->all());
+        return response()->json($patron);
     }
 
     /**
@@ -59,11 +54,8 @@ class EgresoController extends Controller
      */
     public function show($id)
     {
-      $view_mode = 'readonly';
-      $salida_instrumento = config('demo.salida_instrumentos')[$id];
-      $tecnicos = config('demo.tecnicos');
-
-      return view('panel.egreso.form', compact('salida_instrumento', 'view_mode', 'tecnicos'));
+      $patrone = Patron::find($id);
+      return view('panel.patrones.show', compact('patrone'));
     }
 
     /**
@@ -74,12 +66,11 @@ class EgresoController extends Controller
      */
     public function edit($id)
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
+      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
 
-      $salida_instrumento = config('demo.salida_instrumentos')[$id];
-      $tecnicos = config('demo.tecnicos');
+      $patron = config('demo.patrones')[$id];
 
-      return view('panel.egreso.form', compact('salida_instrumento', 'tecnicos'));
+      return view('panel.patrones.form', compact('patron'));
     }
 
     /**
@@ -91,9 +82,9 @@ class EgresoController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
+      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
 
-      return redirect(route('panel.egreso.index'));
+      return redirect(route('panel.patrones.index'));
     }
 
     /**
@@ -104,11 +95,19 @@ class EgresoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
+        $patron = Patron::find($id);
     }
 
     public function historial(){
+      return view('panel.historial.index');
+    }
 
+    public function StatusPattern(){
+        return response()->json(StatusPattern::all());
+    }
+
+    public function Magnitudes(){
+        return response()->json(Magnitude::all());
     }
 
 

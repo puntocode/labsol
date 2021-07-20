@@ -67,7 +67,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'store' => 'egreso.store',
         'show'  => 'egreso.show',
         'destroy' => 'egreso.destroy'
-    ])->middleware('can:panel.admin');
+    ])->middleware('can:panel.database');
 
     Route::resource('/facturacion', 'FacturacionController')->names([
         'index' => 'facturacion.index',
@@ -95,6 +95,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'destroy' => 'calibracion.destroy'
     ])->middleware('can:panel.admin');
 
+    Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration');
+
 
     # -- Usuarios --
     // Route::resource('/usuarios', 'UsuarioController')->names([
@@ -120,10 +122,10 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     // ])->middleware('can:gerencia_tecnica,jefatura_calidad');
 
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
-    Route::get('/patrones-test', function(){
-        return Patron::all();
-    });
-
+    Route::get('/patron/{id}', 'PatronController@getPatronForId')->middleware('can:panel.database');
+    Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
+    Route::get('/status-pattern', 'PatronController@getStatusPattern')->middleware('can:panel.database');
+    Route::get('/magnitud', 'PatronController@getMagnitudes')->middleware('can:panel.database');
 
     # -- Patrones --
     // Route::resource('/equipos', 'EquipoController')->names([
@@ -148,7 +150,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'destroy' => 'incertidumbre.destroy'
     ])->middleware('can:panel.admin');
 
-    Route::resource('/incertidumbre', 'IncertidumbreController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
+    Route::resource('/incertidumbre', 'IncertidumbreController')->middleware('can:panel.admin');
 
     # -- Servicios --
     Route::resource('/servicios', 'ServicioController')->names([

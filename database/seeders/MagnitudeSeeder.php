@@ -15,7 +15,7 @@ class MagnitudeSeeder extends Seeder
     public function run()
     {
         Magnitude::create([
-            'name'    => 'funcionando',
+            'name'    => 'Dimensional',
         ]);
 
         Magnitude::create([

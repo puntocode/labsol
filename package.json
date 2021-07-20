@@ -25,6 +25,12 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "vue-sweetalert2": "^5.0.2"
+        "@lottiefiles/lottie-player": "^1.1.1",
+        "lottie-player-vue": "^0.0.16",
+        "vue-bootstrap-datetimepicker": "^5.0.1",
+        "vue-sweetalert2": "^5.0.2",
+        "vuejs-datepicker": "^1.6.2",
+        "vuelidate": "^0.7.6",
+        "vuex": "^3.6.2"
     }
 }

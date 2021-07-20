@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlertCalibration;
 use Illuminate\Http\Request;
 
 class CalibracionController extends Controller
@@ -100,6 +101,11 @@ class CalibracionController extends Controller
     public function destroy($id)
     {
         if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
+    }
+
+
+    public function getAlertCalibration(){
+        return response()->json(AlertCalibration::all());
     }
 
 }

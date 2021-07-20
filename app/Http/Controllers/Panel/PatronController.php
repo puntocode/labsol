@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
 use App\Models\Patron;
+use App\Models\Magnitude;
 use Illuminate\Http\Request;
+use App\Models\StatusPattern;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class PatronController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +20,6 @@ class PatronController extends Controller
     public function index()
     {
         $patrones = Patron::all();
-        // dd($patrones->toArray());
         return view('panel.patrones.index', compact('patrones'));
     }
 
@@ -32,10 +30,11 @@ class PatronController extends Controller
      */
     public function create()
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-      $patron = NULL;
-      return view('panel.patrones.form', compact('patron'));
+        //$statusPattern = StatusPattern::all();
+        //$magnitudes = Magnitude::all();
+        //return view('panel.patrones.create', compact('statusPattern','magnitudes'));
+        $patrone = null;
+        return view('panel.patrones.form', compact('patrone'));
     }
 
     /**
@@ -46,68 +45,101 @@ class PatronController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-        $patrones = config('demo.patrones');
-        return view('panel.patrones.index', compact('patrones'));
+        $patron = Patron::create($this->validateData());
+        return response()->json($patron);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Patron  $patron
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Patron $patrone)
     {
-      $view_mode = 'readonly';
-      $patron = config('demo.patrones')[$id];
-
-      return view('panel.patrones.form', compact('patron', 'view_mode'));
+        return view('panel.patrones.show', compact('patrone'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Patron  $patron
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Patron $patrone)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-      $patron = config('demo.patrones')[$id];
-
-      return view('panel.patrones.form', compact('patron'));
+        return view('panel.patrones.form', compact('patrone'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Patron  $patron
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Patron $patron)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-      return redirect(route('panel.patrones.index'));
+        $pattern = Patron::findOrFail($request->id);
+        $pattern->update($this->validateData());
+        return response()->json(Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Patron  $patron
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Patron $patron)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+        //$patron = Patron::find($id);
     }
+
+    public function validateData()
+    {
+        return request()->validate([
+            'code'                 => 'required',
+            'description'          => 'required',
+            'status_pattern_id'    => 'required',
+            'magnitude_id'         => 'required',
+            'alert_calibration_id' => 'required',
+            'brand'                => 'nullable',
+            'certificate_no'       => 'nullable',
+            'rank'                 => 'nullable',
+            'precision'            => 'nullable',
+            'calibration_period'   => 'nullable',
+            'error_max'            => 'nullable',
+            'last_calibration'     => 'nullable',
+            'next_calibration'     => 'nullable',
+        ]);
+    }
+
+    public function hojaVida($id){
+        $patron = Patron::findOrFail($id);
+        return view('panel.patrones.hoja-vida', compact('patron'));
+    }
+
 
     public function historial(){
       return view('panel.historial.index');
     }
+
+
+    public function getStatusPattern(){
+        return response()->json(StatusPattern::all());
+    }
+
+
+    public function getMagnitudes(){
+        return response()->json(Magnitude::all());
+    }
+
+
+    public function getPatronForId($id){
+        return response()->json(Patron::find($id));
+    }
+
 
 
 }

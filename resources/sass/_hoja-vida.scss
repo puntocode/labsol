@@ -1,0 +1,11 @@
+.bg-gray{background-color: $gray;}
+.btn{border-radius: 0}
+.btn-blue{background-color: $blue; color: white;
+    &:hover{ background-color: #017DB1; color: white; }
+}
+
+.box{
+    .row{
+        .col-3{border-right: 7px solid white;}
+    }
+}

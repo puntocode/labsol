@@ -9,6 +9,8 @@ class Patron extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $casts = [
         'rank' => 'array',
         'error_max' => 'array',
@@ -18,4 +20,19 @@ class Patron extends Model
     public function statusPattern(){
         return $this->belongsTo(StatusPattern::class);
     }
+
+    public function magnitude(){
+        return $this->belongsTo(Magnitude::class);
+    }
+
+    public function alertCalibration(){
+        return $this->belongsTo(AlertCalibration::class);
+    }
+
+    public function alertaCalibracion(){
+        if(isset($this->alertCalibration))return $this->alertCalibration->name;
+        else return '-';
+    }
+
+
 }
