@@ -59,12 +59,3 @@
 		</div>
 	</div>
 @endsection
-@section('scripts')
-	<script>
-  $('#prox_calibracion').datepicker({
-    todayHighlight: true,
-    orientation: "bottom left"
-  });
-
-  </script>
-@endsection

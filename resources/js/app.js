@@ -19,6 +19,7 @@ Vue.use(Vuelidate)
 Vue.component('active', require('./components/Active.vue').default);
 Vue.component('table-delete', require('./components/TableDelete.vue').default);
 Vue.component('patron-card', require('./components/PatronCard.vue').default);
+Vue.component('cliente-card', require('./components/clientes/ClienteCard.vue').default);
 
 
 const app = new Vue({

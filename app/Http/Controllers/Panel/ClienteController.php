@@ -28,7 +28,8 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        return view('panel.clientes.create');
+        $cliente = null;
+        return view('panel.clientes.form', compact('cliente'));
     }
 
     /**
@@ -40,7 +41,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
-        $customer = Cliente::create($request->all());
+        $customer = Cliente::create($this->validateData());
         return response()->json($customer);
     }
 
@@ -52,10 +53,9 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $view_mode = 'readonly';
-        $cliente = config('demo.clientesContacto')[$id];
-
-        return view('panel.clientes.form', compact('cliente', 'view_mode'));
+        $cliente = Cliente::findOrFail($id);
+        return response()->json($cliente);
+        //return view('panel.clientes.form', compact('cliente', 'view_mode'));
     }
 
     public function ficha($id){
@@ -74,10 +74,8 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-
         $cliente = Cliente::find($id);
-
-        return view('panel.clientes.edit', compact('cliente'));
+        return view('panel.clientes.form', compact('cliente'));
     }
 
     /**
@@ -89,12 +87,7 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cliente = Cliente::whereId($id)->update([
-            'name'    => $request->name,
-            'code'    => $request->code,
-            'ruc'     => $request->ruc,
-            'contact' => $request->contact,
-        ]);
+        $cliente = Cliente::whereId($id)->update($this->validateData());
         return response()->json($cliente);
     }
 
@@ -112,5 +105,16 @@ class ClienteController extends Controller
     public function equipos(){
         $equipos = config('demo.equiposClientes');
         return view('panel.clientes.equipos.index', compact('equipos'));
+    }
+
+
+    public function validateData()
+    {
+        return request()->validate([
+            'code'    => 'nullable',
+            'name'    => 'required',
+            'contact' => 'nullable',
+            'ruc'     => 'nullable',
+        ]);
     }
 }
