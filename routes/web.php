@@ -13,8 +13,6 @@ use App\Http\Controllers\Panel\TecnicoController;
 use App\Http\Controllers\Panel\PerfilController;
 use App\Http\Controllers\Panel\ActividadController;
 use App\Http\Controllers\Ajax\AuthController;
-use App\Models\Cliente;
-use App\Models\Patron;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -42,6 +40,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     // Route::get('/', [PanelController::class, 'index'])->name('dashboard')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,tecnico,jefatura_calidad');
 
     # -- Clientes --
+    Route::resource('/clientes', 'ClienteController')->middleware('can:panel.database');
     Route::get('/clientes/ficha/{id}', [ClienteController::class, 'ficha'])->name('clientes.ficha')->middleware('can:panel.database');
 
 
@@ -95,8 +94,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'destroy' => 'calibracion.destroy'
     ])->middleware('can:panel.admin');
 
-    Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration');
-
+    Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration')->name('alert.calibration');
+    Route::get('/condition', [PanelController::class, 'getCondition'])->name('condition.all');
+    Route::get('/magnitud', [PanelController::class, 'getMagnitudes'])->name('magnitud.all');
 
     # -- Usuarios --
     // Route::resource('/usuarios', 'UsuarioController')->names([
@@ -122,22 +122,17 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     // ])->middleware('can:gerencia_tecnica,jefatura_calidad');
 
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
-    Route::get('/patron/{id}', 'PatronController@getPatronForId')->middleware('can:panel.database');
+    Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
     Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
-    Route::get('/status-pattern', 'PatronController@getStatusPattern')->middleware('can:panel.database');
-    Route::get('/magnitud', 'PatronController@getMagnitudes')->middleware('can:panel.database');
 
-    # -- Patrones --
-    // Route::resource('/equipos', 'EquipoController')->names([
-    //     'create' => 'equipos.create',
-    //     'edit'  => 'equipos.edit',
-    //     'update' => 'equipos.update',
-    //     'store' => 'equipos.store',
-    //     'show'  => 'equipos.show',
-    //     'destroy' => 'equipos.destroy'
-    // ])->middleware('can:gerencia_tecnica,jefatura_calidad');
 
+
+    # -- Equipos --
     Route::resource('/equipos', 'EquipoController')->middleware('can:panel.database');
+    Route::get('/equipo/hoja-vida/{id}', 'EquipoController@hojaVida')->name('equipo.hojaVida')->middleware('can:panel.database');
+    Route::get('/equipo/{id}', 'EquipoController@getEquipoForId')->name('equipos.get')->middleware('can:panel.database');
+
+
     Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');
 
     # -- Incertidumbre --
@@ -153,16 +148,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/incertidumbre', 'IncertidumbreController')->middleware('can:panel.admin');
 
     # -- Servicios --
-    Route::resource('/servicios', 'ServicioController')->names([
-        'create' => 'servicios.create',
-        'edit'  => 'servicios.edit',
-        'update' => 'servicios.update',
-        'store' => 'servicios.store',
-        'show'  => 'servicios.show',
-        'destroy' => 'servicios.destroy'
-    ])->middleware('can:panel.admin');
-
-    Route::resource('/servicios', 'ServicioController')->middleware('can:panel.admin');
+    Route::resource('/procedimientos', 'ProcedimientoController')->middleware('can:panel.database');
+    Route::get('/procedimiento/{id}', 'ProcedimientoController@getProcedimientoForId')->name('procedimientos.get')->middleware('can:panel.database');
 
     # -- Tecnico --
 
@@ -197,21 +184,6 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     /***************************************************************** Resources *****************************************************************/
 
-
-    # -- Clientes (Resources) --
-
-    Route::resource('/clientes/contratos', 'ContratoController')->names([
-        'index' => 'clientes.contratos.index',
-        'create' => 'clientes.contratos.create',
-        'edit'  => 'clientes.contratos.edit',
-        'update' => 'clientes.contratos.update',
-        'store' => 'clientes.contratos.store',
-        'show'  => 'clientes.contratos.show',
-        'destroy' => 'clientes.contratos.destroy'
-    ])->middleware('can:panel.admin');
-
-    // Route::resource('/clientes', 'ClienteController')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,jefatura_calidad');
-    Route::resource('/clientes', 'ClienteController')->middleware('can:panel.database');
 
     # -- Expedientes (Resources) --
 

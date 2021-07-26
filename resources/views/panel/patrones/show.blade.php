@@ -19,7 +19,7 @@
                             <ul class="list-unstyled px-0">
 
                                 <li class="mb-5">
-                                    <a href="{{ route('panel.patrones.index') }}" class="as-text text-hover-primary" title="Ir a listado de clientes">
+                                    <a href="{{ route('panel.patrones.index') }}" class="as-text text-hover-primary" title="Ir a listado de patron">
                                         <i class="fas fa-arrow-left text-hover-primary mr-2"></i>  Ir a listado
                                     </a>
                                 </li>
@@ -27,7 +27,7 @@
                                 <li><hr></li>
 
                                 <li class="mb-5">
-                                    <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Crear nuevo cliente">
+                                    <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Crear nuevo patron">
                                         <i class="far fa-plus-square text-hover-primary mr-2"></i> Crear nuevo
                                     </a>
                                 </li>
@@ -36,7 +36,7 @@
 
 
                                 <li class="mb-5">
-                                    <a href="{{ route('panel.patrones.destroy', $patrone) }}" class="as-text text-hover-primary" title="Crear nuevo cliente">
+                                    <a href="{{ route('panel.patrones.destroy', $patrone) }}" class="as-text text-hover-primary" title="Crear nuevo patron">
                                         <i class="fas fa-trash text-hover-primary mr-2"></i> Eliminar Patron
                                     </a>
                                 </li>
@@ -104,56 +104,59 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <hr>
 
                                                 <div class="row mt-3">
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label>Nr. de Certificado</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="font-weight-bold">{{ $patrone->certificate_no }}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label>Estado</label>
                                                         <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold text-capitalize">{{ $patrone->statusPattern->name }}</span>
+                                                            <span class="badge badge-primary font-weight-bold text-uppercase">{{ $patrone->condition->name }}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label>Magnitud</label>
                                                         <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->magnitude->name }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-3">
-                                                    <div class="form-group col-md-3">
-                                                        <label>Periodo de Calibración</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->calibration_period }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-3">
-                                                        <label>Última Calibración</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->last_calibration }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-3">
-                                                        <label>Próxima Calibración</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->next_calibration }}</span>
+                                                            <span class="badge badge-info font-weight-bold">{{ $patrone->magnitude->name }}</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group col-md-3">
                                                         <label>Alerta de Calibración</label>
                                                         <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->alertaCalibracion()  }}</span>
+                                                            <span class="badge badge-danger font-weight-bold">{{ $patrone->alertaCalibracion()  }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+
+
+                                                <div class="row mt-3">
+                                                    <div class="form-group col-md-4">
+                                                        <label>Periodo de Calibración</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $patrone->calibration_period }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Última Calibración</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $patrone->last_calibration }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Próxima Calibración</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $patrone->next_calibration }}</span>
                                                         </div>
                                                     </div>
                                                 </div>

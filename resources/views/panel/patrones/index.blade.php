@@ -4,11 +4,6 @@
 
 @section('styles')
     <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <style>
-        table.dataTable {
-
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -54,7 +49,8 @@
                             <th>Prox. Calibración</th>
                             <th>Estado</th>
                             <th>Magnitud</th>
-                            <th>Acciones</th>
+                            <th>Alerta de Cal.</th>
+                            <th>Detalles</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,13 +61,9 @@
                                 <td>{{ $patrone->brand }}</td>
                                 <td>{{ $patrone->certificate_no }}</td>
                                 <td>
-                                    @if (isset($patrone->rank))
-                                        @foreach ($patrone->rank as $rank)
-                                            {{ $rank }} <br>
-                                        @endforeach
-                                    @else
-                                        -
-                                    @endif
+                                    @foreach ($patrone->rank as $rank)
+                                        {{ $rank }} <br>
+                                    @endforeach
                                 </td>
                                 <td>
                                     @if (isset($patrone->precision))
@@ -100,8 +92,9 @@
                                 <td>{{ $patrone->calibration_period }}</td>
                                 <td>{{ $patrone->last_calibration }}</td>
                                 <td>{{ $patrone->next_calibration }}</td>
-                                <td class="text-uppercase">{{ $patrone->statusPattern->name }}</td>
-                                <td class="text-uppercase">{{ $patrone->magnitude->name }}</td>
+                                <td><span class="badge badge-primary">{{ $patrone->condition->name }}</span></td>
+                                <td><span class="badge badge-info">{{ $patrone->magnitude->name }}</span></td>
+                                <td><span class="badge badge-danger">{{ $patrone->alertaCalibracion() }}</span></td>
                                 <td>
                                     @can('panel.database')
                                         <a href="{{ route('panel.patrones.show', $patrone) }}" class="btn btn-sm btn-clean btn-icon" title="Ver patrón">
@@ -138,17 +131,21 @@
 
     <script>
         $(function() {
+            // oTable = $('#tablePatrones').DataTable({
+            //     "scrollX": true,
+            //     "autoWidth": false,
+            //     scrollCollapse: true,
+            //     fixedColumns: {
+            //         leftColumns: 1,
+            //         //rightColumns: 1
+            //     }
+
+            // }).columns.adjust().draw()
+
             oTable = $('#tablePatrones').DataTable({
-                "scrollX": true,
-                "autoWidth": false,
-                scrollCollapse: true,
-                fixedColumns: {
-                    leftColumns: 1,
-                    //rightColumns: 1
-                }
-
-            }).columns.adjust().draw()
-
+  				responsive: true,
+  				"bLengthChange": false
+  			});
 
             $('#tableInpuntSearch').keyup(function() {
                 oTable.search($(this).val()).draw();

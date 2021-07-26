@@ -66,7 +66,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-5 row">
-            <a href="/panel/clientes" class="btn btn-secondary mr-2" title="Volver a listado">Volver</a>
+            <a v-if="this.action == 'create'" :href="this.rutas.index" class="btn btn-secondary mr-2" title="Volver a listado">Volver</a>
             <button type="submit" class="btn btn-primary" :disabled="$v.$invalid" title="Completa los campos obligatorios">{{ textoBtn }}</button>
         </div>
 
@@ -77,18 +77,17 @@
     import {required, numeric, email} from "vuelidate/lib/validators";
 
     export default {
-        props: ['form', 'action'],
+        props: ['form', 'action', 'rutas'],
         data() {
             return {
                 options: {
-                    title: "Insertado",
-                    text: "Cliente insertado correctamente!",
                     icon: "success",
-                    showCancelButton: true,
+                    showCancelButton: false,
+                    showDenyButton: true,
                     confirmButtonColor: "#3699FF",
-                    cancelButtonColor: "#808080",
-                    confirmButtonText: 'Ver Cliente',
-                    cancelButtonText: `<a href="/panel/clientes" class="text-white">Ir a la lista</a>`,
+                    denyButtonColor: "#808080",
+                    confirmButtonText: 'Crear Nuevo',
+                    denyButtonText: 'Ir a la lista',
                 }
             }
         },
@@ -121,24 +120,30 @@
 
 
              crear(){
-                axios.post('/panel/clientes', this.form)
+                axios.post(this.rutas.store, this.form)
                     .then(response => {
-                        if(response.status == 200) this.$swal(this.options).then( result => location.href = `/panel/clientes/ficha/${response.data.id}`)
+                        if(response.status == 200) this.alerta();
                     })
                     .catch(error => console.log(error))
             },
 
 
             actualizar(){
-                axios.put(`/panel/clientes/${this.form.id}`, this.form)
+                axios.put(this.rutas.update, this.form)
                     .then(response => {
-                        if(response.status == 200){
-                            this.options.title = 'Actualizado';
-                            this.options.text = "Cliente actualizado correctamente!!"
-                            this.$swal(this.options).then( () => location.href = `/panel/clientes/ficha/${this.form.id}` )
-                        };
+                        if(response.status == 200) this.alerta("Cliente actualizado correctamente!!", 'Actualizado');
                     })
                     .catch(error => console.log(error))
+            },
+
+            alerta(mensaje = 'Cliente insertado correctamente!', tipo = 'Insertado'){
+                this.options.text = mensaje;
+                this.options.title = tipo;
+                this.$swal(this.options)
+                    .then( result => {
+                        if (result.isConfirmed) location.href = this.rutas.ficha
+                        else location.href = this.rutas.index
+                    })
             }
         },
         computed: {

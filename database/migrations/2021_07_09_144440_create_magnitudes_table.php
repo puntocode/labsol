@@ -17,6 +17,7 @@ class CreateMagnitudesTable extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('status')->default(1);
+            $table->enum('condition_type' ,['PATRON', 'EQUIPO', 'TODOS'])->default('TODOS');
             $table->timestamps();
             $table->softDeletes();
         });

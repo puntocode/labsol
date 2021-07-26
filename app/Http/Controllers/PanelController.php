@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Condition;
+use App\Models\Magnitude;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -123,4 +125,16 @@ class PanelController extends Controller
 
         return view('panel.index', compact('resumen'));
     }
+
+
+    public function getCondition(){
+        return response()->json(Condition::patron()->get());
+    }
+
+
+    public function getMagnitudes(){
+        return response()->json(Magnitude::all());
+    }
+
+
 }

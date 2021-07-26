@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\CalibrationStatus;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,9 +17,13 @@ class DatabaseSeeder extends Seeder
         $this->call(UserTableSeeder::class);
         $this->call(ClienteSeeder::class);
         $this->call(AlertCalibrationSeeder::class);
-        $this->call(StatusPaternSeeder::class);
+        $this->call(ConditionSeeder::class);
         $this->call(StatusCalibrationSeeder::class);
         $this->call(MagnitudeSeeder::class);
         $this->call(PatronSeeder::class);
+        $this->call(EquipoSeeder::class);
+        $this->call(InstrumentoSeeder::class);
+        $this->call(ProcedimientoSeeder::class);
+        $this->call(InstrumentoProcedimientoSeeder::class);
     }
 }

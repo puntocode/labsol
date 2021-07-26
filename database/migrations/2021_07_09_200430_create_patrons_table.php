@@ -25,9 +25,9 @@ class CreatePatronsTable extends Migration
             $table->json('error_max')->nullable();
             $table->date('last_calibration')->nullable();
             $table->date('next_calibration')->nullable();
-            $table->foreignId('status_pattern_id')->constrained();
+            $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();
-            $table->foreignId('alert_calibration_id')->nullable()->references('id')->on('alert_calibrations');
+            $table->foreignId('alert_calibration_id')->constrained();
             $table->timestamps();
         });
     }

@@ -327,7 +327,7 @@
                                     <!--end::Symbol-->
                                     <!--begin::Text-->
                                     <div class="d-flex flex-column font-weight-bold">
-                                        <a href="{{ route('panel.servicios.index') }}"
+                                        <a href="{{ route('panel.procedimientos.index') }}"
                                             class="text-dark text-hover-primary mb-1 font-size-lg">Ver Servicios</a>
                                     </div>
                                     <!--end::Text-->
@@ -357,7 +357,7 @@
                                     <!--end::Symbol-->
                                     <!--begin::Text-->
                                     <div class="d-flex flex-column font-weight-bold">
-                                        <a href="{{ route('panel.servicios.create') }}"
+                                        <a href="{{ route('panel.procedimientos.create') }}"
                                             class="text-dark text-hover-success mb-1 font-size-lg">Crear nuevo servicio</a>
                                     </div>
                                     <!--end::Text-->

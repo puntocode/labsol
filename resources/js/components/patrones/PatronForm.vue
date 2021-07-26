@@ -55,18 +55,18 @@
 
                 <div class="form-group row">
                     <div class="col-12 col-lg-4">
-                        <select-form label="Estado" :value="form.status_pattern_id" v-model="$v.form.status_pattern_id.$model"
-                            url="/panel/status-pattern" texto="-- Selecciona un estado --"></select-form>
+                        <select-form label="Estado" :value="form.condition_id" v-model="$v.form.condition_id.$model"
+                            :url="this.rutas.condition" texto="-- Selecciona un estado --"></select-form>
                     </div>
 
                     <div class="col-lg-4">
                         <select-form label="Magnitud" :value="form.magnitude_id" v-model="$v.form.magnitude_id.$model"
-                            url="/panel/magnitud" texto="-- Selecciona una magnitud --"></select-form>
+                            :url="this.rutas.magnitud" texto="-- Selecciona una magnitud --"></select-form>
                     </div>
 
                     <div class="col-lg-4">
                         <select-form label="Alerta de Calibración" :value="form.alert_calibration_id" v-model="form.alert_calibration_id"
-                            url="/panel/alert_calibration" texto="-- Selecciona una Alerta de Calibración --"></select-form>
+                            :url="this.rutas.alertCal" texto="-- Selecciona una Alerta de Calibración --"></select-form>
                     </div>
                 </div>
 
@@ -199,9 +199,9 @@
                 </div>
 
                 <div class="col-12 mb-16 text-center">
-                    <a :href="`/panel/patrones/${this.form.id}`" class="btn btn-primary mr-2">Ver Patrón</a>
-                    <a href="/panel/patrones" class="btn btn-secondary mr-2">Ir a la lista</a>
-                    <a href="/panel/patrones/create" class="btn btn-info" v-if="this.action === 'create'">Crear Nuevo Patrón</a>
+                    <a :href="this.rutas.show" class="btn btn-primary mr-2">Ver Patrón</a>
+                    <a :href="this.rutas.index" class="btn btn-secondary mr-2">Ir a la lista</a>
+                    <a :href="this.rutas.create" class="btn btn-info" v-if="this.action === 'create'">Crear Nuevo Patrón</a>
                 </div>
             </div>
         </fieldset>
@@ -211,14 +211,14 @@
 <script>
     import {required, minValue} from "vuelidate/lib/validators";
     import datePicker from 'vue-bootstrap-datetimepicker';
-    import SuccessAnimation from './SuccessAnimation';
-    import SelectForm from './SelectForm';
+    import SuccessAnimation from '../SuccessAnimation';
+    import SelectForm from '../SelectForm';
 
     export default {
         components: {
           datePicker, SuccessAnimation, SelectForm
         },
-        props: ['form', 'action'],
+        props: ['form', 'action', 'rutas'],
         data() {
             return {
                 steps: 1,
@@ -227,14 +227,13 @@
                 options: {
                      format: 'yyyy/MM/DD',
                 },
-                //form: {}
             }
         },
         validations:{
             form:{
                 code: {required},
                 description: {required},
-                status_pattern_id: {required, minValue: 1},
+                condition_id: {required, minValue: 1},
                 magnitude_id: {required, minValue: 1},
             }
         },
@@ -290,7 +289,7 @@
                 else this.actualizar();
             },
             crear(){
-                axios.post('/panel/patrones', this.form)
+                axios.post(this.rutas.store, this.form)
                     .then(response => {
                         if(response.status == 200){
                             this.form.id = response.data.id;
@@ -300,7 +299,7 @@
                     .catch(error => console.log(error))
             },
             actualizar(){
-                axios.put(`/panel/patrones/${this.form.id}`, this.form)
+                axios.put(this.rutas.update, this.form)
                     .then(response => {
                         if(response.status == 200) this.next();
                     })
@@ -311,7 +310,7 @@
         },
         computed: {
             disable() {
-                return  this.form.code.trim() === '' || this.form.description.trim() === '' || this.form.precision[0].title.trim() === '' || this.form.status_pattern_id === 0 ||  this.form.magnitude_id === 0 ||  this.form.alert_calibration_id === 0  ? true : false;
+                return  this.form.code.trim() === '' || this.form.description.trim() === '' || this.form.precision[0].title.trim() === '' || this.form.condition_id === 0 ||  this.form.magnitude_id === 0 ||  this.form.alert_calibration_id === 0  ? true : false;
             },
             btnTitle(){
                 return this.disable ? 'Completa todos los campos obligatorios*' : 'Guarda los datos';
@@ -323,27 +322,4 @@
     };
 </script>
 
-<style lang="scss" scoped>
 
-#form-step { text-align: center; position: relative; margin-top: 20px;
-    fieldset:not(:first-of-type) {display: none;} //selecciona los fieldset que no sea el primer elemento
-    .form-card{text-align: left;
-        .steps { font-size: 18px; color: gray;}
-    }
-}
-
-#progressbar {margin-bottom: 30px; overflow: hidden; color: lightgrey; padding: 0;
-    li {list-style-type: none; font-size: 15px; width: 25%; float: left; position: relative; z-index: 1; font-weight: 400;
-        &:before{ width: 50px; height: 50px; line-height: 45px; display: block; font-size: 20px; color: #ffffff; background: lightgray; border-radius: 50%; margin: 0 auto 10px auto; padding: 2px;}
-        &:after { content: ''; width: 100%; height: 2px; background: lightgray;  left: 0; top: 25px; position: absolute; z-index: -1;}
-        &.active:before, &.active::after{background: #009bdd}
-    }
-    .active {color: #009bdd;}
-    #basic:before { font-family: "Font Awesome 5 Free"; content: "\f15c"; }
-    #status:before { font-family: "Font Awesome 5 Free"; content: "\f28d"; }
-    #period:before { font-family: "Font Awesome 5 Free"; content: "\f073"; }
-    #confirm:before { font-family: "Font Awesome 5 Free"; content: "\f058"; }
-}
-
-
-</style>

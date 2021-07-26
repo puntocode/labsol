@@ -14,52 +14,23 @@ class MagnitudeSeeder extends Seeder
      */
     public function run()
     {
-        Magnitude::create([
-            'name'    => 'Dimensional',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Eléctrica',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Masa',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Temperatura',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Presión',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Iluminación',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Tiempo',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Dureza',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Acústica',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Velocidad',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Fuerza',
-        ]);
-
-        Magnitude::create([
-            'name'    => 'Patrón de ref. calibración',
-        ]);
-    }
+        Magnitude::create([ 'name' => 'AUXILIAR',    'condition_type' => 'EQUIPO']);
+        Magnitude::create([ 'name' => 'ACUSTICA',    'condition_type' => 'PATRON',]);
+        Magnitude::create([ 'name' => 'DIMENSIONAL', 'condition_type' => 'TODOS']);
+        Magnitude::create([ 'name' => 'DUREZA',      'condition_type' => 'TODOS' ]);
+        Magnitude::create([ 'name' => 'ELECTRICA',   'condition_type' => 'TODOS']);
+        Magnitude::create([ 'name' => 'FUERZA',      'condition_type' => 'TODOS']);
+        Magnitude::create([ 'name' => 'LONGITUD',    'condition_type' => 'EQUIPO',]);
+        Magnitude::create([ 'name' => 'ILUMINACION', 'condition_type' => 'PATRON',]);
+        Magnitude::create([ 'name' => 'MASA',        'condition_type' => 'TODOS',]);
+        Magnitude::create([ 'name' => 'OPACIDAD',    'condition_type' => 'EQUIPO',]);
+        Magnitude::create([ 'name' => 'PATRON DE REF. CALIBRACION', 'condition_type' => 'PATRON']);
+        Magnitude::create([ 'name' => 'pH',           'condition_type' => 'EQUIPO']);
+        Magnitude::create([ 'name' => 'PRESION',      'condition_type' => 'PATRON']);
+        Magnitude::create([ 'name' => 'TEMPERATURA',  'condition_type' => 'TODOS']);
+        Magnitude::create([ 'name' => 'TEMPERATURA/HUMEDAD', 'condition_type' => 'EQUIPO']);
+        Magnitude::create([ 'name' => 'TIEMPO',       'condition_type' => 'PATRON',]);
+        Magnitude::create([ 'name' => 'VELOCIDAD',    'condition_type' => 'PATRON',]);
+        Magnitude::create([ 'name' => 'LUZ',          'condition_type' => 'PATRON',]);
+   }
 }

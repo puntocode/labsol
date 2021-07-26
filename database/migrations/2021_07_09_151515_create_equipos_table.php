@@ -15,7 +15,7 @@ class CreateEquiposTable extends Migration
     {
         Schema::create('equipos', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 20);
+            $table->uuid('code');
             $table->string('description');
             $table->string('brand', 50)->nullable();
             $table->json('rank')->nullable();
@@ -25,8 +25,8 @@ class CreateEquiposTable extends Migration
             $table->string('certificate_no')->nullable();
             $table->date('last_calibration')->nullable();
             $table->date('next_calibration')->nullable();
-            $table->foreignId('alert_calibration_id')->constrained()->nullable();
-            $table->foreignId('status_pattern_id')->constrained();
+            $table->foreignId('alert_calibration_id')->constrained();
+            $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();
             $table->timestamps();
         });

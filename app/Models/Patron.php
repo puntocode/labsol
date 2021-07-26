@@ -17,8 +17,10 @@ class Patron extends Model
         'precision' => 'array',
     ];
 
-    public function statusPattern(){
-        return $this->belongsTo(StatusPattern::class);
+    protected $appends = [ 'title' ];
+
+    public function condition(){
+        return $this->belongsTo(Condition::class);
     }
 
     public function magnitude(){
@@ -32,6 +34,10 @@ class Patron extends Model
     public function alertaCalibracion(){
         if(isset($this->alertCalibration))return $this->alertCalibration->name;
         else return '-';
+    }
+
+    public function getTitleAttribute(){
+        return 'PATRÓN';
     }
 
 

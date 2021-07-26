@@ -18,8 +18,11 @@ Vue.use(Vuelidate)
 
 Vue.component('active', require('./components/Active.vue').default);
 Vue.component('table-delete', require('./components/TableDelete.vue').default);
-Vue.component('patron-card', require('./components/PatronCard.vue').default);
+Vue.component('patron-card', require('./components/patrones/PatronCard.vue').default);
 Vue.component('cliente-card', require('./components/clientes/ClienteCard.vue').default);
+Vue.component('equipo-card', require('./components/equipos/EquipoCard.vue').default);
+Vue.component('procedimiento-card', require('./components/procedimientos/ProcedimientoCard.vue').default);
+Vue.component('hoja-vida', require('./components/HojaVida.vue').default);
 
 
 const app = new Vue({

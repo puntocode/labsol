@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Models\Patron;
-use App\Models\Magnitude;
 use Illuminate\Http\Request;
-use App\Models\StatusPattern;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,9 +28,6 @@ class PatronController extends Controller
      */
     public function create()
     {
-        //$statusPattern = StatusPattern::all();
-        //$magnitudes = Magnitude::all();
-        //return view('panel.patrones.create', compact('statusPattern','magnitudes'));
         $patrone = null;
         return view('panel.patrones.form', compact('patrone'));
     }
@@ -96,12 +91,13 @@ class PatronController extends Controller
         //$patron = Patron::find($id);
     }
 
+
     public function validateData()
     {
         return request()->validate([
             'code'                 => 'required',
             'description'          => 'required',
-            'status_pattern_id'    => 'required',
+            'condition_id'         => 'required',
             'magnitude_id'         => 'required',
             'alert_calibration_id' => 'required',
             'brand'                => 'nullable',
@@ -116,23 +112,13 @@ class PatronController extends Controller
     }
 
     public function hojaVida($id){
-        $patron = Patron::findOrFail($id);
+        $patron = Patron::with('magnitude')->whereId($id)->first();
         return view('panel.patrones.hoja-vida', compact('patron'));
     }
 
 
     public function historial(){
       return view('panel.historial.index');
-    }
-
-
-    public function getStatusPattern(){
-        return response()->json(StatusPattern::all());
-    }
-
-
-    public function getMagnitudes(){
-        return response()->json(Magnitude::all());
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Equipo;
 use Illuminate\Http\Request;
 
 class EquipoController extends Controller
@@ -19,7 +20,7 @@ class EquipoController extends Controller
      */
     public function index()
     {
-        $equipos = config('demo.equipos');
+        $equipos = Equipo::all();
         return view('panel.equipos.index', compact('equipos'));
     }
 
@@ -30,8 +31,6 @@ class EquipoController extends Controller
      */
     public function create()
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
       $equipo = NULL;
       return view('panel.equipos.form', compact('equipo'));
     }
@@ -44,9 +43,8 @@ class EquipoController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-        $equipos = config('demo.equipos');
-        return view('panel.equipos.index', compact('equipos'));
+        $equipo = Equipo::create($this->validateData());
+        return response()->json($equipo);
     }
 
     /**
@@ -57,10 +55,8 @@ class EquipoController extends Controller
      */
     public function show($id)
     {
-      $view_mode = 'readonly';
-      $equipo = config('demo.equipos')[$id];
-
-      return view('panel.equipos.form', compact('equipo', 'view_mode'));
+      $equipo = Equipo::findOrFail($id);
+      return view('panel.equipos.show', compact('equipo'));
     }
 
     /**
@@ -71,10 +67,7 @@ class EquipoController extends Controller
      */
     public function edit($id)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-      $equipo = config('demo.equipos')[$id];
-
+      $equipo = Equipo::findOrFail($id);
       return view('panel.equipos.form', compact('equipo'));
     }
 
@@ -87,9 +80,9 @@ class EquipoController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-      return redirect(route('panel.equipos.index'));
+        $equipo = Equipo::findOrFail($request->id);
+        $equipo->update($this->validateData());
+        return response()->json($equipo);
     }
 
     /**
@@ -100,12 +93,43 @@ class EquipoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
+
     }
 
     public function historial(){
 
     }
 
+
+    public function hojaVida($id){
+        $equipo = Equipo::with('magnitude')->whereId($id)->first();
+        // dd($equipo->toArray());
+        return view('panel.equipos.hoja-vida', compact('equipo'));
+    }
+
+
+    public function getEquipoForId($id){
+        return response()->json(Equipo::find($id));
+    }
+
+
+    public function validateData()
+    {
+        return request()->validate([
+            'code'                 => 'required',
+            'description'          => 'required',
+            'condition_id'         => 'required',
+            'magnitude_id'         => 'required',
+            'alert_calibration_id' => 'required',
+            'brand'                => 'nullable',
+            'certificate_no'       => 'nullable',
+            'rank'                 => 'nullable',
+            'resolution'           => 'nullable',
+            'calibration_period'   => 'nullable',
+            'error_max'            => 'nullable',
+            'last_calibration'     => 'nullable',
+            'next_calibration'     => 'nullable',
+        ]);
+    }
 
 }

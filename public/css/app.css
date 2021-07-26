@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .bg-gray {
   background-color: #D9D9D9;
 }
@@ -17,4 +18,80 @@
 
 .box .row .col-3 {
   border-right: 7px solid white;
+}
+
+#form-step {
+  text-align: center;
+  position: relative;
+  margin-top: 20px;
+}
+#form-step fieldset:not(:first-of-type) {
+  display: none;
+}
+#form-step .form-card {
+  text-align: left;
+}
+#form-step .form-card .steps {
+  font-size: 18px;
+  color: gray;
+}
+
+#progressbar {
+  margin-bottom: 30px;
+  overflow: hidden;
+  color: lightgrey;
+  padding: 0;
+}
+#progressbar li {
+  list-style-type: none;
+  font-size: 15px;
+  width: 25%;
+  float: left;
+  position: relative;
+  z-index: 1;
+  font-weight: 400;
+}
+#progressbar li:before {
+  width: 50px;
+  height: 50px;
+  line-height: 45px;
+  display: block;
+  font-size: 20px;
+  color: #ffffff;
+  background: lightgray;
+  border-radius: 50%;
+  margin: 0 auto 10px auto;
+  padding: 2px;
+}
+#progressbar li:after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: lightgray;
+  left: 0;
+  top: 25px;
+  position: absolute;
+  z-index: -1;
+}
+#progressbar li.active:before, #progressbar li.active::after {
+  background: #009bdd;
+}
+#progressbar .active {
+  color: #009bdd;
+}
+#progressbar #basic:before {
+  font-family: "Font Awesome 5 Free";
+  content: "";
+}
+#progressbar #status:before {
+  font-family: "Font Awesome 5 Free";
+  content: "";
+}
+#progressbar #period:before {
+  font-family: "Font Awesome 5 Free";
+  content: "";
+}
+#progressbar #confirm:before {
+  font-family: "Font Awesome 5 Free";
+  content: "";
 }

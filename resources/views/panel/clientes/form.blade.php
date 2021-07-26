@@ -13,7 +13,7 @@
 					<div class="card-body ">
 						@if (isset($cliente))
                             <div class="flex-grow-1">
-                                <a href="{{ route('panel.clientes.show', $cliente) }}" class="as-text text-hover-primary" title="Ver detalles del Cliente">
+                                <a href="{{ route('panel.clientes.ficha', $cliente) }}" class="as-text text-hover-primary" title="Ver detalles del Cliente">
                                     <i class="fas fa-arrow-left text-hover-primary mr-2"></i> Ir al Cliente
                                 </a>
                                 <hr>
@@ -144,4 +144,22 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('rutas')
+    <script>
+        const showRoute   = `{{ route('panel.clientes.show',   isset($cliente) ? $cliente->id : 0) }}`
+        const updateRoute = `{{ route('panel.clientes.update', isset($cliente) ? $cliente->id : 0) }}`
+        const fichaRoute  = `{{ route('panel.clientes.ficha',  isset($cliente) ? $cliente->id : 0) }}`
+        const indexRoute  = `{{ route('panel.clientes.index') }}`
+        const storeRoute  = `{{ route('panel.clientes.store') }}`
+
+        window.routes = {
+            'show'  : showRoute,
+            'store' : storeRoute,
+            'update': updateRoute,
+            'ficha' : fichaRoute,
+            'index' : indexRoute,
+        }
+    </script>
 @endsection
