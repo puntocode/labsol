@@ -28,8 +28,8 @@
                     validity: '',
                     valve: '',
                     accredited_scope: false,
-                    patron_procedimiento: [],
-                    instrumento_procedimiento: [],
+                    patron_id: [],
+                    instrumento_id: [],
                 }
             }
         },
@@ -41,7 +41,10 @@
                  if(this.id > 0){
                     this.action = 'update'
                     await axios.get(this.rutas.getProcedimiento)
-                        .then(response => this.form = response.data)
+                        .then(response => {
+                            this.form = response.data;
+
+                        })
                         .catch(error => console.log(error))
                 }
 

@@ -31,6 +31,14 @@ class Patron extends Model
         return $this->belongsTo(AlertCalibration::class);
     }
 
+    public function documents(){
+        return $this->morphMany(Document::class, 'document');
+    }
+
+    public function historycalibrations(){
+        return $this->morphMany(Historycalibration::class, 'historycalibration');
+    }
+
     public function alertaCalibracion(){
         if(isset($this->alertCalibration))return $this->alertCalibration->name;
         else return '-';

@@ -61,12 +61,14 @@
                                 <td>{{ $patrone->brand }}</td>
                                 <td>{{ $patrone->certificate_no }}</td>
                                 <td>
-                                    @foreach ($patrone->rank as $rank)
-                                        {{ $rank }} <br>
-                                    @endforeach
+                                    @if (isset($patrone->precision) && $patrone->rank != null)
+                                        @foreach ($patrone->rank as $rank)
+                                            {{ $rank }} <br>
+                                        @endforeach
+                                    @endif
                                 </td>
                                 <td>
-                                    @if (isset($patrone->precision))
+                                    @if (isset($patrone->precision) && $patrone->rank != null)
                                         @foreach ($patrone->precision as $precision)
                                             <strong>{{ $precision['title'] == 'precision' ? '' : $precision['title']  }}</strong><br>
                                             @foreach ($precision['value'] as $value)
@@ -78,7 +80,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if (isset($patrone->error_max))
+                                    @if (isset($patrone->error_max) && $patrone->rank != null)
                                         @foreach ($patrone->error_max as $error)
                                             <strong>{{ $error['title'] == 'error' ? '' : $error['title']  }}</strong><br>
                                             @foreach ($error['value'] as $value)

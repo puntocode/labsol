@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
 use App\Models\Equipo;
+use App\Models\Document;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class EquipoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -56,7 +55,8 @@ class EquipoController extends Controller
     public function show($id)
     {
       $equipo = Equipo::findOrFail($id);
-      return view('panel.equipos.show', compact('equipo'));
+      $documentos = Document::where('document_id', $equipo->id)->where('document_type', 'App\Models\Equipo')->get();
+      return view('panel.equipos.show', compact('equipo', 'documentos'));
     }
 
     /**
@@ -130,6 +130,26 @@ class EquipoController extends Controller
             'last_calibration'     => 'nullable',
             'next_calibration'     => 'nullable',
         ]);
+    }
+
+
+    public function documents(Equipo $equipo)
+    {
+        return view('panel.equipos.doc', compact('equipo'));
+    }
+
+
+    public function storeDocument(Request $request, $id)
+    {
+        $file = $request->file('documento')->getClientOriginalName();
+        $extension = $request->documento->guessExtension();
+        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
+        $nombreArchivo = $slug.".".$extension;
+        $request->documento->move(public_path('media\docs\equipos'), $nombreArchivo);
+
+        $equipo = Equipo::findOrFail($id);
+        $equipo->documents()->create(['extension' => $extension, 'name' => $nombreArchivo]);
+        return response()->json($equipo);
     }
 
 }

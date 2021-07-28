@@ -63,11 +63,13 @@
 @section('rutas')
 <script>
     const getProcedimiento = `{{ route('panel.procedimientos.get', isset($procedimiento) ? $procedimiento->id : 0) }}`
-    const showRoute   = `{{ route('panel.procedimientos.show', isset($procedimiento) ? $procedimiento->id : 0) }}`
+    const showRoute = `{{ route('panel.procedimientos.show', isset($procedimiento) ? $procedimiento->id : 0) }}`
     const updateRoute = `{{ route('panel.procedimientos.update', isset($procedimiento) ? $procedimiento->id : 0) }}`
     const createRoute = `{{ route('panel.procedimientos.create') }}`
-    const indexRoute  = `{{ route('panel.procedimientos.index') }}`
-    const storeRoute  = `{{ route('panel.procedimientos.store') }}`
+    const indexRoute = `{{ route('panel.procedimientos.index') }}`
+    const storeRoute = `{{ route('panel.procedimientos.store') }}`
+    const getPatron = `{{ route('panel.patrones.index') }}`
+    const getInstrumentos = `{{ route('panel.instrumentos.all') }}`
 
     window.routes = {
         'show': showRoute,
@@ -76,6 +78,8 @@
         'index': indexRoute,
         'create': createRoute,
         'getProcedimiento': getProcedimiento,
+        'getPatron': getPatron,
+        'getInstrumentos': getInstrumentos,
     }
 </script>
 @endsection

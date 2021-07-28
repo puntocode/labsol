@@ -35,7 +35,7 @@
                                 <a class="nav-link" data-toggle="tab" href="#topbar_clientes">Clientes</a>
                             </li> --}}
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#topbar_servicios">Servicios</a>
+                                <a class="nav-link" data-toggle="tab" href="#topbar_servicios">Procedimientos</a>
                             </li>
                         </ul>
                         <!--end::Tabs-->
@@ -328,7 +328,7 @@
                                     <!--begin::Text-->
                                     <div class="d-flex flex-column font-weight-bold">
                                         <a href="{{ route('panel.procedimientos.index') }}"
-                                            class="text-dark text-hover-primary mb-1 font-size-lg">Ver Servicios</a>
+                                            class="text-dark text-hover-primary mb-1 font-size-lg">Ver Procedimientos</a>
                                     </div>
                                     <!--end::Text-->
                                 </div>
@@ -358,7 +358,7 @@
                                     <!--begin::Text-->
                                     <div class="d-flex flex-column font-weight-bold">
                                         <a href="{{ route('panel.procedimientos.create') }}"
-                                            class="text-dark text-hover-success mb-1 font-size-lg">Crear nuevo servicio</a>
+                                            class="text-dark text-hover-success mb-1 font-size-lg">Crear nuevo procedimiento</a>
                                     </div>
                                     <!--end::Text-->
                                 </div>

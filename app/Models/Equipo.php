@@ -29,6 +29,10 @@ class Equipo extends Model
         return $this->belongsTo(AlertCalibration::class);
     }
 
+    public function documents(){
+        return $this->morphMany(Document::class, 'document');
+    }
+
     public function getTitleAttribute(){
         return 'EQUIPO';
     }

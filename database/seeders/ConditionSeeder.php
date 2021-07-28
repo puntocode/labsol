@@ -17,7 +17,7 @@ class ConditionSeeder extends Seeder
         Condition::create([ 'name' => 'FUNCIONANDO',               'condition_type' => 'TODOS',]);
         Condition::create([ 'name' => 'FUERA DE USO',              'condition_type' => 'TODOS',]);
         Condition::create([ 'name' => 'EN PROCESO DE CALIBRACION', 'condition_type' => 'EQUIPO',]);
-        Condition::create([ 'name' => 'EN',                        'condition_type' => 'PATRON',]);
+        Condition::create([ 'name' => 'EN RECALIBRACION',          'condition_type' => 'PATRON',]);
 
     }
 }

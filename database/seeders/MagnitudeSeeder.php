@@ -24,7 +24,7 @@ class MagnitudeSeeder extends Seeder
         Magnitude::create([ 'name' => 'ILUMINACION', 'condition_type' => 'PATRON',]);
         Magnitude::create([ 'name' => 'MASA',        'condition_type' => 'TODOS',]);
         Magnitude::create([ 'name' => 'OPACIDAD',    'condition_type' => 'EQUIPO',]);
-        Magnitude::create([ 'name' => 'PATRON DE REF. CALIBRACION', 'condition_type' => 'PATRON']);
+        Magnitude::create([ 'name' => 'DE REF. CALIBRACION', 'condition_type' => 'PATRON']);
         Magnitude::create([ 'name' => 'pH',           'condition_type' => 'EQUIPO']);
         Magnitude::create([ 'name' => 'PRESION',      'condition_type' => 'PATRON']);
         Magnitude::create([ 'name' => 'TEMPERATURA',  'condition_type' => 'TODOS']);

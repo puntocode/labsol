@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Panel;
 
+use Illuminate\Support\Str;
 use App\Models\Procedimiento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Document;
 
 
 class ProcedimientoController extends Controller
@@ -40,6 +42,8 @@ class ProcedimientoController extends Controller
     public function store(Request $request)
     {
         $procedimiento = Procedimiento::create($this->validateData());
+        if($request->has('patron_id')) $procedimiento->patron()->attach($request->patron_id);
+        if($request->has('instrumento_id')) $procedimiento->instrumento()->attach($request->instrumento_id);
         return response()->json($procedimiento);
     }
 
@@ -51,10 +55,11 @@ class ProcedimientoController extends Controller
      */
     public function show(Procedimiento $procedimiento)
     {
-        return view('panel.procedimientos.show', compact('procedimiento'));
+        $documentos = Document::where('document_id', $procedimiento->id)->where('document_type', 'App\Models\Procedimiento')->get();
+        return view('panel.procedimientos.show', compact('procedimiento', 'documentos'));
     }
 
-    /**
+    /**}
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Procedimiento  $procedimiento
@@ -75,6 +80,16 @@ class ProcedimientoController extends Controller
     public function update(Request $request, Procedimiento $procedimiento)
     {
         $procedimiento->update($this->validateData());
+        if($request->has('patron_id')){
+            $procedimiento->patron()->detach();
+            $procedimiento->patron()->attach($request->patron_id);
+        }
+
+        if($request->has('instrumento_id')){
+            $procedimiento->instrumento()->detach();
+            $procedimiento->instrumento()->attach($request->instrumento_id);
+        }
+
         return response()->json($procedimiento);
     }
 
@@ -89,9 +104,34 @@ class ProcedimientoController extends Controller
         //
     }
 
+    /**
+     * Carga documentos en el modelo procedimiento.
+     *
+     * @param  \App\Models\Procedimiento  $procedimiento
+     * @return \Illuminate\Http\Response
+     */
+    public function documents(Procedimiento $procedimiento)
+    {
+        return view('panel.procedimientos.doc', compact('procedimiento'));
+    }
+
 
     public function getProcedimientoForId($id){
         return response()->json(Procedimiento::find($id));
+    }
+
+
+    public function storeDocument(Request $request, $id)
+    {
+        $file = $request->file('documento')->getClientOriginalName();
+        $extension = $request->documento->guessExtension();
+        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
+        $nombreArchivo = $slug.".".$extension;
+        $request->documento->move(public_path('media\docs\procedimientos'), $nombreArchivo);
+
+        $procedimiento = Procedimiento::findOrFail($id);
+        $procedimiento->documents()->create(['extension' => $extension, 'name' => $nombreArchivo]);
+        return response()->json($procedimiento);
     }
 
     public function validateData()

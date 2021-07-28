@@ -6,12 +6,8 @@ use App\Http\Controllers\PanelController;
 use App\Http\Controllers\Panel\ExpedienteController;
 use App\Http\Controllers\Panel\ClienteController;
 use App\Http\Controllers\Panel\InstrumentoController;
-use App\Http\Controllers\Panel\ContratoController;
-use App\Http\Controllers\Panel\CalibracionController;
 use App\Http\Controllers\Panel\CertificadoController;
-use App\Http\Controllers\Panel\TecnicoController;
 use App\Http\Controllers\Panel\PerfilController;
-use App\Http\Controllers\Panel\ActividadController;
 use App\Http\Controllers\Ajax\AuthController;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,7 +41,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
 
     # -- Instrumentos --
-
+    Route::get('/instrumentos-all', [InstrumentoController::class, 'getInstrumentos'])->name('instrumentos.all')->middleware('can:panel.database');
     Route::resource('/entrada-instrumentos', 'InstrumentoController')->names([
         'index' => 'instrumentos.index',
         'create' => 'instrumentos.create',
@@ -55,7 +51,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'show'  => 'instrumentos.show',
         'show'  => 'instrumentos.show',
         'destroy' => 'instrumentos.destroy'
-    ])->middleware('can:panel.admin');
+    ])->middleware('can:panel.database');
 
 
     Route::resource('/egreso-instrumentos', 'EgresoController')->names([
@@ -112,25 +108,20 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/usuario/active/{id}', 'UsuarioController@active')->name('usuarios.active')->middleware('can:panel.database');
 
     # -- Patrones --
-    // Route::resource('/patrones', 'PatronController')->names([
-    //     'create' => 'patrones.create',
-    //     'edit'  => 'patrones.edit',
-    //     'update' => 'patrones.update',
-    //     'store' => 'patrones.store',
-    //     'show'  => 'patrones.show',
-    //     'destroy' => 'patrones.destroy'
-    // ])->middleware('can:gerencia_tecnica,jefatura_calidad');
-
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
     Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
     Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
-
-
+    Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
+    Route::post('/patron-doc/{id}', 'PatronController@storeDocument')->name('patrones.doc.store')->middleware('can:panel.database');
+    Route::get('/patron-calibration-history/{id}', 'PatronController@getCalibrationHistory')->name('patron.calibration-history.get')->middleware('can:panel.database');
+    Route::post('/patron-calibration-history/{id}', 'PatronController@storeCalibrationHistory')->name('patron.calibration-history.store')->middleware('can:panel.database');
 
     # -- Equipos --
     Route::resource('/equipos', 'EquipoController')->middleware('can:panel.database');
     Route::get('/equipo/hoja-vida/{id}', 'EquipoController@hojaVida')->name('equipo.hojaVida')->middleware('can:panel.database');
     Route::get('/equipo/{id}', 'EquipoController@getEquipoForId')->name('equipos.get')->middleware('can:panel.database');
+    Route::get('/equipo-doc/{equipo}', 'EquipoController@documents')->name('equipos.doc')->middleware('can:panel.database');
+    Route::post('/equipo-doc/{id}', 'EquipoController@storeDocument')->name('equipos.doc.store')->middleware('can:panel.database');
 
 
     Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');
@@ -150,6 +141,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Servicios --
     Route::resource('/procedimientos', 'ProcedimientoController')->middleware('can:panel.database');
     Route::get('/procedimiento/{id}', 'ProcedimientoController@getProcedimientoForId')->name('procedimientos.get')->middleware('can:panel.database');
+    Route::get('/procedimiento-doc/{procedimiento}', 'ProcedimientoController@documents')->name('procedimientos.doc')->middleware('can:panel.database');
+    Route::post('/procedimiento-doc/{id}', 'ProcedimientoController@storeDocument')->name('procedimientos.doc.store')->middleware('can:panel.database');
 
     # -- Tecnico --
 

@@ -27,6 +27,22 @@
                                 <li><hr></li>
 
                                 <li class="mb-5">
+                                    <a href="{{ route('panel.patrones.doc', $patrone) }}" class="as-text text-hover-primary" title="Editar Historial & Documentos">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial & Documentos
+                                    </a>
+                                </li>
+
+                                <li><hr></li>
+
+                                <li class="mb-5">
+                                    <a href="{{ route('panel.patron.hojaVida', $patrone->id) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
+                                        <i class="far fa-file-alt text-hover-primary mr-2"></i> Ver Hoja de Vida
+                                    </a>
+                                </li>
+
+                                <li><hr></li>
+
+                                <li class="mb-5">
                                     <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Crear nuevo patron">
                                         <i class="far fa-plus-square text-hover-primary mr-2"></i> Crear nuevo
                                     </a>
@@ -70,7 +86,11 @@
                                     </a>
                                 </li>
 
-
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab_documentos">
+                                        <span class="nav-text">Documentos</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
 
@@ -79,162 +99,139 @@
                                 <div class="tab-pane fade show active" id="tab_datos" role="tabpanel" aria-labelledby="tab_datos">
                                     <div class="card card-custom gutter-b card-stretch shadow-none">
                                         <div class="card-body">
-
-                                            {{-- <div class="d-flex flex-wrap align-items-center py-1"> --}}
-
-                                                <div class="row">
-                                                    <div class="form-group col-md-3">
-                                                        <label>Identificación</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->code }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-6">
-                                                        <label>Descripcion</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->description }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-3">
-                                                        <label>Marca</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->brand }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-
-                                                <div class="row mt-3">
-                                                    <div class="form-group col-md-3">
-                                                        <label>Nr. de Certificado</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->certificate_no }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-3">
-                                                        <label>Estado</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="badge badge-primary font-weight-bold text-uppercase">{{ $patrone->condition->name }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-3">
-                                                        <label>Magnitud</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="badge badge-info font-weight-bold">{{ $patrone->magnitude->name }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-3">
-                                                        <label>Alerta de Calibración</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="badge badge-danger font-weight-bold">{{ $patrone->alertaCalibracion()  }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-
-
-                                                <div class="row mt-3">
-                                                    <div class="form-group col-md-4">
-                                                        <label>Periodo de Calibración</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->calibration_period }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-4">
-                                                        <label>Última Calibración</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->last_calibration }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-4">
-                                                        <label>Próxima Calibración</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $patrone->next_calibration }}</span>
-                                                        </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-3">
+                                                    <label>Identificación</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="font-weight-bold">{{ $patrone->code }}</span>
                                                     </div>
                                                 </div>
 
-                                                <div class="row mt-4">
-                                                    <div class="form-group col-md-4">
-                                                        <label>Rango</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            @foreach ($patrone->rank as $rank)
-                                                                <span class="font-weight-bold">{{ $rank  }}</span> <br>
+                                                <div class="form-group col-md-6">
+                                                    <label>Descripcion</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="font-weight-bold">{{ $patrone->description }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label>Marca</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="font-weight-bold">{{ $patrone->brand }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+
+                                            <div class="row mt-3">
+                                                <div class="form-group col-md-3">
+                                                    <label>Nr. de Certificado</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="font-weight-bold">{{ $patrone->certificate_no }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label>Estado</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="badge badge-primary font-weight-bold text-uppercase">{{ $patrone->condition->name }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label>Magnitud</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="badge badge-info font-weight-bold">{{ $patrone->magnitude->name }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label>Alerta de Calibración</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="badge badge-danger font-weight-bold">{{ $patrone->alertaCalibracion()  }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+
+
+                                            <div class="row mt-3">
+                                                <div class="form-group col-md-4">
+                                                    <label>Periodo de Calibración</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="font-weight-bold">{{ $patrone->calibration_period }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-4">
+                                                    <label>Última Calibración</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="font-weight-bold">{{ $patrone->last_calibration }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-4">
+                                                    <label>Próxima Calibración</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        <span class="font-weight-bold">{{ $patrone->next_calibration }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4">
+                                                <div class="form-group col-md-4">
+                                                    <label>Rango</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        @foreach ($patrone->rank as $rank)
+                                                            <span class="font-weight-bold">{{ $rank  }}</span> <br>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-4">
+                                                    <label>Precisión</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        @foreach ($patrone->precision as $precision)
+                                                            <span class="font-weight-bold">{{ $precision['title'] == 'precision' ? '' : $precision['title']  }}</span><br>
+                                                            @foreach ($precision['value'] as $value)
+                                                                {{ $value }} <br>
                                                             @endforeach
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-4">
-                                                        <label>Precisión</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            @foreach ($patrone->precision as $precision)
-                                                                <span class="font-weight-bold">{{ $precision['title'] == 'precision' ? '' : $precision['title']  }}</span><br>
-                                                                @foreach ($precision['value'] as $value)
-                                                                    {{ $value }} <br>
-                                                                @endforeach
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group col-md-4">
-                                                        <label>Error Máximo</label>
-                                                        <div class="form-control p-0 border-0 h-auto">
-                                                            @foreach ($patrone->error_max as $error)
-                                                                <span class="font-weight-bold">{{ $error['title'] == 'error' ? '' : $error['title']  }}</span><br>
-                                                                @foreach ($error['value'] as $value)
-                                                                    {{ $value }} <br>
-                                                                @endforeach
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-12 text-right">
-                                                        <hr>
-                                                        <a href="{{ route('panel.patrones.edit', $patrone->id) }}" class="btn btn-primary">Editar datos</a>
-                                                        <a href="{{ route('panel.patron.hojaVida', $patrone->id) }}" class="btn btn-info">Ver Hoja de Vida</a>
+                                                        @endforeach
                                                     </div>
                                                 </div>
-                                            {{-- </div> --}}
+
+
+                                                <div class="form-group col-md-4">
+                                                    <label>Error Máximo</label>
+                                                    <div class="form-control p-0 border-0 h-auto">
+                                                        @foreach ($patrone->error_max as $error)
+                                                            <span class="font-weight-bold">{{ $error['title'] == 'error' ? '' : $error['title']  }}</span><br>
+                                                            @foreach ($error['value'] as $value)
+                                                                {{ $value }} <br>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 text-right">
+                                                    <hr>
+                                                    <a href="{{ route('panel.patrones.edit', $patrone->id) }}" class="btn btn-primary">Editar datos</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="tab_historial" role="tabpanel"
-                                    aria-labelledby="tab_historial">
-                                    <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom collapsed" id="tableFacturas"
-                                        style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Número</th>
-                                                <th>Fecha de Emisión</th>
-                                                <th>Estado</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                    <!--end: Datatable-->
+                                <div class="tab-pane fade" id="tab_historial" role="tabpanel" aria-labelledby="tab_historial">
+                                    @include('layouts.partials.extras.items.hisotrial_calibration_table', $historyCalibration)
                                 </div>
 
-                                <div class="tab-pane fade" id="tab_expedientes" role="tabpanel"
-                                    aria-labelledby="tab_expedientes">
+                                <div class="tab-pane fade" id="tab_expedientes" role="tabpanel" aria-labelledby="tab_expedientes">
                                     <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom collapsed" id="tableExpedientes"
-                                        style="width:100%">
+                                    <table class="table table-separate table-head-custom collapsed" id="tableExpedientes" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>N° Exp</th>
@@ -252,6 +249,10 @@
                                         </tbody>
                                     </table>
                                     <!--end: Datatable-->
+                                </div>
+
+                                <div class="tab-pane fade" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
+                                    @include('layouts.partials.extras.items.documentos_for', $documentos)
                                 </div>
                             </div>
                         </div>

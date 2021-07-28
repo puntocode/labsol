@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Instrumento;
 use Illuminate\Http\Request;
 
 class InstrumentoController extends Controller
@@ -19,7 +20,8 @@ class InstrumentoController extends Controller
      */
     public function index()
     {
-        $entrada_instrumentos = config('demo.entrada_instrumentos');
+        $entrada_instrumentos = Instrumento::all();
+        if(request()->wantsJson()) return response()->json($entrada_instrumentos);
         return view('panel.instrumentos.index', compact('entrada_instrumentos'));
     }
 
@@ -114,6 +116,12 @@ class InstrumentoController extends Controller
 
     public function historial(){
 
+    }
+
+
+    public function getInstrumentos(){
+        $instrumentos = Instrumento::all();
+        return response()->json($instrumentos);
     }
 
 

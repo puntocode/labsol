@@ -27,6 +27,14 @@
                                 <li><hr></li>
 
                                 <li class="mb-5">
+                                    <a href="{{ route('panel.equipos.doc', $equipo) }}" class="as-text text-hover-primary" title="Editar Historial & Documentos">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial & Documentos
+                                    </a>
+                                </li>
+
+                                <li><hr></li>
+
+                                <li class="mb-5">
                                     <a href="{{ route('panel.equipos.create') }}" class="as-text text-hover-primary" title="Crear nuevo equipo">
                                         <i class="far fa-plus-square text-hover-primary mr-2"></i> Crear nuevo
                                     </a>
@@ -70,7 +78,11 @@
                                     </a>
                                 </li>
 
-
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab_documentos">
+                                        <span class="nav-text">Documentos</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
 
@@ -242,6 +254,10 @@
                                         </tbody>
                                     </table>
                                     <!--end: Datatable-->
+                                </div>
+
+                                <div class="tab-pane fade" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
+                                    @include('layouts.partials.extras.items.documentos_for', $documentos)
                                 </div>
                             </div>
                         </div>

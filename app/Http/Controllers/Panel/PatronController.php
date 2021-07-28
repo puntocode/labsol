@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Models\Patron;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Document;
+use App\Models\Historycalibration;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -18,6 +21,7 @@ class PatronController extends Controller
     public function index()
     {
         $patrones = Patron::all();
+        if(request()->wantsJson()) return response()->json($patrones);
         return view('panel.patrones.index', compact('patrones'));
     }
 
@@ -52,7 +56,9 @@ class PatronController extends Controller
      */
     public function show(Patron $patrone)
     {
-        return view('panel.patrones.show', compact('patrone'));
+        $documentos = Document::where('document_id', $patrone->id)->where('document_type', 'App\Models\Patron')->get();
+        $historyCalibration = Historycalibration::where('historycalibration_id', $patrone->id)->where('historycalibration_type', 'App\Models\Patron')->get();
+        return view('panel.patrones.show', compact('patrone', 'documentos', 'historyCalibration'));
     }
 
     /**
@@ -126,6 +132,42 @@ class PatronController extends Controller
         return response()->json(Patron::find($id));
     }
 
+
+    public function documents(Patron $patron)
+    {
+        return view('panel.patrones.doc', compact('patron'));
+    }
+
+
+    public function storeDocument(Request $request, $id)
+    {
+        $file = $request->file('documento')->getClientOriginalName();
+        $extension = $request->documento->guessExtension();
+        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
+        $nombreArchivo = $slug.".".$extension;
+        $request->documento->move(public_path('media\docs\patrones'), $nombreArchivo);
+
+        $patron = Patron::findOrFail($id);
+        $patron->documents()->create(['extension' => $extension, 'name' => $nombreArchivo]);
+        return response()->json($patron);
+    }
+
+
+    public function storeCalibrationHistory(Request $request, $id)
+    {
+        $patron = Patron::findOrFail($id);
+        $patron->historycalibrations()->delete();
+        foreach($request->all() as $data){
+            $patron->historycalibrations()->create($data);
+        }
+        return response()->json($patron);
+    }
+
+
+    public function getCalibrationHistory($id){
+        $historyCalibration = Historycalibration::where('historycalibration_id', $id)->where('historycalibration_type', 'App\Models\Patron')->get();
+        return response()->json($historyCalibration);
+    }
 
 
 }

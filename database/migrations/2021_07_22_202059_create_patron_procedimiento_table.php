@@ -15,10 +15,9 @@ class CreatePatronProcedimientoTable extends Migration
     {
         Schema::create('patron_procedimiento', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patron_id')->constrained();
-            $table->foreignId('procedimiento_id')->constrained();
+            $table->foreignId('patron_id')->constrained()->onDelete('cascade');
+            $table->foreignId('procedimiento_id')->constrained()->onDelete('cascade');
             $table->unique(['patron_id', 'procedimiento_id']);
-            $table->timestamps();
         });
     }
 

@@ -55,38 +55,28 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <h3>Patrones</h3>
-                <hr>
-            </div>
-        </div>
 
         <div class="row">
-            <div class="form-group">
-                <label for="patrones">Patrones</label>
-                <select id="patrones"></select>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="" class="h3">Patrones</label>
+                    <select-multiple v-model="form.patron_id" :options="patrones" />
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-12">
-                <h3>Instrumentos</h3>
-                <hr>
+                <div class="form-group">
+                    <label for="" class="h3">Instrumentos</label>
+                    <select-multiple v-model="form.instrumento_id" :options="instrumentos" />
+                </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="form-group">
-                <label for="patrones">Instrumentos</label>
-                <select id="patrones"></select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 text-right">
-                <hr>
-                <button type="submit" class="btn btn-primary" :disabled="$v.$invalid" title="Completa los campos obligatorios">{{ textoBtn }}</button>
+            <div class="col text-right">
+                <button type="submit" class="btn btn-primary mt-10" :disabled="$v.$invalid" title="Completa los campos obligatorios">{{ textoBtn }}</button>
             </div>
         </div>
 
@@ -96,12 +86,12 @@
 <script>
     import {required, numeric} from "vuelidate/lib/validators";
     import datePicker from 'vue-bootstrap-datetimepicker';
+    import SelectMultiple from 'v-select2-multiple-component';
+
 
     export default {
         props: ['form', 'action', 'rutas'],
-        components: { datePicker },
-
-
+        components: { datePicker, SelectMultiple },
         data() {
             return {
                 format: {
@@ -116,9 +106,15 @@
                     confirmButtonText: 'Crear Nuevo',
                     denyButtonText: 'Ir a la lista',
                 },
+                patrones: [],
+                instrumentos: []
             }
         },
 
+        created () {
+            this.patronInstrumento(this.rutas.getPatron, this.patrones);
+            this.patronInstrumento(this.rutas.getInstrumentos, this.instrumentos);
+        },
 
          validations:{
             form:{
@@ -143,6 +139,11 @@
 
 
         methods: {
+            patronInstrumento(ruta, array){
+                axios.get(ruta)
+                .then( response => response.data)
+                .then( data =>  data.forEach(datos =>  array.push({id: datos.id, text: datos.code})) );
+            },
             submit() {
                 if(this.action === 'create') this.crear();
                 else this.actualizar();
@@ -228,6 +229,10 @@ input:checked + .slide:before {
 .slide.round:before {
     border-radius: 50%;
 }
+
+/* .select2-container .select2-selection--single{ height: 45px}
+.select2-container--default .select2-selection--single .select2-selection__arrow{height: 45px;} */
+.select2-container--default .select2-selection--multiple { padding: 10px }
 </style>
 
 
