@@ -24,11 +24,19 @@
                                     </a>
                                 </li>
 
-                                <li><hr></li>
+                                {{-- <li><hr></li>
 
                                 <li class="mb-5">
                                     <a href="{{ route('panel.equipos.doc', $equipo) }}" class="as-text text-hover-primary" title="Editar Historial & Documentos">
                                         <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial & Documentos
+                                    </a>
+                                </li> --}}
+
+                                <li><hr></li>
+
+                                <li class="mb-5">
+                                    <a href="{{ route('panel.equipo.hojaVida', $equipo->id) }}" class="as-text text-hover-primary" title="Ver hoja de vida">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Ver hoja de Vida
                                     </a>
                                 </li>
 
@@ -204,7 +212,6 @@
                                                     <div class="col-md-12 text-right">
                                                         <hr>
                                                         <a href="{{ route('panel.equipos.edit', $equipo->id) }}" class="btn btn-primary">Editar datos</a>
-                                                        <a href="{{ route('panel.equipo.hojaVida', $equipo->id) }}" class="btn btn-info">Ver Hoja de Vida</a>
                                                     </div>
                                                 </div>
                                             {{-- </div> --}}

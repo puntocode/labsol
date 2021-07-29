@@ -24,13 +24,13 @@
                                     </a>
                                 </li>
 
-                                <li><hr></li>
+                                {{-- <li><hr></li>
 
                                 <li class="mb-5">
                                     <a href="{{ route('panel.patrones.doc', $patrone) }}" class="as-text text-hover-primary" title="Editar Historial & Documentos">
                                         <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial & Documentos
                                     </a>
-                                </li>
+                                </li> --}}
 
                                 <li><hr></li>
 

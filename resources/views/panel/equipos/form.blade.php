@@ -2,7 +2,7 @@
 
 @section('title')Equipos y Ensayos |@endsection
 @section('styles')
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 @endsection
 
 @section('content')
