@@ -14,12 +14,8 @@ class InformeController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->hasRole('tecnico')){
-            $informes = config('demo.informes');
-
-            return view('panel.perfil.informes.index', compact('informes'));
-        }
-
+        $informes = config('demo.informes');
+        return view('panel.perfil.informes.index', compact('informes'));
         #return a listado de actividades de todos los técnicos
     }
 

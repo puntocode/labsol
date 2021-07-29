@@ -36,7 +36,6 @@ class ExpedienteController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 
     /**
@@ -75,11 +74,8 @@ class ExpedienteController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
         $expediente = config('demo.expedientes')[$id];
         $tecnicos = config('demo.tecnicos');
-
         return view('panel.expedientes.form', compact('expediente', 'tecnicos'));
     }
 
@@ -92,7 +88,6 @@ class ExpedienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         return redirect(route('panel.expedientes.index'));
     }
 
@@ -104,7 +99,6 @@ class ExpedienteController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 
     public function agenda(Request $request){

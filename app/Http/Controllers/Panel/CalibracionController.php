@@ -33,8 +33,6 @@ class CalibracionController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
-
         $calibracion = NULL;
         $expedientes = config('demo.expedientes');
         $clientes = config('demo.clientesContacto');
@@ -50,7 +48,6 @@ class CalibracionController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
         return redirect(route('panel.calibracion.index'));
     }
 
@@ -73,7 +70,6 @@ class CalibracionController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
         $calibracion = config('demo.calibraciones')[$id];
 
         return view('panel.clientes.form', compact('calibracion'));
@@ -88,7 +84,6 @@ class CalibracionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
         return redirect(route('panel.calibracion.index'));
     }
 
@@ -100,7 +95,6 @@ class CalibracionController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
     }
 
 

@@ -226,7 +226,15 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="tab_historial" role="tabpanel" aria-labelledby="tab_historial">
-                                    @include('layouts.partials.extras.items.hisotrial_calibration_table', $historyCalibration)
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {{-- <a href="{{ route('panel.patrones.doc', $patrone, 1) }}" class="btn btn-primary">Cargar Historial</a> --}}
+                                        </div>
+
+                                        <div class="col-12">
+                                            @include('layouts.partials.extras.items.hisotrial_calibration_table', $historyCalibration)
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="tab-pane fade" id="tab_expedientes" role="tabpanel" aria-labelledby="tab_expedientes">

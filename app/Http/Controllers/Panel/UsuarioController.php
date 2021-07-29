@@ -29,7 +29,6 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        //if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
         $usuario = NULL;
         $roles = Role::all();
         return view('panel.usuarios.form', compact('usuario', 'roles'));
@@ -43,7 +42,6 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        // if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
         $data = $request->validate([
             'name'      => 'required',
             'last_name' => 'required',
@@ -90,7 +88,6 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-        //   if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
         $usuario = User::find($id);
         $roles = Role::all();
         return view('panel.usuarios.form', compact('usuario', 'roles'));
@@ -105,7 +102,6 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //   if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
         $user = User::with('roles')->whereId($id)->first();
 
         $data = $request->validate([

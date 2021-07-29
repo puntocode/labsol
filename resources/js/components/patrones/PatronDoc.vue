@@ -1,5 +1,8 @@
 <template>
     <div class="card-body">
+
+    </div>
+    <!-- <div class="card-body">
          <div class="card-toolbar position-relative">
             <ul class="nav nav-tabs nav-bold nav-tabs-line">
                 <li class="nav-item">
@@ -37,7 +40,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script>
@@ -47,11 +50,14 @@
 
     export default {
         components: { Documentos, HistorialCalibracion, MantenimientoPatron },
-        props: ['id'],
+        props: ['vista'],
         data() {
             return {
                 rutas: window.routes,
             }
+        },
+        mounted(){
+            console.log(this.vista)
         }
     }
 </script>

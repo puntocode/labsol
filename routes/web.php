@@ -51,7 +51,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         'show'  => 'instrumentos.show',
         'show'  => 'instrumentos.show',
         'destroy' => 'instrumentos.destroy'
-    ])->middleware('can:panel.database');
+    ])->middleware('can:panel.admin');
 
 
     Route::resource('/egreso-instrumentos', 'EgresoController')->names([
@@ -111,7 +111,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
     Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
     Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
-    Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
+    Route::get('/patron-doc/{patron}/{vista}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
     Route::post('/patron-doc/{id}', 'PatronController@storeDocument')->name('patrones.doc.store')->middleware('can:panel.database');
     Route::get('/patron-calibration-history/{id}', 'PatronController@getCalibrationHistory')->name('patron.calibration-history.get')->middleware('can:panel.database');
     Route::post('/patron-calibration-history/{id}', 'PatronController@storeCalibrationHistory')->name('patron.calibration-history.store')->middleware('can:panel.database');

@@ -16,7 +16,7 @@
              <td>{{ $key+1 }}</td>
              <td>{{ $history->certificate_no }}</td>
              <td>{{ $history->done }}</td>
-             <td>{{ $history->calibradion }}</td>
+             <td>{{ $history->calibration }}</td>
              <td>{{ $history->next_calibration }}</td>
              <td>{{ $history->obs }}</td>
          </tr>

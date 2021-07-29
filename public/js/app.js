@@ -3535,6 +3535,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -3544,11 +3547,14 @@ __webpack_require__.r(__webpack_exports__);
     HistorialCalibracion: _HistorialCalibracion__WEBPACK_IMPORTED_MODULE_1__.default,
     MantenimientoPatron: _MantenimientoPatron__WEBPACK_IMPORTED_MODULE_2__.default
   },
-  props: ['id'],
+  props: ['vista'],
   data: function data() {
     return {
       rutas: window.routes
     };
+  },
+  mounted: function mounted() {
+    console.log(this.vista);
   }
 });
 
@@ -61881,111 +61887,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card-body" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body px-0" }, [
-      _c("div", { staticClass: "tab-content" }, [
-        _c(
-          "div",
-          {
-            staticClass: "tab-pane fade show active",
-            attrs: {
-              id: "tab_calibracion",
-              role: "tabpanel",
-              "aria-labelledby": "tab_calibracion"
-            }
-          },
-          [
-            _c("HistorialCalibracion", {
-              attrs: { url: _vm.rutas.historyCalibration }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "tab-pane fade",
-            attrs: {
-              id: "tab_mantenimiento",
-              role: "tabpanel",
-              "aria-labelledby": "tab_mantenimiento"
-            }
-          },
-          [_c("MantenimientoPatron")],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "tab-pane fade",
-            attrs: {
-              id: "tab_documento",
-              role: "tabpanel",
-              "aria-labelledby": "tab_documento"
-            }
-          },
-          [_c("Documentos", { attrs: { url: _vm.rutas.storeDoc } })],
-          1
-        )
-      ])
-    ])
-  ])
+  return _c("div", { staticClass: "card-body" })
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-toolbar position-relative" }, [
-      _c("ul", { staticClass: "nav nav-tabs nav-bold nav-tabs-line" }, [
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link active",
-              attrs: { "data-toggle": "tab", href: "#tab_calibracion" }
-            },
-            [
-              _c("span", { staticClass: "nav-text" }, [
-                _vm._v("Historial de Calibración")
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              attrs: { "data-toggle": "tab", href: "#tab_mantenimiento" }
-            },
-            [
-              _c("span", { staticClass: "nav-text" }, [
-                _vm._v("Historial de Mantenimiento")
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              attrs: { "data-toggle": "tab", href: "#tab_documento" }
-            },
-            [_c("span", { staticClass: "nav-text" }, [_vm._v("Documentos")])]
-          )
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

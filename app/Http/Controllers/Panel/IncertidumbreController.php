@@ -30,8 +30,6 @@ class IncertidumbreController extends Controller
      */
     public function create()
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
       $incertidumbre = NULL;
       return view('panel.incertidumbre.form', compact('incertidumbre'));
     }
@@ -44,7 +42,6 @@ class IncertidumbreController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
         $incertidumbre = config('demo.incertidumbre');
         return view('panel.incertidumbre.index', compact('incertidumbre'));
     }
@@ -71,10 +68,7 @@ class IncertidumbreController extends Controller
      */
     public function edit($id)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
       $incertidumbre = config('demo.incertidumbre')[$id];
-
       return view('panel.incertidumbre.form', compact('incertidumbre'));
     }
 
@@ -87,8 +81,6 @@ class IncertidumbreController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
       return redirect(route('panel.incertidumbre.index'));
     }
 
@@ -100,7 +92,6 @@ class IncertidumbreController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
     }
 
 }

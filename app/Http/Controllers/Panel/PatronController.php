@@ -133,9 +133,10 @@ class PatronController extends Controller
     }
 
 
-    public function documents(Patron $patron)
+    public function documents(Patron $patron, $vista)
     {
-        return view('panel.patrones.doc', compact('patron'));
+        dd($vista);
+        return view('panel.patrones.doc', compact('patron', 'vista'));
     }
 
 

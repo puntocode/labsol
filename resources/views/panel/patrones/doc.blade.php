@@ -36,7 +36,7 @@
 
             <div class="col-lg-9 col-xl-10">
                 <div class="card">
-                    <patron-doc :id="{{ $patron->id }}"></patron-doc>
+                    <patron-doc :vista="{{ $vista }}" ></patron-doc>
                 </div>
 
             </div>

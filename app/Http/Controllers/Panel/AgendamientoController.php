@@ -29,7 +29,6 @@ class AgendamientoController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         $agendamiento = NULL;
         $instrumentos = config('demo.instrumentos');
         $tipos_actividades = config('demo.tipos_actividades');
@@ -76,7 +75,6 @@ class AgendamientoController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
 
         $agendamiento = config('demo.agendamientos')[$i];
         $instrumentos = config('demo.instrumentos');
@@ -96,7 +94,6 @@ class AgendamientoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 
     /**
@@ -107,6 +104,5 @@ class AgendamientoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 }
