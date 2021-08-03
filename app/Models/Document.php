@@ -9,13 +9,14 @@ class Document extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['extension', 'name'];
+    protected $fillable = ['extension', 'name', 'category', 'url'];
+    protected $appends = [ 'icon'];
 
     public function document(){
         return $this->morphTo();
     }
 
-    public function getIconDocumento(){
+    public function getIconAttribute(){
         switch($this->attributes['extension']){
             case 'pdf':
                 return 'fa-file-pdf';
@@ -32,16 +33,16 @@ class Document extends Model
         }
     }
 
-    public function getUrlDoc(){
-        $ruta = '';
+    public function getUrlAttribute(){
+       // $ruta = '';
 
-        switch($this->attributes['document_type']){
-            case 'App\Models\Procedimiento': $ruta = 'procedimientos'; break;
-            case 'App\Models\Patron': $ruta = 'patrones'; break;
-            case 'App\Models\Equipo': $ruta = 'equipos'; break;
-        }
+        // switch($this->attributes['document_type']){
+        //     case 'App\Models\Procedimiento': $ruta = 'procedimientos'; break;
+        //     case 'App\Models\Patron': $ruta = 'patrones'; break;
+        //     case 'App\Models\Equipo': $ruta = 'equipos'; break;
+        // }
 
-        return asset('media/docs/'.$ruta.'/'.$this->name) ;
+        return asset($this->attributes['url'].$this->attributes['name']);
     }
 
 

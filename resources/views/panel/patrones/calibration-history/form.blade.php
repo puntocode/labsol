@@ -19,11 +19,25 @@
                         </div>
 
                         <div class="flex-grow-1">
+                            <a href="{{ route('panel.patron.maintenance-history', [$patron, 0]) }}" class="as-text text-hover-primary" title="Ver detalles del Patrón">
+                                <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Mantenimiento
+                            </a>
+                            <hr>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <a href="{{ route('panel.patrones.doc', $patron) }}" class="as-text text-hover-primary" title="Ver detalles del Patrón">
+                                <i class="far fa-plus-square text-hover-primary mr-2"></i> Cargar Documentos
+                            </a>
+                            <hr>
+                        </div>
+
+                        {{-- <div class="flex-grow-1">
                             <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Eliminar este Patrón">
                                 <i class="far fa-plus-square text-hover-primary mr-2"></i> Nuevo Patrón
                             </a>
                             <hr>
-                        </div>
+                        </div> --}}
 
                         <div class="flex-grow-1">
                             <a href="{{ route('panel.patrones.index') }}" class="as-text text-hover-primary" title="Ir a listado de patrones">
@@ -36,7 +50,7 @@
 
             <div class="col-lg-9 col-xl-10">
                 <div class="card">
-                    <patron-doc :vista="{{ $vista }}" ></patron-doc>
+                    <patron-historial :id="{{ $id }}"></patron-historial>
                 </div>
 
             </div>
@@ -45,11 +59,17 @@
 @endsection
 @section('rutas')
 <script>
-    const storeDoc = "{{ route('panel.patrones.doc.store', $patron->id) }}";
-    const historyCalibration = "{{ route('panel.patron.calibration-history.get', $patron->id) }}";
+    const patronFicha = "{{ route('panel.patrones.show', $patron) }}";
+    const storeHis    = "{{ route('panel.patron.calibration-history.store', $patron->id) }}";
+    const hisNew      = "{{ route('panel.patron.calibration-history', [$patron, 0]) }}";
+    const updateHis   = "{{ route('panel.history-calibration.update', $patron->id) }}";
+    const getHis      = "{{ route('panel.history-calibration.get', $id) }}";
     window.routes = {
-        'storeDoc': storeDoc,
-        'historyCalibration': historyCalibration
+        'patronFicha' : patronFicha,
+        'storeHis': storeHis,
+        'updateHis' : updateHis,
+        'hisNew': hisNew,
+        'getHis': getHis
     }
 </script>
 @endsection

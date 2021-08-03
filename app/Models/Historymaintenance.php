@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Historymaintenance extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['description', 'reason', 'maintenance_date', 'done', 'obs', 'next_maintenance'];
+
+    public function historymaintenance(){
+        return $this->morphTo();
+    }
+
 }

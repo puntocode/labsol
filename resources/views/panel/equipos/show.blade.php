@@ -219,8 +219,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="tab_historial" role="tabpanel"
-                                    aria-labelledby="tab_historial">
+                                <div class="tab-pane fade" id="tab_historial" role="tabpanel" aria-labelledby="tab_historial">
                                     <!--begin: Datatable-->
                                     <table class="table table-separate table-head-custom collapsed" id="tableFacturas"
                                         style="width:100%">
@@ -242,18 +241,15 @@
                                 <div class="tab-pane fade" id="tab_expedientes" role="tabpanel"
                                     aria-labelledby="tab_expedientes">
                                     <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom collapsed" id="tableExpedientes"
-                                        style="width:100%">
+                                    <table class="table table-separate table-head-custom collapsed" id="tableExpedientes" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>N° Exp</th>
-                                                <th>Instrumento</th>
-                                                <th>Servicio</th>
-                                                <th>Estado</th>
-                                                <th>Prioridad</th>
+                                                <th>#</th>
+                                                <th>Descripción / Verificación</th>
+                                                <th>Motivo</th>
+                                                <th>F. de Realización</th>
+                                                <th>Realizado por</th>
                                                 <th>Observaciones</th>
-                                                <th>Técnico asignado</th>
-                                                <th>Fecha de entrega</th>
                                             </tr>
                                         </thead>
                                         <tbody>

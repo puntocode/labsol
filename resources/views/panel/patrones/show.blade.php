@@ -7,9 +7,7 @@
 @endsection
 
 @section('content')
-    <!--begin::Container-->
     <div class="container-fluid">
-        <!--begin::Card-->
         <h3 class="card-label mb-8">Patron <small class="font-weight-lighter">| Ficha</small></h3>
         <div class="row">
             <div class="col-lg-3 col-xl-2">
@@ -17,54 +15,61 @@
                     <div class="card-body ">
                         <div class="flex-grow-1">
                             <ul class="list-unstyled px-0">
-
                                 <li class="mb-5">
                                     <a href="{{ route('panel.patrones.index') }}" class="as-text text-hover-primary" title="Ir a listado de patron">
                                         <i class="fas fa-arrow-left text-hover-primary mr-2"></i>  Ir a listado
                                     </a>
                                 </li>
 
-                                {{-- <li><hr></li>
-
                                 <li class="mb-5">
-                                    <a href="{{ route('panel.patrones.doc', $patrone) }}" class="as-text text-hover-primary" title="Editar Historial & Documentos">
-                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial & Documentos
-                                    </a>
-                                </li> --}}
-
-                                <li><hr></li>
-
-                                <li class="mb-5">
+                                    <hr>
                                     <a href="{{ route('panel.patron.hojaVida', $patrone->id) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
                                         <i class="far fa-file-alt text-hover-primary mr-2"></i> Ver Hoja de Vida
                                     </a>
                                 </li>
 
-                                <li><hr></li>
+                                <li class="mb-5">
+                                    <hr>
+                                    <a href="{{ route('panel.patron.calibration-history', [$patrone, 0]) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Calibración
+                                    </a>
+                                </li>
 
                                 <li class="mb-5">
+                                    <hr>
+                                    <a href="{{ route('panel.patron.maintenance-history', [$patrone, 0]) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Mantenimiento
+                                    </a>
+                                </li>
+
+                                <li class="mb-5">
+                                    <hr>
+                                    <a href="{{ route('panel.patrones.doc', $patrone) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Cargar Documentos
+                                    </a>
+                                </li>
+
+                                <li class="mb-5">
+                                    <hr>
                                     <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Crear nuevo patron">
-                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Crear nuevo
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Nuevo Patrón
                                     </a>
                                 </li>
-
-                                <li><hr></li>
-
 
                                 <li class="mb-5">
+                                    <hr>
                                     <a href="{{ route('panel.patrones.destroy', $patrone) }}" class="as-text text-hover-primary" title="Crear nuevo patron">
-                                        <i class="fas fa-trash text-hover-primary mr-2"></i> Eliminar Patron
+                                        <i class="fas fa-trash text-hover-primary mr-2"></i> Eliminar Patrón
                                     </a>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-9 col-xl-10">
                 <div class="card card-custom">
-
                     <div class="card-body">
                         <div class="card-toolbar position-relative">
                             <ul class="nav nav-tabs nav-bold nav-tabs-line">
@@ -227,50 +232,92 @@
 
                                 <div class="tab-pane fade" id="tab_historial" role="tabpanel" aria-labelledby="tab_historial">
                                     <div class="row">
-                                        <div class="col-12">
-                                            {{-- <a href="{{ route('panel.patrones.doc', $patrone, 1) }}" class="btn btn-primary">Cargar Historial</a> --}}
-                                        </div>
 
                                         <div class="col-12">
-                                            @include('layouts.partials.extras.items.hisotrial_calibration_table', $historyCalibration)
+                                            <table class="table table-separate table-head-custom collapsed" id="tableFacturas" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>N° de Certificado</th>
+                                                        <th>Elaborado Por</th>
+                                                        <th>F. de Calibración</th>
+                                                        <th>Prox. Calibración</th>
+                                                        <th>Obs.</th>
+                                                        <th class="text-center">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($historyCalibration as $key => $history)
+                                                        <tr>
+                                                            <td>{{ $key+1 }}</td>
+                                                            <td>{{ $history->certificate_no }}</td>
+                                                            <td>{{ $history->done }}</td>
+                                                            <td>{{ $history->calibration }}</td>
+                                                            <td>{{ $history->next_calibration }}</td>
+                                                            <td>{{ $history->obs }}</td>
+                                                            <td class="text-center">
+                                                               <a href="{{ route('panel.patron.calibration-history', [$patrone, $history->id]) }}" title="Editar registro">
+                                                                   <i class="la la-edit text-primary"></i>
+                                                               </a>
+                                                               {{-- <table-delete url=""></table-delete> --}}
+                                                           </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                               </table>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="tab-pane fade" id="tab_expedientes" role="tabpanel" aria-labelledby="tab_expedientes">
-                                    <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom collapsed" id="tableExpedientes" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>N° Exp</th>
-                                                <th>Instrumento</th>
-                                                <th>Servicio</th>
-                                                <th>Estado</th>
-                                                <th>Prioridad</th>
-                                                <th>Observaciones</th>
-                                                <th>Técnico asignado</th>
-                                                <th>Fecha de entrega</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                    <!--end: Datatable-->
+                                    <div class="col-12">
+                                        <!--begin: Datatable-->
+                                        <table class="table table-separate table-head-custom collapsed" id="tableExpedientes" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Descripción / Verificación</th>
+                                                    <th>Motivo</th>
+                                                    <th>F. de Realización</th>
+                                                    <th>Realizado por</th>
+                                                    <th>Observaciones</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($historyMaintenance as $key => $history)
+                                                        <tr>
+                                                            <td>{{ $key+1 }}</td>
+                                                            <td>{{ $history->description }}</td>
+                                                            <td>{{ $history->reason }}</td>
+                                                            <td>{{ $history->maintenance_date }}</td>
+                                                            <td>{{ $history->done }}</td>
+                                                            <td>{{ $history->obs }}</td>
+                                                            <td class="text-center">
+                                                               <a href="{{ route('panel.patron.maintenance-history', [$patrone, $history->id]) }}" title="Editar registro">
+                                                                   <i class="la la-edit text-primary"></i>
+                                                               </a>
+                                                               {{-- <table-delete url=""></table-delete> --}}
+                                                           </td>
+                                                        </tr>
+                                                    @endforeach
+                                            </tbody>
+                                        </table>
+                                        <!--end: Datatable-->
+                                    </div>
                                 </div>
 
                                 <div class="tab-pane fade" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
-                                    @include('layouts.partials.extras.items.documentos_for', $documentos)
+                                    <list-doc :documents="{{ json_encode($documentos) }}"></list-doc>
+                                    {{-- @include('layouts.partials.extras.items.documentos_for', $documentos) --}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--end::Card-->
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('scripts')

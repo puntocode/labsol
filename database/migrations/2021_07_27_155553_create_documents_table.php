@@ -19,6 +19,8 @@ class CreateDocumentsTable extends Migration
             $table->string('document_type');
             $table->unsignedBigInteger('document_id');
             $table->string('extension', 10);
+            $table->string('category', 20);
+            $table->string('url');
             $table->timestamps();
         });
     }

@@ -34,7 +34,6 @@
                 </div>
 
                 <div class="tab-pane fade" id="tab_documento" role="tabpanel" aria-labelledby="tab_documento">
-                    <Documentos :url="this.rutas.storeDoc" />
                 </div>
             </div>
         </div>
@@ -42,9 +41,7 @@
 </template>
 
 <script>
-    import Documentos from '../Documentos'
     export default {
-        components: { Documentos, },
         data() {
             return {
                 rutas: window.routes,

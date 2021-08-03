@@ -7,7 +7,7 @@
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
     export default {
         components: { vueDropzone: vue2Dropzone },
-        props: ['url'],
+        props: ['url', 'folder', 'category'],
         data() {
             return {
                 dropzoneOptions: {
@@ -16,9 +16,11 @@
                     maxFilesize: 20,
                     dictDefaultMessage: 'Click o arrastra los documentos para subirlos',
                     paramName:'documento',
-                    acceptedFiles: 'application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt',
+                    acceptedFiles: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt',
                     headers: {
-                        'X-CSRF-TOKEN': window._token
+                        'X-CSRF-TOKEN': window._token,
+                        'FOLDER': this.folder,
+                        'CATEGORY': this.category
                     }
                 }
             }

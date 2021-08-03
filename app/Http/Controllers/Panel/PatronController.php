@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Document;
 use App\Models\Historycalibration;
+use App\Models\Historymaintenance;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -56,9 +57,11 @@ class PatronController extends Controller
      */
     public function show(Patron $patrone)
     {
-        $documentos = Document::where('document_id', $patrone->id)->where('document_type', 'App\Models\Patron')->get();
+        $documentos = $patrone->getDocuments();
+        //dd($documentos);
         $historyCalibration = Historycalibration::where('historycalibration_id', $patrone->id)->where('historycalibration_type', 'App\Models\Patron')->get();
-        return view('panel.patrones.show', compact('patrone', 'documentos', 'historyCalibration'));
+        $historyMaintenance = Historymaintenance::where('historymaintenance_id', $patrone->id)->where('historymaintenance_type', 'App\Models\Patron')->get();
+        return view('panel.patrones.show', compact('patrone', 'documentos', 'historyCalibration', 'historyMaintenance'));
     }
 
     /**
@@ -119,7 +122,12 @@ class PatronController extends Controller
 
     public function hojaVida($id){
         $patron = Patron::with('magnitude')->whereId($id)->first();
-        return view('panel.patrones.hoja-vida', compact('patron'));
+        $data = [
+            'patron' => $patron,
+            'calibracion' => Historycalibration::where('historycalibration_id', $patron->id)->where('historycalibration_type', 'App\Models\Patron')->get(),
+            'mantenimiento' => Historymaintenance::where('historymaintenance_id', $patron->id)->where('historymaintenance_type', 'App\Models\Patron')->get()
+        ];
+        return view('panel.patrones.hoja-vida', compact('data'));
     }
 
 
@@ -133,12 +141,12 @@ class PatronController extends Controller
     }
 
 
-    public function documents(Patron $patron, $vista)
-    {
-        dd($vista);
-        return view('panel.patrones.doc', compact('patron', 'vista'));
-    }
+    #Documentos -----------------------------------------------------------
 
+    public function documents(Patron $patron)
+    {
+        return view('panel.patrones.documents.doc', compact('patron'));
+    }
 
     public function storeDocument(Request $request, $id)
     {
@@ -146,28 +154,48 @@ class PatronController extends Controller
         $extension = $request->documento->guessExtension();
         $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
         $nombreArchivo = $slug.".".$extension;
-        $request->documento->move(public_path('media\docs\patrones'), $nombreArchivo);
+        $url = 'media/docs/'.$request->header('folder');
+
+        $request->documento->move(public_path($url), $nombreArchivo);
 
         $patron = Patron::findOrFail($id);
-        $patron->documents()->create(['extension' => $extension, 'name' => $nombreArchivo]);
+        $patron->documents()->create([
+            'extension' => $extension,
+            'name' => $nombreArchivo,
+            'category' => $request->header('category'),
+            'url' => $url
+        ]);
         return response()->json($patron);
     }
 
+    #Historial de calibracion ----------------------------------------------
+
+    public function patronCalibrationHistory(Patron $patron, $id)
+    {
+        return view('panel.patrones.calibration-history.form', compact('patron', 'id'));
+    }
 
     public function storeCalibrationHistory(Request $request, $id)
     {
         $patron = Patron::findOrFail($id);
-        $patron->historycalibrations()->delete();
-        foreach($request->all() as $data){
-            $patron->historycalibrations()->create($data);
-        }
+        $patron->historycalibrations()->create($request->all());
         return response()->json($patron);
     }
 
 
-    public function getCalibrationHistory($id){
-        $historyCalibration = Historycalibration::where('historycalibration_id', $id)->where('historycalibration_type', 'App\Models\Patron')->get();
-        return response()->json($historyCalibration);
+
+    #Historial de Mantenimiento ----------------------------------------------
+
+    public function patronMaintenanceHistory(Patron $patron, $id)
+    {
+        return view('panel.patrones.maintenance-history.form', compact('patron', 'id'));
+    }
+
+    public function patronMaintenanceStore(Request $request, $id)
+    {
+        $patron = Patron::findOrFail($id);
+        $patron->historymaintenances()->create($request->all());
+        return response()->json($patron);
     }
 
 

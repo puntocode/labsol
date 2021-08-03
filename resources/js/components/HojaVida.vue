@@ -15,14 +15,13 @@
 
         <div class="container">
             <div class="" id="html">
-
                 <section class="d-flex my-5">
                     <div class="row justify-content-center w-100">
                         <div class="col-md-3 py-4 mx-0">
                         <img :src="rutas.logo" alt="logo-labsol" class="img-fluid">
                         </div>
                         <div class="col-md-3 mx-1 px-0 d-flex justify-content-center align-items-center bg-light">
-                            <span class="text-center w-100">HOJA DE VIDA DEL {{ array.title }}</span>
+                            <span class="text-center w-100">HOJA DE VIDA DEL {{ array.patron.title }}</span>
                         </div>
                         <div class="col-md-2 px-0 mx-1 d-flex flex-column justify-content-center align-items-center">
                             <span class="text-center py-2 bg-light w-100">Código</span>
@@ -43,7 +42,7 @@
                             <span>Identificación</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>{{ array.code }}</span>
+                            <span>{{ array.patron.code }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -51,7 +50,7 @@
                             <span>Descripción</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>{{ array.description }}</span>
+                            <span>{{ array.patron.description }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -67,7 +66,7 @@
                             <span>Marca</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>{{ array.brand }}</span>
+                            <span>{{ array.patron.brand }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -120,7 +119,7 @@
                             <span>Magnitud de medición</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span class="text-uppercase">{{ array.magnitude.name }}</span>
+                            <span class="text-uppercase">{{ array.patron.magnitude.name }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -128,7 +127,7 @@
                             <span>Precisión</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span v-if="array.title === 'EQUIPO'">{{ array.resolution }}</span>
+                            <span v-if="array.patron.title === 'EQUIPO'">{{ array.patron.resolution }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -136,7 +135,7 @@
                             <span>Tolerancia</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span v-if="array.title === 'EQUIPO'">{{ array.error_max }}</span>
+                            <span v-if="array.patron.title === 'EQUIPO'">{{ array.patron.error_max }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -149,7 +148,7 @@
                     </div>
                 </section>
 
-                <section>
+                <section class="mb-5">
                     <div class="row mt-2">
                         <div class="col-3 bg-gray py-2">
                             <span>Sujeto a Calibración</span>
@@ -185,7 +184,7 @@
                         </div>
                         <div class="col-9 px-0 d-flex text-center align-items-stretch">
                             <div class="w-100 bg-light d-flex justify-content-center align-items-center">
-                                <span>{{ array.calibration_period }}</span>
+                                <span>{{ array.patron.calibration_period }}</span>
                             </div>
                             <div class="w-100 bg-light d-flex justify-content-center align-items-center">
                             </div>
@@ -198,6 +197,71 @@
                         </div>
                     </div>
                 </section>
+
+                <section class="my-5" v-if="array.calibracion.length > 0">
+                    <div class="row">
+                        <div class="col-12 text-center bg-light my-2">
+                            <h4>HISTORIAL DE CALIBRACIONES O CARACTERIZACIONES</h4>
+                        </div>
+                        <div class="col-12 bg-light px-0">
+                            <table class="table table-separate table-head-custom collapsed" id="tableFacturas" style="width:100%">
+                                <thead>
+                                    <tr class="table-active">
+                                        <th>#</th>
+                                        <th>N° de Certificado</th>
+                                        <th>Elaborado Por</th>
+                                        <th>F. de Calibración</th>
+                                        <th>Prox. Calibración</th>
+                                        <th>Observaciones*</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr v-for="(calibracion, index) in array.calibracion" :key="index">
+                                            <td>{{ index+1 }}</td>
+                                            <td>{{ calibracion.certificate_no }}</td>
+                                            <td>{{ calibracion.done }}</td>
+                                            <td>{{ calibracion.calibration }}</td>
+                                            <td>{{ calibracion.next_calibration }}</td>
+                                            <td>{{ calibracion.obs }}</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="my-5" v-if="array.mantenimiento.length > 0">
+                    <div class="row">
+                        <div class="col-12 text-center bg-light my-2">
+                            <h4>HISTORIAL DE MANTENIMIENTO Y VERIFICACIONES INTERMEDIA</h4>
+                        </div>
+                        <div class="col-12 bg-light px-0">
+                            <table class="table table-separate table-head-custom collapsed" id="tableFacturas" style="width:100%">
+                                <thead>
+                                    <tr class="table-active">
+                                        <th>#</th>
+                                        <th>Descripción / Verificación</th>
+                                        <th>Motivo</th>
+                                        <th>F. de Realización</th>
+                                        <th>Realizado Por</th>
+                                        <th>Observaciones*</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr v-for="(mantenimiento, index) in array.mantenimiento" :key="index">
+                                            <td>{{ index+1 }}</td>
+                                            <td>{{ mantenimiento.description }}</td>
+                                            <td>{{ mantenimiento.reason }}</td>
+                                            <td>{{ mantenimiento.maintenance_date }}</td>
+                                            <td>{{ mantenimiento.done }}</td>
+                                            <td>{{ mantenimiento.obs }}</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </div>
     </div>
@@ -237,7 +301,7 @@ import html2canvas from 'html2canvas'
                             // La relación se puede ajustar según sea necesario
                             doc.addImage (imgData, 'jpeg', 10, 15, img.width * 0.175, img.height * 0.175)
                             //doc.addImage (imgData, 'jpeg', 0, 15, 210, 163)
-                            doc.save(`${this.array.code}.pdf`)
+                            doc.save(`${this.array.patron.code}.pdf`)
                         }
                     })
 

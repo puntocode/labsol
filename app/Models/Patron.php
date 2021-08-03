@@ -39,6 +39,10 @@ class Patron extends Model
         return $this->morphMany(Historycalibration::class, 'historycalibration');
     }
 
+    public function historymaintenances(){
+        return $this->morphMany(Historymaintenance::class, 'historymaintenance');
+    }
+
     public function alertaCalibracion(){
         if(isset($this->alertCalibration))return $this->alertCalibration->name;
         else return '-';
@@ -46,6 +50,16 @@ class Patron extends Model
 
     public function getTitleAttribute(){
         return 'PATRÓN';
+    }
+
+    public function getDocuments(){
+        $data = [
+            'documentos' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'DOCUMENTOS')->get(),
+            'manual' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'MANUAL')->get(),
+            'certificados' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'CERTIFICADOS')->get(),
+        ];
+
+        return $data;
     }
 
 

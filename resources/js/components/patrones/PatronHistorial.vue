@@ -1,13 +1,15 @@
 <template>
     <div class="card-body">
-        <Documentos :url="this.rutas.storeDoc" />
+        <HistorialCalibracion :rutas="rutas" :id="id" />
     </div>
 </template>
 
 <script>
-    import Documentos from '../documentos/Documentos'
+    import HistorialCalibracion from '../HistorialCalibracion'
+
     export default {
-        components: { Documentos, },
+        components: { HistorialCalibracion },
+        props: ['id'],
         data() {
             return {
                 rutas: window.routes,

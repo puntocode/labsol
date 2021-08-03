@@ -95,15 +95,6 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/magnitud', [PanelController::class, 'getMagnitudes'])->name('magnitud.all');
 
     # -- Usuarios --
-    // Route::resource('/usuarios', 'UsuarioController')->names([
-    //     'create' => 'usuarios.create',
-    //     'edit'  => 'usuarios.edit',
-    //     'update' => 'usuarios.update',
-    //     'store' => 'usuarios.store',
-    //     'show'  => 'usuarios.show',
-    //     'destroy' => 'usuarios.destroy'
-    // ])->middleware('can:panel.database');
-
     Route::resource('/usuarios', 'UsuarioController')->middleware('can:panel.database');
     Route::get('/usuario/active/{id}', 'UsuarioController@active')->name('usuarios.active')->middleware('can:panel.database');
 
@@ -111,10 +102,18 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
     Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
     Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
-    Route::get('/patron-doc/{patron}/{vista}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
-    Route::post('/patron-doc/{id}', 'PatronController@storeDocument')->name('patrones.doc.store')->middleware('can:panel.database');
-    Route::get('/patron-calibration-history/{id}', 'PatronController@getCalibrationHistory')->name('patron.calibration-history.get')->middleware('can:panel.database');
+
+    # -- Patrones Documentos--
+    Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
+    Route::post('/patron-doc/{patron}', 'PatronController@storeDocument')->name('patrones.doc.store')->middleware('can:panel.database');
+
+    # -- Patrones Historial Calibracion--
+    Route::get('/patron-calibration-history/{patron}/{id}', 'PatronController@patronCalibrationHistory')->name('patron.calibration-history')->middleware('can:panel.database');
     Route::post('/patron-calibration-history/{id}', 'PatronController@storeCalibrationHistory')->name('patron.calibration-history.store')->middleware('can:panel.database');
+
+     # -- Patrones Historial Mantenimiento--
+     Route::get('/patron-maintenance-history/{patron}/{id}', 'PatronController@patronMaintenanceHistory')->name('patron.maintenance-history')->middleware('can:panel.database');
+     Route::post('/patron-maintenance-history/{id}', 'PatronController@patronMaintenanceStore')->name('patron.maintenance-history.store')->middleware('can:panel.database');
 
     # -- Equipos --
     Route::resource('/equipos', 'EquipoController')->middleware('can:panel.database');
@@ -123,8 +122,13 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/equipo-doc/{equipo}', 'EquipoController@documents')->name('equipos.doc')->middleware('can:panel.database');
     Route::post('/equipo-doc/{id}', 'EquipoController@storeDocument')->name('equipos.doc.store')->middleware('can:panel.database');
 
-
+    # -- Historial --
     Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');
+    Route::get('/history-calibracion/{id}', 'HistorialController@getHistoryCalibration')->name('history-calibration.get');
+    Route::put('/history-calibration-update/{id}', 'HistorialController@updateCalibrationHistory')->name('history-calibration.update')->middleware('can:panel.database');
+    Route::get('/history-maintenance/{id}', 'HistorialController@getHistoryMaintenance')->name('history-maintenance.get');
+    Route::put('/history-maintenance-update/{id}', 'HistorialController@updateHistoryMaintenance')->name('history-maintenance.update')->middleware('can:panel.database');
+
 
     # -- Incertidumbre --
     Route::resource('/incertidumbre', 'IncertidumbreController')->names([

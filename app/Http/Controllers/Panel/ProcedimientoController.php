@@ -127,7 +127,7 @@ class ProcedimientoController extends Controller
         $extension = $request->documento->guessExtension();
         $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
         $nombreArchivo = $slug.".".$extension;
-        $request->documento->move(public_path('media/docs/procedimientos'), $nombreArchivo);
+        $request->documento->move(public_path('media/docs/procedimientos/'), $nombreArchivo);
 
         $procedimiento = Procedimiento::findOrFail($id);
         $procedimiento->documents()->create(['extension' => $extension, 'name' => $nombreArchivo]);
