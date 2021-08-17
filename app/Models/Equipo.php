@@ -33,8 +33,26 @@ class Equipo extends Model
         return $this->morphMany(Document::class, 'document');
     }
 
+    public function historycalibrations(){
+        return $this->morphMany(Historycalibration::class, 'historycalibration');
+    }
+
+    public function historymaintenances(){
+        return $this->morphMany(Historymaintenance::class, 'historymaintenance');
+    }
+
     public function getTitleAttribute(){
         return 'EQUIPO';
+    }
+
+    public function getDocuments(){
+        $data = [
+            'documentos' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'DOCUMENTOS')->get(),
+            'manual' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'MANUAL')->get(),
+            'certificados' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'CERTIFICADOS')->get(),
+        ];
+
+        return $data;
     }
 
 

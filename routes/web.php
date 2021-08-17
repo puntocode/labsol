@@ -41,17 +41,20 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
 
     # -- Instrumentos --
+    Route::resource('/entrada-instrumentos', 'EntradaInstrumentoController')->middleware('can:panel.admin');
+    Route::get('/entrada-instrumentos-print/{entradaInstrumento}', 'EntradaInstrumentoController@print')->name('entrada-instrumentos.print')->middleware('can:panel.admin');
     Route::get('/instrumentos-all', [InstrumentoController::class, 'getInstrumentos'])->name('instrumentos.all')->middleware('can:panel.database');
-    Route::resource('/entrada-instrumentos', 'InstrumentoController')->names([
-        'index' => 'instrumentos.index',
-        'create' => 'instrumentos.create',
-        'edit'  => 'instrumentos.edit',
-        'update' => 'instrumentos.update',
-        'store' => 'instrumentos.store',
-        'show'  => 'instrumentos.show',
-        'show'  => 'instrumentos.show',
-        'destroy' => 'instrumentos.destroy'
-    ])->middleware('can:panel.admin');
+
+    // Route::resource('/entrada-instrumentos', 'InstrumentoController')->names([
+    //     'index' => 'instrumentos.index',
+    //     'create' => 'instrumentos.create',
+    //     'edit'  => 'instrumentos.edit',
+    //     'update' => 'instrumentos.update',
+    //     'store' => 'instrumentos.store',
+    //     'show'  => 'instrumentos.show',
+    //     'show'  => 'instrumentos.show',
+    //     'destroy' => 'instrumentos.destroy'
+    // ])->middleware('can:panel.admin');
 
 
     Route::resource('/egreso-instrumentos', 'EgresoController')->names([
@@ -119,8 +122,18 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/equipos', 'EquipoController')->middleware('can:panel.database');
     Route::get('/equipo/hoja-vida/{id}', 'EquipoController@hojaVida')->name('equipo.hojaVida')->middleware('can:panel.database');
     Route::get('/equipo/{id}', 'EquipoController@getEquipoForId')->name('equipos.get')->middleware('can:panel.database');
-    Route::get('/equipo-doc/{equipo}', 'EquipoController@documents')->name('equipos.doc')->middleware('can:panel.database');
-    Route::post('/equipo-doc/{id}', 'EquipoController@storeDocument')->name('equipos.doc.store')->middleware('can:panel.database');
+
+     # -- Equipos Documentos--
+     Route::get('/equipo-doc/{equipo}', 'EquipoController@documents')->name('equipos.doc')->middleware('can:panel.database');
+     Route::post('/equipo-doc/{id}', 'EquipoController@storeDocument')->name('equipos.doc.store')->middleware('can:panel.database');
+
+     # -- Equipos Historial Calibracion--
+     Route::get('/equipo-calibration-history/{equipo}/{id}', 'EquipoController@equipoCalibrationHistory')->name('equipo.calibration-history')->middleware('can:panel.database');
+     Route::post('/equipo-calibration-history/{id}', 'EquipoController@storeCalibrationHistory')->name('equipo.calibration-history.store')->middleware('can:panel.database');
+
+    # -- Equipos Historial Mantenimiento--
+    Route::get('/equipo-maintenance-history/{equipo}/{id}', 'EquipoController@equipoMaintenanceHistory')->name('equipo.maintenance-history')->middleware('can:panel.database');
+    Route::post('/equipo-maintenance-history/{id}', 'EquipoController@equipoMaintenanceStore')->name('equipo.maintenance-history.store')->middleware('can:panel.database');
 
     # -- Historial --
     Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');

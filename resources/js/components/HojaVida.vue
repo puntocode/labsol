@@ -1,12 +1,12 @@
 <template>
     <div class="my-5">
-        <div class="row">
+        <div class="row noPrint">
             <div class="col-12">
                 <section class="container my-5">
                     <div class="row">
                         <div class="col text-center">
                             <a :href="rutas.show" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
-                            <button type="button" class="btn btn-blue" @click="descargarPdf"><i class="fas fa-print"></i> Descargar PDF</button>
+                            <button type="button" class="btn btn-blue" @click="descargarPdf"><i class="fas fa-print"></i> Imprimir</button>
                         </div>
                     </div>
                 </section>
@@ -21,7 +21,7 @@
                         <img :src="rutas.logo" alt="logo-labsol" class="img-fluid">
                         </div>
                         <div class="col-md-3 mx-1 px-0 d-flex justify-content-center align-items-center bg-light">
-                            <span class="text-center w-100">HOJA DE VIDA DEL {{ array.patron.title }}</span>
+                            <span class="text-center w-100">HOJA DE VIDA DEL {{ array.data.title }}</span>
                         </div>
                         <div class="col-md-2 px-0 mx-1 d-flex flex-column justify-content-center align-items-center">
                             <span class="text-center py-2 bg-light w-100">Código</span>
@@ -42,7 +42,7 @@
                             <span>Identificación</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>{{ array.patron.code }}</span>
+                            <span>{{ array.data.code }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -50,7 +50,7 @@
                             <span>Descripción</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>{{ array.patron.description }}</span>
+                            <span>{{ array.data.description }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -66,7 +66,7 @@
                             <span>Marca</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>{{ array.patron.brand }}</span>
+                            <span>{{ array.data.brand }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -119,7 +119,7 @@
                             <span>Magnitud de medición</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span class="text-uppercase">{{ array.patron.magnitude.name }}</span>
+                            <span class="text-uppercase">{{ array.data.magnitude.name }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -127,7 +127,7 @@
                             <span>Precisión</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span v-if="array.patron.title === 'EQUIPO'">{{ array.patron.resolution }}</span>
+                            <span v-if="array.data.title === 'EQUIPO'">{{ array.data.resolution }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -135,7 +135,7 @@
                             <span>Tolerancia</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span v-if="array.patron.title === 'EQUIPO'">{{ array.patron.error_max }}</span>
+                            <span v-if="array.data.title === 'EQUIPO'">{{ array.data.error_max }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -184,7 +184,7 @@
                         </div>
                         <div class="col-9 px-0 d-flex text-center align-items-stretch">
                             <div class="w-100 bg-light d-flex justify-content-center align-items-center">
-                                <span>{{ array.patron.calibration_period }}</span>
+                                <span>{{ array.data.calibration_period }}</span>
                             </div>
                             <div class="w-100 bg-light d-flex justify-content-center align-items-center">
                             </div>
@@ -282,31 +282,44 @@ import html2canvas from 'html2canvas'
         },
         methods:{
             descargarPdf(){
+                window.print();
 
-                html2canvas(document.querySelector('#html'))
-                    .then(canvas => {
-                        const imgData = canvas.toDataURL('image/jpeg');
-                        const img = new Image();
-                        img.src = imgData;
+                // html2canvas(document.querySelector('#html'))
+                //     .then(canvas => {
+                //         const imgData = canvas.toDataURL('image/jpeg');
+                //         const img = new Image();
+                //         img.src = imgData;
 
-                        // Establezca la especificación pdf de acuerdo con el tamaño de la imagen y ejecútela cuando la imagen se cargue correctamente. El motivo de * 0.5 se debe al problema de la relación
-                        img.onload =  () => {
-                            // Cabe señalar aquí que los dos atributos de pdf horizontal y vertical, deben ajustarse de acuerdo con la relación de ancho a alto, de lo contrario habrá un problema de visualización incompleto
-                            const doc = new jsPDF('p','mm', 'a4') //orientacion, unidad de medida, tamaño
+                //         // Establezca la especificación pdf de acuerdo con el tamaño de la imagen y ejecútela cuando la imagen se cargue correctamente. El motivo de * 0.5 se debe al problema de la relación
+                //         img.onload =  () => {
+                //             // Cabe señalar aquí que los dos atributos de pdf horizontal y vertical, deben ajustarse de acuerdo con la relación de ancho a alto, de lo contrario habrá un problema de visualización incompleto
+                //             const doc = new jsPDF('p','mm', 'a4') //orientacion, unidad de medida, tamaño
 
-                            // if (img.width > img.height) doc = new jsPDF('l', 'mm', [img.width * 0.5, img.height * 0.5])
-                            // else doc = new jsPDF('p', 'mm', [img.width * 0.5, img.height * 0.5])
-                            console.log(img.width + ' - ' + img.height)
+                //             // if (img.width > img.height) doc = new jsPDF('l', 'mm', [img.width * 0.5, img.height * 0.5])
+                //             // else doc = new jsPDF('p', 'mm', [img.width * 0.5, img.height * 0.5])
+                //             console.log(img.width + ' - ' + img.height)
 
-                            // La relación se puede ajustar según sea necesario
-                            doc.addImage (imgData, 'jpeg', 10, 15, img.width * 0.175, img.height * 0.175)
-                            //doc.addImage (imgData, 'jpeg', 0, 15, 210, 163)
-                            doc.save(`${this.array.patron.code}.pdf`)
-                        }
-                    })
+                //             // La relación se puede ajustar según sea necesario
+                //             doc.addImage (imgData, 'jpeg', 10, 15, img.width * 0.175, img.height * 0.175)
+                //             //doc.addImage (imgData, 'jpeg', 0, 15, 210, 163)
+                //             doc.save(`${this.array.data.code}.pdf`)
+                //         }
+                //     })
 
             }
         }
     }
 
 </script>
+
+<style lang="scss">
+    @media print {
+        .noPrint{
+            display:none;
+        }
+        .table{
+            th{background-color: #D9D9D9 !important;}
+            td{background-color: #F8F9FA !important;}
+        }
+    }
+</style>

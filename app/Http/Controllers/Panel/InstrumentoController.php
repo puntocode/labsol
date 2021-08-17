@@ -16,9 +16,9 @@ class InstrumentoController extends Controller
      */
     public function index()
     {
-        $entrada_instrumentos = Instrumento::all();
-        //if(request()->wantsJson()) return response()->json($entrada_instrumentos);
-        return view('panel.instrumentos.index', compact('entrada_instrumentos'));
+        $instrumentos = Instrumento::all();
+        if(request()->wantsJson()) return response()->json($instrumentos);
+        //return view('panel.instrumentos.index', compact('entrada_instrumentos'));
     }
 
     /**
@@ -47,7 +47,7 @@ class InstrumentoController extends Controller
     public function store(Request $request)
     {
         $entrada_instrumentos = config('demo.entrada_instrumentos');
-        return view('panel.instrumentos.index', compact('entrada_instrumentos'));
+        // return view('panel.instrumentos.index', compact('entrada_instrumentos'));
     }
 
     /**
@@ -92,7 +92,7 @@ class InstrumentoController extends Controller
     public function update(Request $request, $id)
     {
 
-      return redirect(route('panel.instrumentos.index'));
+    //   return redirect(route('panel.instrumentos.index'));
     }
 
     /**

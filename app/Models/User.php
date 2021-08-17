@@ -21,6 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = ['name','last_name','email','password','phone','uuid'];
+    protected $appends  = [ 'fullname' ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -89,9 +90,9 @@ class User extends Authenticatable
     //     return $this->roles()->first();
     // }
 
-    public function fullName(){
-        return $this->name . ' ' . $this->last_name;
-    }
+    // public function fullName(){
+    //     return $this->name . ' ' . $this->last_name;
+    // }
 
     public function nameAbbreviation(){
         return $this->name[0] . '. ' . $this->last_name[0]. '.';
@@ -106,6 +107,10 @@ class User extends Authenticatable
 
     public function getStatusAttribute(){
         return $this->attributes['status'] ? 'ACTIVO' : 'INACTIVO';
+    }
+
+    public function getFullnameAttribute(){
+        return $this->name . ' ' . $this->last_name;
     }
 
 

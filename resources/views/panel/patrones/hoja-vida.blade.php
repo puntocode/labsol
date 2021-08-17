@@ -8,7 +8,7 @@
 
 @section('rutas')
     <script>
-        const showRoute = "{{ route('panel.patrones.show', $data['patron']->id) }}";
+        const showRoute = "{{ route('panel.patrones.show', $data['data']->id) }}";
         const logo = "{{ asset('media/logos/logo_color_large.png') }}"
 
         window.routes = {

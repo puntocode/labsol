@@ -62,7 +62,7 @@
                                             <span class="symbol-label font-weight-bold text-uppercase">{{ $usuario->nameAbbreviation() }}</span>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ $usuario->fullName() }}</div>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ $usuario->fullname }}</div>
                                         </div>
                                     </div>
                                 </td>

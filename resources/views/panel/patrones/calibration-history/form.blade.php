@@ -1,4 +1,4 @@
-@extends('layouts.panel')
+ficha@extends('layouts.panel')
 
 @section('title')Patrones |@endsection
 @section('meta')<meta name="csrf-token" content="{{ csrf_token() }}">@endsection
@@ -59,17 +59,17 @@
 @endsection
 @section('rutas')
 <script>
-    const patronFicha = "{{ route('panel.patrones.show', $patron) }}";
+    const ficha = "{{ route('panel.patrones.show', $patron) }}";
     const storeHis    = "{{ route('panel.patron.calibration-history.store', $patron->id) }}";
     const hisNew      = "{{ route('panel.patron.calibration-history', [$patron, 0]) }}";
     const updateHis   = "{{ route('panel.history-calibration.update', $patron->id) }}";
     const getHis      = "{{ route('panel.history-calibration.get', $id) }}";
     window.routes = {
-        'patronFicha' : patronFicha,
-        'storeHis': storeHis,
-        'updateHis' : updateHis,
+        'ficha' : ficha,
+        'getHis': getHis,
         'hisNew': hisNew,
-        'getHis': getHis
+        'updateHis' : updateHis,
+        'storeHis': storeHis,
     }
 </script>
 @endsection

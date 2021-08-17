@@ -19,7 +19,7 @@
 
 						@if(in_array('crear', $role_actions))
 							<!--begin::Button-->
-							<a href="{{route('panel.instrumentos.create')}}" class="btn btn-primary font-weight-bolder mb-5">
+							<a href="{{route('panel.entrada-instrumentos.create')}}" class="btn btn-primary font-weight-bolder mb-5">
 							<i class="la la-plus"></i>Crear entrada</a>
 							<!--end::Button-->
 						@endif
@@ -43,58 +43,33 @@
 						<thead>
 							<tr>
 								<th>N° Exp</th>
+								<th>Cliente</th>
 								<th>Equipo</th>
+								<th>Cantidad</th>
 								<th>Servicio</th>
-								<th>Observación</th>
-								<th>Estado</th>
-								<th>Prioridad</th>
-								<th>Acciones</th>
+								<th class="text-center">Prioridad</th>
+								<th class="text-center">Detalle</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($entrada_instrumentos as $i => $entrada)
+							@foreach ($entradaInstrumento as $i => $entrada)
 								<tr>
-									<td>{{$entrada->nro_expediente}}</td>
-									<td>{{$entrada->equipo}}</td>
-									<td>{{$entrada->servicio}}</td>
-
-									<td>{{$entrada->observaciones}}</td>
-									<td>{{$entrada->estado}}</td>
-
-									<td>
-										<span class="badge
-										@if($entrada->prioridad == 'Estándar')
-											badge-success
-										@elseif($entrada->prioridad = 'Urgente - 24 horas')
-											badge-danger
-										@else
-											badge-warning
-										@endif
-										ml-5 ml-md-0 mt-2 mt-md-0">{{$entrada->prioridad}}
-									</span>
-								</td>
-								<td>
-									@if(in_array('ver', $role_actions))
-										<a href="{{route('panel.instrumentos.show', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">
-											<i class="la la-eye text-primary"></i>
-										</a>
-									@elseif(in_array('editar', $role_actions))
-
-										<a href="{{route('panel.instrumentos.edit', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Editar registro">
-											<i class="la la-edit"></i>
-										</a>
-									@endif
-									@if(in_array('imprimir', $role_actions))
-										<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Imprimir registro">
-											<i class="la la-print"></i>
-										</a>
-									@endif
-										@if(in_array('eliminar', $role_actions))
-											<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Eliminar registro">
-												<i class="la la-trash"></i>
-											</a>
-										@endif
-									</td>
+									<td>{{$entrada->type}}-{{$entrada->id}}</td>
+									<td>{{$entrada->cliente->name}}</td>
+									<td>{{$entrada->instrument}}</td>
+									<td>{{$entrada->quantity}}</td>
+									<td>{{$entrada->procedimiento->code}}</td>
+									<td class="text-center">
+                                        <span class="badge badge-{{ $entrada->prioridad['color'] }}">{{ $entrada->prioridad['prioridad'] }}</span>
+                                    </td>
+									<td class="text-center">
+                                        <a href="{{ route('panel.entrada-instrumentos.show', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Ver Entrada Instrumento">
+                                            <i class="la la-eye text-primary"></i>
+                                        </a>
+                                        <a href="{{ route('panel.entrada-instrumentos.print', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles">
+                                            <i class="fas fa-print text-primary"></i>
+                                        </a>
+                                    </td>
 								</tr>
 							@endforeach
 						</tbody>

@@ -230,8 +230,7 @@ input:checked + .slide:before {
     border-radius: 50%;
 }
 
-/* .select2-container .select2-selection--single{ height: 45px}
-.select2-container--default .select2-selection--single .select2-selection__arrow{height: 45px;} */
+
 .select2-container--default .select2-selection--multiple { padding: 10px }
 </style>
 

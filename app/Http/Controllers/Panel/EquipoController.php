@@ -7,77 +7,50 @@ use App\Models\Document;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\Historycalibration;
+use App\Models\Historymaintenance;
 
 class EquipoController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $equipos = Equipo::all();
         return view('panel.equipos.index', compact('equipos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
       $equipo = NULL;
       return view('panel.equipos.form', compact('equipo'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $equipo = Equipo::create($this->validateData());
         return response()->json($equipo);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-      $equipo = Equipo::findOrFail($id);
-      $documentos = Document::where('document_id', $equipo->id)->where('document_type', 'App\Models\Equipo')->get();
-      return view('panel.equipos.show', compact('equipo', 'documentos'));
+        $equipo = Equipo::findOrFail($id);
+        $documentos = $equipo->getDocuments();
+        $historyCalibration = Historycalibration::where('historycalibration_id', $equipo->id)->where('historycalibration_type', 'App\Models\Equipo')->get();
+        $historyMaintenance = Historymaintenance::where('historymaintenance_id', $equipo->id)->where('historymaintenance_type', 'App\Models\Equipo')->get();
+        return view('panel.equipos.show', compact('equipo', 'documentos', 'historyCalibration', 'historyMaintenance'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
       $equipo = Equipo::findOrFail($id);
       return view('panel.equipos.form', compact('equipo'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $equipo = Equipo::findOrFail($request->id);
@@ -85,26 +58,21 @@ class EquipoController extends Controller
         return response()->json($equipo);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-
-    }
-
-    public function historial(){
 
     }
 
 
     public function hojaVida($id){
         $equipo = Equipo::with('magnitude')->whereId($id)->first();
-        // dd($equipo->toArray());
-        return view('panel.equipos.hoja-vida', compact('equipo'));
+        $data = [
+            'data' => $equipo,
+            'calibracion' => Historycalibration::where('historycalibration_id', $equipo->id)->where('historycalibration_type', 'App\Models\Equipo')->get(),
+            'mantenimiento' => Historymaintenance::where('historymaintenance_id', $equipo->id)->where('historymaintenance_type', 'App\Models\Equipo')->get()
+        ];
+        return view('panel.equipos.hoja-vida', compact('data'));
     }
 
 
@@ -132,12 +100,42 @@ class EquipoController extends Controller
         ]);
     }
 
+    #Historial de calibracion ----------------------------------------------
+
+    public function equipoCalibrationHistory(Equipo $equipo, $id)
+    {
+        return view('panel.equipos.calibration-history', compact('equipo', 'id'));
+    }
+
+    public function storeCalibrationHistory(Request $request, $id)
+    {
+        $equipo = Equipo::findOrFail($id);
+        $equipo->historycalibrations()->create($request->all());
+        return response()->json($equipo);
+    }
+
+
+    #Historial de Mantenimiento ----------------------------------------------
+
+    public function equipoMaintenanceHistory(Equipo $equipo, $id)
+    {
+        return view('panel.equipos.maintenance-history', compact('equipo', 'id'));
+    }
+
+    public function equipoMaintenanceStore(Request $request, $id)
+    {
+        $equipo = Equipo::findOrFail($id);
+        $equipo->historymaintenances()->create($request->all());
+        return response()->json($equipo);
+    }
+
+
+    #Documentos --------------------------------------------------------------
 
     public function documents(Equipo $equipo)
     {
         return view('panel.equipos.doc', compact('equipo'));
     }
-
 
     public function storeDocument(Request $request, $id)
     {
@@ -145,10 +143,17 @@ class EquipoController extends Controller
         $extension = $request->documento->guessExtension();
         $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
         $nombreArchivo = $slug.".".$extension;
-        $request->documento->move(public_path('media\docs\equipos'), $nombreArchivo);
+        $url = 'media/docs/'.$request->header('folder');
+
+        $request->documento->move(public_path($url), $nombreArchivo);
 
         $equipo = Equipo::findOrFail($id);
-        $equipo->documents()->create(['extension' => $extension, 'name' => $nombreArchivo]);
+        $equipo->documents()->create([
+            'extension' => $extension,
+            'name' => $nombreArchivo,
+            'category' => $request->header('category'),
+            'url' => $url
+        ]);
         return response()->json($equipo);
     }
 

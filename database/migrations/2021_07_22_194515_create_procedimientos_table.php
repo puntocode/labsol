@@ -21,7 +21,6 @@ class CreateProcedimientosTable extends Migration
             $table->date('validity')->nullable();
             $table->string('valve', 10)->nullable();
             $table->boolean('accredited_scope')->default(0);
-            $table->string('pdf')->nullable();
             $table->timestamps();
         });
     }

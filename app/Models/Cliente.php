@@ -10,11 +10,9 @@ class Cliente extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
+    protected $casts   = [ 'contact' => 'array' ];
 
-    protected $casts = [
-        'contact' => 'array'
-    ];
 
 
 }

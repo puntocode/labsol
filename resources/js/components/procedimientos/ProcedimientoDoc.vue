@@ -1,17 +1,32 @@
 <template>
-    <div class="card-body">
-        <Documentos :url="this.rutas.storeDoc" />
-    </div>
+    <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
 </template>
 
 <script>
-    import Documentos from '../documentos/Documentos'
+    import vue2Dropzone from 'vue2-dropzone'
+    import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
     export default {
-        components: { Documentos, },
+        components: { vueDropzone: vue2Dropzone, },
         data() {
             return {
-                rutas: window.routes,
+                dropzoneOptions: {
+                    url: window.routes.url,
+                    thumbnailWidth: 150,
+                    maxFilesize: 20,
+                    dictDefaultMessage: 'Click o arrastra los documentos para subirlos',
+                    paramName:'documento',
+                    acceptedFiles: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt',
+                    headers: {
+                        'X-CSRF-TOKEN': window._token,
+                    }
+                }
             }
         },
     }
 </script>
+
+
+<style lang="scss" scoped>
+    #dropzone{border-style:dashed;border-color:#009BDD;}
+</style>

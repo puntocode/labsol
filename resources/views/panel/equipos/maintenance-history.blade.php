@@ -26,14 +26,7 @@
                         </div>
 
                         <div class="flex-grow-1">
-                            <a href="{{ route('panel.equipo.maintenance-history', [$equipo, 0]) }}" class="as-text text-hover-primary" title="Ver detalles del Equipo">
-                                <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Mantenimiento
-                            </a>
-                            <hr>
-                        </div>
-
-                        <div class="flex-grow-1">
-                            <a href="{{ route('panel.equipos.index') }}" class="as-text text-hover-primary" title="Ir a listado de equipos">
+                            <a href="{{ route('panel.equipos.index') }}" class="as-text text-hover-primary" title="Ir a listado de equipoes">
                                 <i class="fas fa-list text-hover-primary mr-2"></i> Ir a la Lista
                             </a>
                         </div>
@@ -43,7 +36,9 @@
 
             <div class="col-lg-9 col-xl-10">
                 <div class="card">
-                    <equipo-doc></equipo-doc>
+                    <div class="card-body">
+                        <equipo-maintenance :id="{{ $id }}"></equipo-maintenance>
+                    </div>
                 </div>
 
             </div>
@@ -52,10 +47,17 @@
 @endsection
 @section('rutas')
 <script>
-    const ficha = "{{ route('panel.equipos.show', $equipo) }}";
-    const storeDoc = "{{ route('panel.equipos.doc.store', $equipo->id) }}";
+    const ficha     = "{{ route('panel.equipos.show', $equipo) }}";
+    const storeHis  = "{{ route('panel.equipo.maintenance-history.store', $equipo->id) }}";
+    const hisNew    = "{{ route('panel.equipo.maintenance-history', [$equipo, 0]) }}";
+    const updateHis = "{{ route('panel.history-maintenance.update', $equipo->id) }}";
+    const getHis    = "{{ route('panel.history-maintenance.get', $id) }}";
     window.routes = {
-        'storeDoc': storeDoc,
+        'ficha': ficha,
+        'getHis': getHis,
+        'hisNew': hisNew,
+        'storeHis': storeHis,
+        'updateHis' : updateHis,
     }
 </script>
 @endsection

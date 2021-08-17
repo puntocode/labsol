@@ -42,7 +42,9 @@
                             <h3 class="font-weight-bolder text-dark">Subida de Documentos</h3>
                         </div>
                     </div>
-                    <procedimiento-doc></procedimiento-doc>
+                    <div class="card-body">
+                        <Documentos url="{{ route('panel.procedimientos.doc.store', $procedimiento->id) }}" folder="procedimientos/" category="DOCUMENTOS" />
+                    </div>
                 </div>
 
             </div>
@@ -54,9 +56,9 @@
 @endsection
 @section('rutas')
 <script>
-    const storeDoc = "{{ route('panel.procedimientos.doc.store', $procedimiento->id) }}";
+    const url = "{{ route('panel.procedimientos.doc.store', $procedimiento->id) }}";
     window.routes = {
-        'storeDoc': storeDoc,
+        'url': url,
     }
 </script>
 @endsection

@@ -12,7 +12,7 @@ class Procedimiento extends Model
     protected $guarded = [];
     //protected $with = ['instrumento', 'patron'];
     protected $casts = ['accredited_scope' => 'boolean'];
-    protected $appends = [ 'patron_id', 'instrumento_id' ];
+    protected $appends = [ 'patron_id', 'instrumento_id', 'fullname' ];
 
 
     public function setValveAttribute($value){
@@ -45,5 +45,9 @@ class Procedimiento extends Model
 
     public function getInstrumentoIdAttribute(){
         return $this->instrumento()->get()->pluck('id');
+    }
+
+    public function getFullnameAttribute(){
+        return $this->name .'  - '. $this->code;
     }
 }

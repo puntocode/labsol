@@ -104,35 +104,11 @@ class ProcedimientoController extends Controller
         //
     }
 
-    /**
-     * Carga documentos en el modelo procedimiento.
-     *
-     * @param  \App\Models\Procedimiento  $procedimiento
-     * @return \Illuminate\Http\Response
-     */
-    public function documents(Procedimiento $procedimiento)
-    {
-        return view('panel.procedimientos.doc', compact('procedimiento'));
-    }
-
 
     public function getProcedimientoForId($id){
         return response()->json(Procedimiento::find($id));
     }
 
-
-    public function storeDocument(Request $request, $id)
-    {
-        $file = $request->file('documento')->getClientOriginalName();
-        $extension = $request->documento->guessExtension();
-        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
-        $nombreArchivo = $slug.".".$extension;
-        $request->documento->move(public_path('media/docs/procedimientos/'), $nombreArchivo);
-
-        $procedimiento = Procedimiento::findOrFail($id);
-        $procedimiento->documents()->create(['extension' => $extension, 'name' => $nombreArchivo]);
-        return response()->json($procedimiento);
-    }
 
     public function validateData()
     {
@@ -146,4 +122,35 @@ class ProcedimientoController extends Controller
             'pdf'              => 'nullable',
         ]);
     }
+
+
+    #Documentos ------------------------------------------------------------------------------
+
+    public function documents(Procedimiento $procedimiento)
+    {
+        return view('panel.procedimientos.doc', compact('procedimiento'));
+    }
+
+
+    public function storeDocument(Request $request, $id)
+    {
+        $file = $request->file('documento')->getClientOriginalName();
+        $extension = $request->documento->guessExtension();
+        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
+        $nombreArchivo = $slug.".".$extension;
+        $url = 'media/docs/'.$request->header('folder');
+
+        $request->documento->move(public_path($url), $nombreArchivo);
+
+        $procedimiento = Procedimiento::findOrFail($id);
+        $procedimiento->documents()->create([
+            'extension' => $extension,
+            'name' => $nombreArchivo,
+            'category' => $request->header('category'),
+            'url' => $url
+        ]);
+        return response()->json($procedimiento);
+    }
+
+
 }

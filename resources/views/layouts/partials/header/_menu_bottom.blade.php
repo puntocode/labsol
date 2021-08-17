@@ -62,14 +62,14 @@
 					<div class="header-menu header-menu-mobile header-menu-layout-default">
 						<!--begin::Nav-->
 						<ul class="menu-nav">
-							<li class="menu-item @if (Route::currentRouteName() == 'panel.instrumentos.index') menu-item-active @endif" aria-haspopup="true">
-								<a href="{{route('panel.instrumentos.index')}}" class="menu-link" title="Ir al listado de equipos">
+							<li class="menu-item @if (Route::currentRouteName() == 'panel.entrada-instrumentos.index') menu-item-active @endif" aria-haspopup="true">
+								<a href="{{route('panel.entrada-instrumentos.index')}}" class="menu-link" title="Ir al listado de equipos">
 									<span class="menu-text">Listar entradas</span>
 								</a>
 							</li>
 							@can('panel.admin')
-							<li class="menu-item @if (Route::currentRouteName() == 'panel.instrumentos.create') menu-item-active @endif" aria-haspopup="true">
-								<a href="{{route('panel.instrumentos.create')}}" class="menu-link" title="Ir al listado de equipos">
+							<li class="menu-item @if (Route::currentRouteName() == 'panel.entrada-instrumentos.create') menu-item-active @endif" aria-haspopup="true">
+								<a href="{{route('panel.entrada-instrumentos.create')}}" class="menu-link" title="Ir al listado de equipos">
 									<span class="menu-text">Crear entradas</span>
 								</a>
 							</li>

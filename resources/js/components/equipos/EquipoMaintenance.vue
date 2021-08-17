@@ -1,15 +1,16 @@
 <template>
     <form class="mb-5" autocomplete="off" @submit.prevent="submit">
-        <h3>HISTORIAL DE CALIBRACIONES O CARACTERIZACIONES</h3>
+         <h3>HISTORIAL DE MANTENIMIENTOS</h3>
         <hr>
         <div class="row w-100 pl-4">
-            <div class="col-12 col-lg-6">
+             <div class="col-12 col-lg-6">
                 <div class="form-group">
-                    <label>N° de Certificado <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" v-model="$v.form.certificate_no.$model" :class="{'is-invalid': $v.form.certificate_no.$error}">
-                    <div class="invalid-feedback"><span v-if="!$v.form.certificate_no.$model">Este campo es requerido</span></div>
+                    <label>Tipo de Mantenimiento <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" v-model="$v.form.description.$model" :class="{'is-invalid': $v.form.description.$error}">
+                    <div class="invalid-feedback"><span v-if="!$v.form.description.$model">Este campo es requerido</span></div>
                 </div>
             </div>
+
             <div class="col-12 col-lg-6">
                 <div class="form-group">
                     <label>Realizado por<span class="text-danger">*</span></label>
@@ -17,22 +18,24 @@
                     <div class="invalid-feedback"><span v-if="!$v.form.done.$model">Este campo es requerido</span></div>
                 </div>
             </div>
+
             <div class="col-12 col-lg-6">
                 <div class="form-group">
-                    <label>Fecha de Calibración</label>
+                    <label>Fecha de Mantenimiento</label>
                     <div class="input-group">
-                        <date-picker :config="format" v-model="$v.form.calibration.$model"></date-picker>
+                        <date-picker :config="format" v-model="$v.form.maintenance_date.$model"></date-picker>
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-12 col-lg-6">
                 <div class="form-group">
-                    <label>Próxima Calibración</label>
+                    <label>Próximo Mantenimiento</label>
                     <div class="input-group">
-                        <date-picker :config="format" v-model="$v.form.next_calibration.$model"></date-picker>
+                        <date-picker :config="format" v-model="$v.form.next_maintenance.$model"></date-picker>
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                         </div>
@@ -47,14 +50,9 @@
                 </div>
             </div>
 
-
-            <div class="col-12">
-                <hr class="mb-10 bg-primary">
+            <div class="col-12 mt-5 text-center">
+                <button type="submit" class="btn btn-primary" title="Completa los campos obligatorios" :disabled="$v.$invalid">Guardar Historial</button>
             </div>
-        </div>
-
-        <div class="d-flex justify-content-center mt-5 row">
-            <button type="submit" class="btn btn-primary" title="Completa los campos obligatorios" :disabled="$v.form.$invalid">Guardar Historial</button>
         </div>
     </form>
 </template>
@@ -65,35 +63,30 @@
 
     export default {
         components: { datePicker },
-        props: [ 'rutas', 'id' ],
+        props: ['id'],
+        //-------------------------------------------------------------------------------------------------------
         data() {
             return {
+                rutas: window.routes,
                 format: { format: 'yyyy/MM/DD' },
-                form:{ certificate_no: '', done: '', next_calibration: '', calibration: '', obs: '' },
-                options: {
-                    icon: "success",
-                    showCancelButton: false,
-                    showDenyButton: true,
-                    confirmButtonColor: "#3699FF",
-                    denyButtonColor: "#808080",
-                    confirmButtonText: 'Ir a la ficha',
-                    denyButtonText: 'Crear Nuevo',
-                }
+                form: { description: '', done: '',  maintenance_date: '', obs: '', next_maintenance: '' },
             }
         },
+        //-------------------------------------------------------------------------------------------------------
         created () {
             if(this.id > 0) this.getHistory();
         },
+        //-------------------------------------------------------------------------------------------------------
         validations:{
-            form: {
-                certificate_no: {required},
+            form:{
+                description: {required},
                 done: {required},
-                calibration: {},
-                next_calibration: {},
-                obs: {}
+                maintenance_date: {},
+                next_maintenance: {},
+                obs: {},
             }
-
         },
+        //-------------------------------------------------------------------------------------------------------
         methods: {
             submit(){
                 if(this.id > 0) this.actualizar();
@@ -114,9 +107,19 @@
                     .catch(error => console.log(error))
             },
             alerta(mensaje = 'Historial insertado correctamente!', tipo = 'Insertado'){
-                this.options.text = mensaje;
-                this.options.title = tipo;
-                this.$swal(this.options)
+                const options = {
+                    confirmButtonColor: "#3699FF",
+                    confirmButtonText: 'Ir a la ficha',
+                    denyButtonColor: "#808080",
+                    denyButtonText: 'Crear Nuevo',
+                    icon: "success",
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    text: mensaje,
+                    title: tipo
+                }
+
+                this.$swal(options)
                     .then( result => {
                         if (result.isConfirmed) location.href = this.rutas.ficha;
                         else location.href = this.rutas.hisNew
@@ -124,5 +127,6 @@
             }
 
         },
+
     }
 </script>

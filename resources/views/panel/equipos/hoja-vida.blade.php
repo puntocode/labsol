@@ -3,17 +3,17 @@
 @section('title', 'Equipo')
 
 @section('content')
-    <hoja-vida :array="{{ $equipo }}"></hoja-vida>
+    <hoja-vida :array="{{ json_encode($data) }}"></hoja-vida>
 @endsection
 
 @section('rutas')
-    <script>
-        const showRoute = "{{ route('panel.equipos.show', $equipo->id) }}";
-        const logo = "{{ asset('media/logos/logo_color_large.png') }}"
+<script>
+    const showRoute = "{{ route('panel.equipos.show', $data['data']->id) }}";
+    const logo = "{{ asset('media/logos/logo_color_large.png') }}"
 
-        window.routes = {
-            'show' : showRoute,
-            'logo' : logo
-        }
-    </script>
+    window.routes = {
+        'show' : showRoute,
+        'logo' : logo
+    }
+</script>
 @endsection

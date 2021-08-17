@@ -1,6 +1,6 @@
 @extends('layouts.panel')
 
-@section('title')Patron |@endsection
+@section('title')Equipo |@endsection
 
 @section('styles')
     <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -24,34 +24,43 @@
                                     </a>
                                 </li>
 
-                                {{-- <li><hr></li>
-
                                 <li class="mb-5">
-                                    <a href="{{ route('panel.equipos.doc', $equipo) }}" class="as-text text-hover-primary" title="Editar Historial & Documentos">
-                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial & Documentos
-                                    </a>
-                                </li> --}}
-
-                                <li><hr></li>
-
-                                <li class="mb-5">
+                                    <hr>
                                     <a href="{{ route('panel.equipo.hojaVida', $equipo->id) }}" class="as-text text-hover-primary" title="Ver hoja de vida">
                                         <i class="far fa-plus-square text-hover-primary mr-2"></i> Ver hoja de Vida
                                     </a>
                                 </li>
 
-                                <li><hr></li>
+                                <li class="mb-5">
+                                    <hr>
+                                    <a href="{{ route('panel.equipo.calibration-history', [$equipo, 0]) }}" class="as-text text-hover-primary" title="Cargar/actualizar historial de Calibración">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Calibración
+                                    </a>
+                                </li>
 
                                 <li class="mb-5">
+                                    <hr>
+                                    <a href="{{ route('panel.equipo.maintenance-history', [$equipo, 0]) }}" class="as-text text-hover-primary" title="Cargar/actualizar historial de Mantenimiento">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Mantenimiento
+                                    </a>
+                                </li>
+
+                                <li class="mb-5">
+                                    <hr>
+                                    <a href="{{ route('panel.equipos.doc', $equipo) }}" class="as-text text-hover-primary" title="Cargar/Editar documentos">
+                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Cargar Documentos
+                                    </a>
+                                </li>
+
+                                <li class="mb-5">
+                                    <hr>
                                     <a href="{{ route('panel.equipos.create') }}" class="as-text text-hover-primary" title="Crear nuevo equipo">
                                         <i class="far fa-plus-square text-hover-primary mr-2"></i> Crear nuevo
                                     </a>
                                 </li>
 
-                                <li><hr></li>
-
-
                                 <li class="mb-5">
+                                    <hr>
                                     <a href="{{ route('panel.equipos.destroy', $equipo) }}" class="as-text text-hover-primary" title="Crear nuevo equipo">
                                         <i class="fas fa-trash text-hover-primary mr-2"></i> Eliminar Equipo
                                     </a>
@@ -64,7 +73,6 @@
             </div>
             <div class="col-lg-9 col-xl-10">
                 <div class="card card-custom">
-
                     <div class="card-body">
                         <div class="card-toolbar position-relative">
                             <ul class="nav nav-tabs nav-bold nav-tabs-line">
@@ -96,11 +104,10 @@
 
                         <div class="card-body px-0">
                             <div class="tab-content">
+                                <!--begin: Tab Datos-->
                                 <div class="tab-pane fade show active" id="tab_datos" role="tabpanel" aria-labelledby="tab_datos">
                                     <div class="card card-custom gutter-b card-stretch shadow-none">
                                         <div class="card-body">
-
-                                            {{-- <div class="d-flex flex-wrap align-items-center py-1"> --}}
 
                                                 <div class="row">
                                                     <div class="form-group col-md-3">
@@ -218,55 +225,97 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!--end: Tab Datos-->
 
+
+                                <!--begin: Tab Historial Calibracion-->
                                 <div class="tab-pane fade" id="tab_historial" role="tabpanel" aria-labelledby="tab_historial">
-                                    <!--begin: Datatable-->
-                                    <table class="table table-separate table-head-custom collapsed" id="tableFacturas"
-                                        style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Número</th>
-                                                <th>Fecha de Emisión</th>
-                                                <th>Estado</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                    <!--end: Datatable-->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <table class="table table-separate table-head-custom collapsed" id="tableFacturas" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>N° de Certificado</th>
+                                                        <th>Elaborado Por</th>
+                                                        <th>F. de Calibración</th>
+                                                        <th>Prox. Calibración</th>
+                                                        <th>Obs.</th>
+                                                        <th class="text-center">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($historyCalibration as $key => $history)
+                                                        <tr>
+                                                            <td>{{ $key+1 }}</td>
+                                                            <td>{{ $history->certificate_no }}</td>
+                                                            <td>{{ $history->done }}</td>
+                                                            <td>{{ $history->calibration }}</td>
+                                                            <td>{{ $history->next_calibration }}</td>
+                                                            <td>{{ $history->obs }}</td>
+                                                            <td class="text-center">
+                                                               <a href="{{ route('panel.equipo.calibration-history', [$equipo, $history->id]) }}" title="Editar registro">
+                                                                   <i class="la la-edit text-primary"></i>
+                                                               </a>
+                                                               {{-- <table-delete url=""></table-delete> --}}
+                                                           </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                               </table>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!--end: Tab-->
 
-                                <div class="tab-pane fade" id="tab_expedientes" role="tabpanel"
-                                    aria-labelledby="tab_expedientes">
-                                    <!--begin: Datatable-->
+
+                                <!--begin: Tab Historial Mantenimiento-->
+                                <div class="tab-pane fade" id="tab_expedientes" role="tabpanel" aria-labelledby="tab_expedientes">
                                     <table class="table table-separate table-head-custom collapsed" id="tableExpedientes" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Descripción / Verificación</th>
-                                                <th>Motivo</th>
-                                                <th>F. de Realización</th>
+                                                <th>Tipo Mantenimiento</th>
+                                                <th>F. de Mantenimiento</th>
+                                                <th>Prox. Mantenimiento</th>
                                                 <th>Realizado por</th>
                                                 <th>Observaciones</th>
+                                                <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-
+                                            @foreach ($historyMaintenance as $key => $history)
+                                                <tr>
+                                                    <td>{{ $key+1 }}</td>
+                                                    <td>{{ $history->description }}</td>
+                                                    <td>{{ $history->maintenance_date }}</td>
+                                                    <td>{{ $history->next_maintenance }}</td>
+                                                    <td>{{ $history->done }}</td>
+                                                    <td>{{ $history->obs }}</td>
+                                                    <td class="text-center">
+                                                        <a href="{{ route('panel.equipo.maintenance-history', [$equipo, $history->id]) }}" title="Editar registro">
+                                                            <i class="la la-edit text-primary"></i>
+                                                        </a>
+                                                        {{-- <table-delete url=""></table-delete> --}}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                     <!--end: Datatable-->
                                 </div>
+                                <!--end: Tab-->
 
+
+                                <!--begin: Tab Documentos-->
                                 <div class="tab-pane fade" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
-                                    @include('layouts.partials.extras.items.documentos_for', $documentos)
+                                    <list-doc :documents="{{ json_encode($documentos) }}"></list-doc>
                                 </div>
+                                <!--end: Tab-->
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--end::Card-->
             </div>
         </div>
     </div>

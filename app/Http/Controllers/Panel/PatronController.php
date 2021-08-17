@@ -58,7 +58,6 @@ class PatronController extends Controller
     public function show(Patron $patrone)
     {
         $documentos = $patrone->getDocuments();
-        //dd($documentos);
         $historyCalibration = Historycalibration::where('historycalibration_id', $patrone->id)->where('historycalibration_type', 'App\Models\Patron')->get();
         $historyMaintenance = Historymaintenance::where('historymaintenance_id', $patrone->id)->where('historymaintenance_type', 'App\Models\Patron')->get();
         return view('panel.patrones.show', compact('patrone', 'documentos', 'historyCalibration', 'historyMaintenance'));
@@ -123,7 +122,7 @@ class PatronController extends Controller
     public function hojaVida($id){
         $patron = Patron::with('magnitude')->whereId($id)->first();
         $data = [
-            'patron' => $patron,
+            'data' => $patron,
             'calibracion' => Historycalibration::where('historycalibration_id', $patron->id)->where('historycalibration_type', 'App\Models\Patron')->get(),
             'mantenimiento' => Historymaintenance::where('historymaintenance_id', $patron->id)->where('historymaintenance_type', 'App\Models\Patron')->get()
         ];

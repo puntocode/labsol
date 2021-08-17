@@ -17,7 +17,7 @@ class CreateHistorymaintenancesTable extends Migration
             $table->id();
             $table->string('description');
             $table->string('done');
-            $table->string('reason');
+            $table->string('reason')->nullable();
             $table->date('maintenance_date')->nullable();
             $table->date('next_maintenance')->nullable();
             $table->text('obs')->nullable();

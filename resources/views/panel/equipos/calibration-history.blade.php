@@ -19,18 +19,19 @@
                         </div>
 
                         <div class="flex-grow-1">
-                            <a href="{{ route('panel.equipo.calibration-history', [$equipo, 0]) }}" class="as-text text-hover-primary" title="Ver detalles del Equipo">
-                                <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Calibración
-                            </a>
-                            <hr>
-                        </div>
-
-                        <div class="flex-grow-1">
                             <a href="{{ route('panel.equipo.maintenance-history', [$equipo, 0]) }}" class="as-text text-hover-primary" title="Ver detalles del Equipo">
                                 <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Mantenimiento
                             </a>
                             <hr>
                         </div>
+
+                        <div class="flex-grow-1">
+                            <a href="{{ route('panel.equipos.doc', $equipo) }}" class="as-text text-hover-primary" title="Ver detalles del Equipo">
+                                <i class="far fa-plus-square text-hover-primary mr-2"></i> Cargar Documentos
+                            </a>
+                            <hr>
+                        </div>
+
 
                         <div class="flex-grow-1">
                             <a href="{{ route('panel.equipos.index') }}" class="as-text text-hover-primary" title="Ir a listado de equipos">
@@ -43,7 +44,7 @@
 
             <div class="col-lg-9 col-xl-10">
                 <div class="card">
-                    <equipo-doc></equipo-doc>
+                    <equipo-historial :id="{{ $id }}"></equipo-historial>
                 </div>
 
             </div>
@@ -52,10 +53,17 @@
 @endsection
 @section('rutas')
 <script>
-    const ficha = "{{ route('panel.equipos.show', $equipo) }}";
-    const storeDoc = "{{ route('panel.equipos.doc.store', $equipo->id) }}";
+    const ficha     = "{{ route('panel.equipos.show', $equipo) }}";
+    const getHis    = "{{ route('panel.history-calibration.get', $id) }}";
+    const updateHis = "{{ route('panel.history-calibration.update', $equipo->id) }}";
+    const hisNew    = "{{ route('panel.equipo.calibration-history', [$equipo, 0]) }}";
+    const storeHis  = "{{ route('panel.equipo.calibration-history.store', $equipo->id) }}";
     window.routes = {
-        'storeDoc': storeDoc,
+        'ficha' : ficha,
+        'getHis': getHis,
+        'hisNew': hisNew,
+        'storeHis': storeHis,
+        'updateHis' : updateHis,
     }
 </script>
 @endsection

@@ -232,7 +232,6 @@
 
                                 <div class="tab-pane fade" id="tab_historial" role="tabpanel" aria-labelledby="tab_historial">
                                     <div class="row">
-
                                         <div class="col-12">
                                             <table class="table table-separate table-head-custom collapsed" id="tableFacturas" style="width:100%">
                                                 <thead>
@@ -286,21 +285,21 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($historyMaintenance as $key => $history)
-                                                        <tr>
-                                                            <td>{{ $key+1 }}</td>
-                                                            <td>{{ $history->description }}</td>
-                                                            <td>{{ $history->reason }}</td>
-                                                            <td>{{ $history->maintenance_date }}</td>
-                                                            <td>{{ $history->done }}</td>
-                                                            <td>{{ $history->obs }}</td>
-                                                            <td class="text-center">
-                                                               <a href="{{ route('panel.patron.maintenance-history', [$patrone, $history->id]) }}" title="Editar registro">
-                                                                   <i class="la la-edit text-primary"></i>
-                                                               </a>
-                                                               {{-- <table-delete url=""></table-delete> --}}
-                                                           </td>
-                                                        </tr>
-                                                    @endforeach
+                                                    <tr>
+                                                        <td>{{ $key+1 }}</td>
+                                                        <td>{{ $history->description }}</td>
+                                                        <td>{{ $history->reason }}</td>
+                                                        <td>{{ $history->maintenance_date }}</td>
+                                                        <td>{{ $history->done }}</td>
+                                                        <td>{{ $history->obs }}</td>
+                                                        <td class="text-center">
+                                                            <a href="{{ route('panel.patron.maintenance-history', [$patrone, $history->id]) }}" title="Editar registro">
+                                                                <i class="la la-edit text-primary"></i>
+                                                            </a>
+                                                            {{-- <table-delete url=""></table-delete> --}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                         <!--end: Datatable-->
