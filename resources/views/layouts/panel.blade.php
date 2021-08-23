@@ -6,49 +6,20 @@
 <body id="kt_body" class="header-fixed header-mobile-fixed header-bottom-enabled page-loading">
 
     <div id="app">
-        <!--begin::Main-->
         @include('layouts.partials.header._mobile')
-        <!--end::Main-->
-        <div class="d-flex flex-column flex-root">
-            <!--begin::Page-->
-            <div class="d-flex flex-row flex-column-fluid page">
 
-                <!--begin::Wrapper-->
+        <div id="wrap" class="d-flex flex-column flex-root">
+            <div class="d-flex flex-row flex-column-fluid page">
                 <div class="d-flex flex-column flex-row-fluid wrapper mt-5" id="kt_wrapper">
                     @include('layouts.partials.header._main_menu')
-
-                    <!--begin::Content-->
                     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
                         @yield('content')
                     </div>
-                    <!--begin::Content-->
-
-                    <!--begin::Footer-->
-                    <div class="footer bg-white d-flex flex-lg-column" id="kt_footer">
-                        <!--begin::Container-->
-                        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
-                            <!--begin::Copyright-->
-                            <div class="text-dark order-2 order-md-1">
-                                <span class="text-muted font-weight-bold mr-2">{{ now()->year }} ©</span>
-                                <a href="https://www.porta.com.py/" target="_blank" class="text-dark-75 text-hover-primary">Porta Agencia Web</a>
-                            </div>
-                            <!--end::Copyright-->
-                            <!--begin::Nav-->
-                            <div class="nav nav-dark order-1 order-md-2">
-                                <a href="mailto:soporte@porta.com.py" target="_blank" class="nav-link pl-3 pr-0">Contacto</a>
-                            </div>
-                            <!--end::Nav-->
-                        </div>
-                        <!--end::Container-->
-                    </div>
-                    <!--end::Footer-->
-
+                    <x-footer></x-footer>
                 </div>
-                <!--end::Wrapper-->
             </div>
-            <!--end::Page-->
         </div>
-        <!--end::Page-->
+
         @include('layouts.partials.extras.offcanvas._user_preview')
         @yield('modales')
     </div>
