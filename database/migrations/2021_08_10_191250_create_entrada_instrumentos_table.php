@@ -16,13 +16,13 @@ class CreateEntradaInstrumentosTable extends Migration
         Schema::create('entrada_instrumentos', function (Blueprint $table) {
             $table->id();
             $table->string('delivered')->nullable();
-            $table->string('certificate');
-            $table->string('certificate_address')->nullable();
-            $table->string('certificate_ruc')->nullable();
+            // $table->string('certificate');
+            // $table->string('certificate_address')->nullable();
+            // $table->string('certificate_ruc')->nullable();
             $table->foreignId('cliente_id')->constrained()->onDelete('cascade');
             $table->json('contact')->nullable();
             $table->integer('identification')->nullable();
-            $table->string('instrument');
+            $table->foreignId('instrumento_id')->constrained()->onDelete('cascade');
             $table->text('obs')->nullable();
             $table->enum('priority', ['NORMAL', 'URGENTE'])->default('NORMAL');
             $table->foreignId('procedimiento_id')->constrained()->onDelete('cascade');

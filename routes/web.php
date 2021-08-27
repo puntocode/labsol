@@ -138,7 +138,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Historial --
     Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');
     Route::get('/history-calibracion/{id}', 'HistorialController@getHistoryCalibration')->name('history-calibration.get');
-    Route::put('/history-calibration-update/{id}', 'HistorialController@updateCalibrationHistory')->name('history-calibration.update')->middleware('can:panel.database');
+    Route::put('/history-calibration-update', 'HistorialController@updateCalibrationHistory')->name('history-calibration.update')->middleware('can:panel.database');
     Route::get('/history-maintenance/{id}', 'HistorialController@getHistoryMaintenance')->name('history-maintenance.get');
     Route::put('/history-maintenance-update/{id}', 'HistorialController@updateHistoryMaintenance')->name('history-maintenance.update')->middleware('can:panel.database');
 

@@ -20,7 +20,7 @@ class CreatePatronsTable extends Migration
             $table->json('rank')->nullable();
             $table->json('precision')->nullable();
             $table->string('brand', 50)->nullable();
-            $table->string('calibration_period')->nullable();
+            $table->integer('calibration_period')->nullable();
             $table->string('certificate_no')->nullable();
             $table->json('error_max')->nullable();
             $table->date('last_calibration')->nullable();

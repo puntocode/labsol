@@ -10,14 +10,13 @@ class Patron extends Model
     use HasFactory;
 
     protected $guarded = [];
-
+    protected $appends = [ 'title', 'periodo' ];
     protected $casts = [
         'rank' => 'array',
         'error_max' => 'array',
         'precision' => 'array',
     ];
 
-    protected $appends = [ 'title' ];
 
     public function condition(){
         return $this->belongsTo(Condition::class);
@@ -43,6 +42,9 @@ class Patron extends Model
         return $this->morphMany(Historymaintenance::class, 'historymaintenance');
     }
 
+
+    #Mutadores------------------------------------------------------------------------------
+
     public function alertaCalibracion(){
         if(isset($this->alertCalibration))return $this->alertCalibration->name;
         else return '-';
@@ -51,6 +53,17 @@ class Patron extends Model
     public function getTitleAttribute(){
         return 'PATRÓN';
     }
+
+    public function getPeriodoAttribute(){
+        $periodo = $this->calibration_period;
+
+        switch($periodo){
+            case null: return '-'; break;
+            case 1: return $periodo.' Año'; break;
+            case $periodo > 1: return $periodo.' Años'; break;
+        }
+    }
+
 
     public function getDocuments(){
         $data = [

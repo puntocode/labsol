@@ -56,7 +56,7 @@
 								<tr>
 									<td>{{$entrada->type}}-{{$entrada->id}}</td>
 									<td>{{$entrada->cliente->name}}</td>
-									<td>{{$entrada->instrument}}</td>
+									<td>{{$entrada->instrumento->name}}</td>
 									<td>{{$entrada->quantity}}</td>
 									<td>{{$entrada->procedimiento->code}}</td>
 									<td class="text-center">
@@ -64,7 +64,7 @@
                                     </td>
 									<td class="text-center">
                                         <a href="{{ route('panel.entrada-instrumentos.show', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Ver Entrada Instrumento">
-                                            <i class="la la-eye text-primary"></i>
+                                            <i class="fas fa-list text-primary"></i>
                                         </a>
                                         <a href="{{ route('panel.entrada-instrumentos.print', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles">
                                             <i class="fas fa-print text-primary"></i>

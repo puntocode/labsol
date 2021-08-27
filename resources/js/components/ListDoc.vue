@@ -36,7 +36,7 @@
         computed: {
             noDocument() {
                 return this.documents.documentos.length === 0 && this.documents.manual.length === 0 && this.documents.certificados.length === 0 ? true : false;
-            }
+            },
         },
     }
 </script>

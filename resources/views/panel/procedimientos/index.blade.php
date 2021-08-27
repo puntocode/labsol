@@ -59,7 +59,7 @@
 								<td>
 									@can('panel.database')
                                         <a href="{{ route('panel.procedimientos.show', $procedimiento) }}" class="btn btn-sm btn-clean btn-icon" title="Ver procedimiento">
-                                            <i class="la la-eye text-primary"></i>
+                                            <i class="fas fa-list text-primary"></i>
                                         </a>
                                     @endcan
 								</td>

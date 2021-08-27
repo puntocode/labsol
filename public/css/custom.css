@@ -435,6 +435,14 @@ div.form-readonly .form-control,
     background-color: var(--brand_cyan);
 }
 
+.border-white{
+    border: 2px solid white;
+}
+
+.font-bold{
+    font-weight: 600;
+}
+
 @media (max-width: 991px) {
     .modal-dialog {
         max-width: 75%;

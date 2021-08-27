@@ -32,7 +32,7 @@
 					</div>
 				</form>
 				<!--end: Search form-->
-				
+
 				<!--begin: Datatable-->
 				<table class="table table-separate table-head-custom collapsed" id="tableEquipos" style="width:100%">
 					<thead>
@@ -64,7 +64,7 @@
 								<td>
 									@if(in_array('ver', $role_actions))
 										<a href="#!{{--route('panel.clientes.contratos.edit', $i)--}}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">
-											<i class="la la-eye text-primary"></i>
+											<i class="fas fa-list text-primary"></i>
 										</a>
 									@elseif(in_array('editar', $role_actions))
 										<a href="#!{{--route('panel.clientes.contratos.edit', $i)--}}" class="btn btn-sm btn-clean btn-icon" title="Editar registro">
@@ -79,7 +79,7 @@
 									@endif
 								</td>
 							</tr>
-						@endforeach												
+						@endforeach
 					</tbody>
 				</table>
 				<!--end: Datatable-->
@@ -91,7 +91,7 @@
 
 @section('scripts')
 	<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}"></script>
-	<script>	
+	<script>
 		$(function() {
 			oTable = $('#tableEquipos').DataTable({
 				responsive: true,
@@ -101,6 +101,6 @@
 			$('#tableInpuntSearch').keyup(function(){
 			    oTable.search($(this).val()).draw() ;
 			});
-		});		
+		});
 	</script>
 @endsection

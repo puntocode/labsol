@@ -10,7 +10,7 @@ class Document extends Model
     use HasFactory;
 
     protected $fillable = ['extension', 'name', 'category', 'url'];
-    protected $appends = [ 'icon'];
+    protected $appends  = ['icon'];
 
     public function document(){
         return $this->morphTo();
@@ -18,32 +18,21 @@ class Document extends Model
 
     public function getIconAttribute(){
         switch($this->attributes['extension']){
-            case 'pdf':
-                return 'fa-file-pdf';
-            case 'xlsx':
-                return 'fa-file-excel';
-            case 'doc':
-                return 'fa-file-word';
-            case 'docx':
-                return 'fa-file-word';
-            case 'xls':
-                return 'fa-file-excel';
-            default:
-                return 'fa-file';
+            case 'pdf':  return 'fa-file-pdf';   break;
+            case 'xlsx': return 'fa-file-excel'; break;
+            case 'doc':  return 'fa-file-word';  break;
+            case 'docx': return 'fa-file-word';  break;
+            case 'xls':  return 'fa-file-excel'; break;
+            default:     return 'fa-file';       break;
         }
     }
 
     public function getUrlAttribute(){
-       // $ruta = '';
-
-        // switch($this->attributes['document_type']){
-        //     case 'App\Models\Procedimiento': $ruta = 'procedimientos'; break;
-        //     case 'App\Models\Patron': $ruta = 'patrones'; break;
-        //     case 'App\Models\Equipo': $ruta = 'equipos'; break;
-        // }
-
         return asset($this->attributes['url'].$this->attributes['name']);
     }
 
+    public function getCreatedAtAttribute($date){
+        return date('d/m/Y', strtotime($date));
+    }
 
 }

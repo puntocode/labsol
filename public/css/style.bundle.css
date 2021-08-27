@@ -3083,7 +3083,7 @@ input[type="button"].btn-block {
   .custom-file-input:disabled ~ .custom-file-label {
     background-color: #F3F6F9; }
   .custom-file-input:lang(en) ~ .custom-file-label::after {
-    content: "Browse"; }
+    content: "Buscar"; }
   .custom-file-input ~ .custom-file-label[data-browse]::after {
     content: attr(data-browse); }
 
@@ -3113,7 +3113,7 @@ input[type="button"].btn-block {
     padding: 0.65rem 1rem;
     line-height: 1.5;
     color: #3F4254;
-    content: "Browse";
+    content: "Buscar";
     background-color: #F3F6F9;
     border-left: inherit;
     border-radius: 0 0.42rem 0.42rem 0; }
@@ -40651,9 +40651,9 @@ code {
   .dropdown-menu.dropdown-menu-md {
     width: 250px; } }
 
-@media (min-width: 380px) {
+@media (min-width: 382px) {
   .dropdown-menu.dropdown-menu-lg {
-    width: 350px; } }
+    width: 382px; } }
 
 @media (min-width: 430px) {
   .dropdown-menu.dropdown-menu-xl {

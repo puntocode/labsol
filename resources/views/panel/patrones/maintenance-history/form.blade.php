@@ -44,7 +44,7 @@
             <div class="col-lg-9 col-xl-10">
                 <div class="card">
                     <div class="card-body">
-                        <patron-maintenance :id="{{ $id }}"></patron-maintenance>
+                        {{-- <patron-maintenance :id="{{ $id }}"></patron-maintenance> --}}
                     </div>
                 </div>
 
@@ -59,6 +59,7 @@
     const hisNew      = "{{ route('panel.patron.maintenance-history', [$patron, 0]) }}";
     const updateHis   = "{{ route('panel.history-maintenance.update', $patron->id) }}";
     const getHis      = "{{ route('panel.history-maintenance.get', $id) }}";
+
     window.routes = {
         'patronFicha' : patronFicha,
         'storeHis': storeHis,

@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Panel;
 use App\Models\Patron;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Document;
 use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
+use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -177,8 +176,9 @@ class PatronController extends Controller
     public function storeCalibrationHistory(Request $request, $id)
     {
         $patron = Patron::findOrFail($id);
+        if($request->file('documento')) $request['certificate'] = $this->cargarDocumento($request);
         $patron->historycalibrations()->create($request->all());
-        return response()->json($patron);
+        return response()->json($request);
     }
 
 
@@ -195,6 +195,17 @@ class PatronController extends Controller
         $patron = Patron::findOrFail($id);
         $patron->historymaintenances()->create($request->all());
         return response()->json($patron);
+    }
+
+
+    public function cargarDocumento($request){
+        $file = $request->file('documento')->getClientOriginalName();
+        $extension = $request->documento->guessExtension();
+        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
+        $nombreArchivo = $slug.".".$extension;
+        $url = 'media/docs/'.$request->header('folder');
+        $request->documento->move(public_path($url), $nombreArchivo);
+        return $nombreArchivo;
     }
 
 

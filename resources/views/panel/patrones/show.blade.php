@@ -242,6 +242,7 @@
                                                         <th>F. de Calibración</th>
                                                         <th>Prox. Calibración</th>
                                                         <th>Obs.</th>
+                                                        <th class="text-center">Certificado</th>
                                                         <th class="text-center">Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -254,6 +255,13 @@
                                                             <td>{{ $history->calibration }}</td>
                                                             <td>{{ $history->next_calibration }}</td>
                                                             <td>{{ $history->obs }}</td>
+                                                            <td class="text-center">
+                                                                @if (isset($history->certificate))
+                                                                    <a href="{{ $history->getUrlCertificate() }}" target="_blank"><i class="far fa-file-alt text-primary pr-2"></i> Ver Certificado</a>
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
                                                             <td class="text-center">
                                                                <a href="{{ route('panel.patron.calibration-history', [$patrone, $history->id]) }}" title="Editar registro">
                                                                    <i class="la la-edit text-primary"></i>

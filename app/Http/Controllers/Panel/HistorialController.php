@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class HistorialController extends Controller
 {
@@ -43,9 +45,9 @@ class HistorialController extends Controller
             'calibration'      => 'nullable',
             'next_calibration' => 'nullable',
             'obs'              => 'nullable',
-
         ]);
     }
+
 
     #Historial de Mantenimiento ------------------------------------------------------------------
     public function getHistoryMaintenance($id)
@@ -72,6 +74,18 @@ class HistorialController extends Controller
             'next_maintenance' => 'nullable',
             'obs'              => 'nullable',
         ]);
+    }
+
+
+    #cargar documento -------------------------------------------------------------------------------
+    public function cargarDocumento($request){
+        $file = $request->file('documento')->getClientOriginalName();
+        $extension = $request->documento->guessExtension();
+        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
+        $nombreArchivo = $slug.".".$extension;
+        $url = 'media/docs/'.$request->header('folder');
+        $request->documento->move(public_path($url), $nombreArchivo);
+        return $nombreArchivo;
     }
 
   }

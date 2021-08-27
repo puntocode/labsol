@@ -1,4 +1,4 @@
-ficha@extends('layouts.panel')
+@extends('layouts.panel')
 
 @section('title')Patrones |@endsection
 @section('meta')<meta name="csrf-token" content="{{ csrf_token() }}">@endsection
@@ -25,12 +25,12 @@ ficha@extends('layouts.panel')
                             <hr>
                         </div>
 
-                        <div class="flex-grow-1">
+                        {{-- <div class="flex-grow-1">
                             <a href="{{ route('panel.patrones.doc', $patron) }}" class="as-text text-hover-primary" title="Ver detalles del Patrón">
                                 <i class="far fa-plus-square text-hover-primary mr-2"></i> Cargar Documentos
                             </a>
                             <hr>
-                        </div>
+                        </div> --}}
 
                         {{-- <div class="flex-grow-1">
                             <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Eliminar este Patrón">
@@ -59,11 +59,12 @@ ficha@extends('layouts.panel')
 @endsection
 @section('rutas')
 <script>
+    window.anho = "{{ $patron->calibration_period }}";
     const ficha = "{{ route('panel.patrones.show', $patron) }}";
-    const storeHis    = "{{ route('panel.patron.calibration-history.store', $patron->id) }}";
-    const hisNew      = "{{ route('panel.patron.calibration-history', [$patron, 0]) }}";
-    const updateHis   = "{{ route('panel.history-calibration.update', $patron->id) }}";
-    const getHis      = "{{ route('panel.history-calibration.get', $id) }}";
+    const storeHis = "{{ route('panel.patron.calibration-history.store', $patron->id) }}";
+    const hisNew = "{{ route('panel.patron.calibration-history', [$patron, 0]) }}";
+    const updateHis = "{{ route('panel.history-calibration.update') }}";
+    const getHis = "{{ route('panel.history-calibration.get', $id) }}";
     window.routes = {
         'ficha' : ficha,
         'getHis': getHis,

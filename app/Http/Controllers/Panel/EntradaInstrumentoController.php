@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\EntradaInstrumento;
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
+use App\Models\Equipo;
+use App\Models\Instrumento;
 use App\Models\Procedimiento;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
@@ -109,19 +111,14 @@ class EntradaInstrumentoController extends Controller
     }
 
 
-
-
     public function validateData()
     {
         return request()->validate([
-            'certificate'         => 'required',
-            'certificate_ruc'     => 'nullable',
-            'certificate_address' => 'nullable',
             'cliente_id'          => 'required',
             'contact'             => 'nullable',
             'delivered'           => 'nullable',
             'identification'      => 'nullable',
-            'instrument'          => 'required',
+            'instrumento_id'      => 'required',
             'obs'                 => 'nullable',
             'priority'            => 'required|in:NORMAL,URGENTE',
             'procedimiento_id'    => 'required',
@@ -134,14 +131,14 @@ class EntradaInstrumentoController extends Controller
 
     public function returnData($entradaInstrumento){
         $data = [
-            'clientes' => Cliente::all(),
+            'usuarios'           => User::all(),
+            'clientes'           => Cliente::all(),
+            'instrumentos'       => Instrumento::all(),
+            'procedimientos'     => Procedimiento::all(),
             'entradaInstrumento' => $entradaInstrumento === null ? null : $entradaInstrumento,
-            'id' => $entradaInstrumento === null ? 0 : $entradaInstrumento->id,
-            'procedimientos' => Procedimiento::all(),
-            'usuarios' => User::all(),
+            'id'                 => $entradaInstrumento === null ? 0 : $entradaInstrumento->id,
         ];
         return $data;
     }
-
 
 }

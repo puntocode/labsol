@@ -18,8 +18,8 @@
 				</div>
 				<div class="card-toolbar pt-7">
 					@include('layouts.partials.extras.dropdown._export_list')
-					
-					@if(in_array('crear', $role_actions))					
+
+					@if(in_array('crear', $role_actions))
 						<!--begin::Button-->
 						<a href="{{route('panel.tecnicos.grupos.create')}}" class="btn btn-primary font-weight-bolder mb-4">
 						<i class="la la-plus"></i>Agregar Grupo</a>
@@ -56,7 +56,7 @@
 								<td>
 									<ul class="list-unstyled">
 										@foreach ($grupo->tecnicos as $j => $tecnico)
-											<li class="mb-6">										
+											<li class="mb-6">
 												<a href="{{route('panel.tecnicos.edit', $j)}}" class="" title="Ver ficha de técnico">{{$tecnico->nombre}}</a>
 											</li>
 										@endforeach
@@ -65,7 +65,7 @@
 								<td>
 									@if(in_array('ver', $role_actions))
 										<a href="{{route('panel.tecnicos.grupos.show', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">
-											<i class="la la-eye text-primary"></i>
+											<i class="fas fa-list text-primary"></i>
 										</a>
 									@elseif(in_array('editar', $role_actions))
 										<a href="{{route('panel.tecnicos.grupos.edit', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Editar registro">
@@ -80,7 +80,7 @@
 									@endif
 								</td>
 							</tr>
-						@endforeach												
+						@endforeach
 					</tbody>
 				</table>
 				<!--end: Datatable-->
@@ -103,6 +103,6 @@
 			$('#tableInpuntSearch').keyup(function(){
 			    oTable.search($(this).val()).draw() ;
 			});
-		});		
+		});
 	</script>
 @endsection

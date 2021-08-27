@@ -10,9 +10,7 @@ class EntradaInstrumento extends Model
     use HasFactory;
     protected $guarded = ['id'];
     protected $appends = ['prioridad'];
-    protected $casts = [
-        'contact' => 'array',
-    ];
+    protected $casts   = [ 'contact' => 'array' ];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
@@ -20,6 +18,10 @@ class EntradaInstrumento extends Model
 
     public function cliente(){
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function instrumento(){
+        return $this->belongsTo(Instrumento::class);
     }
 
     public function procedimiento(){

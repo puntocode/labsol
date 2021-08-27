@@ -110,6 +110,10 @@ class EquipoController extends Controller
     public function storeCalibrationHistory(Request $request, $id)
     {
         $equipo = Equipo::findOrFail($id);
+        if($request->file('documento')){
+            $arrayDoc = $this->cargarDocumento($request);
+            $request['certificate'] = $arrayDoc['nombre'];
+        }
         $equipo->historycalibrations()->create($request->all());
         return response()->json($equipo);
     }
@@ -139,22 +143,33 @@ class EquipoController extends Controller
 
     public function storeDocument(Request $request, $id)
     {
+        $arrayDoc = $this->cargarDocumento($request);
+        $equipo = Equipo::findOrFail($id);
+        $equipo->documents()->create([
+            'extension' => $arrayDoc['extension'],
+            'name' => $arrayDoc['nombre'],
+            'category' => $request->header('category'),
+            'url' => $arrayDoc['url']
+        ]);
+        return response()->json($equipo);
+    }
+
+
+    public function cargarDocumento($request){
         $file = $request->file('documento')->getClientOriginalName();
         $extension = $request->documento->guessExtension();
         $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
         $nombreArchivo = $slug.".".$extension;
         $url = 'media/docs/'.$request->header('folder');
-
         $request->documento->move(public_path($url), $nombreArchivo);
 
-        $equipo = Equipo::findOrFail($id);
-        $equipo->documents()->create([
-            'extension' => $extension,
-            'name' => $nombreArchivo,
-            'category' => $request->header('category'),
-            'url' => $url
-        ]);
-        return response()->json($equipo);
+        return [
+            'nombre' =>  $nombreArchivo,
+            'extension' =>  $extension,
+            'url' =>  $url,
+        ];
     }
+
+
 
 }

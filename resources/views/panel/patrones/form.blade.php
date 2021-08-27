@@ -65,9 +65,9 @@
 
 @section('rutas')
     <script>
-        const showRoute        = `{{ route('panel.patrones.show',   isset($patrone) ? $patrone->id : 0) }}`
+        const showRoute        = `{{ route('panel.patrones.show', isset($patrone) ? $patrone->id : 0) }}`
         const updateRoute      = `{{ route('panel.patrones.update', isset($patrone) ? $patrone->id : 0) }}`
-        const getPatron        = `{{ route('panel.patron.get',      isset($patrone) ? $patrone->id : 0) }}`
+        const getPatron        = `{{ route('panel.patron.get', isset($patrone) ? $patrone->id : 0) }}`
         const indexRoute       = `{{ route('panel.patrones.index') }}`
         const createRoute      = `{{ route('panel.patrones.create') }}`
         const storeRoute       = `{{ route('panel.patrones.store') }}`

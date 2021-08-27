@@ -106,7 +106,7 @@
                                     @if (in_array('ver', $role_actions))
                                         <a href="{{ route('panel.incertidumbre.show', $i) }}"
                                             class="btn btn-sm btn-clean btn-icon" title="Ver valor">
-                                            <i class="la la-eye text-primary"></i>
+                                            <i class="fas fa-list text-primary"></i>
                                         </a>
                                     @elseif(in_array('editar', $role_actions))
                                         <a href="{{ route('panel.incertidumbre.edit', $i) }}"

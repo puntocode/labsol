@@ -15,6 +15,7 @@ class CreateHistorycalibrationsTable extends Migration
     {
         Schema::create('historycalibrations', function (Blueprint $table) {
             $table->id();
+            $table->string('certificate')->nullable();
             $table->string('certificate_no');
             $table->string('done');
             $table->date('calibration')->nullable();

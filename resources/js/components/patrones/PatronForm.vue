@@ -72,8 +72,8 @@
 
                 <div class="form-group row">
                     <div class="col-lg-4">
-                        <label>Periodo de calibración</label>
-                        <input type="text" class="form-control" v-model="form.calibration_period" />
+                        <label>Periodo de calibración (en años)</label>
+                        <input type="number" class="form-control" v-model="form.calibration_period" />
                     </div>
 
                     <div class="col-lg-4">
@@ -199,7 +199,7 @@
                 </div>
 
                 <div class="col-12 mb-16 text-center">
-                    <a :href="this.rutas.show" class="btn btn-primary mr-2">Ver Patrón</a>
+                    <a :href="`${this.rutas.index}/${this.form.id}`" class="btn btn-primary mr-2">Ver Patrón</a>
                     <a :href="this.rutas.index" class="btn btn-secondary mr-2">Ir a la lista</a>
                     <a :href="this.rutas.create" class="btn btn-info" v-if="this.action === 'create'">Crear Nuevo Patrón</a>
                 </div>

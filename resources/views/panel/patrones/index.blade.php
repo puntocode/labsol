@@ -91,7 +91,7 @@
                                         -
                                     @endif
                                 </td>
-                                <td>{{ $patrone->calibration_period }}</td>
+                                <td>{{ $patrone->periodo }}</td>
                                 <td>{{ $patrone->last_calibration }}</td>
                                 <td>{{ $patrone->next_calibration }}</td>
                                 <td><span class="badge badge-primary">{{ $patrone->condition->name }}</span></td>
@@ -100,7 +100,7 @@
                                 <td>
                                     @can('panel.database')
                                         <a href="{{ route('panel.patrones.show', $patrone) }}" class="btn btn-sm btn-clean btn-icon" title="Ver patrón">
-                                            <i class="la la-eye text-primary"></i>
+                                            <i class="fas fa-list text-primary"></i>
                                         </a>
                                     @endcan
                                     {{-- @elseif(in_array('editar', $role_actions))

@@ -26,14 +26,6 @@
                         </div>
 
                         <div class="flex-grow-1">
-                            <a href="{{ route('panel.equipos.doc', $equipo) }}" class="as-text text-hover-primary" title="Ver detalles del Equipo">
-                                <i class="far fa-plus-square text-hover-primary mr-2"></i> Cargar Documentos
-                            </a>
-                            <hr>
-                        </div>
-
-
-                        <div class="flex-grow-1">
                             <a href="{{ route('panel.equipos.index') }}" class="as-text text-hover-primary" title="Ir a listado de equipos">
                                 <i class="fas fa-list text-hover-primary mr-2"></i> Ir a la Lista
                             </a>
@@ -55,7 +47,7 @@
 <script>
     const ficha     = "{{ route('panel.equipos.show', $equipo) }}";
     const getHis    = "{{ route('panel.history-calibration.get', $id) }}";
-    const updateHis = "{{ route('panel.history-calibration.update', $equipo->id) }}";
+    const updateHis = "{{ route('panel.history-calibration.update') }}";
     const hisNew    = "{{ route('panel.equipo.calibration-history', [$equipo, 0]) }}";
     const storeHis  = "{{ route('panel.equipo.calibration-history.store', $equipo->id) }}";
     window.routes = {

@@ -50,7 +50,7 @@
                                 <td>{{ $cliente->code }}</td>
                                 <td>{{ $cliente->ruc }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('panel.clientes.ficha', $cliente->id) }}"  title="Ver registro"><i class="text-primary la la-eye"></i><a/>
+                                    <a href="{{ route('panel.clientes.ficha', $cliente->id) }}"  title="Ver registro"><i class="fas fa-list text-primary"></i><a/>
                                 </td>
                                 {{-- <td>
                                     <a href="{{ route('panel.clientes.ficha', $cliente->id) }}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">

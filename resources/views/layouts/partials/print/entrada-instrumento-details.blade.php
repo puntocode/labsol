@@ -1,69 +1,118 @@
 
 <div class="card-body px-14">
-    <div class="row">
-        <div class="col-md-12">
-            <h4>Certificado</h4>
-            <hr>
+    <section>
+        <div class="row">
+            <div class="col-12 bg-secondary mb-3 py-2">
+                <h4 class="font-bold text-center">INFORMACIÓN DEL CLIENTE</h4>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">SOLICITANTE</span>
+            </div>
+            <div class="col-10 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->cliente->name }}</span>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">DIRECCION</span>
+            </div>
+            <div class="col-10 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->contact['direccion'] }}</span>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">RUC</span>
+            </div>
+            <div class="col-4 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->cliente->ruc }}</span>
+            </div>
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">TELÉFONO</span>
+            </div>
+            <div class="col-4 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->contact['telefono'] }}</span>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">CONTACTO</span>
+            </div>
+            <div class="col-4 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->contact['nombre'] }}</span>
+            </div>
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">E-MAIL</span>
+            </div>
+            <div class="col-4 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->contact['email'] }}</span>
+            </div>
+        </div>
+    </section>
+
+    @if ($entradaInstrumento->type === 'LS')
+        <section class="row mt-8">
+            <div class="col-4 bg-secondary py-2 border-white">
+                <span class="font-bold">FECHA DE RECEPCIÓN</span>
+            </div>
+            <div class="col-8 bg-light py-2 border-white">
+                <span>{{ date('d-m-Y', strtotime($entradaInstrumento->created_at)) }}</span>
+            </div>
+
+            <div class="col-4 bg-secondary py-2 border-white">
+                <span class="font-bold">INSTRUMENTO RECIBIDO POR</span>
+            </div>
+            <div class="col-8 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->user->fullname }}</span>
+            </div>
+
+            <div class="col-4 bg-secondary py-2 border-white">
+                <span class="font-bold">INSTRUMENTO ENTREGADO POR</span>
+            </div>
+            <div class="col-8 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->delivered }}</span>
+            </div>
+        </section>
+    @endif
+
+    <section class="mt-8">
+        <div class="row text-center">
+            <div class="col-12 bg-secondary mb-3 py-2">
+                <h4 class="font-bold">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">Cantidad</span>
+            </div>
+            <div class="col-7 bg-secondary py-2 border-white">
+                <span class="font-bold">Servicio</span>
+            </div>
+            <div class="col-3 bg-secondary py-2 border-white">
+                <span class="font-bold">Equipo</span>
+            </div>
         </div>
 
-        <div class="form-group col-md-3">
-            <label>Nro.Expediente</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->type }}-{{ $entradaInstrumento->id }}</span>
+        <div class="row">
+            <div class="col-2 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->quantity }}</span>
+            </div>
+            <div class="col-7 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->procedimiento->name }}</span>
+            </div>
+            <div class="col-3 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->instrumento->name }}</span>
+            </div>
         </div>
 
-        <div class="form-group col-md-9">
-            <label>A nombre de:</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->certificate }}</span>
+        <div class="row mt-3">
+            <div class="col-12 bg-secondary py-2 border-white">
+                <span class="font-bold">Observación: </span>
+            </div>
+            <div class="col-12 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->obs }}</span>
+            </div>
         </div>
+    </section>
 
-        <div class="form-group col-md-3">
-            <label>RUC</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->certificate_ruc }}</span>
-        </div>
-        <div class="form-group col-md-9">
-            <label>Dirección</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->certificate_address }}</span>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <h4>Cliente</h4>
-            <hr>
-        </div>
-
-        <div class="form-group col-md-8">
-            <label>Cliente</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->cliente->name }}</span>
-        </div>
-
-        <div class="form-group col-md-4">
-            <label>Ruc</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->cliente->ruc }}</span>
-        </div>
-
-        <div class="form-group col-md-8">
-            <label>Contacto</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento['contact']['nombre'] }}</span>
-        </div>
-
-        <div class="form-group col-md-4">
-            <label>Teléfono</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento['contact']['telefono'] }}</span>
-        </div>
-
-        <div class="form-group col-md-8">
-            <label>Dirección</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento['contact']['direccion'] }}</span>
-        </div>
-
-        <div class="form-group col-md-4">
-            <label>Email</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento['contact']['email'] }}</span>
-        </div>
-    </div>
-
-    <div class="row mt-4">
+    {{-- <div class="row mt-4">
         <div class="col-md-12">
             <h4>Instrumento</h4>
             <hr>
@@ -82,7 +131,7 @@
 
         <div class="form-group col-md-4">
             <label>Equipo</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->instrument }}</span>
+            <span class="font-weight-bold">{{ $entradaInstrumento->instrumento->name }}</span>
         </div>
 
 
@@ -90,36 +139,5 @@
             <label>Observaciones</label>
             <span class="font-weight-bold">{{ $entradaInstrumento->obs }}</span>
         </div>
-    </div>
-
-    @if ($entradaInstrumento->type === 'LS')
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <h4>Detalles</h4>
-                <hr>
-            </div>
-
-            <div class="form-group col-md-8">
-                <label>Recibido por</label>
-                <span class="font-weight-bold">{{ $entradaInstrumento->user->fullname }}</span>
-            </div>
-
-            <div class="form-group col-md-4">
-                <label>Prioridad</label>
-                <span class="badge badge-{{ $entradaInstrumento->prioridad['color'] }}">
-                    {{ $entradaInstrumento->prioridad['prioridad'] }}
-                </span>
-            </div>
-
-            <div class="form-group col-md-8">
-                <label>Entregado por:</label>
-                <span class="font-weight-bold">{{ $entradaInstrumento->delivered }}</span>
-            </div>
-
-            <div class="form-group col-md-4">
-                <label>CI:</label>
-                <span class="font-weight-bold">{{ $entradaInstrumento->identification }}</span>
-            </div>
-        </div>
-    @endif
+    </div> --}}
 </div>

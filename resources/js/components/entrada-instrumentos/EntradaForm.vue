@@ -2,15 +2,15 @@
     <div class="card-body">
         <form class="mb-5 px-10" autocomplete="off" @submit.prevent="submit" v-if="formulario">
             <div class="row">
-                <div class="col-12 border-bottom border-primary mb-5">
-                    <h4 class="text-black-50 text-primary">Cliente</h4>
+                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+                    <h4 class="font-bold">INFORMACIÓN DEL CLIENTE</h4>
                 </div>
 
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label>Cliente <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" :value="cliente.name" disabled v-if="readOnly">
-                        <Select2 v-model="form.cliente_id" :options="selectClientes" @change="myChangeEvent($event)" v-else />
+                        <Select2 v-model="form.cliente_id" :options="selectClientes" @change="selectClienteChange($event)" v-else />
                     </div>
                 </div>
 
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div v-if="form.cliente_id > 0">
+            <div>
                 <div class="row mt-8">
                     <div class="col-12 col-lg-8">
                         <div class="form-group">
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="row mt-8">
+            <!-- <div class="row mt-8">
                 <div class="col-12 border-bottom border-primary mb-5">
                     <h4 class="text-black-50 text-primary">Certificado</h4>
                 </div>
@@ -82,21 +82,14 @@
                         <input type="text" class="form-control" v-model="form.certificate_address">
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row mt-8">
-                <div class="col-12 d-flex justify-content-between border-bottom border-primary mb-5 align-items-end pb-3" >
-                    <h4 class="text-black-50 text-primary">Instrumento</h4>
-                    <div class="radio-inline type" v-if="!readOnly">
-                        <p class="my-auto mx-4">Ingreso</p>
-                        <input type="radio" id="LS" value="LS" v-model="form.type">
-                        <label for="LS">LS</label>
-                        <input type="radio" id="LSI" value="LSI" v-model="form.type">
-                        <label for="LSI">LSI</label>
-                    </div>
+                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+                    <h4 class="font-bold">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
                 </div>
 
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-lg-2">
                     <div class="form-group">
                         <label>Cantidad <span class="text-danger">*</span></label>
                         <input class="form-control" :value="form.quantity" disabled v-if="readOnly">
@@ -105,20 +98,19 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-9">
-                    <div class="form-group">
-                        <label>Equipo <span class="text-danger">*</span></label>
-                        <input class="form-control" :value="form.instrument" disabled v-if="readOnly">
-                        <input v-model.trim="$v.form.instrument.$model" class="form-control" :class="{'is-invalid': $v.form.instrument.$error }" v-else>
-                        <div class="invalid-feedback"><span v-if="!$v.form.instrument.required">Este campo es requerido</span></div>
-                    </div>
-                </div>
-
-                <div class="col-12">
+                <div class="col-12 col-lg-7">
                     <div class="form-group">
                         <label>Servicio <span class="text-danger">*</span></label>
                         <input class="form-control" :value="servicio.fullname" disabled v-if="readOnly">
                         <Select2 id="select-procedimiento" v-model="form.procedimiento_id" :options="selectProcedimiento" v-else />
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-3">
+                    <div class="form-group">
+                        <label>Equipo <span class="text-danger">*</span></label>
+                        <input class="form-control" :value="instrumento.name" disabled v-if="readOnly">
+                        <Select2 id="select-instrumento" v-model="form.instrumento_id" :options="selectInstumentos" v-else />
                     </div>
                 </div>
 
@@ -130,9 +122,17 @@
                 </div>
             </div>
 
+            <div class="radio-inline type" v-if="!readOnly">
+                <p class="my-auto mx-4">Ingreso</p>
+                <input type="radio" id="LS" value="LS" v-model="form.type">
+                <label for="LS">LS</label>
+                <input type="radio" id="LSI" value="LSI" v-model="form.type">
+                <label for="LSI">LSI</label>
+            </div>
+
             <div class="row mt-8" v-if="form.type === 'LS'">
-                <div class="col-12 border-bottom border-primary mb-5">
-                    <h4 class="text-black-50 text-primary">Detalles</h4>
+                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+                    <h4 class="font-bold">CONTROL DE RECEPCIÓN DE INSTRUMENTOS</h4>
                 </div>
 
                 <div class="col-12 col-lg-8">
@@ -208,15 +208,13 @@
         data() {
             return {
                 cliente: {},
+                instrumento: {},
                 form: {
-                    certificate: '',
-                    certificate_ruc: '',
-                    certificate_address: '',
                     cliente_id: 0,
                     contact: {},
                     delivered: '',
                     identification: '',
-                    instrument: '',
+                    instumento_id: 0,
                     obs: '',
                     quantity: '',
                     priority: 'NORMAL',
@@ -229,6 +227,7 @@
                 selectContacto: [],
                 selectProcedimiento: [],
                 selectUsuarios: [],
+                selectInstumentos: [],
                 servicio: {},
                 rutas: window.routes,
                 user: {},
@@ -243,9 +242,7 @@
         validations:{
             form:{
                 cliente_id: {required},
-                certificate: {required},
                 quantity: {required},
-                instrument: {required},
             }
         },
 
@@ -253,6 +250,7 @@
             cargarSelect(){
                 this.data.clientes.forEach( cliente => this.selectClientes.push({id: cliente.id, text: cliente.name}) );
                 this.data.usuarios.forEach( usuario => this.selectUsuarios.push({id: usuario.id, text: usuario.fullname}) );
+                this.data.instrumentos.forEach( instrumento => this.selectInstumentos.push({id: instrumento.id, text: instrumento.name}) );
                 this.data.procedimientos.forEach( procedimiento => this.selectProcedimiento.push({id: procedimiento.id, text: procedimiento.fullname}) );
             },
             submit() {
@@ -264,7 +262,7 @@
                     .then(response =>{ if(response.status === 201) this.formulario = false })
                     .catch(error => console.log(error))
             },
-            async myChangeEvent(val){
+            async selectClienteChange(val){
                 this.cliente = await this.data.clientes.find( cliente => cliente.id == val );
 
                 this.selectContacto = [];
@@ -279,17 +277,18 @@
                     })
                 );
 
-                this.form.certificate = this.cliente.name;
-                this.form.certificate_ruc = this.cliente.ruc;
+                //this.form.certificate = this.cliente.name;
+                //this.form.certificate_ruc = this.cliente.ruc;
             },
             selectContacChange(event){
                 this.form.contact = { nombre: event.text, email: event.email, telefono: event.telefono, direccion: event.direccion};
             },
             async datosModificar(){
                 this.form = await this.data.entradaInstrumento;
-                this.cliente = this.data.clientes.find( cliente => cliente.id === this.form.cliente_id );
-                this.servicio = this.data.procedimientos.find( procedimiento => procedimiento.id === this.form.procedimiento_id );
                 this.user = this.data.usuarios.find( user => user.id === this.form.user_id );
+                this.cliente = this.data.clientes.find( cliente => cliente.id === this.form.cliente_id );
+                this.instrumento = this.data.instrumentos.find( instrumento => instrumento.id === this.form.instrumento_id );
+                this.servicio = this.data.procedimientos.find( procedimiento => procedimiento.id === this.form.procedimiento_id );
             }
         },
 
@@ -298,7 +297,8 @@
                 return this.$v.form.$invalid || this.formValid
             },
             formValid(){
-                return this.form.cliente_id === 0 || this.form.procedimiento_id === 0 || Object.keys(this.form.contact).length === 0 && this.form.contact.constructor === Object
+                return this.form.cliente_id === 0 || this.form.procedimiento_id === 0 || this.form.instrumento_id === 0
+                    || Object.keys(this.form.contact).length === 0 && this.form.contact.constructor === Object
                     || (this.form.type === 'LS' && this.form.user_id === 0)
                     || (this.form.type === 'LS' && this.form.delivered.trim() === '')
                     || (this.form.type === 'LS' && this.form.identification <= 0)

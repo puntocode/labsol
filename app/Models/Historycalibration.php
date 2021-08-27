@@ -9,9 +9,14 @@ class Historycalibration extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['certificate_no', 'next_calibration', 'calibration', 'done', 'obs'];
+    protected $fillable = ['certificate', 'certificate_no', 'next_calibration', 'calibration', 'done', 'obs'];
 
     public function historycalibration(){
         return $this->morphTo();
     }
+
+    public function getUrlCertificate(){
+        return asset("media/docs/historial-calibracion/". $this->certificate);
+    }
+
 }
