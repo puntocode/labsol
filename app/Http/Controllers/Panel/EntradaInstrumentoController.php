@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Panel;
 
 
+use App\Models\User;
+use App\Models\Cliente;
+use App\Models\Instrumento;
 use Illuminate\Http\Request;
+use App\Models\Procedimiento;
 use App\Models\EntradaInstrumento;
 use App\Http\Controllers\Controller;
-use App\Models\Cliente;
-use App\Models\Equipo;
-use App\Models\Instrumento;
-use App\Models\Procedimiento;
-use App\Models\User;
-use Symfony\Component\HttpFoundation\Response;
-
+use App\Models\EntradaInstrumentoService;
 
 class EntradaInstrumentoController extends Controller
 {
@@ -47,6 +45,14 @@ class EntradaInstrumentoController extends Controller
     public function store(Request $request)
     {
         $entradaInstrumento = EntradaInstrumento::create($this->validateData());
+        foreach($request['servicio'] as $servicio){
+            EntradaInstrumentoService::create([
+                'entrada_instrumento_id' => $entradaInstrumento->id,
+                'instrumento_id'         => $servicio['instrumento_id'],
+                'quantity'               => $servicio['quantity'],
+                'service'                => $servicio['service'],
+            ]);
+        };
         return response()->json(['data' => $entradaInstrumento], 201);
     }
 
@@ -114,17 +120,14 @@ class EntradaInstrumentoController extends Controller
     public function validateData()
     {
         return request()->validate([
-            'cliente_id'          => 'required',
-            'contact'             => 'nullable',
-            'delivered'           => 'nullable',
-            'identification'      => 'nullable',
-            'instrumento_id'      => 'required',
-            'obs'                 => 'nullable',
-            'priority'            => 'required|in:NORMAL,URGENTE',
-            'procedimiento_id'    => 'required',
-            'quantity'            => 'required',
-            'type'                => 'required|in:LS,LSI',
-            'user_id'             => 'nullable',
+            'cliente_id'     => 'required',
+            'contact'        => 'nullable',
+            'delivered'      => 'nullable',
+            'identification' => 'nullable',
+            'obs'            => 'nullable',
+            'priority'       => 'required|in:NORMAL,URGENTE',
+            'type'           => 'required|in:LS,LSI',
+            'user_id'        => 'nullable',
         ]);
     }
 
@@ -134,7 +137,7 @@ class EntradaInstrumentoController extends Controller
             'usuarios'           => User::all(),
             'clientes'           => Cliente::all(),
             'instrumentos'       => Instrumento::all(),
-            'procedimientos'     => Procedimiento::all(),
+            // 'procedimientos'     => Procedimiento::all(),
             'entradaInstrumento' => $entradaInstrumento === null ? null : $entradaInstrumento,
             'id'                 => $entradaInstrumento === null ? 0 : $entradaInstrumento->id,
         ];

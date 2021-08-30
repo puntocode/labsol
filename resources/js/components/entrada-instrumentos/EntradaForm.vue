@@ -85,35 +85,44 @@
             </div> -->
 
             <div class="row mt-8">
-                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
-                    <h4 class="font-bold">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
+                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary position-relative">
+                    <h4 class="font-bold w-100">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
+                    <div class="position-absolute" style="top: 11px; right: 14px">
+                        <span class="hover-btn mr-3" @click="addService"><i class="fas fa-plus text-primary"></i></span>
+                        <span class="hover-btn" @click="delService" v-show="cantidadServicio > 1"><i class="fas fa-minus text-danger"></i></span>
+                    </div>
                 </div>
+            </div>
 
+            <div class="row mt-2" v-for="(v, index) in $v.form.servicio.$each.$iter" :key="index">
                 <div class="col-12 col-lg-2">
                     <div class="form-group">
                         <label>Cantidad <span class="text-danger">*</span></label>
-                        <input class="form-control" :value="form.quantity" disabled v-if="readOnly">
-                        <input type="number" v-model.trim="$v.form.quantity.$model" class="form-control" :class="{'is-invalid': $v.form.quantity.$error }" v-else>
-                        <div class="invalid-feedback"><span v-if="!$v.form.quantity.required">Este campo es requerido y de tipo numerico</span></div>
+                        <!-- <input class="form-control" :value="form.servicio.quantity" disabled v-if="readOnly"> -->
+                        <input type="number" v-model.trim="v.quantity.$model" class="form-control" :class="{'is-invalid': v.quantity.$error}">
+                        <div class="invalid-feedback"><span v-if="!v.quantity.$model">Este campo es requerido y de tipo numerico</span></div>
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-7">
                     <div class="form-group">
                         <label>Servicio <span class="text-danger">*</span></label>
-                        <input class="form-control" :value="servicio.fullname" disabled v-if="readOnly">
-                        <Select2 id="select-procedimiento" v-model="form.procedimiento_id" :options="selectProcedimiento" v-else />
+                        <!-- <input class="form-control" :value="servicio.service" disabled v-if="readOnly"> -->
+                        <input type="text" v-model.trim="v.service.$model" class="form-control" :class="{'is-invalid': v.service.$error}" />
+                        <div class="invalid-feedback"><span v-if="!v.service.$model">Este campo es requerido</span></div>
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-3">
                     <div class="form-group">
                         <label>Equipo <span class="text-danger">*</span></label>
-                        <input class="form-control" :value="instrumento.name" disabled v-if="readOnly">
-                        <Select2 id="select-instrumento" v-model="form.instrumento_id" :options="selectInstumentos" v-else />
+                        <!-- <input class="form-control" :value="instrumento.name" disabled v-if="readOnly"> -->
+                        <Select2 :id="`select-instrumento-${cantidadServicio}`" v-model="v.instrumento_id.$model" :options="selectInstumentos" />
                     </div>
                 </div>
+            </div>
 
+            <div class="row">
                 <div class="col-12">
                     <div class="form-group">
                         <label>Observaciones</label>
@@ -121,6 +130,7 @@
                     </div>
                 </div>
             </div>
+
 
             <div class="radio-inline type" v-if="!readOnly">
                 <p class="my-auto mx-4">Ingreso</p>
@@ -191,6 +201,7 @@
 </template>
 
 <script>
+    //TODO: requerir equipo y actualizar datos
     import {required} from "vuelidate/lib/validators";
     import Select2 from 'v-select2-component';
     import SuccessAnimation from '../SuccessAnimation';
@@ -214,18 +225,16 @@
                     contact: {},
                     delivered: '',
                     identification: '',
-                    instumento_id: 0,
                     obs: '',
-                    quantity: '',
                     priority: 'NORMAL',
-                    procedimiento_id: 0,
+                    servicio: [{ instumento_id: 0, quantity: '', service: '' }],
                     type: 'LS',
                     user_id: 0,
                 },
                 formulario: true,
                 selectClientes: [],
                 selectContacto: [],
-                selectProcedimiento: [],
+                //selectProcedimiento: [],
                 selectUsuarios: [],
                 selectInstumentos: [],
                 servicio: {},
@@ -242,17 +251,32 @@
         validations:{
             form:{
                 cliente_id: {required},
-                quantity: {required},
+                servicio: { required,
+                    $each:{
+                        instrumento_id: {},
+                        obs: {},
+                        quantity: {required},
+                        service: {required},
+                    }
+                }
             }
         },
 
         methods: {
+            addService() {
+                this.form.servicio.push( {'instumento_id': 0, 'quantity': '', 'service': '' } )
+            },
+            delService(){
+                this.form.servicio.splice((this.form.servicio.length-1), 1)
+            },
+
             cargarSelect(){
                 this.data.clientes.forEach( cliente => this.selectClientes.push({id: cliente.id, text: cliente.name}) );
                 this.data.usuarios.forEach( usuario => this.selectUsuarios.push({id: usuario.id, text: usuario.fullname}) );
                 this.data.instrumentos.forEach( instrumento => this.selectInstumentos.push({id: instrumento.id, text: instrumento.name}) );
-                this.data.procedimientos.forEach( procedimiento => this.selectProcedimiento.push({id: procedimiento.id, text: procedimiento.fullname}) );
+                //this.data.procedimientos.forEach( procedimiento => this.selectProcedimiento.push({id: procedimiento.id, text: procedimiento.fullname}) );
             },
+
             submit() {
                 const method = this.form.id > 0 ? 'put' : 'post';
                 const url = this.form.id > 0 ? this.rutas.update : this.rutas.store;
@@ -262,6 +286,7 @@
                     .then(response =>{ if(response.status === 201) this.formulario = false })
                     .catch(error => console.log(error))
             },
+
             async selectClienteChange(val){
                 this.cliente = await this.data.clientes.find( cliente => cliente.id == val );
 
@@ -276,20 +301,19 @@
                         text: contacto.nombre,
                     })
                 );
+            },
 
-                //this.form.certificate = this.cliente.name;
-                //this.form.certificate_ruc = this.cliente.ruc;
-            },
-            selectContacChange(event){
-                this.form.contact = { nombre: event.text, email: event.email, telefono: event.telefono, direccion: event.direccion};
-            },
             async datosModificar(){
                 this.form = await this.data.entradaInstrumento;
                 this.user = this.data.usuarios.find( user => user.id === this.form.user_id );
                 this.cliente = this.data.clientes.find( cliente => cliente.id === this.form.cliente_id );
                 this.instrumento = this.data.instrumentos.find( instrumento => instrumento.id === this.form.instrumento_id );
-                this.servicio = this.data.procedimientos.find( procedimiento => procedimiento.id === this.form.procedimiento_id );
-            }
+                //this.servicio = this.data.procedimientos.find( procedimiento => procedimiento.id === this.form.procedimiento_id );
+            },
+
+            selectContacChange(event){
+                this.form.contact = { nombre: event.text, email: event.email, telefono: event.telefono, direccion: event.direccion};
+            },
         },
 
         computed: {
@@ -297,7 +321,7 @@
                 return this.$v.form.$invalid || this.formValid
             },
             formValid(){
-                return this.form.cliente_id === 0 || this.form.procedimiento_id === 0 || this.form.instrumento_id === 0
+                return this.form.cliente_id === 0
                     || Object.keys(this.form.contact).length === 0 && this.form.contact.constructor === Object
                     || (this.form.type === 'LS' && this.form.user_id === 0)
                     || (this.form.type === 'LS' && this.form.delivered.trim() === '')
@@ -308,6 +332,9 @@
             },
             readOnly(){
                 return this.data.id > 0;
+            },
+            cantidadServicio(){
+                return this.form.servicio.length;
             }
         },
     }
@@ -328,4 +355,6 @@
         }
         label{position: relative; font-size: 12px; border:1px solid #E4E6EF; padding: 8px 15px; border-radius: 5px; display: flex; margin-right: 15px; align-items: center; cursor: pointer;margin-bottom: auto;}
     }
+
+    .hover-btn{cursor: pointer;}
 </style>

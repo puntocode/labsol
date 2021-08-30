@@ -44,9 +44,9 @@
 							<tr>
 								<th>N° Exp</th>
 								<th>Cliente</th>
-								<th>Equipo</th>
-								<th>Cantidad</th>
-								<th>Servicio</th>
+								<th>Contacto</th>
+								<th>Direccion</th>
+								<th>Telefono</th>
 								<th class="text-center">Prioridad</th>
 								<th class="text-center">Detalle</th>
 							</tr>
@@ -56,9 +56,9 @@
 								<tr>
 									<td>{{$entrada->type}}-{{$entrada->id}}</td>
 									<td>{{$entrada->cliente->name}}</td>
-									<td>{{$entrada->instrumento->name}}</td>
-									<td>{{$entrada->quantity}}</td>
-									<td>{{$entrada->procedimiento->code}}</td>
+									<td>{{$entrada->contact['nombre']}}</td>
+									<td>{{$entrada->contact['direccion']}}</td>
+									<td>{{$entrada->contact['telefono']}}</td>
 									<td class="text-center">
                                         <span class="badge badge-{{ $entrada->prioridad['color'] }}">{{ $entrada->prioridad['prioridad'] }}</span>
                                     </td>

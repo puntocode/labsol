@@ -57,7 +57,7 @@
                     @include('layouts.partials.print.entrada-instrumento-details', $entradaInstrumento)
 
                     <div class="card-footer" style="text-align: right">
-                        <a href="{{ route('panel.entrada-instrumentos.edit', $entradaInstrumento) }}" class="btn btn-primary">Editar Datos</a>
+                        {{-- <a href="{{ route('panel.entrada-instrumentos.edit', $entradaInstrumento) }}" class="btn btn-primary">Editar Datos</a> --}}
                     </div>
                 </div>
             </div>

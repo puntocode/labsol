@@ -11,6 +11,7 @@ class EntradaInstrumento extends Model
     protected $guarded = ['id'];
     protected $appends = ['prioridad'];
     protected $casts   = [ 'contact' => 'array' ];
+    // protected $with    = [ 'servicio'];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
@@ -24,8 +25,8 @@ class EntradaInstrumento extends Model
         return $this->belongsTo(Instrumento::class);
     }
 
-    public function procedimiento(){
-        return $this->belongsTo(Procedimiento::class);
+    public function servicio(){
+        return $this->hasMany(EntradaInstrumentoService::class);
     }
 
 

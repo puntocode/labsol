@@ -90,17 +90,20 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-2 bg-light py-2 border-white">
-                <span>{{  $entradaInstrumento->quantity }}</span>
+        @foreach ($entradaInstrumento->servicio as $servicio)
+            <div class="row">
+                <div class="col-2 bg-light py-2 border-white">
+                    <span>{{  $servicio->quantity }}</span>
+                </div>
+                <div class="col-7 bg-light py-2 border-white">
+                    <span>{{  $servicio->service }}</span>
+                </div>
+                <div class="col-3 bg-light py-2 border-white">
+                    <span>{{  $servicio->instrumento->name }}</span>
+                </div>
             </div>
-            <div class="col-7 bg-light py-2 border-white">
-                <span>{{  $entradaInstrumento->procedimiento->name }}</span>
-            </div>
-            <div class="col-3 bg-light py-2 border-white">
-                <span>{{  $entradaInstrumento->instrumento->name }}</span>
-            </div>
-        </div>
+        @endforeach
+
 
         <div class="row mt-3">
             <div class="col-12 bg-secondary py-2 border-white">
