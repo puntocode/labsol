@@ -55,34 +55,33 @@
                 </div>
             </div>
 
-            <!-- <div class="row mt-8">
-                <div class="col-12 border-bottom border-primary mb-5">
-                    <h4 class="text-black-50 text-primary">Certificado</h4>
+            <div class="row mt-8">
+                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+                    <h4 class="font-bold">CERTIFICADO</h4>
                 </div>
 
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label>A nombre de: <span class="text-danger">*</span></label>
-                        <input class="form-control" :value="form.certificate" disabled v-if="readOnly">
-                        <input :class="{'is-invalid': $v.form.certificate.$error }" class="form-control" v-model.trim="$v.form.certificate.$model" v-else>
-                        <div class="invalid-feedback"><span v-if="!$v.form.certificate.required">Este campo es requerido</span></div>
+                        <input type="text" v-model.trim="$v.form.certificate.$model" class="form-control" :class="{'is-invalid': $v.form.certificate.$error}" />
+                        <div class="invalid-feedback"><span v-if="!$v.form.certificate.$model">Este campo es requerido</span></div>
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label>RUC</label>
-                        <input type="text" class="form-control" v-model="form.certificate_ruc">
+                        <input class="form-control" v-model="form.certificate_ruc">
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="form-group">
                         <label>Dirección</label>
-                        <input type="text" class="form-control" v-model="form.certificate_address">
+                        <input class="form-control" v-model="form.certificate_adress">
                     </div>
                 </div>
-            </div> -->
+            </div>
 
             <div class="row mt-8">
                 <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary position-relative">
@@ -221,6 +220,9 @@
                 cliente: {},
                 instrumento: {},
                 form: {
+                    certificate: '',
+                    certificate_adress: '',
+                    certificate_ruc: '',
                     cliente_id: 0,
                     contact: {},
                     delivered: '',
@@ -250,6 +252,7 @@
 
         validations:{
             form:{
+                certificate: {required},
                 cliente_id: {required},
                 servicio: { required,
                     $each:{
@@ -301,6 +304,9 @@
                         text: contacto.nombre,
                     })
                 );
+
+                this.form.certificate = this.cliente.name;
+                this.form.certificate_ruc = this.cliente.ruc;
             },
 
             async datosModificar(){

@@ -120,14 +120,18 @@ class EntradaInstrumentoController extends Controller
     public function validateData()
     {
         return request()->validate([
-            'cliente_id'     => 'required',
-            'contact'        => 'nullable',
-            'delivered'      => 'nullable',
-            'identification' => 'nullable',
-            'obs'            => 'nullable',
-            'priority'       => 'required|in:NORMAL,URGENTE',
-            'type'           => 'required|in:LS,LSI',
-            'user_id'        => 'nullable',
+            'certificate'        => 'required',
+            'certificate_adress' => 'nullable',
+            'certificate_ruc'    => 'nullable',
+            'cliente_id'         => 'required',
+            'cliente_id'         => 'required',
+            'contact'            => 'nullable',
+            'delivered'          => 'nullable',
+            'identification'     => 'nullable',
+            'obs'                => 'nullable',
+            'priority'           => 'required|in:NORMAL,URGENTE',
+            'type'               => 'required|in:LS,LSI',
+            'user_id'            => 'nullable',
         ]);
     }
 

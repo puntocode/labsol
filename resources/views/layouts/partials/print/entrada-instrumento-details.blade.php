@@ -48,6 +48,34 @@
         </div>
     </section>
 
+    <section class="mt-8">
+        <div class="row">
+            <div class="col-12 bg-secondary mb-3 py-2">
+                <h4 class="font-bold text-center">CERTIFICADO</h4>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">A NOMBRE DE:</span>
+            </div>
+            <div class="col-10 bg-light py-2 border-white">
+                <span>{{  $entradaInstrumento->certificate }}</span>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">DIRECCION</span>
+            </div>
+            <div class="col-6 bg-light py-2 border-white">
+                <span>{{ isset($entradaInstrumento->certificate_adress) ? $entradaInstrumento->certificate_adress : '-' }}</span>
+            </div>
+
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">RUC</span>
+            </div>
+            <div class="col-2 bg-light py-2 border-white">
+                <span>{{ isset($entradaInstrumento->certificate_ruc) ? $entradaInstrumento->certificate_ruc : '-' }}</span>
+            </div>
+    </section>
+
     @if ($entradaInstrumento->type === 'LS')
         <section class="row mt-8">
             <div class="col-4 bg-secondary py-2 border-white">
@@ -110,7 +138,7 @@
                 <span class="font-bold">Observación: </span>
             </div>
             <div class="col-12 bg-light py-2 border-white">
-                <span>{{  $entradaInstrumento->obs }}</span>
+                <span>{{ isset($entradaInstrumento->obs) ? $entradaInstrumento->obs : '-' }}</span>
             </div>
         </div>
     </section>
