@@ -229,7 +229,7 @@
                     identification: '',
                     obs: '',
                     priority: 'NORMAL',
-                    servicio: [{ instumento_id: 0, quantity: '', service: '' }],
+                    servicio: [{ instumento_id: 0, quantity: '', service: 'calibración' }],
                     type: 'LS',
                     user_id: 0,
                 },
@@ -267,7 +267,7 @@
 
         methods: {
             addService() {
-                this.form.servicio.push( {'instumento_id': 0, 'quantity': '', 'service': '' } )
+                this.form.servicio.push( {'instumento_id': 0, 'quantity': '', 'service': 'calibración' } )
             },
             delService(){
                 this.form.servicio.splice((this.form.servicio.length-1), 1)
