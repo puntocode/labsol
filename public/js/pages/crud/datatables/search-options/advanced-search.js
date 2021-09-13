@@ -69,6 +69,10 @@ var KTDatatablesSearchOptionsAdvancedSearch = function() {
 			});
 			table.table().draw();
 		});
+
+        $('.estados').on('click', function() {
+            table.columns($(this).attr('data-col-index')).search($(this).children().text()).draw();
+        });
 	};
 
 	return {

@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(InstrumentoSeeder::class);
         $this->call(ProcedimientoSeeder::class);
         $this->call(InstrumentoProcedimientoSeeder::class);
+        $this->call(ExpedienteEstadoSeed::class);
     }
 }

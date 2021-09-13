@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="row mt-8">
+            <!-- <div class="row mt-8">
                 <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
                     <h4 class="font-bold">CERTIFICADO</h4>
                 </div>
@@ -81,10 +81,10 @@
                         <input class="form-control" v-model="form.certificate_adress">
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row mt-8">
-                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary position-relative">
+                <div class="col-12 text-center mx-0 p-2 bg-secondary position-relative">
                     <h4 class="font-bold w-100">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
                     <div class="position-absolute" style="top: 11px; right: 14px">
                         <span class="hover-btn mr-3" @click="addService"><i class="fas fa-plus text-primary"></i></span>
@@ -93,8 +93,8 @@
                 </div>
             </div>
 
-            <div class="row mt-2" v-for="(v, index) in $v.form.servicio.$each.$iter" :key="index">
-                <div class="col-12 col-lg-2">
+            <div class="row mt-2 border-bottom border-primary py-5" v-for="(v, index) in $v.form.servicio.$each.$iter" :key="index">
+                <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label>Cantidad <span class="text-danger">*</span></label>
                         <!-- <input class="form-control" :value="form.servicio.quantity" disabled v-if="readOnly"> -->
@@ -103,7 +103,27 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-7">
+                 <div class="col-12 col-lg-8">
+                    <div class="form-group">
+                        <label>Equipo <span class="text-danger">*</span></label>
+                        <!-- <input class="form-control" :value="instrumento.name" disabled v-if="readOnly"> -->
+                        <Select2 :id="`select-instrumento-${cantidadServicio}`" v-model="v.instrumento_id.$model" :options="selectInstumentos" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <div class="form-group">
+                        <label>Prioridad <span class="text-danger">*</span></label>
+                        <div class="priority">
+                            <input type="radio" :id="`normal-${index}`" value="NORMAL" v-model="v.priority.$model">
+                            <label :for="`normal-${index}`" class="border-primary text-primary" style="--color: #009BDD">Normal</label>
+                            <input type="radio" :id="`urgente-${index}`" value="URGENTE" v-model="v.priority.$model">
+                            <label :for="`urgente-${index}`" class="border-danger text-danger" style="--color: #F2253E">Urgente (24hs.)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label>Servicio <span class="text-danger">*</span></label>
                         <!-- <input class="form-control" :value="servicio.service" disabled v-if="readOnly"> -->
@@ -112,26 +132,39 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-3">
-                    <div class="form-group">
-                        <label>Equipo <span class="text-danger">*</span></label>
-                        <!-- <input class="form-control" :value="instrumento.name" disabled v-if="readOnly"> -->
-                        <Select2 :id="`select-instrumento-${cantidadServicio}`" v-model="v.instrumento_id.$model" :options="selectInstumentos" />
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
                 <div class="col-12">
                     <div class="form-group">
                         <label>Observaciones</label>
-                        <textarea v-model="form.obs" class="form-control"></textarea>
+                        <textarea v-model="v.obs.$model" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-8">
+                    <div class="form-group">
+                        <label>Certificado a nombre de: <span class="text-danger">*</span></label>
+                        <input type="text" v-model.trim="v.certificate.$model" class="form-control" :class="{'is-invalid': v.certificate.$error}" />
+                        <div class="invalid-feedback"><span v-if="!v.certificate.$model">Este campo es requerido</span></div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <div class="form-group">
+                        <label>RUC</label>
+                        <input class="form-control" v-model="v.certificate_ruc.$model">
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Dirección</label>
+                        <input class="form-control" v-model="v.certificate_adress.$model">
                     </div>
                 </div>
             </div>
 
 
-            <div class="radio-inline type" v-if="!readOnly">
+            <div class="radio-inline type mt-6" v-if="!readOnly">
                 <p class="my-auto mx-4">Ingreso</p>
                 <input type="radio" id="LS" value="LS" v-model="form.type">
                 <label for="LS">LS</label>
@@ -144,7 +177,7 @@
                     <h4 class="font-bold">CONTROL DE RECEPCIÓN DE INSTRUMENTOS</h4>
                 </div>
 
-                <div class="col-12 col-lg-8">
+                <div class="col-12 col-lg-5">
                     <div class="form-group">
                         <label>Recibido por: <span class="text-danger">*</span></label>
                         <input class="form-control" :value="user.fullname" disabled v-if="readOnly">
@@ -152,26 +185,15 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-4">
-                    <div class="form-group">
-                        <label>Prioridad <span class="text-danger">*</span></label>
-                        <div class="priority">
-                            <input type="radio" id="normal" value="NORMAL" v-model="form.priority">
-                            <label for="normal" class="border-primary text-primary" style="--color: #009BDD">Normal</label>
-                            <input type="radio" id="urgente" value="URGENTE" v-model="form.priority">
-                            <label for="urgente" class="border-danger text-danger" style="--color: #F2253E">Urgente (24hs.)</label>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-12 col-lg-8">
+                <div class="col-12 col-lg-5">
                     <div class="form-group">
                         <label>Entregado por: <span class="text-danger">*</span></label>
                         <input v-model="form.delivered" class="form-control" :disabled="readOnly">
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-2">
                     <div class="form-group">
                         <label>CI: <span class="text-danger">*</span></label>
                         <input type="number" v-model="form.identification" class="form-control" :disabled="readOnly">
@@ -200,7 +222,6 @@
 </template>
 
 <script>
-    //TODO: requerir equipo y actualizar datos
     import {required} from "vuelidate/lib/validators";
     import Select2 from 'v-select2-component';
     import SuccessAnimation from '../SuccessAnimation';
@@ -220,23 +241,26 @@
                 cliente: {},
                 instrumento: {},
                 form: {
-                    certificate: '',
-                    certificate_adress: '',
-                    certificate_ruc: '',
                     cliente_id: 0,
                     contact: {},
                     delivered: '',
                     identification: '',
-                    obs: '',
-                    priority: 'NORMAL',
-                    servicio: [{ instumento_id: 0, quantity: '', service: 'calibración' }],
+                    servicio: [{
+                        certificate: '',
+                        certificate_adress: '',
+                        certificate_ruc: '',
+                        instrumento_id: 1,
+                        obs: '',
+                        priority: 'NORMAL',
+                        quantity: '',
+                        service: 'calibración',
+                    }],
                     type: 'LS',
                     user_id: 0,
                 },
                 formulario: true,
                 selectClientes: [],
                 selectContacto: [],
-                //selectProcedimiento: [],
                 selectUsuarios: [],
                 selectInstumentos: [],
                 servicio: {},
@@ -252,12 +276,15 @@
 
         validations:{
             form:{
-                certificate: {required},
                 cliente_id: {required},
-                servicio: { required,
+                servicio: {
                     $each:{
+                        certificate: {required},
+                        certificate_adress: {},
+                        certificate_ruc: {},
                         instrumento_id: {},
                         obs: {},
+                        priority: {},
                         quantity: {required},
                         service: {required},
                     }
@@ -267,7 +294,17 @@
 
         methods: {
             addService() {
-                this.form.servicio.push( {'instumento_id': 0, 'quantity': '', 'service': 'calibración' } )
+                const servicio = {
+                    certificate: '',
+                    certificate_adress: '',
+                    certificate_ruc: '',
+                    instrumento_id: 1,
+                    obs: '',
+                    priority: 'NORMAL',
+                    quantity: '',
+                    service: 'calibración',
+                }
+                this.form.servicio.push(servicio);
             },
             delService(){
                 this.form.servicio.splice((this.form.servicio.length-1), 1)
@@ -277,7 +314,6 @@
                 this.data.clientes.forEach( cliente => this.selectClientes.push({id: cliente.id, text: cliente.name}) );
                 this.data.usuarios.forEach( usuario => this.selectUsuarios.push({id: usuario.id, text: usuario.fullname}) );
                 this.data.instrumentos.forEach( instrumento => this.selectInstumentos.push({id: instrumento.id, text: instrumento.name}) );
-                //this.data.procedimientos.forEach( procedimiento => this.selectProcedimiento.push({id: procedimiento.id, text: procedimiento.fullname}) );
             },
 
             submit() {
@@ -305,8 +341,8 @@
                     })
                 );
 
-                this.form.certificate = this.cliente.name;
-                this.form.certificate_ruc = this.cliente.ruc;
+                this.form.servicio[0].certificate = this.cliente.name;
+                this.form.servicio[0].certificate_ruc = this.cliente.ruc;
             },
 
             async datosModificar(){
@@ -314,7 +350,6 @@
                 this.user = this.data.usuarios.find( user => user.id === this.form.user_id );
                 this.cliente = this.data.clientes.find( cliente => cliente.id === this.form.cliente_id );
                 this.instrumento = this.data.instrumentos.find( instrumento => instrumento.id === this.form.instrumento_id );
-                //this.servicio = this.data.procedimientos.find( procedimiento => procedimiento.id === this.form.procedimiento_id );
             },
 
             selectContacChange(event){

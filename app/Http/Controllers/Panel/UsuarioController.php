@@ -163,4 +163,17 @@ class UsuarioController extends Controller
     public function historial()
     {
     }
+
+
+    public function getTecnicos()
+    {
+        $usuarios = User::where('status', true)->get();
+        $tecnicos = $usuarios->filter(function($value) {
+            return $value->rol == 'personal laboratorio';
+        });
+
+        return $tecnicos;
+    }
+
+
 }

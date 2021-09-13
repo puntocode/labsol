@@ -163,13 +163,7 @@
 											'title': 'Técnicos',
 											'class': 'light-sucess',
 											'item': [
-												@foreach ($tecnicos as $i => $tecnico)
-													{
-																'title': `
-																	@include('layouts.partials.extras.items.duallist_image_text', ['item' => $tecnico])
-																`
-														 },
-												@endforeach
+
 											]
 									},
 									{

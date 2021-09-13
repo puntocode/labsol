@@ -83,7 +83,7 @@
 
 				<!--begin::Tab Pane Expedientes -->
 
-				<div class="tab-pane py-5 p-lg-0 @if (Request::is('panel/expedientes*') || Request::is('panel/perfil/actividades*')) show active @endif" id="kt_header_tab_4">
+				<div class="tab-pane py-5 p-lg-0 @if (Request::is('panel/expediente*') || Request::is('panel/perfil/actividades*')) show active @endif" id="kt_header_tab_4">
 					<!--begin::Menu-->
 					<div class="header-menu header-menu-mobile header-menu-layout-default">
 						<!--begin::Nav-->

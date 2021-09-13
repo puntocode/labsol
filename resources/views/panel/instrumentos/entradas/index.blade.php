@@ -42,26 +42,22 @@
 					<table class="table table-separate table-head-custom collapsed" id="tableInstrumentos" style="width:100%">
 						<thead>
 							<tr>
-								<th>N° Exp</th>
+								{{-- <th>N° Exp</th> --}}
 								<th>Cliente</th>
 								<th>Contacto</th>
 								<th>Direccion</th>
 								<th>Telefono</th>
-								<th class="text-center">Prioridad</th>
 								<th class="text-center">Detalle</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach ($entradaInstrumento as $i => $entrada)
 								<tr>
-									<td>{{$entrada->type}}-{{$entrada->id}}</td>
+									{{-- <td>{{$entrada->type}}-{{$entrada->id}}</td> --}}
 									<td>{{$entrada->cliente->name}}</td>
 									<td>{{$entrada->contact['nombre']}}</td>
 									<td>{{$entrada->contact['direccion']}}</td>
 									<td>{{$entrada->contact['telefono']}}</td>
-									<td class="text-center">
-                                        <span class="badge badge-{{ $entrada->prioridad['color'] }}">{{ $entrada->prioridad['prioridad'] }}</span>
-                                    </td>
 									<td class="text-center">
                                         <a href="{{ route('panel.entrada-instrumentos.show', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Ver Entrada Instrumento">
                                             <i class="fas fa-list text-primary"></i>

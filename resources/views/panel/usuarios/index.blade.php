@@ -59,7 +59,7 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="symbol symbol-40 symbol-light-primary flex-shrink-0">
-                                            <span class="symbol-label font-weight-bold text-uppercase">{{ $usuario->nameAbbreviation() }}</span>
+                                            <span class="symbol-label font-weight-bold text-uppercase">{{ $usuario->abbreviation }}</span>
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ $usuario->fullname }}</div>

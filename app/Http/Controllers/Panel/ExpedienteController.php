@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
+use App\Models\Expediente;
 use Illuminate\Http\Request;
+use App\Models\ExpedienteEstado;
+use App\Http\Controllers\Controller;
+use App\Models\ExpedienteHistorial;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class ExpedienteController extends Controller
 {
@@ -20,13 +25,9 @@ class ExpedienteController extends Controller
     public function index()
     {
         # -- Filtros --
-        $tecnicos = config('demo.tecnicos');
-        $clientes = config('demo.clientesContacto');
-
-        $expedientes = config('demo.expedientes');
-        $estados = config('demo.estados_calibraciones');
-
-        return view('panel.expedientes.index', compact('expedientes', 'tecnicos', 'clientes', 'estados'));
+        $estados = ExpedienteEstado::where('status', true)->get();
+        $expedientes = Expediente::with('servicios', 'estados')->get();
+        return view('panel.expedientes.index', compact('expedientes', 'estados'));
     }
 
     /**
@@ -59,11 +60,8 @@ class ExpedienteController extends Controller
      */
     public function show($id)
     {
-        $view_mode = 'readonly';
-        $expediente = config('demo.expedientes')[$id];
-        $tecnicos = config('demo.tecnicos');
-
-        return view('panel.expedientes.form', compact('expediente', 'view_mode', 'tecnicos'));
+        $data = $this->cargarData($id);
+        return view('panel.expedientes.show', compact('data'));
     }
 
     /**
@@ -74,9 +72,9 @@ class ExpedienteController extends Controller
      */
     public function edit($id)
     {
-        $expediente = config('demo.expedientes')[$id];
-        $tecnicos = config('demo.tecnicos');
-        return view('panel.expedientes.form', compact('expediente', 'tecnicos'));
+        $expediente = Expediente::find($id);
+        $historial = ExpedienteHistorial::where('expediente_id', $id)->get();
+        return view('panel.expedientes.form', compact('expediente', 'historial'));
     }
 
     /**
@@ -88,7 +86,8 @@ class ExpedienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return redirect(route('panel.expedientes.index'));
+        return $request->all();
+        //return redirect(route('panel.expedientes.index'));
     }
 
     /**
@@ -102,19 +101,31 @@ class ExpedienteController extends Controller
     }
 
     public function agenda(Request $request){
-        $tipos_equipos = config('demo.tipos_equipos');
-        $tipos_actividades = config('demo.tipos_actividades');
-        $estados_calibraciones = config('demo.estados_calibraciones');
-        $expedientes = config('demo.expedientes');
-
-        $vista = isset($request->vista) ? $request->vista : 'agenda';
-
-        if($vista == 'agenda'){
-            $eventos = config('demo.eventos');
-        }else{
-            $eventos = NULL;
-        }
-
-        return view('panel.agenda.index', compact('vista', 'eventos', 'tipos_equipos', 'estados_calibraciones', 'tipos_actividades', 'expedientes'));
+        $estados = ExpedienteEstado::activo()->get();
+        $expedientes = Expediente::whereNotNull('delivery_date')->get();
+        $estadosSum = Expediente::suma()->get();
+        return view('panel.expedientes.agenda.index', compact('estados','expedientes', 'estadosSum'));
     }
+
+
+    public function asignarTecnicos(Request $request)
+    {
+        foreach($request['number'] as $expediente){
+            $exp = Expediente::where('number', $expediente)->first();
+            $exp->update(['tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
+            ExpedienteHistorial::create(['expediente_id' => $exp->id, 'tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
+        }
+        return response()->json(Response::HTTP_OK);
+    }
+
+
+    public function cargarData($id)
+    {
+        $data = [
+            'expediente' => Expediente::with('servicios', 'estados')->find($id),
+            'historial'  => ExpedienteHistorial::where('expediente_id', $id)->get(),
+        ];
+        return $data;
+    }
+
 }

@@ -167,23 +167,19 @@
 
 <script>
     import {required, minValue} from "vuelidate/lib/validators";
-    import datePicker from 'vue-bootstrap-datetimepicker';
     import SuccessAnimation from '../SuccessAnimation';
+    import datePicker from 'vue-bootstrap-datetimepicker';
     import SelectForm from '../SelectForm';
 
     export default {
-        components: {
-          datePicker, SuccessAnimation, SelectForm
-        },
+        components: { datePicker, SuccessAnimation, SelectForm },
         props: ['form', 'action', 'rutas'],
         data() {
             return {
                 steps: 1,
                 progress: 25,
                 rankIndex: 0,
-                options: {
-                     format: 'yyyy/MM/DD',
-                },
+                options: { format: 'yyyy/MM/DD' },
             }
         },
         validations:{

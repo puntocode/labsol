@@ -33,7 +33,7 @@ Route::post('/ajax/logout',  [AuthController::class, 'logout'])->name('ajax.auth
 Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')->middleware('auth')->group(function () {
 
     Route::get('/', [PanelController::class, 'index'])->name('index');
-    // Route::get('/', [PanelController::class, 'index'])->name('dashboard')->middleware('can:gerencia_tecnica,jefatura_calibracion,secretaria,tecnico,jefatura_calidad');
+
 
     # -- Clientes --
     Route::resource('/clientes', 'ClienteController')->middleware('can:panel.database');
@@ -44,18 +44,6 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/entrada-instrumentos', 'EntradaInstrumentoController')->middleware('can:panel.admin');
     Route::get('/entrada-instrumentos-print/{entradaInstrumento}', 'EntradaInstrumentoController@print')->name('entrada-instrumentos.print')->middleware('can:panel.admin');
     Route::get('/instrumentos-all', [InstrumentoController::class, 'getInstrumentos'])->name('instrumentos.all')->middleware('can:panel.database');
-
-    // Route::resource('/entrada-instrumentos', 'InstrumentoController')->names([
-    //     'index' => 'instrumentos.index',
-    //     'create' => 'instrumentos.create',
-    //     'edit'  => 'instrumentos.edit',
-    //     'update' => 'instrumentos.update',
-    //     'store' => 'instrumentos.store',
-    //     'show'  => 'instrumentos.show',
-    //     'show'  => 'instrumentos.show',
-    //     'destroy' => 'instrumentos.destroy'
-    // ])->middleware('can:panel.admin');
-
 
     Route::resource('/egreso-instrumentos', 'EgresoController')->names([
         'index' => 'egreso.index',
@@ -78,10 +66,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     ])->middleware('can:panel.admin');
 
 
-
     # -- Certificados --
-
     Route::get('/calibracion/certificados', [CertificadoController::class, 'index'])->name('calibracion.certificados.index')->middleware('can:gerencia_tecnica,jefatura_calibracion');
+
 
     # -- Calibración  --
     Route::resource('/calibracion', 'CalibracionController')->names([
@@ -97,9 +84,6 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/condition', [PanelController::class, 'getCondition'])->name('condition.all');
     Route::get('/magnitud', [PanelController::class, 'getMagnitudes'])->name('magnitud.all');
 
-    # -- Usuarios --
-    Route::resource('/usuarios', 'UsuarioController')->middleware('can:panel.database');
-    Route::get('/usuario/active/{id}', 'UsuarioController@active')->name('usuarios.active')->middleware('can:panel.database');
 
     # -- Patrones --
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
@@ -118,6 +102,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
      Route::get('/patron-maintenance-history/{patron}/{id}', 'PatronController@patronMaintenanceHistory')->name('patron.maintenance-history')->middleware('can:panel.database');
      Route::post('/patron-maintenance-history/{id}', 'PatronController@patronMaintenanceStore')->name('patron.maintenance-history.store')->middleware('can:panel.database');
 
+
     # -- Equipos --
     Route::resource('/equipos', 'EquipoController')->middleware('can:panel.database');
     Route::get('/equipo/hoja-vida/{id}', 'EquipoController@hojaVida')->name('equipo.hojaVida')->middleware('can:panel.database');
@@ -134,6 +119,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Equipos Historial Mantenimiento--
     Route::get('/equipo-maintenance-history/{equipo}/{id}', 'EquipoController@equipoMaintenanceHistory')->name('equipo.maintenance-history')->middleware('can:panel.database');
     Route::post('/equipo-maintenance-history/{id}', 'EquipoController@equipoMaintenanceStore')->name('equipo.maintenance-history.store')->middleware('can:panel.database');
+
 
     # -- Historial --
     Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');
@@ -155,17 +141,54 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     Route::resource('/incertidumbre', 'IncertidumbreController')->middleware('can:panel.admin');
 
+
     # -- Servicios --
     Route::resource('/procedimientos', 'ProcedimientoController')->middleware('can:panel.database');
     Route::get('/procedimiento/{id}', 'ProcedimientoController@getProcedimientoForId')->name('procedimientos.get')->middleware('can:panel.database');
     Route::get('/procedimiento-doc/{procedimiento}', 'ProcedimientoController@documents')->name('procedimientos.doc')->middleware('can:panel.database');
     Route::post('/procedimiento-doc/{id}', 'ProcedimientoController@storeDocument')->name('procedimientos.doc.store')->middleware('can:panel.database');
 
-    # -- Tecnico --
 
+    # -- Expedientes --
+    Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');
+    Route::put('/expediente/update-tecnicos', 'ExpedienteController@asignarTecnicos')->name('expedientes.update_tecnicos')->middleware('can:panel.admin');
+    Route::get('/expediente/agenda', 'ExpedienteController@agenda')->name('expedientes.agenda')->middleware('can:panel.admin');
+    Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:panel.admin');
+
+
+    # -- Certificados --
+    Route::resource('/calibracion/certificados', 'CertificadoController')->names([
+        'index' => 'calibracion.certificados.index',
+        'create' => 'calibracion.certificados.create',
+        'edit'  => 'calibracion.certificados.edit',
+        'update' => 'calibracion.certificados.update',
+        'store' => 'calibracion.certificados.store',
+        'destroy' => 'calibracion.certificados.destroy',
+        'show' => 'calibracion.certificados.show'
+    ])->middleware('can:panel.admin');
+
+    Route::resource('/mantenimientos/tecnicos/grupos', 'GrupoTecnicoController')->names([
+        'index' => 'tecnicos.grupos.index',
+        'create' => 'tecnicos.grupos.create',
+        'edit'  => 'tecnicos.grupos.edit',
+        'update' => 'tecnicos.grupos.update',
+        'store' => 'tecnicos.grupos.store',
+        'destroy' => 'tecnicos.grupos.destroy',
+        'show' => 'tecnicos.grupos.show'
+    ])->middleware('can:panel.admin');
+
+    Route::resource('/mantenimientos/tecnicos', 'TecnicoController')->middleware('can:panel.admin');
+
+
+    # -- Usuarios --
+    Route::resource('/usuarios', 'UsuarioController')->middleware('can:panel.database');
+    Route::get('/usuario/active/{id}', 'UsuarioController@active')->name('usuarios.active')->middleware('can:panel.database');
+    Route::get('/usuario/tecnicos', 'UsuarioController@getTecnicos')->name('usuarios.tecnicos')->middleware('can:panel.admin');
+
+
+    # -- Tecnico --
     Route::prefix('perfil')->name('perfil.')->group(function () {
         Route::get('/dashboard', [PerfilController::class, 'index'])->name('index')->middleware('can:tecnico');
-        /***************************************************************** Resources *****************************************************************/
 
         Route::resource('/informes', 'InformeController')->names([
             'index' => 'informes.index',
@@ -188,42 +211,14 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
         ])->middleware('can:tecnico');
     });
 
-    # -- Expedientes --
 
-    Route::get('/expedientes/agenda', [ExpedienteController::class, 'agenda'])->name('expedientes.agenda')->middleware('can:panel.admin');
-
-    /***************************************************************** Resources *****************************************************************/
-
-
-    # -- Expedientes (Resources) --
-
-    Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:panel.admin');
-    Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');
-
-    # -- Certificados (Resources) --
-
-    Route::resource('/calibracion/certificados', 'CertificadoController')->names([
-        'index' => 'calibracion.certificados.index',
-        'create' => 'calibracion.certificados.create',
-        'edit'  => 'calibracion.certificados.edit',
-        'update' => 'calibracion.certificados.update',
-        'store' => 'calibracion.certificados.store',
-        'destroy' => 'calibracion.certificados.destroy',
-        'show' => 'calibracion.certificados.show'
-    ])->middleware('can:panel.admin');
-
-    Route::resource('/mantenimientos/tecnicos/grupos', 'GrupoTecnicoController')->names([
-        'index' => 'tecnicos.grupos.index',
-        'create' => 'tecnicos.grupos.create',
-        'edit'  => 'tecnicos.grupos.edit',
-        'update' => 'tecnicos.grupos.update',
-        'store' => 'tecnicos.grupos.store',
-        'destroy' => 'tecnicos.grupos.destroy',
-        'show' => 'tecnicos.grupos.show'
-    ])->middleware('can:panel.admin');
-
-    Route::resource('/mantenimientos/tecnicos', 'TecnicoController')->middleware('can:panel.admin');
 });
+
 
 // Quick search dummy route to display html elements in search dropdown (header search)
 #Route::get('/quick-search', [PagesController::class, 'quickSearch'])->name('quick-search');
+
+// Route::get('/test', function(){
+//     $expediente = Expediente::find(1);
+//     return $expediente->servicios->priority;
+// });

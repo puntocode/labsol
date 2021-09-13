@@ -11,6 +11,7 @@ use App\Models\Procedimiento;
 use App\Models\EntradaInstrumento;
 use App\Http\Controllers\Controller;
 use App\Models\EntradaInstrumentoService;
+use App\Models\Expediente;
 
 class EntradaInstrumentoController extends Controller
 {
@@ -44,15 +45,26 @@ class EntradaInstrumentoController extends Controller
      */
     public function store(Request $request)
     {
+        $servicioModel = [];
         $entradaInstrumento = EntradaInstrumento::create($this->validateData());
-        foreach($request['servicio'] as $servicio){
-            EntradaInstrumentoService::create([
-                'entrada_instrumento_id' => $entradaInstrumento->id,
-                'instrumento_id'         => $servicio['instrumento_id'],
-                'quantity'               => $servicio['quantity'],
-                'service'                => $servicio['service'],
-            ]);
-        };
+
+        #-- Insertamos los servicios en EntradaInstrumentoService-----------------------------------
+        foreach ($request['servicio'] as $servicio) {
+            $servicioModel[] = new EntradaInstrumentoService($servicio);
+        }
+        $entradaInstrumentoServicio = $entradaInstrumento->servicio()->saveMany($servicioModel);
+
+        #-- Creamos los expedientes de acuerdo a la cantidad de servicios---------------------------
+        foreach($entradaInstrumentoServicio as $servicio){
+            $expedienteModel=[];
+            for ($i = 1; $i <= $servicio->quantity; $i++) {
+                $newExp = new Expediente();
+                $newExp->type = $entradaInstrumento->type;
+                $expedienteModel[] = $newExp;
+            }
+            $servicio->expedientes()->saveMany($expedienteModel);
+        }
+
         return response()->json(['data' => $entradaInstrumento], 201);
     }
 
@@ -120,18 +132,12 @@ class EntradaInstrumentoController extends Controller
     public function validateData()
     {
         return request()->validate([
-            'certificate'        => 'required',
-            'certificate_adress' => 'nullable',
-            'certificate_ruc'    => 'nullable',
-            'cliente_id'         => 'required',
-            'cliente_id'         => 'required',
-            'contact'            => 'nullable',
-            'delivered'          => 'nullable',
-            'identification'     => 'nullable',
-            'obs'                => 'nullable',
-            'priority'           => 'required|in:NORMAL,URGENTE',
-            'type'               => 'required|in:LS,LSI',
-            'user_id'            => 'nullable',
+            'cliente_id'     => 'required',
+            'contact'        => 'nullable',
+            'delivered'      => 'nullable',
+            'identification' => 'nullable',
+            'type'           => 'required|in:LS,LSI',
+            'user_id'        => 'nullable',
         ]);
     }
 
@@ -141,7 +147,6 @@ class EntradaInstrumentoController extends Controller
             'usuarios'           => User::all(),
             'clientes'           => Cliente::all(),
             'instrumentos'       => Instrumento::all(),
-            // 'procedimientos'     => Procedimiento::all(),
             'entradaInstrumento' => $entradaInstrumento === null ? null : $entradaInstrumento,
             'id'                 => $entradaInstrumento === null ? 0 : $entradaInstrumento->id,
         ];

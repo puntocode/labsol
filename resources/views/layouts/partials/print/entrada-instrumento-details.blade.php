@@ -48,34 +48,6 @@
         </div>
     </section>
 
-    <section class="mt-8">
-        <div class="row">
-            <div class="col-12 bg-secondary mb-3 py-2">
-                <h4 class="font-bold text-center">CERTIFICADO</h4>
-            </div>
-
-            <div class="col-2 bg-secondary py-2 border-white">
-                <span class="font-bold">A NOMBRE DE:</span>
-            </div>
-            <div class="col-10 bg-light py-2 border-white">
-                <span>{{  $entradaInstrumento->certificate }}</span>
-            </div>
-
-            <div class="col-2 bg-secondary py-2 border-white">
-                <span class="font-bold">DIRECCION</span>
-            </div>
-            <div class="col-6 bg-light py-2 border-white">
-                <span>{{ isset($entradaInstrumento->certificate_adress) ? $entradaInstrumento->certificate_adress : '-' }}</span>
-            </div>
-
-            <div class="col-2 bg-secondary py-2 border-white">
-                <span class="font-bold">RUC</span>
-            </div>
-            <div class="col-2 bg-light py-2 border-white">
-                <span>{{ isset($entradaInstrumento->certificate_ruc) ? $entradaInstrumento->certificate_ruc : '-' }}</span>
-            </div>
-    </section>
-
     @if ($entradaInstrumento->type === 'LS')
         <section class="row mt-8">
             <div class="col-4 bg-secondary py-2 border-white">
@@ -102,73 +74,71 @@
     @endif
 
     <section class="mt-8">
-        <div class="row text-center">
-            <div class="col-12 bg-secondary mb-3 py-2">
+        <div class="row mb-8">
+            <div class="col-12 bg-secondary py-2 text-center">
                 <h4 class="font-bold">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
-            </div>
-
-            <div class="col-2 bg-secondary py-2 border-white">
-                <span class="font-bold">Cantidad</span>
-            </div>
-            <div class="col-7 bg-secondary py-2 border-white">
-                <span class="font-bold">Servicio</span>
-            </div>
-            <div class="col-3 bg-secondary py-2 border-white">
-                <span class="font-bold">Equipo</span>
             </div>
         </div>
 
         @foreach ($entradaInstrumento->servicio as $servicio)
             <div class="row">
+                <div class="col-2 bg-secondary py-2 border-white">
+                    <span class="font-bold">Cantidad</span>
+                </div>
+                <div class="col-6 bg-secondary py-2 border-white">
+                    <span class="font-bold">Equipo</span>
+                </div>
+                <div class="col-4 bg-secondary py-2 border-white">
+                    <span class="font-bold">Servicio</span>
+                </div>
+
                 <div class="col-2 bg-light py-2 border-white">
                     <span>{{  $servicio->quantity }}</span>
                 </div>
-                <div class="col-7 bg-light py-2 border-white">
+                <div class="col-6 bg-light py-2 border-white">
+                    <span>{{  $servicio->instrumento->name }}</span>
+                </div>
+                <div class="col-4 bg-light py-2 border-white">
                     <span>{{  $servicio->service }}</span>
                 </div>
-                <div class="col-3 bg-light py-2 border-white">
-                    <span>{{  $servicio->instrumento->name }}</span>
+
+                <div class="col-12 bg-secondary py-2 border-white">
+                    <span class="font-bold">Observación: </span>
+                </div>
+                <div class="col-12 bg-light py-2 border-white">
+                    <span>{{ isset($entradaInstrumento->obs) ? $entradaInstrumento->obs : '-' }}</span>
+                </div>
+            </div>
+
+            <div class="row mb-10">
+                <div class="col-12 bg-secondary text-center border-white">
+                    <h5 class="font-bold pt-2">CERTIFICADO</h5>
+                </div>
+
+                <div class="col-2 bg-secondary py-2 border-white">
+                    <span class="font-bold">A NOMBRE DE:</span>
+                </div>
+                <div class="col-10 bg-light py-2 border-white">
+                    <span>{{  $servicio->certificate }}</span>
+                </div>
+
+                <div class="col-2 bg-secondary py-2 border-white">
+                    <span class="font-bold">DIRECCIÓN:</span>
+                </div>
+                <div class="col-6 bg-light py-2 border-white">
+                    <span>{{  $servicio->certificate_adress }}</span>
+                </div>
+
+                <div class="col-2 bg-secondary py-2 border-white">
+                    <span class="font-bold">RUC:</span>
+                </div>
+                <div class="col-2 bg-light py-2 border-white">
+                    <span>{{  $servicio->certificate_ruc }}</span>
                 </div>
             </div>
         @endforeach
 
-
-        <div class="row mt-3">
-            <div class="col-12 bg-secondary py-2 border-white">
-                <span class="font-bold">Observación: </span>
-            </div>
-            <div class="col-12 bg-light py-2 border-white">
-                <span>{{ isset($entradaInstrumento->obs) ? $entradaInstrumento->obs : '-' }}</span>
-            </div>
-        </div>
     </section>
 
-    {{-- <div class="row mt-4">
-        <div class="col-md-12">
-            <h4>Instrumento</h4>
-            <hr>
-        </div>
 
-        <div class="form-group col-md-3">
-            <label>Cantidad</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->quantity }}</span>
-        </div>
-
-        <div class="form-group col-md-5">
-            <label>Servicio</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->procedimiento->name }}</span><br>
-            {{$entradaInstrumento->procedimiento->code }}
-        </div>
-
-        <div class="form-group col-md-4">
-            <label>Equipo</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->instrumento->name }}</span>
-        </div>
-
-
-        <div class="form-group col-md-12">
-            <label>Observaciones</label>
-            <span class="font-weight-bold">{{ $entradaInstrumento->obs }}</span>
-        </div>
-    </div> --}}
 </div>

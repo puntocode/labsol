@@ -9,7 +9,6 @@ class EntradaInstrumento extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $appends = ['prioridad'];
     protected $casts   = [ 'contact' => 'array' ];
     // protected $with    = [ 'servicio'];
 
@@ -30,13 +29,7 @@ class EntradaInstrumento extends Model
     }
 
 
-    public function getPrioridadAttribute(){
-        $prioridad = [
-            'prioridad' => $this->attributes['priority'] === 'NORMAL' ? 'NORMAL' : 'URGENTE - 24HS.',
-            'color' => $this->attributes['priority'] === 'NORMAL' ? 'primary' : 'danger'
-        ];
-        return $prioridad;
-    }
+
 
 
 }

@@ -22,7 +22,7 @@
     </li>
 
     <li class="nav-item mr-3">
-        <a href="#" class="nav-link py-4 px-6 @if (Request::is('panel/expedientes*')) active @endif" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
+        <a href="#" class="nav-link py-4 px-6 @if (Request::is('panel/expediente*')) active @endif" data-toggle="tab" data-target="#kt_header_tab_4" role="tab">
             Expedientes de Calibración
         </a>
     </li>

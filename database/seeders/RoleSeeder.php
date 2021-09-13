@@ -23,6 +23,8 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name' => 'panel.admin'])->syncRoles([$roleGerenciaTecnica]);
         Permission::create(['name' => 'panel.database'])->syncRoles([$roleGerenciaTecnica, $roleJefaturaCalidad]);
+        Permission::create(['name' => 'panel.datos_calibracion'])->syncRoles([$roleGerenciaTecnica, $roleJefaturaCalidad, $rolePersonalLaboratorio, $roleJefaturaCalidad]);
+        Permission::create(['name' => 'panel.gestion_lsi'])->syncRoles([$roleGerenciaTecnica, $roleJefaturaCalidad, $rolePersonalLaboratorio, $roleJefaturaCalidad]);
 
     }
 }
