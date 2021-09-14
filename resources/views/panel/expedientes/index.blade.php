@@ -48,8 +48,8 @@
 							<label>Modalidad</label>
 							<select class="form-control datatable-input" data-col-index="0">
 								<option value="">Todas</option>
-								<option value="LS">LS</option>
-								<option value="LSI">LSi</option>
+								<option value="LS-">LS</option>
+								<option value="LSI-">LSi</option>
 							</select>
 						</div>
 
