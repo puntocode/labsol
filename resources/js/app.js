@@ -38,6 +38,7 @@ Vue.component('procedimiento-card', require('./components/procedimientos/Procedi
 Vue.component('entrada-form',       require('./components/entrada-instrumentos/EntradaForm.vue').default);
 Vue.component('documentos',         require('./components/documentos/Documentos.vue').default);
 
+Vue.component('cabecera-print',     require('./components/CabeceraPrint.vue').default);
 Vue.component('table-delete',       require('./components/TableDelete.vue').default);
 Vue.component('hoja-vida',          require('./components/HojaVida.vue').default);
 Vue.component('list-doc',           require('./components/ListDoc.vue').default);

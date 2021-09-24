@@ -7,7 +7,7 @@
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
     export default {
         components: { vueDropzone: vue2Dropzone },
-        props: ['url', 'folder', 'category'],
+        props: ['url', 'data'],
         data() {
             return {
                 dropzoneOptions: {
@@ -19,12 +19,18 @@
                     acceptedFiles: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt',
                     headers: {
                         'X-CSRF-TOKEN': window._token,
-                        'FOLDER': this.folder,
-                        'CATEGORY': this.category
+                        'FOLDER': this.data.folder,
+                        'CATEGORY': this.data.category,
+                        idioma: this.data.idioma,
                     }
                 }
             }
         },
+        watch:{
+            'data.idioma': function(){
+                this.dropzoneOptions.headers.idioma = this.data.idioma;
+            }
+        }
     }
 </script>
 

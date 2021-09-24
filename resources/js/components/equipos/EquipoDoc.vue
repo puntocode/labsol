@@ -13,27 +13,23 @@
                         <span class="nav-text">Manual</span>
                     </a>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab_documento">
-                        <span class="nav-text">Certificados</span>
-                    </a>
-                </li>
             </ul>
         </div>
 
         <div class="card-body px-0">
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab_calibracion" role="tabpanel" aria-labelledby="tab_calibracion">
-                    <Documentos :url="rutas.storeDoc" :folder="folderPatron" category="DOCUMENTOS" />
+                    <Documentos :url="rutas.storeDoc" :data="documento"  />
                 </div>
 
                 <div class="tab-pane fade" id="tab_mantenimiento" role="tabpanel" aria-labelledby="tab_mantenimiento">
-                    <Documentos :url="rutas.storeDoc" :folder="folderManual" category="MANUAL" />
-                </div>
-
-                <div class="tab-pane fade" id="tab_documento" role="tabpanel" aria-labelledby="tab_documento">
-                    <Documentos :url="rutas.storeDoc" :folder="folderCertificados" category="CERTIFICADOS" />
+                    <div class="form-group">
+                        <label for="idiomas">Idioma</label>
+                        <select class="form-control" id="idiomas" v-model="manual.idioma">
+                            <option v-for="(idioma, index) in idiomas" :key="index" :id="idioma" class="text-capitalize">{{idioma}}</option>
+                        </select>
+                    </div>
+                    <Documentos :url="rutas.storeDoc" :data="manual" />
                 </div>
             </div>
         </div>
@@ -48,10 +44,10 @@
         data() {
             return {
                 rutas: window.routes,
-                folderPatron: 'equipos/',
-                folderManual: 'equipos/manual/',
-                folderCertificados: 'equipos/certificados/'
+                manual: { folder: 'equipos/manual/', category: 'MANUAL', idioma: 'español' },
+                documento: { folder: 'equipos/', category: 'DOCUMENTOS', idioma: 'español' },
+                idiomas: ['ESPAÑOL', 'INGLES', 'PORTUGUES', 'CHINO', 'JAPONES', 'ALEMAN']
             }
-        },
+        }
     }
 </script>

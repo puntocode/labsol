@@ -9,8 +9,8 @@ class Patron extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
-    protected $appends = [ 'title', 'periodo' ];
+    protected $guarded = ['id'];
+    protected $appends = [ 'title', 'periodo', 'idioma' ];
     protected $casts = [
         'rank' => 'array',
         'error_max' => 'array',
@@ -28,6 +28,10 @@ class Patron extends Model
 
     public function alertCalibration(){
         return $this->belongsTo(AlertCalibration::class);
+    }
+
+    public function procedimientos(){
+        return $this->belongsTo(Procedimiento::class, 'procedimiento_id');
     }
 
     public function documents(){
@@ -54,6 +58,7 @@ class Patron extends Model
         return 'PATRÓN';
     }
 
+
     public function getPeriodoAttribute(){
         $periodo = $this->calibration_period;
 
@@ -64,12 +69,18 @@ class Patron extends Model
         }
     }
 
+    public function getIdiomaAttribute()
+    {
+        $manual = $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'MANUAL')->first();
+        return isset($manual) ? $manual->idioma : '-';
+    }
+
 
     public function getDocuments(){
         $data = [
             'documentos' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'DOCUMENTOS')->get(),
             'manual' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'MANUAL')->get(),
-            'certificados' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'CERTIFICADOS')->get(),
+            // 'certificados' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'CERTIFICADOS')->get(),
         ];
 
         return $data;

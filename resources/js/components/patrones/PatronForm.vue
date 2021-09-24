@@ -12,45 +12,86 @@
             <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" :style="{'width': `${progress}%` }"></div>
         </div>
 
-        <!-- fieldsets -->
+        <!-- fieldsets Basico -->
         <fieldset v-if="this.steps == 1">
-            <div class="form-card">
+            <div class="form-card mb-12">
                 <div class="d-flex justify-content-between mb-3">
                     <h4 class="font-weight-bold">Datos básicos:</h4>
                     <h2 class="steps">Paso 1 - 4</h2>
                 </div>
 
-                <div class="form-group">
-                    <label>Código <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" v-model.trim="$v.form.code.$model" :class="{'is-invalid': $v.form.code.$error }" />
-                    <div class="invalid-feedback"><span v-if="!$v.form.code.required">Este campo es requerido</span></div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label>Código <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model.trim="$v.form.code.$model" :class="{'is-invalid': $v.form.code.$error }" />
+                        <div class="invalid-feedback"><span v-if="!$v.form.code.required">Este campo es requerido</span></div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <label>Descripción <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model.trim="$v.form.description.$model" :class="{'is-invalid': $v.form.description.$error}" />
+                        <div class="invalid-feedback"><span v-if="!$v.form.description.required">Este campo es requerido</span></div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Descripción<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" v-model.trim="$v.form.description.$model" :class="{'is-invalid': $v.form.description.$error}" />
-                    <div class="invalid-feedback"><span v-if="!$v.form.description.required">Este campo es requerido</span></div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label>Marca</label>
+                        <input type="text" class="form-control" v-model="form.brand" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Modelo</label>
+                        <input type="text" class="form-control" v-model="form.model" />
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Marca</label>
-                    <input type="text" class="form-control" v-model="form.brand" />
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label>Tipo</label>
+                        <input class="form-control" v-model="form.type" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>N° de serie</label>
+                        <input type="text" class="form-control" v-model="form.serie_number" />
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Nro. de Certificado</label>
-                    <input type="text" class="form-control" v-model="form.certificate_no"/>
+                <div class="form-group row">
+                   <div class="col-md-6">
+                        <label>Incertidumbre</label>
+                        <input class="form-control" v-model="form.uncertainty" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Tolerancia</label>
+                        <input class="form-control" v-model="form.tolerance" />
+                    </div>
                 </div>
             </div>
 
             <button type="button" class="next action-button btn btn-primary float-right" @click="next">Siguiente</button>
         </fieldset>
 
+        <!-- fieldsets Calibración -->
         <fieldset v-if="this.steps == 2">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">
                     <h4 class="font-weight-bold">Estados:</h4>
                     <h2 class="steps">Paso 2 - 4</h2>
+                </div>
+
+                 <div class="form-group row mb-10">
+                   <div class="col-md-6">
+                        <label>Ubicación</label>
+                        <input class="form-control" v-model="form.ubication" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Procedimiento de Calibración</label>
+                        <Select2 v-model="form.procedimiento_id" :options="selectProcedimientos" />
+                    </div>
                 </div>
 
                 <div class="form-group row">
@@ -97,7 +138,7 @@
                     </div>
                 </div>
 
-                <div id="form-rank" class="form-group">
+                <div id="form-rank" class="form-group mb-12">
                     <label>Rango</label>
                     <div class="d-flex mt-3" v-for="(rank, index) in form.rank" :key="index">
                         <input type="text" class="form-control" v-model="form.rank[index]" />
@@ -213,12 +254,12 @@
     import datePicker from 'vue-bootstrap-datetimepicker';
     import SuccessAnimation from '../SuccessAnimation';
     import SelectForm from '../SelectForm';
+    import Select2 from 'v-select2-component';
+
 
     export default {
-        components: {
-          datePicker, SuccessAnimation, SelectForm
-        },
-        props: ['form', 'action', 'rutas'],
+        components: { datePicker, SuccessAnimation, SelectForm, Select2 },
+        props: ['form', 'action', 'rutas', 'selectProcedimientos'],
         data() {
             return {
                 steps: 1,

@@ -149,6 +149,7 @@ class EquipoController extends Controller
             'extension' => $arrayDoc['extension'],
             'name' => $arrayDoc['nombre'],
             'category' => $request->header('category'),
+            'idioma' => $request->header('idioma'),
             'url' => $arrayDoc['url']
         ]);
         return response()->json($equipo);

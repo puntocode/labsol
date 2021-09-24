@@ -28,8 +28,9 @@ class EntradaInstrumento extends Model
         return $this->hasMany(EntradaInstrumentoService::class);
     }
 
-
-
+    public function getCreatedAtAttribute(){
+        return date('d-m-Y', strtotime($this->attributes['created_at']));
+    }
 
 
 }

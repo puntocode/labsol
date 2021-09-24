@@ -1,6 +1,7 @@
 <template>
     <div class="card-body">
         <form class="mb-5 px-10" autocomplete="off" @submit.prevent="submit" v-if="formulario">
+            <!-- Información del Cliente -->
             <div class="row">
                 <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
                     <h4 class="font-bold">INFORMACIÓN DEL CLIENTE</h4>
@@ -22,67 +23,39 @@
                 </div>
             </div>
 
-            <div>
-                <div class="row mt-8">
-                    <div class="col-12 col-lg-8">
-                        <div class="form-group">
-                            <label>Contacto <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" :value="form.contact.nombre" disabled v-if="readOnly">
-                            <Select2 id="select-contact" v-model="form.contact.nombre" :options="selectContacto" @select="selectContacChange($event)" v-else />
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-lg-4">
-                        <div class="form-group">
-                            <label>Teléfono / Cel</label>
-                            <input type="text" class="form-control" :value="form.contact.telefono" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-lg-8">
-                        <div class="form-group">
-                            <label>Dirección</label>
-                            <input type="text" class="form-control" v-model="form.contact.direccion">
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-lg-4">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" class="form-control" v-model="form.contact.email">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- <div class="row mt-8">
-                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
-                    <h4 class="font-bold">CERTIFICADO</h4>
-                </div>
-
+            <!-- Elegir el contacto del Cliente -->
+            <div class="row mt-8">
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
-                        <label>A nombre de: <span class="text-danger">*</span></label>
-                        <input type="text" v-model.trim="$v.form.certificate.$model" class="form-control" :class="{'is-invalid': $v.form.certificate.$error}" />
-                        <div class="invalid-feedback"><span v-if="!$v.form.certificate.$model">Este campo es requerido</span></div>
+                        <label>Contacto <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" :value="form.contact.nombre" disabled v-if="readOnly">
+                        <Select2 id="select-contact" v-model="form.contact.nombre" :options="selectContacto" @select="selectContacChange($event)" v-else />
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
-                        <label>RUC</label>
-                        <input class="form-control" v-model="form.certificate_ruc">
+                        <label>Teléfono / Cel</label>
+                        <input type="text" class="form-control" :value="form.contact.telefono" disabled>
                     </div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label>Dirección</label>
-                        <input class="form-control" v-model="form.certificate_adress">
+                        <input type="text" class="form-control" v-model="form.contact.direccion" disabled>
                     </div>
                 </div>
-            </div> -->
 
+                <div class="col-12 col-lg-4">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" v-model="form.contact.email" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control de ingreso de instrumentos -->
             <div class="row mt-8">
                 <div class="col-12 text-center mx-0 p-2 bg-secondary position-relative">
                     <h4 class="font-bold w-100">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
@@ -93,6 +66,7 @@
                 </div>
             </div>
 
+            <!-- Agregar mas Instrumentos -->
             <div class="row mt-2 border-bottom border-primary py-5" v-for="(v, index) in $v.form.servicio.$each.$iter" :key="index">
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
@@ -132,7 +106,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-12">
                     <div class="form-group">
                         <label>Observaciones</label>
@@ -163,15 +136,27 @@
                 </div>
             </div>
 
+            <!-- Obs general & Elegir LS o LSI -->
+            <div class="row mt-8">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Observaciones Generales </label>
+                        <textarea v-model="form.obs_general" class="form-control"></textarea>
+                    </div>
+                </div>
 
-            <div class="radio-inline type mt-6" v-if="!readOnly">
-                <p class="my-auto mx-4">Ingreso</p>
-                <input type="radio" id="LS" value="LS" v-model="form.type">
-                <label for="LS">LS</label>
-                <input type="radio" id="LSI" value="LSI" v-model="form.type">
-                <label for="LSI">LSI</label>
+                <div class="col-12">
+                    <div class="radio-inline type mt-6" v-if="!readOnly">
+                        <p class="my-auto mx-4">Ingreso</p>
+                        <input type="radio" id="LS" value="LS" v-model="form.type">
+                        <label for="LS">LS</label>
+                        <input type="radio" id="LSI" value="LSI" v-model="form.type">
+                        <label for="LSI">LSI</label>
+                    </div>
+                </div>
             </div>
 
+            <!-- Control de Recepción de istrumentos -->
             <div class="row mt-8" v-if="form.type === 'LS'">
                 <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
                     <h4 class="font-bold">CONTROL DE RECEPCIÓN DE INSTRUMENTOS</h4>
@@ -201,6 +186,7 @@
                 </div>
             </div>
 
+            <!-- Boton de Insertar -->
             <div class="row mt-8">
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-primary" :disabled="disable" title="Completa todos los campos requeridos"> {{ textoBtn }}</button>
@@ -245,6 +231,7 @@
                     contact: {},
                     delivered: '',
                     identification: '',
+                    obs_general: '',
                     servicio: [{
                         certificate: '',
                         certificate_adress: '',
@@ -343,6 +330,7 @@
 
                 this.form.servicio[0].certificate = this.cliente.name;
                 this.form.servicio[0].certificate_ruc = this.cliente.ruc;
+                this.form.servicio[0].certificate_adress = '';
             },
 
             async datosModificar(){
@@ -354,6 +342,7 @@
 
             selectContacChange(event){
                 this.form.contact = { nombre: event.text, email: event.email, telefono: event.telefono, direccion: event.direccion};
+                this.form.servicio[0].certificate_adress = event.direccion;
             },
         },
 

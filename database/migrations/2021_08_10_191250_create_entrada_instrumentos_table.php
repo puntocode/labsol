@@ -22,7 +22,7 @@ class CreateEntradaInstrumentosTable extends Migration
             $table->foreignId('cliente_id')->constrained()->onDelete('cascade');
             $table->json('contact')->nullable();
             $table->integer('identification')->nullable();
-            // $table->text('obs')->nullable();
+            $table->text('obs_general')->nullable();
             // $table->enum('priority', ['NORMAL', 'URGENTE'])->default('NORMAL');
             $table->enum('type', ['LS', 'LSI'])->default('LS');
             $table->unsignedBigInteger('user_id')->nullable();

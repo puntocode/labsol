@@ -45,8 +45,10 @@
 								{{-- <th>N° Exp</th> --}}
 								<th>Cliente</th>
 								<th>Contacto</th>
+								<th>Email</th>
 								<th>Direccion</th>
-								<th>Telefono</th>
+								<th>Teléfono</th>
+								<th>F. de Creación</th>
 								<th class="text-center">Detalle</th>
 							</tr>
 						</thead>
@@ -56,8 +58,10 @@
 									{{-- <td>{{$entrada->type}}-{{$entrada->id}}</td> --}}
 									<td>{{$entrada->cliente->name}}</td>
 									<td>{{$entrada->contact['nombre']}}</td>
+									<td>{{$entrada->contact['email']}}</td>
 									<td>{{$entrada->contact['direccion']}}</td>
 									<td>{{$entrada->contact['telefono']}}</td>
+									<td>{{$entrada->created_at}}</td>
 									<td class="text-center">
                                         <a href="{{ route('panel.entrada-instrumentos.show', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Ver Entrada Instrumento">
                                             <i class="fas fa-list text-primary"></i>

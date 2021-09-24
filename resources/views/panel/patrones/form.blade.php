@@ -65,26 +65,28 @@
 
 @section('rutas')
     <script>
-        const showRoute        = `{{ route('panel.patrones.show', isset($patrone) ? $patrone->id : 0) }}`
-        const updateRoute      = `{{ route('panel.patrones.update', isset($patrone) ? $patrone->id : 0) }}`
-        const getPatron        = `{{ route('panel.patron.get', isset($patrone) ? $patrone->id : 0) }}`
-        const indexRoute       = `{{ route('panel.patrones.index') }}`
-        const createRoute      = `{{ route('panel.patrones.create') }}`
-        const storeRoute       = `{{ route('panel.patrones.store') }}`
-        const patronCondition  = `{{ route('panel.condition.all') }}`
-        const patronMagnitud   = `{{ route('panel.magnitud.all') }}`
-        const alertCalibration = `{{ route('panel.alert.calibration') }}`
+        const showRoute        = '{{ route('panel.patrones.show', isset($patrone) ? $patrone->id : 0) }}'
+        const updateRoute      = '{{ route('panel.patrones.update', isset($patrone) ? $patrone->id : 0) }}'
+        const getPatron        = '{{ route('panel.patron.get', isset($patrone) ? $patrone->id : 0) }}'
+        const procedimientos   = '{{ route('panel.procedimientos.index') }}'
+        const alertCalibration = '{{ route('panel.alert.calibration') }}'
+        const createRoute      = '{{ route('panel.patrones.create') }}'
+        const indexRoute       = '{{ route('panel.patrones.index') }}'
+        const storeRoute       = '{{ route('panel.patrones.store') }}'
+        const patronCondition  = '{{ route('panel.condition.all') }}'
+        const patronMagnitud   = '{{ route('panel.magnitud.all') }}'
 
         window.routes = {
-            'show'      : showRoute,
-            'store'     : storeRoute,
-            'update'    : updateRoute,
-            'index'     : indexRoute,
-            'create'    : createRoute,
-            'getPatron' : getPatron,
-            'condition' : patronCondition,
-            'magnitud'  : patronMagnitud,
-            'alertCal'  : alertCalibration,
+            'show': showRoute,
+            'store': storeRoute,
+            'index': indexRoute,
+            'update': updateRoute,
+            'create': createRoute,
+            'getPatron': getPatron,
+            'magnitud': patronMagnitud,
+            'condition': patronCondition,
+            'alertCal': alertCalibration,
+            'procedimientos': procedimientos,
         }
     </script>
 @endsection

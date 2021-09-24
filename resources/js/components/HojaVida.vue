@@ -58,7 +58,7 @@
                             <span>Ubicación</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>-</span>
+                            <span>{{ array.data.ubication }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -74,7 +74,7 @@
                             <span>Modelo</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span></span>
+                            <span>{{ array.data.model }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -82,7 +82,7 @@
                             <span>Tipo</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span></span>
+                            <span>{{ array.data.type }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -90,7 +90,7 @@
                             <span>Nro. de Serie* </span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span></span>
+                            <span>{{ array.data.serie_number }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -103,14 +103,14 @@
                                 <span class="bg-gray py-2">NO</span>
                             </div>
                             <div class="w-100 d-flex flex-column">
-                                <span class="bg-light mb-1 py-2">-</span>
-                                <span class="bg-light py-2">-</span>
+                                <span class="bg-light mb-1 py-2" v-text="manual ? 'X' : '-'"></span>
+                                <span class="bg-light py-2" v-text="manual ? '-' : 'X'"></span>
                             </div>
                             <div class="w-100 bg-gray d-flex justify-content-center align-items-center">
                                 <span>Idioma del Manual*</span>
                             </div>
                             <div class="w-100 bg-light d-flex justify-content-center align-items-center">
-                                <span>-</span>
+                                <span>{{ array.data.idioma }}</span>
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                             <span>Tolerancia</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span v-if="array.data.title === 'EQUIPO'">{{ array.data.error_max }}</span>
+                            <span>{{ array.data.tolerance }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -143,18 +143,18 @@
                             <span>Incertidumbre</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>-</span>
+                            <span>{{ array.data.uncertianty }}</span>
                         </div>
                     </div>
                 </section>
 
-                <section class="mb-5">
+                <section class="mb-5 mt-4">
                     <div class="row mt-2">
                         <div class="col-3 bg-gray py-2">
                             <span>Sujeto a Calibración</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>SI</span>
+                            <span>{{ sujetoCalibracion }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -167,14 +167,14 @@
                                 <span class="bg-gray py-2">EXTERNA</span>
                             </div>
                             <div class="w-100 d-flex flex-column">
-                                <span class="bg-light mb-1 py-2">-</span>
-                                <span class="bg-light py-2">-</span>
+                                <span class="bg-light mb-1 py-2" v-text="externa"></span>
+                                <span class="bg-light py-2" v-text="interna"></span>
                             </div>
                             <div class="w-100 bg-gray d-flex justify-content-center align-items-center">
                                 <span class="px-3">Procedimiento de Calibración</span>
                             </div>
                             <div class="w-100 bg-light d-flex justify-content-center align-items-center">
-                                <span>-</span>
+                                <span v-text="procedimiento"></span>
                             </div>
                         </div>
                     </div>
@@ -183,15 +183,15 @@
                             <span>Periodo de Calibración</span>
                         </div>
                         <div class="col-9 px-0 d-flex text-center align-items-stretch">
-                            <div class="w-100 bg-light d-flex justify-content-center align-items-center">
-                                <span>{{ array.data.calibration_period }}</span>
+                            <div class="w-100 bg-light d-flex align-items-center">
+                                <span class="pl-3">{{ array.data.periodo }}</span>
                             </div>
                             <div class="w-100 bg-light d-flex justify-content-center align-items-center">
                             </div>
-                            <div class="w-100 bg-gray d-flex justify-content-center align-items-center">
+                            <div v-if="array.data.title === 'EQUIPO'" class="w-100 bg-gray d-flex justify-content-center align-items-center">
                                 <span>Periodo de Mantenimiento</span>
                             </div>
-                            <div class="w-100 bg-light d-flex justify-content-center align-items-center">
+                            <div v-if="array.data.title === 'EQUIPO'" class="w-100 bg-light d-flex justify-content-center align-items-center">
                                 <span>-</span>
                             </div>
                         </div>
@@ -270,9 +270,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rasterizehtml/1.3.0/rasterizeHTML.allinone.js"></script>
 
 <script>
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
-
     export default {
         props: ['array'],
         data() {
@@ -283,33 +280,26 @@ import html2canvas from 'html2canvas'
         methods:{
             descargarPdf(){
                 window.print();
-
-                // html2canvas(document.querySelector('#html'))
-                //     .then(canvas => {
-                //         const imgData = canvas.toDataURL('image/jpeg');
-                //         const img = new Image();
-                //         img.src = imgData;
-
-                //         // Establezca la especificación pdf de acuerdo con el tamaño de la imagen y ejecútela cuando la imagen se cargue correctamente. El motivo de * 0.5 se debe al problema de la relación
-                //         img.onload =  () => {
-                //             // Cabe señalar aquí que los dos atributos de pdf horizontal y vertical, deben ajustarse de acuerdo con la relación de ancho a alto, de lo contrario habrá un problema de visualización incompleto
-                //             const doc = new jsPDF('p','mm', 'a4') //orientacion, unidad de medida, tamaño
-
-                //             // if (img.width > img.height) doc = new jsPDF('l', 'mm', [img.width * 0.5, img.height * 0.5])
-                //             // else doc = new jsPDF('p', 'mm', [img.width * 0.5, img.height * 0.5])
-                //             console.log(img.width + ' - ' + img.height)
-
-                //             // La relación se puede ajustar según sea necesario
-                //             doc.addImage (imgData, 'jpeg', 10, 15, img.width * 0.175, img.height * 0.175)
-                //             //doc.addImage (imgData, 'jpeg', 0, 15, 210, 163)
-                //             doc.save(`${this.array.data.code}.pdf`)
-                //         }
-                //     })
-
             }
-        }
+        },
+        computed: {
+            sujetoCalibracion() {
+                return this.array.data.alert_calibration_id === 3 ? 'NO' : 'SI';
+            },
+            externa(){
+                return this.array.data.alert_calibration_id === 2 || this.array.data.alert_calibration_id === 4 ? 'X' : '-';
+            },
+            interna(){
+                return this.array.data.alert_calibration_id === 1 || this.array.data.alert_calibration_id === 4 ? 'X' : '-';
+            },
+            procedimiento(){
+                return this.array.data.procedimientos === null ? '-' : this.array.data.procedimientos.code;
+            },
+            manual(){
+                return this.array.data.idioma === '-' ? false : true;
+            }
+        },
     }
-
 </script>
 
 <style lang="scss">

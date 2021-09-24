@@ -17,7 +17,13 @@ class CreateEquiposTable extends Migration
             $table->id();
             $table->uuid('code');
             $table->string('description');
-            $table->string('brand', 50)->nullable();
+            $table->string('ubication')->nullable();
+            $table->string('brand', 100)->nullable();
+            $table->string('model', 100)->nullable();
+            $table->string('type')->nullable();
+            $table->string('serie_number')->nullable();
+            $table->string('uncertainty')->nullable();
+            $table->string('tolerance')->nullable();
             $table->json('rank')->nullable();
             $table->string('resolution')->nullable();
             $table->string('error_max')->nullable();
@@ -25,6 +31,7 @@ class CreateEquiposTable extends Migration
             $table->string('certificate_no')->nullable();
             $table->date('last_calibration')->nullable();
             $table->date('next_calibration')->nullable();
+            $table->unsignedBigInteger('procedimiento_id')->nullable();
             $table->foreignId('alert_calibration_id')->constrained();
             $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();

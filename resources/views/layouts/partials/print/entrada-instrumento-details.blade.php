@@ -2,7 +2,7 @@
 <div class="card-body px-14">
     <section>
         <div class="row">
-            <div class="col-12 bg-secondary mb-3 py-2">
+            <div class="col-12 bg-secondary mb-4 py-2">
                 <h4 class="font-bold text-center">INFORMACIÓN DEL CLIENTE</h4>
             </div>
 
@@ -74,24 +74,24 @@
     @endif
 
     <section class="mt-8">
-        <div class="row mb-8">
+        <div class="row mb-4">
             <div class="col-12 bg-secondary py-2 text-center">
                 <h4 class="font-bold">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
             </div>
         </div>
 
-        @foreach ($entradaInstrumento->servicio as $servicio)
-            <div class="row">
-                <div class="col-2 bg-secondary py-2 border-white">
-                    <span class="font-bold">Cantidad</span>
-                </div>
-                <div class="col-6 bg-secondary py-2 border-white">
-                    <span class="font-bold">Equipo</span>
-                </div>
-                <div class="col-4 bg-secondary py-2 border-white">
-                    <span class="font-bold">Servicio</span>
-                </div>
+        <div class="row">
+            <div class="col-2 bg-secondary py-2 border-white">
+                <span class="font-bold">Cantidad</span>
+            </div>
+            <div class="col-6 bg-secondary py-2 border-white">
+                <span class="font-bold">Equipo</span>
+            </div>
+            <div class="col-4 bg-secondary py-2 border-white">
+                <span class="font-bold">Servicio</span>
+            </div>
 
+            @foreach ($entradaInstrumento->servicio as $servicio)
                 <div class="col-2 bg-light py-2 border-white">
                     <span>{{  $servicio->quantity }}</span>
                 </div>
@@ -101,16 +101,17 @@
                 <div class="col-4 bg-light py-2 border-white">
                     <span>{{  $servicio->service }}</span>
                 </div>
+            @endforeach
 
-                <div class="col-12 bg-secondary py-2 border-white">
-                    <span class="font-bold">Observación: </span>
-                </div>
-                <div class="col-12 bg-light py-2 border-white">
-                    <span>{{ isset($entradaInstrumento->obs) ? $entradaInstrumento->obs : '-' }}</span>
-                </div>
+            <div class="col-12 mt-4 bg-secondary py-2 border-white">
+                <span class="font-bold">Observación: </span>
             </div>
+            <div class="col-12 bg-light py-2 border-white">
+                <span>{{ isset($entradaInstrumento->obs_general) ? $entradaInstrumento->obs_general : '-' }}</span>
+            </div>
+        </div>
 
-            <div class="row mb-10">
+            {{-- <div class="row mb-10">
                 <div class="col-12 bg-secondary text-center border-white">
                     <h5 class="font-bold pt-2">CERTIFICADO</h5>
                 </div>
@@ -135,8 +136,7 @@
                 <div class="col-2 bg-light py-2 border-white">
                     <span>{{  $servicio->certificate_ruc }}</span>
                 </div>
-            </div>
-        @endforeach
+            </div> --}}
 
     </section>
 

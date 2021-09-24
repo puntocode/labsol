@@ -12,7 +12,7 @@
             <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" :style="{'width': `${progress}%` }"></div>
         </div>
 
-        <!-- fieldsets -->
+        <!-- fieldsets basicos -->
         <fieldset v-if="this.steps == 1">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">
@@ -20,7 +20,7 @@
                     <h2 class="steps">Paso 1 - 4</h2>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     <label>Código <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" v-model.trim="$v.form.code.$model" :class="{'is-invalid': $v.form.code.$error }" />
                     <div class="invalid-feedback"><span v-if="!$v.form.code.required">Este campo es requerido</span></div>

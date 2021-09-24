@@ -9,7 +9,7 @@ class Document extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['extension', 'name', 'category', 'url'];
+    protected $fillable = ['extension', 'name', 'category', 'url', 'idioma'];
     protected $appends  = ['icon'];
 
     public function document(){

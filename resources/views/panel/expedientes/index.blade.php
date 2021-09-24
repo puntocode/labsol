@@ -18,61 +18,75 @@
 
 		<div class="card card-custom">
 			<div class="card-body pt-12">
-                <form class="mb-15">
-					<div class="row mb-6 align-items-end">
-						<div class="col-lg-2 mb-lg-0 mb-6">
-							<label>Prioridad</label>
-							<select class="form-control datatable-input" data-col-index="5">
-								<option value="">Todas</option>
-								<option value="NORMAL">NORMAL</option>
-								<option value="URGENTE - 24HS.">URGENTE - 24HS.</option>
-							</select>
-						</div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <form class="pt-8">
+                            <div class="input-icon float-left">
+                                <input type="text" class="form-control" placeholder="Buscar..." id="tableInpuntSearch">
+                                <span><i class="flaticon2-search-1 icon-md"></i></span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-9 p-8 p-lg-0">
+                        <form class="mb-15">
+                            <div class="d-flex flex-column flex-lg-row align-items-lg-end">
+                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                    <label>Prioridad</label>
+                                    <select class="form-control datatable-input" data-col-index="5">
+                                        <option value="">Todas</option>
+                                        <option value="NORMAL">NORMAL</option>
+                                        <option value="URGENTE - 24HS.">URGENTE - 24HS.</option>
+                                    </select>
+                                </div>
 
-						<div class="col-lg-2 mb-lg-0 mb-6">
-							<label>Estado</label>
-							<select class="form-control datatable-input" data-col-index="3">
-								<option value="">Todas</option>
-								@foreach ($estados as $estado)
-									<option value="{{ $estado->name }}">{{$estado->name}}</option>
-								@endforeach
-							</select>
-						</div>
+                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                    <label>Estado</label>
+                                    <select class="form-control datatable-input" data-col-index="3">
+                                        <option value="">Todas</option>
+                                        @foreach ($estados as $estado)
+                                            <option value="{{ $estado->name }}">{{$estado->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-						<div class="col-lg-2 mb-lg-0 mb-6">
-							<label>Plazo de entrega</label>
-							<input type="text" class="form-control datatable-input" id="fecha_entrega" readonly="readonly" data-col-index="7">
-						</div>
+                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                    <label>Plazo de entrega</label>
+                                    <input type="text" class="form-control datatable-input" id="fecha_entrega" readonly="readonly" data-col-index="7">
+                                </div>
 
-						<div class="col-lg-2 mb-lg-0 mb-6">
-							<label>Modalidad</label>
-							<select class="form-control datatable-input" data-col-index="0">
-								<option value="">Todas</option>
-								<option value="LS-">LS</option>
-								<option value="LSI-">LSi</option>
-							</select>
-						</div>
+                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                    <label>Modalidad</label>
+                                    <select class="form-control datatable-input" data-col-index="0">
+                                        <option value="">Todas</option>
+                                        <option value="LS-">LS</option>
+                                        <option value="LSI-">LSi</option>
+                                    </select>
+                                </div>
 
-						<div class="col-lg-3">
-							<button class="btn btn-primary btn-primary--icon" id="kt_search" title="Filtrar registros">
-								<span><i class="fas fa-filter"></i>Filtrar</span>
-							</button>&#160;&#160;
-							<button class="btn btn-secondary btn-secondary--icon" id="kt_reset" title="Reiniciar filtros">
-								<i class="la la-close pr-0"></i>
-                            </button>
-						</div>
-					</div>
-				</form>
+                                <div class="mr-5 flex-fill">
+                                    <button class="btn btn-primary btn-primary--icon" id="kt_search" title="Filtrar registros">
+                                        <span><i class="fas fa-filter"></i>Filtrar</span>
+                                    </button>&#160;&#160;
+                                    <button class="btn btn-secondary btn-secondary--icon" id="kt_reset" title="Reiniciar filtros">
+                                        <i class="la la-close pr-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
 
 				<!--begin: Datatable-->
 				<table class="table table-separate table-head-custom collapsed" id="kt_datatable" style="width:100%">
 					<thead>
 						<tr>
 							<th>N° Exp</th>
+							<th>Cliente</th>
 							<th>Instrumento</th>
 							<th>Servicio</th>
 							<th>Estado</th>
-							<th>Observaciones</th>
+							{{-- <th>Observaciones</th> --}}
 							<th>Prioridad</th>
 							<th>Técnico asignado</th>
 							<th>Fecha de entrega</th>
@@ -83,6 +97,7 @@
 						@foreach ($expedientes as $i => $expediente)
 							<tr>
 								<td>{{$expediente->number}}</td>
+								<td>{{$expediente->servicios->certificate}}</td>
 								<td>{{$expediente->servicios->instrumento->name}}</td>
 								<td>{{$expediente->servicios->service}}</td>
 								<td>
@@ -90,7 +105,7 @@
                                         {{$expediente->estados->name}}
                                     </span>
                                 </td>
-                                <td>{{$expediente->servicios->obs}}</td>
+                                {{-- <td>{{$expediente->servicios->obs}}</td> --}}
 								<td>
                                     <span class="badge badge-{{ $expediente->servicios->prioridad['color'] }} ml-5 ml-md-0 mt-2 mt-md-0">
                                         {{ $expediente->servicios->prioridad['prioridad'] }}
@@ -158,9 +173,10 @@
             format: 'dd/mm/yyyy'
         });
 
+
         $('.btn-modal-at').on('click', function(){
             const numero = $(this).data('number');
             $('#nro-expediente').html(numero);
-        })
+        });
     </script>
 @endsection

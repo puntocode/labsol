@@ -115,15 +115,22 @@ class PatronController extends Controller
             'error_max'            => 'nullable',
             'last_calibration'     => 'nullable',
             'next_calibration'     => 'nullable',
+            'ubication'            => 'nullable',
+            'model'                => 'nullable',
+            'type'                 => 'nullable',
+            'serie_number'         => 'nullable',
+            'uncertainty'          => 'nullable',
+            'tolerance'            => 'nullable',
+            'procedimiento_id'     => 'nullable'
         ]);
     }
 
-    public function hojaVida($id){
-        $patron = Patron::with('magnitude')->whereId($id)->first();
+    public function hojaVida($id)
+    {
         $data = [
-            'data' => $patron,
-            'calibracion' => Historycalibration::where('historycalibration_id', $patron->id)->where('historycalibration_type', 'App\Models\Patron')->get(),
-            'mantenimiento' => Historymaintenance::where('historymaintenance_id', $patron->id)->where('historymaintenance_type', 'App\Models\Patron')->get()
+            'data' => Patron::with('magnitude', 'procedimientos')->whereId($id)->first(),
+            'calibracion' => Historycalibration::where('historycalibration_id', $id)->where('historycalibration_type', 'App\Models\Patron')->get(),
+            'mantenimiento' => Historymaintenance::where('historymaintenance_id', $id)->where('historymaintenance_type', 'App\Models\Patron')->get()
         ];
         return view('panel.patrones.hoja-vida', compact('data'));
     }
@@ -148,20 +155,14 @@ class PatronController extends Controller
 
     public function storeDocument(Request $request, $id)
     {
-        $file = $request->file('documento')->getClientOriginalName();
-        $extension = $request->documento->guessExtension();
-        $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
-        $nombreArchivo = $slug.".".$extension;
-        $url = 'media/docs/'.$request->header('folder');
-
-        $request->documento->move(public_path($url), $nombreArchivo);
-
+        $arrayDoc = $this->cargarDocumento($request);
         $patron = Patron::findOrFail($id);
         $patron->documents()->create([
-            'extension' => $extension,
-            'name' => $nombreArchivo,
             'category' => $request->header('category'),
-            'url' => $url
+            'idioma' => $request->header('idioma'),
+            'extension' => $arrayDoc['extension'],
+            'name' => $arrayDoc['nombre'],
+            'url' => $arrayDoc['url']
         ]);
         return response()->json($patron);
     }
@@ -198,14 +199,19 @@ class PatronController extends Controller
     }
 
 
-    public function cargarDocumento($request){
+    public function cargarDocumento($request)
+    {
         $file = $request->file('documento')->getClientOriginalName();
         $extension = $request->documento->guessExtension();
         $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
         $nombreArchivo = $slug.".".$extension;
         $url = 'media/docs/'.$request->header('folder');
         $request->documento->move(public_path($url), $nombreArchivo);
-        return $nombreArchivo;
+        return [
+            'nombre' =>  $nombreArchivo,
+            'extension' =>  $extension,
+            'url' =>  $url,
+        ];
     }
 
 

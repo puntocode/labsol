@@ -19,6 +19,7 @@ class ProcedimientoController extends Controller
     public function index()
     {
         $procedimientos = Procedimiento::all();
+        if(request()->wantsJson()) return response()->json($procedimientos);
         return view('panel.procedimientos.index', compact('procedimientos'));
     }
 
