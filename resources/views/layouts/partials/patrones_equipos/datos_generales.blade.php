@@ -35,7 +35,7 @@
     </div>
 
     <div class="form-group col-md-4">
-        <label>N° de Serie</label>
+        <label>Nr. de Serie</label>
         <div class="form-control p-0 border-0 h-auto">
             <span class="font-weight-bold">{{ $data->serie_number }}</span>
         </div>
@@ -75,7 +75,7 @@
     <div class="form-group col-md-4">
         <label>Procedimiento de Calibración</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ isset($data->procedimiento_id) ? $data->procedimientos->code : '-' }}</span>
+            <span class="font-weight-bold">{{ $data->procedimiento_id > 0 ? $data->procedimientos->code : '-' }}</span>
         </div>
     </div>
 
@@ -163,6 +163,30 @@
         </div>
     </div>
 
+</div>
+
+<hr>
+<div class="row mt-3">
+    <div class="form-group col-md-4">
+        <label>Código (Hoja de Vida)</label>
+        <div class="form-control p-0 border-0 h-auto">
+            <span class="font-weight-bold">{{ $data->headboard['codigo'] }}</span>
+        </div>
+    </div>
+
+    <div class="form-group col-md-4">
+        <label>Revisión</label>
+        <div class="form-control p-0 border-0 h-auto">
+            <span class="font-weight-bold">{{ $data->headboard['revision'] }}</span>
+        </div>
+    </div>
+
+    <div class="form-group col-md-4">
+        <label>Vigencia</label>
+        <div class="form-control p-0 border-0 h-auto">
+            <span class="font-weight-bold">{{ $data->headboard['vigencia'] }}</span>
+        </div>
+    </div>
 </div>
 
 

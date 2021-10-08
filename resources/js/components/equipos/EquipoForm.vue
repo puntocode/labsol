@@ -20,37 +20,78 @@
                     <h2 class="steps">Paso 1 - 4</h2>
                 </div>
 
+               <div class="form-group row">
+                    <div class="col-md-3">
+                        <label>Código <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model.trim="$v.form.code.$model" :class="{'is-invalid': $v.form.code.$error }" />
+                        <div class="invalid-feedback"><span v-if="!$v.form.code.required">Este campo es requerido</span></div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <label>Descripción <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model.trim="$v.form.description.$model" :class="{'is-invalid': $v.form.description.$error}" />
+                        <div class="invalid-feedback"><span v-if="!$v.form.description.required">Este campo es requerido</span></div>
+                    </div>
+                </div>
+
                 <div class="form-group row">
-                    <label>Código <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" v-model.trim="$v.form.code.$model" :class="{'is-invalid': $v.form.code.$error }" />
-                    <div class="invalid-feedback"><span v-if="!$v.form.code.required">Este campo es requerido</span></div>
+                    <div class="col-md-6">
+                        <label>Marca</label>
+                        <input type="text" class="form-control" v-model="form.brand" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Modelo</label>
+                        <input type="text" class="form-control" v-model="form.model" />
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Descripción<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" v-model.trim="$v.form.description.$model" :class="{'is-invalid': $v.form.description.$error}" />
-                    <div class="invalid-feedback"><span v-if="!$v.form.description.required">Este campo es requerido</span></div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label>Tipo</label>
+                        <input class="form-control" v-model="form.type" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>N° de serie</label>
+                        <input type="text" class="form-control" v-model="form.serie_number" />
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Marca</label>
-                    <input type="text" class="form-control" v-model="form.brand" />
-                </div>
+                <div class="form-group row">
+                   <div class="col-md-6">
+                        <label>Incertidumbre</label>
+                        <input class="form-control" v-model="form.uncertainty" />
+                    </div>
 
-                <div class="form-group">
-                    <label>Nro. de Certificado</label>
-                    <input type="text" class="form-control" v-model="form.certificate_no"/>
+                    <div class="col-md-6">
+                        <label>Tolerancia</label>
+                        <input class="form-control" v-model="form.tolerance" />
+                    </div>
                 </div>
             </div>
 
             <button type="button" class="next action-button btn btn-primary float-right" @click="next">Siguiente</button>
         </fieldset>
 
+        <!-- fieldsets Calibración -->
         <fieldset v-if="this.steps == 2">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">
                     <h4 class="font-weight-bold">Estados:</h4>
                     <h2 class="steps">Paso 2 - 4</h2>
+                </div>
+
+                <div class="form-group row mb-10">
+                   <div class="col-md-6">
+                        <label>Ubicación</label>
+                        <input class="form-control" v-model="form.ubication" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Procedimiento de Calibración</label>
+                        <Select2 v-model="form.procedimiento_id" :options="selectProcedimientos" />
+                    </div>
                 </div>
 
                 <div class="form-group row">
@@ -72,7 +113,7 @@
 
                 <div class="form-group row">
                     <div class="col-lg-4">
-                        <label>Periodo de calibración</label>
+                        <label>Periodo de calibración (en años)</label>
                         <input type="text" class="form-control" v-model="form.calibration_period" />
                     </div>
 
@@ -103,6 +144,7 @@
             <input type="button" class="previous action-button-previous float-right btn btn-secondary mr-2" @click="previous" value="Anterior" />
         </fieldset>
 
+        <!-- fieldsets Precision/Error -->
         <fieldset v-if="this.steps == 3">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">
@@ -110,13 +152,33 @@
                     <h2 class="steps">Paso 3 - 4</h2>
                 </div>
 
-                <div class="form-group mt-4">
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label>Código (Hoja de Vida)</label>
+                        <input class="form-control" v-model="form.headboard.codigo" />
+                    </div>
 
+                    <div class="col-lg-4">
+                        <label>Revisión</label>
+                        <input class="form-control" v-model="form.headboard.revision" />
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label>Vigencia</label>
+                        <div class="input-group">
+                            <date-picker v-model="form.headboard.vigencia" :config="options"></date-picker>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
                     <div class="form-group">
                         <label>Resolución</label>
                         <input type="text" class="form-control" v-model="form.resolution" />
                     </div>
-
 
                     <div class="form-group">
                         <label>Error Máximo</label>
@@ -166,14 +228,15 @@
 </template>
 
 <script>
-    import {required, minValue} from "vuelidate/lib/validators";
+    import {required} from "vuelidate/lib/validators";
     import SuccessAnimation from '../SuccessAnimation';
     import datePicker from 'vue-bootstrap-datetimepicker';
     import SelectForm from '../SelectForm';
+    import Select2 from 'v-select2-component';
 
     export default {
-        components: { datePicker, SuccessAnimation, SelectForm },
-        props: ['form', 'action', 'rutas'],
+        components: { datePicker, SuccessAnimation, SelectForm, Select2 },
+        props: ['form', 'action', 'rutas', 'selectProcedimientos'],
         data() {
             return {
                 steps: 1,
@@ -186,8 +249,8 @@
             form:{
                 code: {required},
                 description: {required},
-                condition_id: {required, minValue: 1},
-                magnitude_id: {required, minValue: 1},
+                condition_id: {required},
+                magnitude_id: {required},
             }
         },
         methods: {

@@ -90,6 +90,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
     Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
 
+
     # -- Patrones Documentos--
     Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
     Route::post('/patron-doc/{patron}', 'PatronController@storeDocument')->name('patrones.doc.store')->middleware('can:panel.database');
@@ -99,8 +100,14 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::post('/patron-calibration-history/{id}', 'PatronController@storeCalibrationHistory')->name('patron.calibration-history.store')->middleware('can:panel.database');
 
      # -- Patrones Historial Mantenimiento--
-     Route::get('/patron-maintenance-history/{patron}/{id}', 'PatronController@patronMaintenanceHistory')->name('patron.maintenance-history')->middleware('can:panel.database');
-     Route::post('/patron-maintenance-history/{id}', 'PatronController@patronMaintenanceStore')->name('patron.maintenance-history.store')->middleware('can:panel.database');
+    Route::get('/patron-maintenance-history/{patron}/{id}', 'PatronController@patronMaintenanceHistory')->name('patron.maintenance-history')->middleware('can:panel.database');
+    Route::post('/patron-maintenance-history/{id}', 'PatronController@patronMaintenanceStore')->name('patron.maintenance-history.store')->middleware('can:panel.database');
+
+
+    # -- Patrones IDE --
+    Route::resource('/patrones-ide', 'PatronIdeController')->middleware('can:panel.database');
+    Route::get('/patron-ide-unidades', 'PatronController@unidadesIde')->name('patrones.unidades_ide')->middleware('can:panel.database');
+    Route::get('/patron-ide/{id}', 'PatronController@ideForm')->name('patron.ide.form')->middleware('can:panel.database');
 
 
     # -- Equipos --
@@ -151,8 +158,10 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     # -- Expedientes --
     Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');
+    Route::get('/expediente/espera', 'ExpedienteController@getExpedienteEspera')->name('expedientes.espera')->middleware('can:panel.admin');
     Route::put('/expediente/update-tecnicos', 'ExpedienteController@asignarTecnicos')->name('expedientes.update_tecnicos')->middleware('can:panel.admin');
     Route::get('/expediente/agenda', 'ExpedienteController@agenda')->name('expedientes.agenda')->middleware('can:panel.admin');
+    Route::get('/expediente/asignar-tecnico', 'ExpedienteController@asignarTecnicoIndex')->name('expedientes.asignar')->middleware('can:panel.admin');
     Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:panel.admin');
 
 

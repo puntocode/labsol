@@ -3,13 +3,13 @@
          <div class="card-toolbar position-relative">
             <ul class="nav nav-tabs nav-bold nav-tabs-line">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#tab_calibracion">
+                    <a class="nav-link active" data-toggle="tab" href="#tab_documentos">
                         <span class="nav-text">Documentos</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab_mantenimiento">
+                    <a class="nav-link" data-toggle="tab" href="#tab_manual">
                         <span class="nav-text">Manual</span>
                     </a>
                 </li>
@@ -18,11 +18,11 @@
 
         <div class="card-body px-0">
             <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab_calibracion" role="tabpanel" aria-labelledby="tab_calibracion">
+                <div class="tab-pane fade show active" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
                     <Documentos :url="rutas.storeDoc" :data="documento" />
                 </div>
 
-                <div class="tab-pane fade" id="tab_mantenimiento" role="tabpanel" aria-labelledby="tab_mantenimiento">
+                <div class="tab-pane fade" id="tab_manual" role="tabpanel" aria-labelledby="tab_manual">
                     <div class="form-group">
                         <label for="idiomas">Idioma</label>
                         <select class="form-control" id="idiomas" v-model="manual.idioma">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import Documentos from '../documentos/Documentos'
+    import Documentos from '../documentos/Documentos';
 
     export default {
         components: { Documentos },

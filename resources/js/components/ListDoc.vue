@@ -16,7 +16,7 @@
                     <div class="d-flex flex-wrap align-items-center py-1">
                         <i class="fas fa-2x text-primary mr-3" :class="doc.icon"></i>
                         <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-3">
-                            <a :href="doc.url" class="text-primary font-weight-bolder text-uppercase" v-text="doc.name"></a>
+                            <a :href="doc.url" class="text-primary font-weight-bolder text-uppercase" v-text="doc.name" target="_blank"></a>
                             <span class="text-muted font-weight-bold font-size-lg">Fecha:  {{ doc.created_at }}</span>
                         </div>
                     </div>

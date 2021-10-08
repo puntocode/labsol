@@ -31,7 +31,8 @@ class CreateEquiposTable extends Migration
             $table->string('certificate_no')->nullable();
             $table->date('last_calibration')->nullable();
             $table->date('next_calibration')->nullable();
-            $table->unsignedBigInteger('procedimiento_id')->nullable();
+            $table->json('headboard')->nullable();
+            $table->unsignedBigInteger('procedimiento_id')->default(0);
             $table->foreignId('alert_calibration_id')->constrained();
             $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();

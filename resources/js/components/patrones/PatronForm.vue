@@ -82,7 +82,7 @@
                     <h2 class="steps">Paso 2 - 4</h2>
                 </div>
 
-                 <div class="form-group row mb-10">
+                <div class="form-group row mb-10">
                    <div class="col-md-6">
                         <label>Ubicación</label>
                         <input class="form-control" v-model="form.ubication" />
@@ -156,6 +156,7 @@
             <input type="button" class="previous action-button-previous float-right btn btn-secondary mr-2" @click="previous" value="Anterior" />
         </fieldset>
 
+        <!-- fieldsets Precision/Error -->
         <fieldset v-if="this.steps == 3">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">
@@ -163,7 +164,29 @@
                     <h2 class="steps">Paso 3 - 4</h2>
                 </div>
 
-                <div class="form-group mt-4">
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        <label>Código (Hoja de Vida)</label>
+                        <input class="form-control" v-model="form.headboard.codigo" />
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label>Revisión</label>
+                        <input class="form-control" v-model="form.headboard.revision" />
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label>Vigencia</label>
+                        <div class="input-group">
+                            <date-picker v-model="form.headboard.vigencia" :config="options"></date-picker>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-8">
                     <div class="row">
                         <div class="col d-flex justify-content-between align-items-end">
                             <h3>Precisión</h3>
@@ -255,7 +278,6 @@
     import SuccessAnimation from '../SuccessAnimation';
     import SelectForm from '../SelectForm';
     import Select2 from 'v-select2-component';
-
 
     export default {
         components: { datePicker, SuccessAnimation, SelectForm, Select2 },

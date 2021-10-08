@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMagnitudesTable extends Migration
+class CreatePatronIdesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateMagnitudesTable extends Migration
      */
     public function up()
     {
-        Schema::create('magnitudes', function (Blueprint $table) {
+        Schema::create('patron_ides', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->boolean('status')->default(1);
-            $table->enum('condition_type' ,['PATRON', 'EQUIPO', 'TODOS'])->default('TODOS');
-            $table->json('unit_measurement')->nullable();
+            $table->string('magnitude');
+            $table->string('unit_measurement');
+            $table->foreignId('patron_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -31,6 +29,6 @@ class CreateMagnitudesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('magnitudes');
+        Schema::dropIfExists('patron_ides');
     }
 }

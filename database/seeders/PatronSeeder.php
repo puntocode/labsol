@@ -31,7 +31,9 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021/06/26',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'procedimiento_id' => 0,
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-02',
@@ -47,7 +49,9 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-06-26',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'procedimiento_id' => 0,
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-03',
@@ -60,7 +64,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-04',
@@ -76,7 +81,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-11-14',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-05',
@@ -89,7 +95,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-07',
@@ -102,7 +109,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-08',
@@ -118,7 +126,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-03-02',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-09',
@@ -131,7 +140,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-10',
@@ -147,7 +157,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-01-14',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-11',
@@ -163,7 +174,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-06-26',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-12',
@@ -179,7 +191,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-04-05',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-13',
@@ -195,7 +208,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-09-05',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-14',
@@ -208,7 +222,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 1,
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-15',
@@ -224,7 +239,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-06-26',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-16',
@@ -237,7 +253,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-17',
@@ -250,7 +267,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 1,
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-18',
@@ -266,7 +284,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-03-02',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-19',
@@ -282,7 +301,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-02-04',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCD-20',
@@ -297,7 +317,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-08-08',
               'magnitude_id' => 3,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCE-08',
@@ -312,7 +333,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-12-20',
               'magnitude_id' => 5,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCE-09',
@@ -328,7 +350,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-02-04',
               'magnitude_id' => 5,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCM-01',
@@ -344,7 +367,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-08-08',
               'magnitude_id' => 9,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCM-02',
@@ -360,7 +384,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-08-08',
               'magnitude_id' => 9,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCM-03',
@@ -376,7 +401,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-09-14',
               'magnitude_id' => 9,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCM-04',
@@ -392,7 +418,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-09-14',
               'magnitude_id' => 9,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCM-05',
@@ -408,7 +435,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-09-14',
               'magnitude_id' => 9,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCM-06',
@@ -424,7 +452,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-09-14',
               'magnitude_id' => 9,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCM-07',
@@ -440,7 +469,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-04-05',
               'magnitude_id' => 9,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-02',
@@ -456,7 +486,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-08-08',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-03',
@@ -472,7 +503,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-02-07',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-04',
@@ -488,7 +520,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-12-20',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-05',
@@ -501,7 +534,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-09',
@@ -514,7 +548,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-10',
@@ -527,7 +562,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-11',
@@ -540,7 +576,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-12',
@@ -556,7 +593,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-07-31',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-14',
@@ -572,7 +610,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-09-05',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-18',
@@ -585,7 +624,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-19',
@@ -598,7 +638,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-20',
@@ -611,7 +652,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-21',
@@ -624,7 +666,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-22',
@@ -637,7 +680,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-23',
@@ -650,7 +694,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-24',
@@ -666,7 +711,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-03-04',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-25',
@@ -682,7 +728,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-03-04',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-26',
@@ -698,7 +745,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-03-04',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-44',
@@ -714,7 +762,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-07-31',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-57',
@@ -730,7 +779,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-10-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-58',
@@ -746,7 +796,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-10-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-59',
@@ -762,7 +813,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-10-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-60',
@@ -778,7 +830,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-05-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-61',
@@ -794,7 +847,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-05-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-62',
@@ -810,7 +864,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-05-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-63',
@@ -826,7 +881,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-05-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-64',
@@ -842,7 +898,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-05-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-65',
@@ -858,7 +915,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-05-01',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-72',
@@ -871,7 +929,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-01-14',
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCT-73',
@@ -880,7 +939,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 14,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCP-01',
@@ -896,7 +956,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-02-04',
               'magnitude_id' => 13,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCP-02',
@@ -912,7 +973,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2023-02-06',
               'magnitude_id' => 13,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCP-03',
@@ -928,7 +990,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2023-02-06',
               'magnitude_id' => 13,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCP-04',
@@ -944,7 +1007,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2023-02-06',
               'magnitude_id' => 13,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCP-05',
@@ -957,7 +1021,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 13,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCP-06',
@@ -973,7 +1038,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-03-04',
               'magnitude_id' => 13,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCI-01',
@@ -985,7 +1051,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 18,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCI-03',
@@ -997,7 +1064,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 8,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCI-04',
@@ -1009,7 +1077,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 8,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCI-05',
@@ -1021,7 +1090,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 8,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCI-06',
@@ -1033,7 +1103,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 8,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCI-07',
@@ -1049,7 +1120,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-08-12',
               'magnitude_id' => 8,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PTI-01',
@@ -1065,7 +1137,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-04-27',
               'magnitude_id' => 8,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCH-01',
@@ -1079,7 +1152,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-02-07',
               'magnitude_id' => 4,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCH-02',
@@ -1093,7 +1167,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-02-07',
               'magnitude_id' => 4,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCA-01',
@@ -1109,7 +1184,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-01-09',
               'magnitude_id' => 2,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PCF-01',
@@ -1125,7 +1201,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-10-01',
               'magnitude_id' => 6,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-01',
@@ -1137,7 +1214,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-02',
@@ -1149,7 +1227,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-03',
@@ -1164,7 +1243,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-10-01',
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-04',
@@ -1179,7 +1259,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-11-01',
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-05',
@@ -1194,7 +1275,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2022-04-27',
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-06',
@@ -1206,7 +1288,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-07',
@@ -1218,7 +1301,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-08',
@@ -1230,7 +1314,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-09',
@@ -1242,7 +1327,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-10',
@@ -1254,7 +1340,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-11',
@@ -1269,7 +1356,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-06-26',
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-12',
@@ -1284,7 +1372,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-04-05',
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'PRC-13',
@@ -1299,7 +1388,8 @@ class PatronSeeder extends Seeder
               'next_calibration' => '2021-08-08',
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'HI93703-0',
@@ -1312,7 +1402,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'HI93703-10',
@@ -1325,7 +1416,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'HI93703-05',
@@ -1338,7 +1430,8 @@ class PatronSeeder extends Seeder
               'condition_id' => 2,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
 
             Patron::create([
               'code' => 'HI 38054',
@@ -1350,6 +1443,7 @@ class PatronSeeder extends Seeder
               'condition_id' => 1,
               'magnitude_id' => 11,
               'alert_calibration_id' => 3,
-            ],);
+              'headboard' => ['codigo' => 'LS-FOR-041', 'vigencia' => '', 'revision' => '0']
+            ]);
     }
 }

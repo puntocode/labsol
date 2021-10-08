@@ -89,11 +89,17 @@
 						<!--begin::Nav-->
 						<ul class="menu-nav">
 							@can('panel.admin')
-								<li class="menu-item @if (Route::currentRouteName() == 'panel.expedientes.index') menu-item-active @endif" aria-haspopup="true">
-									<a href="{{route('panel.expedientes.index')}}" class="menu-link" title="Ir al listado de expedientes">
-										<span class="menu-text">Listar expedientes</span>
-									</a>
-								</li>
+                                <li class="menu-item @if (Route::currentRouteName() == 'panel.expedientes.index') menu-item-active @endif" aria-haspopup="true">
+                                    <a href="{{route('panel.expedientes.index')}}" class="menu-link" title="Ir al listado de expedientes">
+                                        <span class="menu-text">Listar expedientes</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item @if (Route::currentRouteName() == 'panel.expedientes.asignar') menu-item-active @endif" aria-haspopup="true">
+                                    <a href="{{route('panel.expedientes.asignar')}}" class="menu-link" title="Asignar Técnicos a Expedientes">
+                                        <span class="menu-text">Asignar Técnicos</span>
+                                    </a>
+                                </li>
 							@endcan
 
 							<li class="menu-item @if (Route::currentRouteName() == 'panel.expedientes.agenda' || Request::is('panel/expedientes/agendamientos*')) menu-item-active @endif" aria-haspopup="true">
@@ -101,6 +107,7 @@
 									<span class="menu-text">Agenda</span>
 								</a>
 							</li>
+
 							@can('panel.tecnico')
 								<li class="menu-item @if (Request::is('panel/perfil/actividades*')) menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.perfil.actividades.index')}}" class="menu-link" title="Ir al mis actividades asignadas">
@@ -121,11 +128,6 @@
 					<div class="header-menu header-menu-mobile header-menu-layout-default">
 						<!--begin::Nav-->
 						<ul class="menu-nav">
-							<li class="menu-item @if (Route::currentRouteName() == 'panel.calibracion.index') menu-item-active @endif" aria-haspopup="true">
-								<a href="{{route('panel.calibracion.index')}}" class="menu-link" title="Ir al listado de calibracion">
-									<span class="menu-text">Listar calibraciones</span>
-								</a>
-							</li>
 
 							@can('panel.admin')
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.calibracion.create') menu-item-active @endif" aria-haspopup="true">

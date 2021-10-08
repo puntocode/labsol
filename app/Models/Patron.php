@@ -15,6 +15,7 @@ class Patron extends Model
         'rank' => 'array',
         'error_max' => 'array',
         'precision' => 'array',
+        'headboard' => 'array',
     ];
 
 
@@ -78,8 +79,8 @@ class Patron extends Model
 
     public function getDocuments(){
         $data = [
-            'documentos' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'DOCUMENTOS')->get(),
             'manual' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'MANUAL')->get(),
+            'documentos' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'DOCUMENTOS')->get(),
             // 'certificados' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'CERTIFICADOS')->get(),
         ];
 

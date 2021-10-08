@@ -58,26 +58,29 @@
 
 @section('rutas')
     <script>
-        const showRoute   = `{{ route('panel.equipos.show',  isset($equipo) ? $equipo->id : 0) }}`
-        const updateRoute = `{{ route('panel.equipos.update',isset($equipo) ? $equipo->id : 0) }}`
-        const getEquipo   = `{{ route('panel.equipos.get',   isset($equipo) ? $equipo->id : 0) }}`
-        const indexRoute  = `{{ route('panel.equipos.index') }}`
-        const createRoute = `{{ route('panel.equipos.create') }}`
-        const storeRoute  = `{{ route('panel.equipos.store') }}`
-        const condition   = `{{ route('panel.condition.all') }}`
-        const magnitud    = `{{ route('panel.magnitud.all') }}`
-        const alertCal    = `{{ route('panel.alert.calibration') }}`
+        const showRoute      = "{{ route('panel.equipos.show',  isset($equipo) ? $equipo->id : 0) }}";
+        const updateRoute    = "{{ route('panel.equipos.update',isset($equipo) ? $equipo->id : 0) }}";
+        const getEquipo      = "{{ route('panel.equipos.get',   isset($equipo) ? $equipo->id : 0) }}";
+        const indexRoute     = "{{ route('panel.equipos.index') }}";
+        const createRoute    = "{{ route('panel.equipos.create') }}";
+        const storeRoute     = "{{ route('panel.equipos.store') }}";
+        const condition      = "{{ route('panel.condition.all') }}";
+        const magnitud       = "{{ route('panel.magnitud.all') }}";
+        const alertCal       = "{{ route('panel.alert.calibration') }}";
+        const procedimientos = "{{ route('panel.procedimientos.index') }}";
+
 
         window.routes = {
-            'show'      : showRoute,
-            'store'     : storeRoute,
-            'update'    : updateRoute,
-            'index'     : indexRoute,
-            'create'    : createRoute,
-            'getEquipo' : getEquipo,
-            'condition' : condition,
-            'magnitud'  : magnitud,
-            'alertCal'  : alertCal,
+            'show': showRoute,
+            'store': storeRoute,
+            'index': indexRoute,
+            'alertCal': alertCal,
+            'magnitud': magnitud,
+            'update': updateRoute,
+            'create': createRoute,
+            'getEquipo': getEquipo,
+            'condition': condition,
+            'procedimientos': procedimientos,
         }
     </script>
 @endsection

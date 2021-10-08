@@ -31,7 +31,8 @@ class CreatePatronsTable extends Migration
             $table->string('model', 100)->nullable();
             $table->string('uncertainty')->nullable();
             $table->string('tolerance')->nullable();
-            $table->unsignedBigInteger('procedimiento_id')->nullable();
+            $table->json('headboard')->nullable();
+            $table->unsignedBigInteger('procedimiento_id')->default(0);
             $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();
             $table->foreignId('alert_calibration_id')->constrained();

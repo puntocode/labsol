@@ -7,7 +7,9 @@
             <div class="modal-body">
                 <div class="row mb-6">
                     <div class="col-10 mx-auto">
-                        <h4>Expediente N°: <span id="nro-expediente" class="font-weight-bold"></span></h4>
+                        <h4>Expediente N°:
+                            <span v-for="numero in numeros" :key="numero.number" id="nro-expediente" class="font-weight-bold">{{ numero.number }}</span>
+                        </h4>
                     </div>
                 </div>
                 <div class="row mb-6">
@@ -36,14 +38,14 @@
     import moment from 'moment';
 
     export default {
-        props: ['data'],
+        props: ['data', 'numeros', 'expedientes'],
         components: { Kanban, datePicker },
 
         data() {
             return {
                 formData: {
                     asignados: [],
-                    number: [],
+                    number: '',
                     personales: [],
                     delivery_date: ''
                 },
@@ -64,12 +66,18 @@
             },
             asignar(){
                 this.formData.asignados.forEach(tecnico => this.formData.personales.push({id: tecnico.id, nombre: tecnico.fullname}) );
-                this.formData.number.push($('#nro-expediente').text());
+                //this.formData.number = this.numeros;
+                //this.formData.number.push($('#nro-expediente').text());
 
-                axios.put(this.rutas.updateTecnicos, this.formData)
-                    .then(response => {
-                        if(response.status === 200) this.alerta();
-                    })
+                this.numeros.forEach( expediente => {
+                    this.formData.number = expediente.number;
+                    axios.put(this.rutas.updateTecnicos, this.formData)
+                        .then(response => {
+                            if(response.status === 200) this.cambiarTecnico(this.formData.number);
+                        })
+                })
+
+                this.alerta();
             },
             cancelar(){
                 this.formData.number = [];
@@ -82,9 +90,15 @@
             alerta(){
                 this.$swal('Técnicos Asignado!', 'El expedientes se han acutalizado con éxito!','success')
                     .then( result => {
-                        if (result.isConfirmed) this.cambiarNombre();
-                        else this.cambiarNombre();
+                        if (result.isConfirmed) this.cancelar();
+                        else this.cancelar();
                     })
+            },
+
+            cambiarTecnico(number_exp){
+                this.expedientes.forEach(expediente => {
+                    if(expediente.number == number_exp) expediente.tecnicos = this.formData.personales;
+                })
             },
             cambiarNombre(){
                 if(this.data === null) this.vistaTabla();

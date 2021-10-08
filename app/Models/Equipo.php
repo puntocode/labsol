@@ -9,13 +9,13 @@ class Equipo extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
-
+    protected $guarded = ['id'];
+    protected $appends = [ 'title', 'periodo', 'idioma' ];
     protected $casts = [
         'rank' => 'array',
+        'headboard' => 'array',
     ];
 
-    protected $appends = [ 'title' ];
 
     public function condition(){
         return $this->belongsTo(Condition::class);
@@ -27,6 +27,10 @@ class Equipo extends Model
 
     public function alertCalibration(){
         return $this->belongsTo(AlertCalibration::class);
+    }
+
+    public function procedimientos(){
+        return $this->belongsTo(Procedimiento::class, 'procedimiento_id');
     }
 
     public function documents(){
@@ -45,14 +49,29 @@ class Equipo extends Model
         return 'EQUIPO';
     }
 
+    public function getPeriodoAttribute(){
+        $periodo = $this->calibration_period;
+
+        switch($periodo){
+            case null: return '-'; break;
+            case 1: return $periodo.' Año'; break;
+            case $periodo > 1: return $periodo.' Años'; break;
+        }
+    }
+
     public function getDocuments(){
         $data = [
-            'documentos' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'DOCUMENTOS')->get(),
             'manual' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'MANUAL')->get(),
-            'certificados' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'CERTIFICADOS')->get(),
+            'documentos' => $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'DOCUMENTOS')->get(),
         ];
 
         return $data;
+    }
+
+    public function getIdiomaAttribute()
+    {
+        $manual = $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Equipo')->where('category', 'MANUAL')->first();
+        return isset($manual) ? $manual->idioma : '-';
     }
 
 

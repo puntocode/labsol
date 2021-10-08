@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-center" v-if="loading">
             <grid-loader :loading="loading" :color="color" :size="'25px'"></grid-loader>
         </div>
-        <equipo-form v-else :form="form" :action="action" :rutas="rutas"></equipo-form>
+        <equipo-form v-else :form="form" :action="action" :rutas="rutas" :select-procedimientos="selectProcedimientos"></equipo-form>
     </div>
 </template>
 
@@ -33,8 +33,17 @@
                     last_calibration: '',
                     next_calibration: '',
                     resolution: '',
-                    error_max: ''
-                }
+                    error_max: '',
+                    model: '',
+                    type: '',
+                    serie_number: '',
+                    tolerance: '',
+                    uncertainty: '',
+                    ubication: 'Laboratorio',
+                    procedimiento_id: 0,
+                    headboard: {codigo: '', revision: '', vigencia: ''},
+                },
+                selectProcedimientos: [{id: 0, text: 'SIN PROCEDIMIENTO'}]
             }
         },
         created(){
@@ -44,11 +53,11 @@
             async fetch(){
                 if(this.id > 0){
                     this.action = 'update'
-                    await axios.get(this.rutas.getEquipo)
-                        .then(response => this.form = response.data)
-                        .catch(error => console.log(error))
+                    await axios.get(this.rutas.getEquipo).then(response => this.form = response.data)
                 }
 
+                const procedimientos = await axios.get(this.rutas.procedimientos).then( response => response.data );
+                procedimientos.forEach( procedimiento => this.selectProcedimientos.push({id: procedimiento.id, text: `${procedimiento.code} - ${procedimiento.name}`}) );
                 this.loading = false;
             }
         }

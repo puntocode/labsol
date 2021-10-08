@@ -100,6 +100,12 @@ class ExpedienteController extends Controller
     {
     }
 
+
+    public function getExpedienteEspera(){
+        $expedientes = Expediente::where('expediente_estado_id', 1)->with('servicios', 'estados')->get();
+        return response()->json($expedientes);
+    }
+
     public function agenda(Request $request){
         $estados = ExpedienteEstado::activo()->get();
         $expedientes = Expediente::whereNotNull('delivery_date')->get();
@@ -108,15 +114,24 @@ class ExpedienteController extends Controller
     }
 
 
+    public function asignarTecnicoIndex()
+    {
+        $estados = ExpedienteEstado::where('status', true)->get();
+        $expedientes = Expediente::with('servicios', 'estados')->get();
+        return view('panel.expedientes.asignar', compact('expedientes', 'estados'));
+    }
+
+
     public function asignarTecnicos(Request $request)
     {
-        foreach($request['number'] as $expediente){
-            $exp = Expediente::where('number', $expediente)->first();
+        //foreach($request['number'] as $expediente){
+            $exp = Expediente::where('number', $request['number'])->first();
             $exp->update(['tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
             ExpedienteHistorial::create(['expediente_id' => $exp->id, 'tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
-        }
+        //}
         return response()->json(Response::HTTP_OK);
     }
+
 
 
     public function cargarData($id)

@@ -10,8 +10,9 @@
 @section('content')
 	<div class="container-fluid">
         <div class="row mb-6">
-            <div class="col-12">
-                <h3 class="card-label mb-8">Expedientes <small class="font-weight-lighter">| Listado de todos los expedientes</small></h3>
+            <div class="col-12 d-flex justify-content-between align-items-start">
+                <h3 class="card-label mb-8">Expedientes <small class="font-weight-lighter">| Listado</small></h3>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modalTecnicos"><i class="fas fa-users pr-2"></i>Asignar Técnicos</button>
             </div>
         </div>
 
@@ -110,13 +111,15 @@
                                         {{ $expediente->servicios->prioridad['prioridad'] }}
                                     </span>
 								</td>
-                                <td>
-                                    @if (isset($expediente['tecnicos']))
-                                        @foreach ($expediente['tecnicos'] as $tecnicos)
+								<td id="text-{{ $expediente->number }}">
+									@if($expediente['tecnicos'] == NULL)
+                                        <button class="btn btn-primary btn-modal-at" id="{{ $expediente->number }}" data-number="{{ $expediente->number }}" data-toggle="modal" data-target="#modal-tecnico">Asignar Técnico</button>
+                                    @else
+										@foreach ($expediente['tecnicos'] as $tecnicos)
                                             <span><i class="fas fa-user mr-2"></i>{{ $tecnicos['nombre'] }}</span><br>
                                         @endforeach
-                                    @endif
-                                </td>
+									@endif
+								</td>
 								<td id="date-{{ $expediente->number }}">{{ $expediente->delivery_date }}</td>
 								<td class="text-center">
                                     <a href="{{route('panel.expedientes.show', $expediente->id)}}" class="btn btn-sm btn-clean btn-icon" title="Editar registro">
@@ -133,6 +136,31 @@
 	</div>
 @endsection
 
+@section('modales')
+	<div class="modal fade" id="modalTecnicos" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+	    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <asignar-tecnicos :data="{{$expedientes}}"></asignar-tecnicos>
+	    </div>
+	</div>
+
+    <div class="modal fade" id="modal-tecnico" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+	    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <asignar-tecnico :data="null"></asignar-tecnico>
+	    </div>
+	</div>
+@endsection
+
+
+@section('rutas')
+    <script>
+        const updateTecnicos = "{{ route('panel.expedientes.update_tecnicos') }}";
+        const tecnicos = "{{ route('panel.usuarios.tecnicos') }}";
+        window.routes = {
+            'updateTecnicos': updateTecnicos,
+            'tecnicos': tecnicos,
+        }
+    </script>
+@endsection
 
 
 @section('scripts')
@@ -143,6 +171,12 @@
             todayHighlight: true,
             orientation: "bottom left",
             format: 'dd/mm/yyyy'
+        });
+
+
+        $('.btn-modal-at').on('click', function(){
+            const numero = $(this).data('number');
+            $('#nro-expediente').html(numero);
         });
     </script>
 @endsection

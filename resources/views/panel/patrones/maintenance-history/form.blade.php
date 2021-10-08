@@ -44,7 +44,7 @@
             <div class="col-lg-9 col-xl-10">
                 <div class="card">
                     <div class="card-body">
-                        {{-- <patron-maintenance :id="{{ $id }}"></patron-maintenance> --}}
+                        <patron-maintenance :id="{{ $id }}"></patron-maintenance>
                     </div>
                 </div>
 

@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Magnitude extends Model
+class PatronIde extends Model
 {
     use HasFactory;
-    protected $casts = [
-        'unit_measurement' => 'array',
-    ];
+    protected $guarded = ['id'];
+
+    public function patron(){
+        return $this->belongsTo(Patron::class);
+    }
+
+
 }

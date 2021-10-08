@@ -19,6 +19,7 @@ import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 
 
+Vue.component('expediente-tecnicos',require('./components/expedientes/ExpedienteTecnicos.vue').default);
 Vue.component('asignar-tecnicos',   require('./components/expedientes/AsignarTecnicos.vue').default);
 Vue.component('asignar-tecnico',    require('./components/expedientes/AsignarTecnico.vue').default);
 Vue.component('expediente-form',    require('./components/expedientes/ExpedienteForm.vue').default);
@@ -28,6 +29,7 @@ Vue.component('patron-maintenance', require('./components/patrones/PatronMainten
 Vue.component('patron-historial',   require('./components/patrones/PatronHistorial.vue').default);
 Vue.component('patron-card',        require('./components/patrones/PatronCard.vue').default);
 Vue.component('patron-doc',         require('./components/patrones/PatronDoc.vue').default);
+Vue.component('patron-ide',         require('./components/patrones/PatronIde.vue').default);
 
 Vue.component('equipo-maintenance', require('./components/equipos/EquipoMaintenance.vue').default);
 Vue.component('equipo-historial',   require('./components/equipos/EquipoHistorial.vue').default);

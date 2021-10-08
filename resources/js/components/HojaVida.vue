@@ -29,9 +29,9 @@
                             <span class="text-center py-2 bg-light w-100">Vigencia</span>
                         </div>
                         <div class="col-md-2 px-0 mx-1 d-flex flex-column justify-content-center align-items-center">
-                            <span class="text-center py-2 bg-light w-100">-</span>
-                            <span class="text-center py-2 my-2 bg-light w-100">-</span>
-                            <span class="text-center py-2 bg-light w-100">-</span>
+                            <span class="py-2 pl-3 bg-light w-100" v-text="cabecera(array.data.headboard.codigo)"></span>
+                            <span class="py-2 pl-3 my-2 bg-light w-100" v-text="cabecera(array.data.headboard.revision)"></span>
+                            <span class="py-2 pl-3 bg-light w-100" v-text="cabecera(array.data.headboard.vigencia)"></span>
                         </div>
                     </div>
                 </section>
@@ -99,17 +99,17 @@
                         </div>
                         <div class="col-9 px-0 d-flex text-center align-items-stretch">
                             <div class="w-100 d-flex flex-column">
-                                <span class="bg-gray mb-1 py-2">SI</span>
-                                <span class="bg-gray py-2">NO</span>
+                                <span class="bg-gray border-white mb-1 py-2">SI</span>
+                                <span class="bg-gray border-white py-2">NO</span>
                             </div>
                             <div class="w-100 d-flex flex-column">
-                                <span class="bg-light mb-1 py-2" v-text="manual ? 'X' : '-'"></span>
-                                <span class="bg-light py-2" v-text="manual ? '-' : 'X'"></span>
+                                <span class="bg-light border-white mb-1 py-2" v-text="manual ? 'X' : '-'"></span>
+                                <span class="bg-light border-white py-2" v-text="manual ? '-' : 'X'"></span>
                             </div>
-                            <div class="w-100 bg-gray d-flex justify-content-center align-items-center">
+                            <div class="w-100 bg-gray border-white d-flex justify-content-center align-items-center">
                                 <span>Idioma del Manual*</span>
                             </div>
-                            <div class="w-100 bg-light d-flex justify-content-center align-items-center">
+                            <div class="w-100 bg-light border-white d-flex justify-content-center align-items-center">
                                 <span>{{ array.data.idioma }}</span>
                             </div>
                         </div>
@@ -128,6 +128,14 @@
                         </div>
                         <div class="col-9 bg-light py-2">
                             <span v-if="array.data.title === 'EQUIPO'">{{ array.data.resolution }}</span>
+                            <div v-else>
+                                <div v-for="(precision, ind) in array.data.precision" :key="'P'+ind">
+                                    <span v-for="(valor, ix) in precision.value" :key="'val'+ix">
+                                        <strong v-if="ix > 0">| </strong>
+                                        {{ valor }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -163,17 +171,17 @@
                         </div>
                         <div class="col-9 px-0 d-flex text-center align-items-stretch">
                             <div class="w-100 d-flex flex-column">
-                                <span class="bg-gray mb-1 py-2">INTERNA</span>
-                                <span class="bg-gray py-2">EXTERNA</span>
+                                <span class="bg-gray border-white mb-1 py-2">INTERNA</span>
+                                <span class="bg-gray border-white py-2">EXTERNA</span>
                             </div>
                             <div class="w-100 d-flex flex-column">
-                                <span class="bg-light mb-1 py-2" v-text="externa"></span>
-                                <span class="bg-light py-2" v-text="interna"></span>
+                                <span class="bg-light border-white mb-1 py-2" v-text="interna"></span>
+                                <span class="bg-light border-white py-2" v-text="externa"></span>
                             </div>
-                            <div class="w-100 bg-gray d-flex justify-content-center align-items-center">
+                            <div class="w-100 bg-gray border-white d-flex justify-content-center align-items-center">
                                 <span class="px-3">Procedimiento de Calibración</span>
                             </div>
-                            <div class="w-100 bg-light d-flex justify-content-center align-items-center">
+                            <div class="w-100 bg-light border-white d-flex justify-content-center align-items-center">
                                 <span v-text="procedimiento"></span>
                             </div>
                         </div>
@@ -216,7 +224,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        <tr v-for="(calibracion, index) in array.calibracion" :key="index">
+                                        <tr v-for="(calibracion, index) in array.calibracion" :key="'C'+index">
                                             <td>{{ index+1 }}</td>
                                             <td>{{ calibracion.certificate_no }}</td>
                                             <td>{{ calibracion.done }}</td>
@@ -267,8 +275,6 @@
     </div>
 </template>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/rasterizehtml/1.3.0/rasterizeHTML.allinone.js"></script>
-
 <script>
     export default {
         props: ['array'],
@@ -280,7 +286,10 @@
         methods:{
             descargarPdf(){
                 window.print();
-            }
+            },
+            cabecera(string){
+                return string === null || string.trim() === '' ? '-' : string;
+            },
         },
         computed: {
             sujetoCalibracion() {
@@ -303,6 +312,8 @@
 </script>
 
 <style lang="scss">
+    .border-white{border-left: 4px solid #fff;}
+
     @media print {
         .noPrint{
             display:none;

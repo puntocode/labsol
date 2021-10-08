@@ -36,6 +36,7 @@
                     alert_calibration_id: 0,
                     procedimiento_id: 0,
                     rank: [''],
+                    headboard: {codigo: '', revision: '', vigencia: ''},
                     precision: [
                         {title: 'precision', value: ['']}
                     ],
@@ -47,7 +48,7 @@
                 action: 'create',
                 rutas: window.routes,
                 color: '#009BDD',
-                selectProcedimientos: []
+                selectProcedimientos: [{id: 0, text: 'SIN PROCEDIMIENTO'}]
             }
         },
         created(){

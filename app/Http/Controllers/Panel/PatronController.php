@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -121,7 +122,8 @@ class PatronController extends Controller
             'serie_number'         => 'nullable',
             'uncertainty'          => 'nullable',
             'tolerance'            => 'nullable',
-            'procedimiento_id'     => 'nullable'
+            'procedimiento_id'     => 'nullable',
+            'headboard'            => 'nullable'
         ]);
     }
 
@@ -137,7 +139,7 @@ class PatronController extends Controller
 
 
     public function historial(){
-      return view('panel.historial.index');
+        return view('panel.historial.index');
     }
 
 
@@ -147,7 +149,6 @@ class PatronController extends Controller
 
 
     #Documentos -----------------------------------------------------------
-
     public function documents(Patron $patron)
     {
         return view('panel.patrones.documents.doc', compact('patron'));
@@ -167,8 +168,8 @@ class PatronController extends Controller
         return response()->json($patron);
     }
 
-    #Historial de calibracion ----------------------------------------------
 
+    #Historial de calibracion ----------------------------------------------
     public function patronCalibrationHistory(Patron $patron, $id)
     {
         return view('panel.patrones.calibration-history.form', compact('patron', 'id'));
@@ -177,15 +178,20 @@ class PatronController extends Controller
     public function storeCalibrationHistory(Request $request, $id)
     {
         $patron = Patron::findOrFail($id);
-        if($request->file('documento')) $request['certificate'] = $this->cargarDocumento($request);
+
+        if($request->file('documento')){
+            $documento = $this->cargarDocumento($request);
+            $request['certificate'] = $documento['nombre'];
+        }
+
         $patron->historycalibrations()->create($request->all());
+        $patron->certificate_no = $request['certificate_no'];
+        $patron->save();
         return response()->json($request);
     }
 
 
-
     #Historial de Mantenimiento ----------------------------------------------
-
     public function patronMaintenanceHistory(Patron $patron, $id)
     {
         return view('panel.patrones.maintenance-history.form', compact('patron', 'id'));
@@ -197,7 +203,6 @@ class PatronController extends Controller
         $patron->historymaintenances()->create($request->all());
         return response()->json($patron);
     }
-
 
     public function cargarDocumento($request)
     {
@@ -213,6 +218,21 @@ class PatronController extends Controller
             'url' =>  $url,
         ];
     }
+
+
+    #Patron IDE ---------------------------------------------------------------
+    public function unidadesIde()
+    {
+        $unidades = DB::table('patron_ides_medidas')->get();
+        return response()->json($unidades);
+    }
+
+    public function ideForm($id)
+    {
+        $patron = Patron::with('magnitude', 'procedimientos')->whereId($id)->first();
+        return view('panel.patrones.ide.form', compact('patron'));
+    }
+
 
 
 }

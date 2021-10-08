@@ -96,6 +96,12 @@
                                         <span class="nav-text">Documentos</span>
                                     </a>
                                 </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab_ide">
+                                        <span class="nav-text">IDE</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
 
@@ -201,7 +207,10 @@
 
                                 <div class="tab-pane fade" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
                                     <list-doc :documents="{{ json_encode($documentos) }}"></list-doc>
-                                    {{-- @include('layouts.partials.extras.items.documentos_for', $documentos) --}}
+                                </div>
+
+                                <div class="tab-pane fade" id="tab_ide" role="tabpanel" aria-labelledby="tab_ide">
+                                    <x-ide :data=$patrone></x-ide>
                                 </div>
                             </div>
                         </div>

@@ -37,15 +37,15 @@
 </template>
 
 <script>
-    import Documentos from '../documentos/Documentos'
+    import Documentos from '../documentos/Documentos';
 
     export default {
         components: { Documentos },
         data() {
             return {
                 rutas: window.routes,
-                manual: { folder: 'equipos/manual/', category: 'MANUAL', idioma: 'español' },
-                documento: { folder: 'equipos/', category: 'DOCUMENTOS', idioma: 'español' },
+                manual: { folder: 'equipos/manual/', category: 'MANUAL', idioma: 'ESPAÑOL' },
+                documento: { folder: 'equipos/', category: 'DOCUMENTOS', idioma: 'ESPAÑOL' },
                 idiomas: ['ESPAÑOL', 'INGLES', 'PORTUGUES', 'CHINO', 'JAPONES', 'ALEMAN']
             }
         }

@@ -64,7 +64,7 @@
             </div>
 
             <div class="form-group col-md-4 pb-0 mb-0 d-flex align-items-center">
-                <ModalTecnico :datos="datos" />
+                <!-- <ModalTecnico :datos="datos" /> -->
             </div>
         </div>
 

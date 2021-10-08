@@ -110,52 +110,104 @@
                                         <div class="card-body">
 
                                                 <div class="row">
-                                                    <div class="form-group col-md-3">
+                                                    <div class="form-group col-md-4">
                                                         <label>Identificación</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="font-weight-bold">{{ $equipo->code }}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-6">
+                                                    <div class="form-group col-md-4">
                                                         <label>Descripcion</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="font-weight-bold">{{ $equipo->description }}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-3">
+                                                    <div class="form-group col-md-4">
                                                         <label>Marca</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="font-weight-bold">{{ $equipo->brand }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Modelo</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->model }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Tipo</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->type }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Nr. de Serie</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->serie_number }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Ubicación</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->ubication }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Incertidumbre</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->uncertainty }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Tolerancia</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->tolerance }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <hr>
 
                                                 <div class="row mt-3">
-                                                    <div class="form-group col-md-3">
+                                                    <div class="form-group col-md-4">
                                                         <label>Nr. de Certificado</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="font-weight-bold">{{ $equipo->certificate_no }}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-3">
+                                                    <div class="form-group col-md-4">
+                                                        <label>Procedimiento de Calibración</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->procedimiento_id > 0 ? $equipo->procedimientos->code : '-' }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4"></div>
+
+
+                                                    <div class="form-group col-md-4">
                                                         <label>Estado</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="badge badge-primary font-weight-bold text-uppercase">{{ $equipo->condition->name }}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-3">
+                                                    <div class="form-group col-md-4">
                                                         <label>Magnitud</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="badge badge-info font-weight-bold">{{ $equipo->magnitude->name }}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group col-md-3">
+                                                    <div class="form-group col-md-4">
                                                         <label>Alerta de Calibración</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             <span class="badge badge-danger font-weight-bold">{{ $equipo->alertCalibration->name }}</span>
@@ -169,7 +221,7 @@
                                                     <div class="form-group col-md-4">
                                                         <label>Periodo de Calibración</label>
                                                         <div class="form-control p-0 border-0 h-auto">
-                                                            <span class="font-weight-bold">{{ $equipo->calibration_period }}</span>
+                                                            <span class="font-weight-bold">{{ $equipo->periodo }}</span>
                                                         </div>
                                                     </div>
 
@@ -193,7 +245,7 @@
                                                         <label>Rango</label>
                                                         <div class="form-control p-0 border-0 h-auto">
                                                             @foreach ($equipo->rank as $rank)
-                                                                <span class="font-weight-bold">{{ $rank  }}</span> <br>
+                                                                <span class="font-weight-bold">{{ $rank }}</span> <br>
                                                             @endforeach
                                                         </div>
                                                     </div>
@@ -212,7 +264,30 @@
                                                             <span class="font-weight-bold">{{ $equipo->error_max }}</span>
                                                         </div>
                                                     </div>
+                                                </div>
 
+                                                <hr>
+                                                <div class="row mt-3">
+                                                    <div class="form-group col-md-4">
+                                                        <label>Código (Hoja de Vida)</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->headboard['codigo'] }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Revisión</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->headboard['revision'] }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Vigencia</label>
+                                                        <div class="form-control p-0 border-0 h-auto">
+                                                            <span class="font-weight-bold">{{ $equipo->headboard['vigencia'] }}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="row">

@@ -66,11 +66,10 @@ class EquipoController extends Controller
 
 
     public function hojaVida($id){
-        $equipo = Equipo::with('magnitude')->whereId($id)->first();
         $data = [
-            'data' => $equipo,
-            'calibracion' => Historycalibration::where('historycalibration_id', $equipo->id)->where('historycalibration_type', 'App\Models\Equipo')->get(),
-            'mantenimiento' => Historymaintenance::where('historymaintenance_id', $equipo->id)->where('historymaintenance_type', 'App\Models\Equipo')->get()
+            'data' => Equipo::with('magnitude', 'procedimientos')->whereId($id)->first(),
+            'calibracion' => Historycalibration::where('historycalibration_id', $id)->where('historycalibration_type', 'App\Models\Equipo')->get(),
+            'mantenimiento' => Historymaintenance::where('historymaintenance_id', $id)->where('historymaintenance_type', 'App\Models\Equipo')->get()
         ];
         return view('panel.equipos.hoja-vida', compact('data'));
     }
@@ -97,6 +96,14 @@ class EquipoController extends Controller
             'error_max'            => 'nullable',
             'last_calibration'     => 'nullable',
             'next_calibration'     => 'nullable',
+            'ubication'            => 'nullable',
+            'model'                => 'nullable',
+            'type'                 => 'nullable',
+            'serie_number'         => 'nullable',
+            'uncertainty'          => 'nullable',
+            'tolerance'            => 'nullable',
+            'procedimiento_id'     => 'nullable',
+            'headboard'            => 'nullable'
         ]);
     }
 
@@ -111,10 +118,12 @@ class EquipoController extends Controller
     {
         $equipo = Equipo::findOrFail($id);
         if($request->file('documento')){
-            $arrayDoc = $this->cargarDocumento($request);
-            $request['certificate'] = $arrayDoc['nombre'];
+            $documento = $this->cargarDocumento($request);
+            $request['certificate'] = $documento['nombre'];
         }
         $equipo->historycalibrations()->create($request->all());
+        $equipo->certificate_no = $request['certificate_no'];
+        $equipo->save();
         return response()->json($equipo);
     }
 

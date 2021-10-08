@@ -45,6 +45,7 @@
 @endsection
 @section('rutas')
 <script>
+    window.anho = "{{ $equipo->calibration_period }}";
     const ficha     = "{{ route('panel.equipos.show', $equipo) }}";
     const getHis    = "{{ route('panel.history-calibration.get', $id) }}";
     const updateHis = "{{ route('panel.history-calibration.update') }}";

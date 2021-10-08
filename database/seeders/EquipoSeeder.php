@@ -21,13 +21,14 @@ class EquipoSeeder extends Seeder
             'brand'                => 'S&B',
             'resolution'           => '0,0001 g',
             'error_max'            => '0,1 g',
-            'calibration_period'   => '12 meses',
+            'calibration_period'   => '1',
             'certificate_no'       => 'LS10108-2020',
             'last_calibration'     => '2020/07/10',
             'next_calibration'     => '2021/07/10',
             'condition_id'         => '1',
             'magnitude_id'         => '9',
-            'alert_calibration_id' => '1'
+            'alert_calibration_id' => '1',
+            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
         ]);
 
         Equipo::create([
@@ -37,13 +38,14 @@ class EquipoSeeder extends Seeder
             'brand'                => 'Tonghui Electronic',
             'resolution'           => '0,01 kV',
             'error_max'            => '± 2 %',
-            'calibration_period'   => '12 meses',
+            'calibration_period'   => '1',
             'certificate_no'       => 'LS10109-2020',
             'last_calibration'     => '2020/06/10',
             'next_calibration'     => '2021/06/10',
             'condition_id'         => '1',
             'magnitude_id'         => '5',
-            'alert_calibration_id' => '1'
+            'alert_calibration_id' => '1',
+            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
         ]);
 
         Equipo::create([
@@ -53,10 +55,11 @@ class EquipoSeeder extends Seeder
             'brand'                => 'Heraeus',
             'resolution'           => '0,1 °C',
             'error_max'            => '± 2 °C',
-            'calibration_period'   => '12 meses',
+            'calibration_period'   => '1',
             'condition_id'         => '1',
             'magnitude_id'         => '14',
-            'alert_calibration_id' => '1'
+            'alert_calibration_id' => '1',
+            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
         ]);
 
         Equipo::create([
@@ -66,13 +69,14 @@ class EquipoSeeder extends Seeder
             'brand'                => 'JZLTMM Co. Ltd.',
             'resolution'           => '1 N',
             'error_max'            => '± 1 %',
-            'calibration_period'   => '12 meses',
+            'calibration_period'   => '1',
             'certificate_no'       => 'UMCI-DMEN-LFU No. 2000',
             'last_calibration'     => '2020/09/10',
             'next_calibration'     => '2021/09/10',
             'condition_id'         => '1',
             'magnitude_id'         => '6',
-            'alert_calibration_id' => '1'
+            'alert_calibration_id' => '1',
+            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
         ]);
 
         Equipo::create([
@@ -82,10 +86,11 @@ class EquipoSeeder extends Seeder
             'brand'                => 'Truper',
             'resolution'           => '0,01 mm',
             'error_max'            => '± 0,02 mm',
-            'calibration_period'   => '12 meses',
+            'calibration_period'   => '1',
             'condition_id'         => '2',
             'magnitude_id'         => '3',
-            'alert_calibration_id' => '1'
+            'alert_calibration_id' => '1',
+            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
         ]);
     }
 }
