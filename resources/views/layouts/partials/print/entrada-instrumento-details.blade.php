@@ -91,15 +91,15 @@
                 <span class="font-bold">Servicio</span>
             </div>
 
-            @foreach ($entradaInstrumento->servicio as $servicio)
+            @foreach ($expedientes as $servicio)
                 <div class="col-2 bg-light py-2 border-white">
-                    <span>{{  $servicio->quantity }}</span>
+                    <span>{{  $servicio->cantidad }}</span>
                 </div>
                 <div class="col-6 bg-light py-2 border-white">
-                    <span>{{  $servicio->instrumento->name }}</span>
+                    <span>{{  $servicio->instrumentos->name }}</span>
                 </div>
                 <div class="col-4 bg-light py-2 border-white">
-                    <span>{{  $servicio->service }}</span>
+                    <span>Calibración</span>
                 </div>
             @endforeach
 

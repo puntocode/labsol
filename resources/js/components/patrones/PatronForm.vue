@@ -27,10 +27,17 @@
                         <div class="invalid-feedback"><span v-if="!$v.form.code.required">Este campo es requerido</span></div>
                     </div>
 
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <label>Descripción <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" v-model.trim="$v.form.description.$model" :class="{'is-invalid': $v.form.description.$error}" />
                         <div class="invalid-feedback"><span v-if="!$v.form.description.required">Este campo es requerido</span></div>
+                    </div>
+
+                     <div class="col-md-3">
+                        <label>Formulario <span class="text-danger">*</span></label>
+                        <select class="form-control text-capitalize" v-model="form.formulario_id">
+                            <option v-for="(attr,index) in selectFormulario" :key="index" :value="attr.id">{{ attr.codigo }}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -83,12 +90,19 @@
                 </div>
 
                 <div class="form-group row mb-10">
-                   <div class="col-md-6">
+                   <div class="col-md-4">
                         <label>Ubicación</label>
                         <input class="form-control" v-model="form.ubication" />
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label>Calibración <span class="text-danger">*</span></label>
+                        <select class="form-control text-capitalize" v-model="form.calibration">
+                            <option v-for="(attr,index) in selectCalibration" :key="index" :value="attr">{{ attr }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
                         <label>Procedimiento de Calibración</label>
                         <Select2 v-model="form.procedimiento_id" :options="selectProcedimientos" />
                     </div>
@@ -162,28 +176,6 @@
                 <div class="d-flex justify-content-between mb-3">
                     <h4 class="font-weight-bold">Precisión/Error:</h4>
                     <h2 class="steps">Paso 3 - 4</h2>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-lg-4">
-                        <label>Código (Hoja de Vida)</label>
-                        <input class="form-control" v-model="form.headboard.codigo" />
-                    </div>
-
-                    <div class="col-lg-4">
-                        <label>Revisión</label>
-                        <input class="form-control" v-model="form.headboard.revision" />
-                    </div>
-
-                    <div class="col-lg-4">
-                        <label>Vigencia</label>
-                        <div class="input-group">
-                            <date-picker v-model="form.headboard.vigencia" :config="options"></date-picker>
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="form-group mt-8">
@@ -281,15 +273,14 @@
 
     export default {
         components: { datePicker, SuccessAnimation, SelectForm, Select2 },
-        props: ['form', 'action', 'rutas', 'selectProcedimientos'],
+        props: ['form', 'action', 'rutas', 'selectProcedimientos', 'selectFormulario'],
         data() {
             return {
                 steps: 1,
                 progress: 25,
                 rankIndex: 0,
-                options: {
-                     format: 'yyyy/MM/DD',
-                },
+                options: { format: 'yyyy/MM/DD'},
+                selectCalibration: [ 'INTERNA', 'EXTERNA', 'INT/EXT', 'N/A']
             }
         },
         validations:{

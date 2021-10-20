@@ -45,24 +45,30 @@ class EntradaInstrumentoController extends Controller
      */
     public function store(Request $request)
     {
-        $servicioModel = [];
+        $servicios = $request['servicio'];
         $entradaInstrumento = EntradaInstrumento::create($this->validateData());
 
         #-- Insertamos los servicios en EntradaInstrumentoService-----------------------------------
-        foreach ($request['servicio'] as $servicio) {
-            $servicioModel[] = new EntradaInstrumentoService($servicio);
-        }
-        $entradaInstrumentoServicio = $entradaInstrumento->servicio()->saveMany($servicioModel);
+        // foreach ($request['servicio'] as $servicio) {
+        //     $servicioModel[] = new EntradaInstrumentoService($servicio);
+        // }
+        // $entradaInstrumentoServicio = $entradaInstrumento->servicio()->saveMany($servicioModel);
 
         #-- Creamos los expedientes de acuerdo a la cantidad de servicios---------------------------
-        foreach($entradaInstrumentoServicio as $servicio){
-            $expedienteModel=[];
-            for ($i = 1; $i <= $servicio->quantity; $i++) {
-                $newExp = new Expediente();
-                $newExp->type = $entradaInstrumento->type;
-                $expedienteModel[] = $newExp;
+        foreach($servicios as $servicio){
+            for ($i = 1; $i <= $servicio['quantity']; $i++) {
+                $expediente = new Expediente();
+                $expediente->certificate = $servicio['certificate'];
+                $expediente->certificate_adress = $servicio['certificate_adress'];
+                $expediente->certificate_ruc = $servicio['certificate_ruc'];
+                $expediente->instrumento_id = $servicio['instrumento_id'];
+                $expediente->obs = $servicio['obs'];
+                $expediente->priority = $servicio['priority'];
+                $expediente->service = $servicio['service'];
+                $expediente->type = $entradaInstrumento->type;
+                $expediente->entrada_instrumento_id = $entradaInstrumento->id;
+                $expediente->save();
             }
-            $servicio->expedientes()->saveMany($expedienteModel);
         }
 
         return response()->json(['data' => $entradaInstrumento], 201);
@@ -76,7 +82,9 @@ class EntradaInstrumentoController extends Controller
      */
     public function show(EntradaInstrumento $entradaInstrumento)
     {
-        return view('panel.instrumentos.entradas.show', compact('entradaInstrumento'));
+        $entradaInstrumento = $entradaInstrumento->with('cliente', 'user')->first();
+        $expedientes = Expediente::cantidad($entradaInstrumento->id)->get();
+        return view('panel.instrumentos.entradas.show', compact('entradaInstrumento', 'expedientes'));
     }
 
     /**

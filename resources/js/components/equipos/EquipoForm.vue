@@ -152,28 +152,6 @@
                     <h2 class="steps">Paso 3 - 4</h2>
                 </div>
 
-                <div class="form-group row">
-                    <div class="col-lg-4">
-                        <label>Código (Hoja de Vida)</label>
-                        <input class="form-control" v-model="form.headboard.codigo" />
-                    </div>
-
-                    <div class="col-lg-4">
-                        <label>Revisión</label>
-                        <input class="form-control" v-model="form.headboard.revision" />
-                    </div>
-
-                    <div class="col-lg-4">
-                        <label>Vigencia</label>
-                        <div class="input-group">
-                            <date-picker v-model="form.headboard.vigencia" :config="options"></date-picker>
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="form-group mt-4">
                     <div class="form-group">
                         <label>Resolución</label>

@@ -106,7 +106,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     # -- Patrones IDE --
     Route::resource('/patrones-ide', 'PatronIdeController')->middleware('can:panel.database');
-    Route::get('/patron-ide-unidades', 'PatronController@unidadesIde')->name('patrones.unidades_ide')->middleware('can:panel.database');
+    Route::get('/patrones-ide-all/{patron_id}', 'PatronIdeController@patronIdeShow')->name('patron_ide.all')->middleware('can:panel.database');
+    Route::get('/patron-ide-unidades', 'PatronController@unidadesIde')->name('patrones.unidades_medidas')->middleware('can:panel.database');
     Route::get('/patron-ide/{id}', 'PatronController@ideForm')->name('patron.ide.form')->middleware('can:panel.database');
 
 
@@ -115,13 +116,13 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/equipo/hoja-vida/{id}', 'EquipoController@hojaVida')->name('equipo.hojaVida')->middleware('can:panel.database');
     Route::get('/equipo/{id}', 'EquipoController@getEquipoForId')->name('equipos.get')->middleware('can:panel.database');
 
-     # -- Equipos Documentos--
-     Route::get('/equipo-doc/{equipo}', 'EquipoController@documents')->name('equipos.doc')->middleware('can:panel.database');
-     Route::post('/equipo-doc/{id}', 'EquipoController@storeDocument')->name('equipos.doc.store')->middleware('can:panel.database');
+    # -- Equipos Documentos--
+    Route::get('/equipo-doc/{equipo}', 'EquipoController@documents')->name('equipos.doc')->middleware('can:panel.database');
+    Route::post('/equipo-doc/{id}', 'EquipoController@storeDocument')->name('equipos.doc.store')->middleware('can:panel.database');
 
-     # -- Equipos Historial Calibracion--
-     Route::get('/equipo-calibration-history/{equipo}/{id}', 'EquipoController@equipoCalibrationHistory')->name('equipo.calibration-history')->middleware('can:panel.database');
-     Route::post('/equipo-calibration-history/{id}', 'EquipoController@storeCalibrationHistory')->name('equipo.calibration-history.store')->middleware('can:panel.database');
+    # -- Equipos Historial Calibracion--
+    Route::get('/equipo-calibration-history/{equipo}/{id}', 'EquipoController@equipoCalibrationHistory')->name('equipo.calibration-history')->middleware('can:panel.database');
+    Route::post('/equipo-calibration-history/{id}', 'EquipoController@storeCalibrationHistory')->name('equipo.calibration-history.store')->middleware('can:panel.database');
 
     # -- Equipos Historial Mantenimiento--
     Route::get('/equipo-maintenance-history/{equipo}/{id}', 'EquipoController@equipoMaintenanceHistory')->name('equipo.maintenance-history')->middleware('can:panel.database');
@@ -187,6 +188,10 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     ])->middleware('can:panel.admin');
 
     Route::resource('/mantenimientos/tecnicos', 'TecnicoController')->middleware('can:panel.admin');
+
+
+    # -- Formularios --
+    Route::resource('/formularios', 'FormularioController')->middleware('can:panel.database');
 
 
     # -- Usuarios --

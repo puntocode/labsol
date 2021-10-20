@@ -20,11 +20,13 @@ class DatabaseSeeder extends Seeder
         $this->call(ConditionSeeder::class);
         $this->call(StatusCalibrationSeeder::class);
         $this->call(MagnitudeSeeder::class);
+        $this->call(FormularioSeeder::class);
         $this->call(PatronSeeder::class);
         $this->call(EquipoSeeder::class);
         $this->call(InstrumentoSeeder::class);
         $this->call(ProcedimientoSeeder::class);
         $this->call(InstrumentoProcedimientoSeeder::class);
         $this->call(ExpedienteEstadoSeed::class);
+        $this->call(UnidadMedidaSeeder::class);
     }
 }

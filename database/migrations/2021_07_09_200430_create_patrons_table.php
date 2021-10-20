@@ -20,6 +20,7 @@ class CreatePatronsTable extends Migration
             $table->string('brand', 100)->nullable();
             $table->json('rank')->nullable();
             $table->json('precision')->nullable();
+            $table->enum('calibration', ['INTERNA', 'EXTERNA', 'INT/EXT', 'N/A'])->default('N/A');
             $table->integer('calibration_period')->nullable();
             $table->string('certificate_no')->nullable();
             $table->json('error_max')->nullable();
@@ -31,11 +32,11 @@ class CreatePatronsTable extends Migration
             $table->string('model', 100)->nullable();
             $table->string('uncertainty')->nullable();
             $table->string('tolerance')->nullable();
-            $table->json('headboard')->nullable();
             $table->unsignedBigInteger('procedimiento_id')->default(0);
             $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();
             $table->foreignId('alert_calibration_id')->constrained();
+            $table->foreignId('formulario_id')->constrained();
             $table->timestamps();
         });
     }

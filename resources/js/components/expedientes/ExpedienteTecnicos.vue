@@ -17,7 +17,3 @@
         components: { ExpedienteCard, },
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

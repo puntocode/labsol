@@ -54,10 +54,11 @@
                         <h3 class="pt-5">Datos Generales</h3>
                     </div>
 
-                    @include('layouts.partials.print.entrada-instrumento-details', $entradaInstrumento)
+                    @include('layouts.partials.print.entrada-instrumento-details')
 
                     <div class="card-footer" style="text-align: right">
-                        {{-- <a href="{{ route('panel.entrada-instrumentos.edit', $entradaInstrumento) }}" class="btn btn-primary">Editar Datos</a> --}}
+                        <a href="" class="btn btn-primary">Editar Entrada</a>
+                        {{-- <a href="" class="btn btn-info">Editar Expedientes</a> --}}
                     </div>
                 </div>
             </div>
@@ -65,5 +66,3 @@
         <!--end::Card-->
     </div>
 @endsection
-
-

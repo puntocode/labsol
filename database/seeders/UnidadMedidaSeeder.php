@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PatronIdeMedidaSeeder extends Seeder
+class UnidadMedidaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -34,7 +34,6 @@ class PatronIdeMedidaSeeder extends Seeder
             ['prefijo' => 'Atto',  'simbolo' => 'a',  'factor' => '10⁻¹⁸', 'tipo' => 'SUBMULTIPLOS'],
         ];
 
-        DB::table('patron_ides_medidas')->insert($data);
-
+        DB::table('unidad_medidas')->insert($data);
     }
 }

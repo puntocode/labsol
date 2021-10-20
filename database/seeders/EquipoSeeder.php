@@ -27,8 +27,8 @@ class EquipoSeeder extends Seeder
             'next_calibration'     => '2021/07/10',
             'condition_id'         => '1',
             'magnitude_id'         => '9',
-            'alert_calibration_id' => '1',
-            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
+            'alert_calibration_id' => 1,
+            'formulario_id'        => 2,
         ]);
 
         Equipo::create([
@@ -44,8 +44,8 @@ class EquipoSeeder extends Seeder
             'next_calibration'     => '2021/06/10',
             'condition_id'         => '1',
             'magnitude_id'         => '5',
-            'alert_calibration_id' => '1',
-            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
+            'alert_calibration_id' => 1,
+            'formulario_id'        => 2,
         ]);
 
         Equipo::create([
@@ -58,8 +58,8 @@ class EquipoSeeder extends Seeder
             'calibration_period'   => '1',
             'condition_id'         => '1',
             'magnitude_id'         => '14',
-            'alert_calibration_id' => '1',
-            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
+            'alert_calibration_id' => 1,
+            'formulario_id'        => 2,
         ]);
 
         Equipo::create([
@@ -75,8 +75,8 @@ class EquipoSeeder extends Seeder
             'next_calibration'     => '2021/09/10',
             'condition_id'         => '1',
             'magnitude_id'         => '6',
-            'alert_calibration_id' => '1',
-            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
+            'alert_calibration_id' => 1,
+            'formulario_id'        => 2,
         ]);
 
         Equipo::create([
@@ -89,8 +89,8 @@ class EquipoSeeder extends Seeder
             'calibration_period'   => '1',
             'condition_id'         => '2',
             'magnitude_id'         => '3',
-            'alert_calibration_id' => '1',
-            'headboard'            => ['codigo' => 'LS-FOR-024', 'vigencia' => '', 'revision' => '0']
+            'alert_calibration_id' => 1,
+            'formulario_id'        => 2,
         ]);
     }
 }

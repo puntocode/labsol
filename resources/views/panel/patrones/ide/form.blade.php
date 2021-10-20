@@ -49,13 +49,15 @@
     <script>
         const store = "{{ route('panel.patrones-ide.store') }}";
         const index = "{{ route('panel.patrones-ide.index' ) }}";
+        const patronIde = "{{ route('panel.patron_ide.all', $patron->id) }}";
         const showPatron = "{{ route('panel.patrones.show', $patron->id) }}";
-        const unidadesIde = "{{ route('panel.patrones.unidades_ide') }}";
+        const unidadesIde = "{{ route('panel.patrones.unidades_medidas') }}";
 
         window.routes = {
             'show': showPatron,
             'index': index,
             'store': store,
+            'patronIde': patronIde,
             'unidades_ide': unidadesIde
         }
     </script>

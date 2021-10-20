@@ -19,6 +19,7 @@ class CreateEquiposTable extends Migration
             $table->string('description');
             $table->string('ubication')->nullable();
             $table->string('brand', 100)->nullable();
+            $table->enum('calibration', ['INTERNA', 'EXTERNA', 'INT/EXT', 'N/A'])->default('N/A');
             $table->string('model', 100)->nullable();
             $table->string('type')->nullable();
             $table->string('serie_number')->nullable();
@@ -31,11 +32,11 @@ class CreateEquiposTable extends Migration
             $table->string('certificate_no')->nullable();
             $table->date('last_calibration')->nullable();
             $table->date('next_calibration')->nullable();
-            $table->json('headboard')->nullable();
             $table->unsignedBigInteger('procedimiento_id')->default(0);
             $table->foreignId('alert_calibration_id')->constrained();
             $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();
+            $table->foreignId('formulario_id')->constrained();
             $table->timestamps();
         });
     }

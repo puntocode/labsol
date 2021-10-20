@@ -47,7 +47,10 @@
             </div>
 
             <div class="col-12 mt-5 text-center">
-                <button type="submit" class="btn btn-primary" title="Completa los campos obligatorios" :disabled="$v.$invalid">Guardar Historial</button>
+                <button type="submit" class="btn btn-primary" title="Completa los campos obligatorios" :disabled="$v.$invalid || spin">
+                    <i v-if="spin" class="fas fa-spinner fa-spin"></i>
+                    <span v-else>Guardar Historial</span>
+                </button>
             </div>
         </div>
     </form>
@@ -73,7 +76,8 @@
                     denyButtonColor: "#808080",
                     confirmButtonText: 'Ir a la ficha',
                     denyButtonText: 'Crear Nuevo',
-                }
+                },
+                spin: false
             }
         },
         created () {
@@ -90,6 +94,7 @@
         },
         methods: {
             submit(){
+                this.spin = true;
                 if(this.id > 0) this.actualizar();
                 else this.crear();
             },
@@ -108,6 +113,7 @@
                     .catch(error => console.log(error))
             },
             alerta(mensaje = 'Historial insertado correctamente!', tipo = 'Insertado'){
+                this.spin = false;
                 this.options.text = mensaje;
                 this.options.title = tipo;
                 this.$swal(this.options)

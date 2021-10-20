@@ -41,7 +41,6 @@
                     uncertainty: '',
                     ubication: 'Laboratorio',
                     procedimiento_id: 0,
-                    headboard: {codigo: '', revision: '', vigencia: ''},
                 },
                 selectProcedimientos: [{id: 0, text: 'SIN PROCEDIMIENTO'}]
             }

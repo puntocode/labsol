@@ -105,7 +105,10 @@
                             </ul>
                         </div>
 
+
                         <div class="card-body px-0">
+
+                            {{-- tab datos generales -----------------------------------------------------------------------------------------------}}
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab_datos" role="tabpanel" aria-labelledby="tab_datos">
                                     <div class="card card-custom gutter-b card-stretch shadow-none">
@@ -121,6 +124,8 @@
                                     </div>
                                 </div>
 
+
+                                {{-- tab historial calibracion -------------------------------------------------------------------------------------}}
                                 <div class="tab-pane fade" id="tab_historial" role="tabpanel" aria-labelledby="tab_historial">
                                     <div class="row">
                                         <div class="col-12">
@@ -167,9 +172,10 @@
                                     </div>
                                 </div>
 
+
+                                {{-- tab historial mantenimiento -------------------------------------------------------------------------------------}}
                                 <div class="tab-pane fade" id="tab_expedientes" role="tabpanel" aria-labelledby="tab_expedientes">
                                     <div class="col-12">
-                                        <!--begin: Datatable-->
                                         <table class="table table-separate table-head-custom collapsed" id="tableExpedientes" style="width:100%">
                                             <thead>
                                                 <tr>
@@ -201,16 +207,46 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        <!--end: Datatable-->
                                     </div>
                                 </div>
 
+
+                                {{-- tab documentos ------------------------------------------------------------------------------------------------------}}
                                 <div class="tab-pane fade" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
                                     <list-doc :documents="{{ json_encode($documentos) }}"></list-doc>
                                 </div>
 
+
+                                {{-- tab ide ------------------------------------------------------------------------------------------------------------}}
                                 <div class="tab-pane fade" id="tab_ide" role="tabpanel" aria-labelledby="tab_ide">
-                                    <x-ide :data=$patrone></x-ide>
+                                    <div class="row px-4">
+                                        <div class="col-12 px-0 d-flex justify-content-between">
+                                            <h4>Patron: <span class="text-black-50">{{ $patrone->code }}</span></h4>
+                                            <span>Magnitud <span class="badge badge-primary font-weight-bold ml-2">{{ $patrone->magnitude->name }}</span></span>
+                                        </div>
+                                        <div class="col-12 text-center mt-8 py-2 bg-secondary position-relative">
+                                            <h4 class="font-bold w-100">Magnitudes</h4>
+                                        </div>
+                                    </div>
+
+                                    @if (count($ide))
+                                        <x-ide :data=$ide></x-ide>
+                                    @else
+                                        <div class="row mt-10">
+                                            <div class="col-12 text-center">
+                                                <h3>-- No exiten magnitudes cargadas --</h3>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div class="row">
+                                        <div class="col-12 mt-4 text-center">
+                                            <a href="{{ route('panel.patron.ide.form', $patrone->id) }}" class="btn btn-primary">Cargar Magnitudes</a>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>

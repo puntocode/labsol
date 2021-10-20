@@ -68,7 +68,10 @@
         </div>
 
         <div class="d-flex justify-content-center mt-5 row">
-            <button type="submit" class="btn btn-primary" title="Completa los campos obligatorios" :disabled="$v.form.$invalid || error">Guardar Historial</button>
+            <button type="submit" class="btn btn-primary" title="Completa los campos obligatorios" :disabled="disabled">
+                <i v-if="spin" class="fas fa-spinner fa-spin"></i>
+                <span v-else>Guardar Historial</span>
+            </button>
         </div>
     </form>
 </template>
@@ -97,7 +100,8 @@
                     denyButtonColor: "#808080",
                     confirmButtonText: 'Ir a la ficha',
                     denyButtonText: 'Crear Nuevo',
-                }
+                },
+                spin: false
             }
         },
 
@@ -118,6 +122,7 @@
 
         methods: {
             submit(){
+                this.spin = true;
                 if(this.id > 0) this.actualizar();
                 else this.crear();
             },
@@ -132,8 +137,8 @@
                 if(this.file) data = this.serializar(data);
 
                 axios.post(this.rutas.storeHis, data, this.header)
-                    .then(response =>{ if(response.status == 200) this.alerta(); })
-                    .catch(error => console.log(error))
+                    .then(response =>{ if(response.status == 200) this.alerta();})
+                    .catch(error => this.alertaError('Archivo invalido'))
             },
 
             actualizar(){
@@ -145,8 +150,8 @@
             cargarArchivo(event){
                 const name = event.target.files[0].name;
                 const lastDot = name.lastIndexOf('.');
-                //const fileName = name.substring(0, lastDot);
                 const ext = name.substring(lastDot + 1);
+                //const fileName = name.substring(0, lastDot);
 
                 if(ext === 'pdf' || ext === 'doc' || ext === 'docx' || ext === 'xlsx' || ext === 'xls' || ext === 'pptx' || ext === 'ppt'){
                     this.file = event.target.files[0]
@@ -168,6 +173,7 @@
             },
 
             alerta(mensaje = 'Historial insertado correctamente!', tipo = 'Insertado'){
+                this.spin = false;
                 this.options.text = mensaje;
                 this.options.title = tipo;
                 this.$swal(this.options)
@@ -176,9 +182,16 @@
                         else location.href = this.rutas.hisNew
                     })
             },
+            alertaError(text){
+                this.$swal({icon: 'error', title: 'Error', text: text});
+                this.spin = false;
+            },
         },
 
         computed: {
+            disabled(){
+                return this.$v.form.$invalid || this.spin || this.error;
+            },
             readonly() {
                 return parseInt(this.anho) > 0 ? true : false;
             },

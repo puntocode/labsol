@@ -93,21 +93,21 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach ($expedientes as $i => $expediente)
+						@foreach ($expedientes as $expediente)
 							<tr>
 								<td>{{$expediente->number}}</td>
-								<td>{{$expediente->servicios->certificate}}</td>
-								<td>{{$expediente->servicios->instrumento->name}}</td>
-								<td>{{$expediente->servicios->service}}</td>
+								<td>{{$expediente->certificate}}</td>
+								<td>{{$expediente->instrumentos->name}}</td>
+								<td>{{$expediente->service}}</td>
 								<td>
                                     <span class="badge badge-{{ $expediente->estados->color }} ml-5 ml-md-0 mt-2 mt-md-0">
-                                        {{$expediente->estados->name}}
+                                        {{ $expediente->estados->name }}
                                     </span>
                                 </td>
-                                {{-- <td>{{$expediente->servicios->obs}}</td> --}}
+                                {{-- <td>{{$expediente->obs}}</td> --}}
 								<td>
-                                    <span class="badge badge-{{ $expediente->servicios->prioridad['color'] }} ml-5 ml-md-0 mt-2 mt-md-0">
-                                        {{ $expediente->servicios->prioridad['prioridad'] }}
+                                    <span class="badge badge-{{ $expediente->priority['color'] }} ml-5 ml-md-0 mt-2 mt-md-0">
+                                        {{ $expediente->priority['prioridad'] }}
                                     </span>
 								</td>
                                 <td>

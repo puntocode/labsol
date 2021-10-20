@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Models\Formulario;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\EntradaInstrumentoService;
 
 
-class EntradaInstrumentoServiceController extends Controller
+class FormularioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,9 @@ class EntradaInstrumentoServiceController extends Controller
      */
     public function index()
     {
-        //
+        $formularios = Formulario::where('status', true)->get();
+        if(request()->wantsJson()) return response()->json($formularios);
+        return view('panel.procedimientos.index', compact('formularios'));
     }
 
     /**
@@ -43,10 +45,10 @@ class EntradaInstrumentoServiceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EntradaInstrumentoService  $entradaInstrumentoService
+     * @param  \App\Models\Formulario  $formulario
      * @return \Illuminate\Http\Response
      */
-    public function show(EntradaInstrumentoService $entradaInstrumentoService)
+    public function show(Formulario $formulario)
     {
         //
     }
@@ -54,10 +56,10 @@ class EntradaInstrumentoServiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\EntradaInstrumentoService  $entradaInstrumentoService
+     * @param  \App\Models\Formulario  $formulario
      * @return \Illuminate\Http\Response
      */
-    public function edit(EntradaInstrumentoService $entradaInstrumentoService)
+    public function edit(Formulario $formulario)
     {
         //
     }
@@ -66,10 +68,10 @@ class EntradaInstrumentoServiceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntradaInstrumentoService  $entradaInstrumentoService
+     * @param  \App\Models\Formulario  $formulario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EntradaInstrumentoService $entradaInstrumentoService)
+    public function update(Request $request, Formulario $formulario)
     {
         //
     }
@@ -77,10 +79,10 @@ class EntradaInstrumentoServiceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EntradaInstrumentoService  $entradaInstrumentoService
+     * @param  \App\Models\Formulario  $formulario
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EntradaInstrumentoService $entradaInstrumentoService)
+    public function destroy(Formulario $formulario)
     {
         //
     }

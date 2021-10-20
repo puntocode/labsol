@@ -14,5 +14,9 @@ class PatronIde extends Model
         return $this->belongsTo(Patron::class);
     }
 
+    public function rangos(){
+        return $this->hasMany(IdeRango::class);
+    }
+
 
 }

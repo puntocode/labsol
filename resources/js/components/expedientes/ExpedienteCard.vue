@@ -21,17 +21,15 @@
                             <tr v-for="(expedient, index) in expedientes" :key="index">
                                 <td><input type="checkbox"></td>
                                 <td>{{ expedient.number }}</td>
-                                <td>{{ expedient.servicios.certificate }}</td>
-                                <td>{{ expedient.servicios.instrumento.name }}</td>
-                                <td>{{ expedient.servicios.service }}</td>
+                                <td>{{ expedient.certificate }}</td>
+                                <td>{{ expedient.instrumentos.name }}</td>
+                                <td>{{ expedient.service }}</td>
                                 <td>
-                                    <span class="badge badge-warning ml-5 ml-md-0 mt-2 mt-md-0">
-                                        {{ expedient.estados.name}}
-                                    </span>
+                                    <span class="badge badge-warning">{{ expedient.estados.name}}</span>
                                 </td>
                                 <td>
-                                    <span class="badge ml-5 ml-md-0 mt-2 mt-md-0" :class="`badge-${expedient.servicios.prioridad.color}`">
-                                        {{ expedient.servicios.prioridad.prioridad }}
+                                    <span class="badge" :class="`badge-${expedient.priority.color}`">
+                                        {{ expedient.priority.prioridad }}
                                     </span>
                                 </td>
                                 <td>
@@ -85,9 +83,3 @@
         },
     }
 </script>
-
-
-
-<style lang="scss" scoped>
-
-</style>

@@ -3,7 +3,14 @@
         <div class="d-flex justify-content-center" v-if="loading">
             <grid-loader :loading="loading" :color="color" :size="'25px'"></grid-loader>
         </div>
-        <patron-form v-else :form="form" :action="action" :rutas="rutas" :select-procedimientos="selectProcedimientos"></patron-form>
+        <patron-form v-else
+            :form="form"
+            :action="action"
+            :rutas="rutas"
+            :select-procedimientos="selectProcedimientos"
+            :select-formulario="selectFormulario"
+        >
+        </patron-form>
     </div>
 </template>
 
@@ -22,6 +29,7 @@
                     description: '',
                     certificate_no: '',
                     brand: '',
+                    calibration: 'N/A',
                     calibration_period: '',
                     last_calibration: '',
                     next_calibration: '',
@@ -35,8 +43,8 @@
                     condition_id: 0,
                     alert_calibration_id: 0,
                     procedimiento_id: 0,
+                    formulario_id: 1,
                     rank: [''],
-                    headboard: {codigo: '', revision: '', vigencia: ''},
                     precision: [
                         {title: 'precision', value: ['']}
                     ],
@@ -48,7 +56,8 @@
                 action: 'create',
                 rutas: window.routes,
                 color: '#009BDD',
-                selectProcedimientos: [{id: 0, text: 'SIN PROCEDIMIENTO'}]
+                selectProcedimientos: [{id: 0, text: 'SIN PROCEDIMIENTO'}],
+                selectFormulario: [],
             }
         },
         created(){
@@ -64,6 +73,7 @@
                 const procedimientos = await axios.get(this.rutas.procedimientos).then( response => response.data );
                 procedimientos.forEach( procedimiento => this.selectProcedimientos.push({id: procedimiento.id, text: `${procedimiento.code} - ${procedimiento.name}`}) );
 
+                const formularios = await axios.get(this.rutas.formularios).then( response => this.selectFormulario = response.data );
                 this.loading = false;
             }
         }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePatronIdesMedidas extends Migration
+class CreateUnidadMedidas extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePatronIdesMedidas extends Migration
      */
     public function up()
     {
-        Schema::create('patron_ides_medidas', function (Blueprint $table) {
+        Schema::create('unidad_medidas', function (Blueprint $table) {
             $table->id();
             $table->string('prefijo', 20);
             $table->string('simbolo', 10);
@@ -31,6 +31,6 @@ class CreatePatronIdesMedidas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('patron_ides_medidas');
+        Schema::dropIfExists('unidad_medidas');
     }
 }

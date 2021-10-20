@@ -11,10 +11,7 @@ class Equipo extends Model
 
     protected $guarded = ['id'];
     protected $appends = [ 'title', 'periodo', 'idioma' ];
-    protected $casts = [
-        'rank' => 'array',
-        'headboard' => 'array',
-    ];
+    protected $casts   = [ 'rank' => 'array'];
 
 
     public function condition(){
@@ -27,6 +24,10 @@ class Equipo extends Model
 
     public function alertCalibration(){
         return $this->belongsTo(AlertCalibration::class);
+    }
+
+    public function formulario(){
+        return $this->belongsTo(Formulario::class);
     }
 
     public function procedimientos(){

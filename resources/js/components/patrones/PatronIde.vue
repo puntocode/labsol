@@ -31,13 +31,12 @@
                     <div class="invalid-feedback"><span v-if="!v.unit_measurement.$model">Este campo es requerido</span></div>
                 </div>
 
-                <div class="col-12 mt-4 d-flex justify-content-between" v-for="(rank, i) in form[index].rango" :key="i">
+                <div class="col-12 mt-4 d-flex justify-content-between" v-for="(rank, i) in form[index].rangos" :key="i">
                     <div class="d-flex align-items-stretch">
                         <span class="align-self-center">Rango</span>
                         <input class="align-self-center form-control mx-3" v-model="rank.rango">
-                        <input class="align-self-center form-control" v-model="rank.unidad_medida" disabled>
-                        <select class="form-control mx-3" v-model="rank.ide_medida" @change="changeMedidaIde($event, index, i)">
-                            <option v-for="(medida,ix) in unidades_ide" :key="ix" :id="medida.simbolo">{{ medida.simbolo }}</option>
+                        <select class="form-control mx-3" v-model="rank.unidad_medida">
+                            <option v-for="(medida,ix) in form[index].selectUnidades" :key="ix" :id="medida">{{ medida }}</option>
                         </select>
                         <!-- <button type="button" class="btn btn-primary align-self-center">Cargar</button> -->
                     </div>
@@ -72,6 +71,7 @@
                 default: {},
             },
         },
+        //------------------------------------------------------------------------------------
 
         data() {
             return {
@@ -80,17 +80,20 @@
                     patron_id: this.data.id,
                     magnitude: '',
                     unit_measurement: '',
-                    rango: [{rango: '', unidad_medida: '', ide_medida: '-'}]
+                    rangos: [ {rango: '', unidad_medida: ''} ],
+                    selectUnidades: []
                 }],
                 rutas: window.routes,
                 unidades: [],
                 unidades_ide: []
             }
         },
+        //------------------------------------------------------------------------------------
 
         created () {
             this.fetch();
         },
+        //------------------------------------------------------------------------------------
 
         validations:{
             form: {
@@ -98,10 +101,17 @@
                     patron_id: {required},
                     magnitude: {required},
                     unit_measurement: {required},
+                    rangos: {
+                        $each:{
+                            rango: {required},
+                            unidad_medida: {required},
+                        }
+                    }
                 }
             }
 
         },
+        //------------------------------------------------------------------------------------
 
         methods: {
             async fetch(){
@@ -109,6 +119,7 @@
                 let datos = await axios.get(this.rutas.unidades_ide);
                 this.unidades_ide = await datos.data;
             },
+
             submit() {
                 this.form.forEach(data => {
                     if(data.id === 0) this.insertar(data);
@@ -135,43 +146,40 @@
                     patron_id: this.data.id,
                     magnitude: '',
                     unit_measurement: '',
-                    rango: [{rango: '', unidad_medida: '', ide_medida: '-'}]
+                    rangos: [{rango: '', unidad_medida: ''}]
                 });
             },
             delIde(){
                 this.form.splice((this.form.length-1), 1)
             },
             addRank(index){
-                this.form[index].rango.push({rango: '', unidad_medida: '', ide_medida: '-'});
+                this.form[index].rangos.push({rango: '', unidad_medida: ''});
             },
             delRank(index){
-                 this.form[index].rango.splice((this.form[index].rango.length-1), 1);
+                 this.form[index].rangos.splice((this.form[index].rangos.length-1), 1);
             },
 
             changeUnidadMedida(event, index){
-                const data = this.form[index].rango;
-                for (let i = 0; i < data.length; i++) {
-                    this.form[index].rango[i].unidad_medida = event.target.value;
-                    this.form[index].rango[i].ide_medida = '-';
-                }
-            },
-            changeMedidaIde(event, indexForm, indexRango){
-                const selected = event.target.value;
-                const unidad = this.form[indexForm].unit_measurement;
-
-                if(selected !== '-') this.form[indexForm].rango[indexRango].unidad_medida = `${selected}${unidad}`;
-                else this.form[indexForm].rango[indexRango].unidad_medida = unidad;
+                const unidades = this.unidades_ide.map( unidad => {
+                    return unidad.simbolo === '-' ? this.form[index].unit_measurement : unidad.simbolo + this.form[index].unit_measurement;
+                });
+                this.form[index].selectUnidades = unidades;
             },
 
-             alerta(mensaje = 'Magnitudes cargada correctamente!', title = 'Cargado', icon = 'success'){
+            alerta(mensaje = 'Magnitudes cargada correctamente!', title = 'Cargado', icon = 'success'){
+                this.$swal.fire(title, mensaje, icon);
+            },
+
+            alertaError(mensaje = 'Error al insertar!', title = 'Error', icon = 'danger'){
                 this.$swal.fire(title, mensaje, icon);
             }
         },
+        //------------------------------------------------------------------------------------
 
         computed: {
             disable() {
                 return this.$v.form.$invalid;
-            }
+            },
         },
     }
 </script>

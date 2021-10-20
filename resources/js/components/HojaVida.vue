@@ -29,9 +29,9 @@
                             <span class="text-center py-2 bg-light w-100">Vigencia</span>
                         </div>
                         <div class="col-md-2 px-0 mx-1 d-flex flex-column justify-content-center align-items-center">
-                            <span class="py-2 pl-3 bg-light w-100" v-text="cabecera(array.data.headboard.codigo)"></span>
-                            <span class="py-2 pl-3 my-2 bg-light w-100" v-text="cabecera(array.data.headboard.revision)"></span>
-                            <span class="py-2 pl-3 bg-light w-100" v-text="cabecera(array.data.headboard.vigencia)"></span>
+                            <span class="py-2 pl-3 bg-light w-100">{{ array.data.formulario.codigo }}</span>
+                            <span class="py-2 pl-3 my-2 bg-light w-100">{{ array.data.formulario.revision }}</span>
+                            <span class="py-2 pl-3 bg-light w-100" >{{ array.data.formulario.vigencia }}</span>
                         </div>
                     </div>
                 </section>
@@ -293,13 +293,13 @@
         },
         computed: {
             sujetoCalibracion() {
-                return this.array.data.alert_calibration_id === 3 ? 'NO' : 'SI';
+                return this.array.data.calibration === 'N/A' ? 'NO' : 'SI';
             },
             externa(){
-                return this.array.data.alert_calibration_id === 2 || this.array.data.alert_calibration_id === 4 ? 'X' : '-';
+                return this.array.data.calibration === 'EXTERNA' ? 'X' : '-';
             },
             interna(){
-                return this.array.data.alert_calibration_id === 1 || this.array.data.alert_calibration_id === 4 ? 'X' : '-';
+                return this.array.data.alert_calibration_id === 'INTERNA' ? 'X' : '-';
             },
             procedimiento(){
                 return this.array.data.procedimientos === null ? '-' : this.array.data.procedimientos.code;

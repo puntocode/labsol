@@ -14,6 +14,13 @@
     </div>
 
     <div class="form-group col-md-4">
+        <label>Formulario</label>
+        <div class="form-control p-0 border-0 h-auto">
+            <span class="font-weight-bold">{{ $data->formulario->codigo }}</span>
+        </div>
+    </div>
+
+    <div class="form-group col-md-4">
         <label>Marca</label>
         <div class="form-control p-0 border-0 h-auto">
             <span class="font-weight-bold">{{ $data->brand }}</span>
@@ -27,12 +34,6 @@
         </div>
     </div>
 
-    <div class="form-group col-md-4">
-        <label>Tipo</label>
-        <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->type }}</span>
-        </div>
-    </div>
 
     <div class="form-group col-md-4">
         <label>Nr. de Serie</label>
@@ -42,9 +43,9 @@
     </div>
 
     <div class="form-group col-md-4">
-        <label>Ubicación</label>
+        <label>Tipo</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->ubication }}</span>
+            <span class="font-weight-bold">{{ $data->type }}</span>
         </div>
     </div>
 
@@ -66,6 +67,13 @@
 
 <div class="row mt-3">
     <div class="form-group col-md-4">
+        <label>Ubicación</label>
+        <div class="form-control p-0 border-0 h-auto">
+            <span class="font-weight-bold">{{ $data->ubication }}</span>
+        </div>
+    </div>
+
+    <div class="form-group col-md-4">
         <label>Nr. de Certificado</label>
         <div class="form-control p-0 border-0 h-auto">
             <span class="font-weight-bold">{{ $data->certificate_no }}</span>
@@ -78,8 +86,6 @@
             <span class="font-weight-bold">{{ $data->procedimiento_id > 0 ? $data->procedimientos->code : '-' }}</span>
         </div>
     </div>
-
-    <div class="col-md-4"></div>
 
     <div class="form-group col-md-4">
         <label>Estado</label>
@@ -109,7 +115,7 @@
     <div class="form-group col-md-4">
         <label>Periodo de Calibración</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->periodo }} años</span>
+            <span class="font-weight-bold">{{ $data->periodo }}</span>
         </div>
     </div>
 
@@ -165,28 +171,5 @@
 
 </div>
 
-<hr>
-<div class="row mt-3">
-    <div class="form-group col-md-4">
-        <label>Código (Hoja de Vida)</label>
-        <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->headboard['codigo'] }}</span>
-        </div>
-    </div>
-
-    <div class="form-group col-md-4">
-        <label>Revisión</label>
-        <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->headboard['revision'] }}</span>
-        </div>
-    </div>
-
-    <div class="form-group col-md-4">
-        <label>Vigencia</label>
-        <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->headboard['vigencia'] }}</span>
-        </div>
-    </div>
-</div>
 
 

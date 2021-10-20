@@ -115,9 +115,8 @@
 
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
-                        <label>Certificado a nombre de: <span class="text-danger">*</span></label>
-                        <input type="text" v-model.trim="v.certificate.$model" class="form-control" :class="{'is-invalid': v.certificate.$error}" />
-                        <div class="invalid-feedback"><span v-if="!v.certificate.$model">Este campo es requerido</span></div>
+                        <label>Certificado a nombre de:</label>
+                        <input type="text" v-model="v.certificate.$model" class="form-control" />
                     </div>
                 </div>
 
@@ -137,13 +136,19 @@
             </div>
 
             <!-- Obs general & Elegir LS o LSI -->
-            <div class="row mt-8">
+            <div class="row mt-14">
+                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+                    <h4 class="font-bold">OBSERVACIONES GENERALES</h4>
+                </div>
                 <div class="col-12">
+                    <VueEditor v-model="form.obs_general" />
+                </div>
+                <!-- <div class="col-12">
                     <div class="form-group">
                         <label>Observaciones Generales </label>
                         <textarea v-model="form.obs_general" class="form-control"></textarea>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="col-12">
                     <div class="radio-inline type mt-6" v-if="!readOnly">
@@ -211,6 +216,8 @@
     import {required} from "vuelidate/lib/validators";
     import Select2 from 'v-select2-component';
     import SuccessAnimation from '../SuccessAnimation';
+    import { VueEditor } from "vue2-editor";
+
 
     export default {
         components: { Select2, SuccessAnimation },
@@ -266,7 +273,7 @@
                 cliente_id: {required},
                 servicio: {
                     $each:{
-                        certificate: {required},
+                        certificate: {},
                         certificate_adress: {},
                         certificate_ruc: {},
                         instrumento_id: {},

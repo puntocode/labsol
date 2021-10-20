@@ -10,7 +10,6 @@ class EntradaInstrumento extends Model
     use HasFactory;
     protected $guarded = ['id'];
     protected $casts   = [ 'contact' => 'array' ];
-    // protected $with    = [ 'servicio'];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
@@ -20,12 +19,8 @@ class EntradaInstrumento extends Model
         return $this->belongsTo(Cliente::class);
     }
 
-    public function instrumento(){
-        return $this->belongsTo(Instrumento::class);
-    }
-
-    public function servicio(){
-        return $this->hasMany(EntradaInstrumentoService::class);
+    public function expedientes(){
+        return $this->hasMany(Expediente::class);
     }
 
     public function getCreatedAtAttribute(){

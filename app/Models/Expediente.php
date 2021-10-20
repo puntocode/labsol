@@ -10,10 +10,14 @@ class Expediente extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $casts   = [ 'tecnicos' => 'array' ];
+    protected $casts   = ['tecnicos' => 'array'];
 
-    public function servicios(){
-        return $this->belongsTo(EntradaInstrumentoService::class, 'entrada_instrumento_service_id');
+    public function instrumentos(){
+        return $this->belongsTo(Instrumento::class, 'instrumento_id');
+    }
+
+    public function entradaInstrumentos(){
+        return $this->belongsTo(EntradaInstrumento::class, 'entrada_instrumento_id');
     }
 
     public function estados(){
@@ -28,12 +32,36 @@ class Expediente extends Model
         return $this->hasMany(ExpedienteHistorial::class);
     }
 
+    public function getPriorityAttribute(){
+        $priority = [
+            'prioridad' => $this->attributes['priority'],
+            'color' => $this->attributes['priority'] == 'NORMAL' ? 'success' : 'danger',
+        ];
+        return $priority;
+    }
+
     public function scopeSuma($query)
     {
         $query->with('estados')
         ->whereNotNull('delivery_date')
         ->groupBy('expediente_estado_id')
         ->selectRaw('count(expediente_estado_id) as sum, expediente_estado_id');
+    }
+
+    public function scopeAsignar($query){
+        $query->where('expediente_estado_id', 1)->where('tecnicos', null);
+    }
+
+    public function scopeRelaciones($query){
+        $query->with('instrumentos', 'estados', 'entradaInstrumentos');
+    }
+
+    public function scopeCantidad($query, $entrada_id)
+    {
+        $query->with('instrumentos')
+        ->where('entrada_instrumento_id', $entrada_id)
+        ->groupBy('instrumento_id')
+        ->selectRaw('instrumento_id, count(id) as cantidad');
     }
 
 

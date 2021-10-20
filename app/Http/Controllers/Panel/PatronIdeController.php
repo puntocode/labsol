@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Models\PatronIde;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\IdeRango;
 
 class PatronIdeController extends Controller
 {
@@ -38,6 +38,14 @@ class PatronIdeController extends Controller
     public function store(Request $request)
     {
         $ide = PatronIde::create($this->validateData());
+        $rangos = $request['rangos'];
+        foreach($rangos as $rango){
+            $rank = new IdeRango;
+            $rank->rango = $rango['rango'];
+            $rank->unidad_medida = $rango['unidad_medida'];
+            $rank->patron_ide_id = $ide->id;
+            $rank->save();
+        }
         return response()->json(['data' => $ide], 201);
     }
 
@@ -95,5 +103,18 @@ class PatronIdeController extends Controller
             'unit_measurement' => 'required',
         ]);
     }
+
+
+    public function patronIdeShow($patron_id)
+    {
+        $ides = PatronIde::with('rangos')->where('patron_id', $patron_id)->get();
+        return response()->json($ides);
+    }
+
+
+    //TODO: crear vista calcular derivada
+    //TODO: cargar derivada
+    //TODO: crear BD derivada
+    //TODO: modificar show
 
 }

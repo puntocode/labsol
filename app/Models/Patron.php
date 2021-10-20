@@ -15,7 +15,6 @@ class Patron extends Model
         'rank' => 'array',
         'error_max' => 'array',
         'precision' => 'array',
-        'headboard' => 'array',
     ];
 
 
@@ -33,6 +32,10 @@ class Patron extends Model
 
     public function procedimientos(){
         return $this->belongsTo(Procedimiento::class, 'procedimiento_id');
+    }
+
+    public function formulario(){
+        return $this->belongsTo(Formulario::class);
     }
 
     public function documents(){

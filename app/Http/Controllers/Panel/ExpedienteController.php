@@ -26,7 +26,7 @@ class ExpedienteController extends Controller
     {
         # -- Filtros --
         $estados = ExpedienteEstado::where('status', true)->get();
-        $expedientes = Expediente::with('servicios', 'estados')->get();
+        $expedientes = Expediente::relaciones()->get();
         return view('panel.expedientes.index', compact('expedientes', 'estados'));
     }
 
@@ -102,7 +102,7 @@ class ExpedienteController extends Controller
 
 
     public function getExpedienteEspera(){
-        $expedientes = Expediente::where('expediente_estado_id', 1)->with('servicios', 'estados')->get();
+        $expedientes = Expediente::relaciones()->asignar()->get();
         return response()->json($expedientes);
     }
 
@@ -117,7 +117,7 @@ class ExpedienteController extends Controller
     public function asignarTecnicoIndex()
     {
         $estados = ExpedienteEstado::where('status', true)->get();
-        $expedientes = Expediente::with('servicios', 'estados')->get();
+        $expedientes = Expediente::relaciones()->get();
         return view('panel.expedientes.asignar', compact('expedientes', 'estados'));
     }
 
@@ -137,10 +137,14 @@ class ExpedienteController extends Controller
     public function cargarData($id)
     {
         $data = [
-            'expediente' => Expediente::with('servicios', 'estados')->find($id),
+            'expediente' => Expediente::with('entradaInstrumentos', 'estados', 'instrumentos')->find($id),
             'historial'  => ExpedienteHistorial::where('expediente_id', $id)->get(),
         ];
         return $data;
     }
 
+
+    //TODO: asignacion masiva tecnicos
+    //TODO: reasignar en vista show
+    //TODO: mostrar solo los que falta asignar
 }
