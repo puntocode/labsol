@@ -1,5 +1,5 @@
 @foreach ($data as $ide)
-    <div class="row my-10">
+    <div class="my-10 row">
         <div class="col-4">
             <label for="">Magnitud</label>
             <h3>{{ $ide->magnitude }}</h3>
@@ -8,35 +8,50 @@
             <label for="">Unidad de medida</label>
             <h3>{{ $ide->unit_measurement }}</h3>
         </div>
-        <div class="col-4 text-right pt-4">
-            <a href="" class="btn btn-outline-primary">Editar</a>
+        <div class="pt-4 text-right col-4">
+            <a href="{{ route('panel.patrones-ide.edit', $ide->id) }}" class="btn btn-outline-primary">Editar</a>
             <a href="" class="btn btn-outline-danger">Eliminar</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-12">
-            <table class="table table-sm table-bordered">
+            <table class="table table-sm table-bordered table-hover">
                 <thead>
                   <tr>
+                    <th></th>
                     <th scope="col">Rango</th>
+                    <th scope="col">Unidad de Medida</th>
+                    <th scope="col">Resolución</th>
                     <th scope="col">Unidad de Medida</th>
                     <th scope="col">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                     @foreach ($ide->rangos as $rango)
-                        <tr>
+                        <tr data-toggle="collapse" data-target="#table-{{ $rango->id }}" class="accordion-toggle">
+                            <td><a href="javascript:void(0);"><i class="fas fa-list text-primary"></i></a></td>
                             <td>{{ $rango->rango }}</td>
-                            <td>{{ $rango->unidad_medida }}</td>
-                            <td><a href=""><i class="fas fa-edit text-primary"></i></a></td>
+                            <td>{{ $rango->rango_medida }}</td>
+                            <td>{{ $rango->resolucion }}</td>
+                            <td>{{ $rango->resolucion_medida }}</td>
+                            <td><a href="{{ route('panel.ide_rango.edit', $rango->id) }}"><i class="fas fa-edit text-primary"></i></a></td>
                         </tr>
+                        @if (count($rango->rangoDerivas))
+                            <tr>
+                                <td colspan="12" class="hiddenRow">
+                                    <div class="accordian-body collapse" id="table-{{ $rango->id }}">
+                                        <table-deriva :derivas="{{ $rango->rangoDerivas }}"></table-deriva>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
               </table>
         </div>
 
-        <div class="col-12 mt-10 border-bottom border-primary"></div>
+        <div class="mt-10 col-12 border-bottom border-primary"></div>
     </div>
 
 @endforeach

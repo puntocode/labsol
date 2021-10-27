@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Models\Patron;
+use App\Models\IdeRango;
 use App\Models\PatronIde;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\IdeRango;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class PatronIdeController extends Controller
 {
@@ -42,7 +45,9 @@ class PatronIdeController extends Controller
         foreach($rangos as $rango){
             $rank = new IdeRango;
             $rank->rango = $rango['rango'];
-            $rank->unidad_medida = $rango['unidad_medida'];
+            $rank->resolucion = $rango['resolucion'];
+            $rank->rango_medida = $rango['rango_medida'];
+            $rank->resolucion_medida = $rango['resolucion_medida'];
             $rank->patron_ide_id = $ide->id;
             $rank->save();
         }
@@ -57,7 +62,7 @@ class PatronIdeController extends Controller
      */
     public function show(PatronIde $patronIde)
     {
-        //
+
     }
 
     /**
@@ -66,9 +71,11 @@ class PatronIdeController extends Controller
      * @param  \App\Models\PatronIde  $patronIde
      * @return \Illuminate\Http\Response
      */
-    public function edit(PatronIde $patronIde)
+    public function edit($id)
     {
-
+        $patronIde = PatronIde::with('rangos')->find($id);
+        $patron = Patron::with('magnitude')->find($patronIde->patron_id);
+        return view('panel.patrones.ide.edit', compact('patronIde', 'patron'));
     }
 
     /**
@@ -78,9 +85,12 @@ class PatronIdeController extends Controller
      * @param  \App\Models\PatronIde  $patronIde
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PatronIde $patronIde)
+    public function update(Request $request, $id)
     {
-        //
+        $patronIde = PatronIde::find($id);
+        $patronIde->update([ 'magnitude' => $request['magnitude'], 'unit_measurement' => $request['unit_measurement']]);
+        $this->insertUpdateRank($request['rangos'], $patronIde->id);
+        return response()->json(Response::HTTP_OK);
     }
 
     /**
@@ -107,14 +117,28 @@ class PatronIdeController extends Controller
 
     public function patronIdeShow($patron_id)
     {
-        $ides = PatronIde::with('rangos')->where('patron_id', $patron_id)->get();
-        return response()->json($ides);
+        $ides = PatronIde::with('rangos.rangoDerivas')->where('patron_id', $patron_id)->get();
+        if(request()->wantsJson()) return response()->json($ides);
+        $patron = Patron::findOrFail($patron_id);
+        //dd($ides->toArray());
+        return view('panel.patrones.ide.show', compact('ides', 'patron'));
+    }
+
+
+    public function insertUpdateRank($rangos, $patronIde_id){
+        foreach($rangos as $rango){
+            $rank = $rango['id'] == 0 ?  new IdeRango : IdeRango::findOrFail($rango['id']);
+            $rank->rango = $rango['rango'];
+            $rank->resolucion = $rango['resolucion'];
+            $rank->rango_medida = $rango['rango_medida'];
+            $rank->resolucion_medida = $rango['resolucion_medida'];
+            $rank->patron_ide_id = $patronIde_id;
+            $rank->save();
+        }
     }
 
 
     //TODO: crear vista calcular derivada
     //TODO: cargar derivada
-    //TODO: crear BD derivada
-    //TODO: modificar show
 
 }

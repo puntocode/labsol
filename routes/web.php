@@ -90,7 +90,6 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
     Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
 
-
     # -- Patrones Documentos--
     Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
     Route::post('/patron-doc/{patron}', 'PatronController@storeDocument')->name('patrones.doc.store')->middleware('can:panel.database');
@@ -103,12 +102,17 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/patron-maintenance-history/{patron}/{id}', 'PatronController@patronMaintenanceHistory')->name('patron.maintenance-history')->middleware('can:panel.database');
     Route::post('/patron-maintenance-history/{id}', 'PatronController@patronMaintenanceStore')->name('patron.maintenance-history.store')->middleware('can:panel.database');
 
-
     # -- Patrones IDE --
     Route::resource('/patrones-ide', 'PatronIdeController')->middleware('can:panel.database');
-    Route::get('/patrones-ide-all/{patron_id}', 'PatronIdeController@patronIdeShow')->name('patron_ide.all')->middleware('can:panel.database');
+    Route::get('/patrones-ide-all/{patron_id}', 'PatronIdeController@patronIdeShow')->name('patron_ide.show')->middleware('can:panel.database');
     Route::get('/patron-ide-unidades', 'PatronController@unidadesIde')->name('patrones.unidades_medidas')->middleware('can:panel.database');
     Route::get('/patron-ide/{id}', 'PatronController@ideForm')->name('patron.ide.form')->middleware('can:panel.database');
+
+    # --  IDE Rangos --
+    Route::get('/ide-rangos', 'IdeRangoController@index')->name('ide_rango.index')->middleware('can:panel.database');
+    Route::get('/ide-rangos/{id}/edit', 'IdeRangoController@edit')->name('ide_rango.edit')->middleware('can:panel.database');
+    Route::post('/ide-rangos-insert-deriva', 'IdeRangoController@insertDeriva')->name('ide_rango.insert_deriva')->middleware('can:panel.database');
+    Route::delete('/ide-rangos/{id}', 'IdeRangoController@destroy')->name('ide_rango.destroy')->middleware('can:panel.database');
 
 
     # -- Equipos --

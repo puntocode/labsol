@@ -26,7 +26,10 @@ Vue.component('expediente-form',    require('./components/expedientes/Expediente
 Vue.component('cliente-card',       require('./components/clientes/ClienteCard.vue').default);
 
 Vue.component('patron-maintenance', require('./components/patrones/PatronMaintenance.vue').default);
+Vue.component('magnitud-form',      require('./components/patrones/ide/MagnitudForm.vue').default);
+Vue.component('table-deriva',       require('./components/patrones/ide/TableDeriva.vue').default);
 Vue.component('patron-historial',   require('./components/patrones/PatronHistorial.vue').default);
+Vue.component('deriva-form',        require('./components/patrones/ide/DerivaForm.vue').default);
 Vue.component('patron-card',        require('./components/patrones/PatronCard.vue').default);
 Vue.component('patron-doc',         require('./components/patrones/PatronDoc.vue').default);
 Vue.component('patron-ide',         require('./components/patrones/PatronIde.vue').default);

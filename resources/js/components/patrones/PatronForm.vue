@@ -27,17 +27,10 @@
                         <div class="invalid-feedback"><span v-if="!$v.form.code.required">Este campo es requerido</span></div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <label>Descripción <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" v-model.trim="$v.form.description.$model" :class="{'is-invalid': $v.form.description.$error}" />
                         <div class="invalid-feedback"><span v-if="!$v.form.description.required">Este campo es requerido</span></div>
-                    </div>
-
-                     <div class="col-md-3">
-                        <label>Formulario <span class="text-danger">*</span></label>
-                        <select class="form-control text-capitalize" v-model="form.formulario_id">
-                            <option v-for="(attr,index) in selectFormulario" :key="index" :value="attr.id">{{ attr.codigo }}</option>
-                        </select>
                     </div>
                 </div>
 
@@ -273,7 +266,7 @@
 
     export default {
         components: { datePicker, SuccessAnimation, SelectForm, Select2 },
-        props: ['form', 'action', 'rutas', 'selectProcedimientos', 'selectFormulario'],
+        props: ['form', 'action', 'rutas', 'selectProcedimientos'],
         data() {
             return {
                 steps: 1,

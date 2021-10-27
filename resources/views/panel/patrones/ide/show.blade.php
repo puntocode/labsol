@@ -31,34 +31,36 @@
 
 			<div class="col-lg-9 col-xl-10">
                 <div class="mb-5 card card-custom card-step">
-                    <div class="border-0 card-header">
-                        <div class="pt-8 card-title border-bottom w-100">
-                            <h3 class="card-title font-weight-bolder text-dark">Datos de patrón <small class="pl-2 text-danger"> *Campos requeridos</small></h3>
-                            <hr>
+                    <div class="card-body">
+                        <div class="px-4 row">
+                            <div class="px-0 col-12 d-flex justify-content-between">
+                                <h4>Patron: <span class="text-black-50">{{ $patron->code }}</span></h4>
+                                <span>Magnitud <span class="ml-2 badge badge-primary font-weight-bold">{{ $patron->magnitude->name }}</span></span>
+                            </div>
+                            <div class="py-2 mt-8 text-center col-12 bg-secondary position-relative">
+                                <h4 class="font-bold w-100">Magnitudes</h4>
+                            </div>
+                        </div>
+
+                        @if (count($ides))
+                            <x-ide :data=$ides></x-ide>
+                        @else
+                            <div class="mt-10 row">
+                                <div class="text-center col-12">
+                                    <h3>-- No exiten magnitudes cargadas --</h3>
+                                    <hr>
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="row">
+                            <div class="mt-4 text-center col-12">
+                                <a href="{{ route('panel.patron.ide.form', $patron->id) }}" class="btn btn-primary">Cargar Magnitudes</a>
+                            </div>
                         </div>
                     </div>
-                    <patron-ide :data="{{ $patron }}"></patron-ide>
                 </div>
             </div>
 		</div>
 	</div>
-@endsection
-
-
-@section('rutas')
-    <script>
-        const store = "{{ route('panel.patrones-ide.store') }}";
-        const index = "{{ route('panel.patrones-ide.index' ) }}";
-        const showPatron = "{{ route('panel.patrones.show', $patron->id) }}";
-        const unidadesIde = "{{ route('panel.patrones.unidades_medidas') }}";
-        const patronIdeShow = "{{ route('panel.patron_ide.show', $patron->id) }}";
-
-        window.routes = {
-            'show': showPatron,
-            'index': index,
-            'store': store,
-            'unidades_ide': unidadesIde,
-            'patronIdeShow': patronIdeShow
-        }
-    </script>
 @endsection

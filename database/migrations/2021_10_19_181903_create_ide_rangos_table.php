@@ -16,7 +16,9 @@ class CreateIdeRangosTable extends Migration
         Schema::create('ide_rangos', function (Blueprint $table) {
             $table->id();
             $table->integer('rango');
-            $table->string('unidad_medida');
+            $table->string('rango_medida');
+            $table->string('resolucion');
+            $table->string('resolucion_medida');
             $table->foreignId('patron_ide_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -43,7 +43,6 @@
                     condition_id: 0,
                     alert_calibration_id: 0,
                     procedimiento_id: 0,
-                    formulario_id: 1,
                     rank: [''],
                     precision: [
                         {title: 'precision', value: ['']}
@@ -57,7 +56,6 @@
                 rutas: window.routes,
                 color: '#009BDD',
                 selectProcedimientos: [{id: 0, text: 'SIN PROCEDIMIENTO'}],
-                selectFormulario: [],
             }
         },
         created(){
@@ -73,7 +71,6 @@
                 const procedimientos = await axios.get(this.rutas.procedimientos).then( response => response.data );
                 procedimientos.forEach( procedimiento => this.selectProcedimientos.push({id: procedimiento.id, text: `${procedimiento.code} - ${procedimiento.name}`}) );
 
-                const formularios = await axios.get(this.rutas.formularios).then( response => this.selectFormulario = response.data );
                 this.loading = false;
             }
         }

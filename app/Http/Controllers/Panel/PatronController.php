@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Models\Patron;
+use App\Models\PatronIde;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
-use App\Http\Controllers\Controller;
-use App\Models\PatronIde;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -126,7 +126,6 @@ class PatronController extends Controller
             'uncertainty'          => 'nullable',
             'tolerance'            => 'nullable',
             'procedimiento_id'     => 'nullable',
-            'formulario_id'        => 'required',
             'headboard'            => 'nullable'
         ]);
     }
@@ -152,7 +151,7 @@ class PatronController extends Controller
     }
 
 
-    #Documentos -----------------------------------------------------------
+    #Documentos -------------------------------------------------------------------------
     public function documents(Patron $patron)
     {
         return view('panel.patrones.documents.doc', compact('patron'));

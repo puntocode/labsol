@@ -8,58 +8,58 @@
 
 @section('content')
     <div class="container-fluid">
-        <h3 class="card-label mb-8">Patron <small class="font-weight-lighter">| Ficha</small></h3>
+        <h3 class="mb-8 card-label">Patron <small class="font-weight-lighter">| Ficha</small></h3>
         <div class="row">
             <div class="col-lg-3 col-xl-2">
                 <div class="card card-custom card-fixed gutter-b">
                     <div class="card-body ">
                         <div class="flex-grow-1">
-                            <ul class="list-unstyled px-0">
+                            <ul class="px-0 list-unstyled">
                                 <li class="mb-5">
                                     <a href="{{ route('panel.patrones.index') }}" class="as-text text-hover-primary" title="Ir a listado de patron">
-                                        <i class="fas fa-arrow-left text-hover-primary mr-2"></i>  Ir a listado
+                                        <i class="mr-2 fas fa-arrow-left text-hover-primary"></i>  Ir a listado
                                     </a>
                                 </li>
 
                                 <li class="mb-5">
                                     <hr>
                                     <a href="{{ route('panel.patron.hojaVida', $patrone->id) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
-                                        <i class="far fa-file-alt text-hover-primary mr-2"></i> Ver Hoja de Vida
+                                        <i class="mr-2 far fa-file-alt text-hover-primary"></i> Ver Hoja de Vida
                                     </a>
                                 </li>
 
                                 <li class="mb-5">
                                     <hr>
                                     <a href="{{ route('panel.patron.calibration-history', [$patrone, 0]) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
-                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Calibración
+                                        <i class="mr-2 far fa-plus-square text-hover-primary"></i> Historial de Calibración
                                     </a>
                                 </li>
 
                                 <li class="mb-5">
                                     <hr>
                                     <a href="{{ route('panel.patron.maintenance-history', [$patrone, 0]) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
-                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Historial de Mantenimiento
+                                        <i class="mr-2 far fa-plus-square text-hover-primary"></i> Historial de Mantenimiento
                                     </a>
                                 </li>
 
                                 <li class="mb-5">
                                     <hr>
                                     <a href="{{ route('panel.patrones.doc', $patrone) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
-                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Cargar Documentos
+                                        <i class="mr-2 far fa-plus-square text-hover-primary"></i> Cargar Documentos
                                     </a>
                                 </li>
 
                                 <li class="mb-5">
                                     <hr>
                                     <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Crear nuevo patron">
-                                        <i class="far fa-plus-square text-hover-primary mr-2"></i> Nuevo Patrón
+                                        <i class="mr-2 far fa-plus-square text-hover-primary"></i> Nuevo Patrón
                                     </a>
                                 </li>
 
                                 <li class="mb-5">
                                     <hr>
                                     <a href="{{ route('panel.patrones.destroy', $patrone) }}" class="as-text text-hover-primary" title="Crear nuevo patron">
-                                        <i class="fas fa-trash text-hover-primary mr-2"></i> Eliminar Patrón
+                                        <i class="mr-2 fas fa-trash text-hover-primary"></i> Eliminar Patrón
                                     </a>
                                 </li>
                             </ul>
@@ -106,16 +106,17 @@
                         </div>
 
 
-                        <div class="card-body px-0">
+                        <div class="px-0 card-body">
 
-                            {{-- tab datos generales -----------------------------------------------------------------------------------------------}}
                             <div class="tab-content">
+
+                                {{-- tab datos generales -----------------------------------------------------------------------------------------------}}
                                 <div class="tab-pane fade show active" id="tab_datos" role="tabpanel" aria-labelledby="tab_datos">
-                                    <div class="card card-custom gutter-b card-stretch shadow-none">
+                                    <div class="shadow-none card card-custom gutter-b card-stretch">
                                         <div class="card-body">
                                             @include('layouts.partials.patrones_equipos.datos_generales', ['data' => $patrone])
                                             <div class="row">
-                                                <div class="col-md-12 text-right">
+                                                <div class="text-right col-md-12">
                                                     <hr>
                                                     <a href="{{ route('panel.patrones.edit', $patrone->id) }}" class="btn btn-primary">Editar datos</a>
                                                 </div>
@@ -153,7 +154,7 @@
                                                             <td>{{ $history->obs }}</td>
                                                             <td class="text-center">
                                                                 @if (isset($history->certificate))
-                                                                    <a href="{{ $history->getUrlCertificate() }}" target="_blank"><i class="far fa-file-alt text-primary pr-2"></i> Ver Certificado</a>
+                                                                    <a href="{{ $history->getUrlCertificate() }}" target="_blank"><i class="pr-2 far fa-file-alt text-primary"></i> Ver Certificado</a>
                                                                 @else
                                                                     -
                                                                 @endif
@@ -219,12 +220,12 @@
 
                                 {{-- tab ide ------------------------------------------------------------------------------------------------------------}}
                                 <div class="tab-pane fade" id="tab_ide" role="tabpanel" aria-labelledby="tab_ide">
-                                    <div class="row px-4">
-                                        <div class="col-12 px-0 d-flex justify-content-between">
+                                    <div class="px-4 row">
+                                        <div class="px-0 col-12 d-flex justify-content-between">
                                             <h4>Patron: <span class="text-black-50">{{ $patrone->code }}</span></h4>
-                                            <span>Magnitud <span class="badge badge-primary font-weight-bold ml-2">{{ $patrone->magnitude->name }}</span></span>
+                                            <span>Magnitud <span class="ml-2 badge badge-primary font-weight-bold">{{ $patrone->magnitude->name }}</span></span>
                                         </div>
-                                        <div class="col-12 text-center mt-8 py-2 bg-secondary position-relative">
+                                        <div class="py-2 mt-8 text-center col-12 bg-secondary position-relative">
                                             <h4 class="font-bold w-100">Magnitudes</h4>
                                         </div>
                                     </div>
@@ -232,8 +233,8 @@
                                     @if (count($ide))
                                         <x-ide :data=$ide></x-ide>
                                     @else
-                                        <div class="row mt-10">
-                                            <div class="col-12 text-center">
+                                        <div class="mt-10 row">
+                                            <div class="text-center col-12">
                                                 <h3>-- No exiten magnitudes cargadas --</h3>
                                                 <hr>
                                             </div>
@@ -241,7 +242,7 @@
                                     @endif
 
                                     <div class="row">
-                                        <div class="col-12 mt-4 text-center">
+                                        <div class="mt-4 text-center col-12">
                                             <a href="{{ route('panel.patron.ide.form', $patrone->id) }}" class="btn btn-primary">Cargar Magnitudes</a>
                                         </div>
                                     </div>

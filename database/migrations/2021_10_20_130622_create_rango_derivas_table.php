@@ -17,9 +17,10 @@ class CreateRangoDerivasTable extends Migration
             $table->id();
             $table->json('ip')->nullable();
             $table->json('u')->nullable();
-            $table->integer('k')->nullable();
+            $table->float('k')->nullable();
             $table->json('uc')->nullable();
-            $table->json('e')->nullable();
+            $table->json('e_actual')->nullable();
+            $table->json('e_anterior')->nullable();
             $table->json('deriva')->nullable();
             $table->foreignId('ide_rango_id')->constrained()->onDelete('cascade');
             $table->timestamps();

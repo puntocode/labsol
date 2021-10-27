@@ -1,9 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
 use App\Models\IdeRango;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Patron;
+use App\Models\RangoDeriva;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class IdeRangoController extends Controller
 {
@@ -55,9 +60,10 @@ class IdeRangoController extends Controller
      * @param  \App\Models\IdeRango  $ideRango
      * @return \Illuminate\Http\Response
      */
-    public function edit(IdeRango $ideRango)
+    public function edit($id)
     {
-        //
+        $deriva = IdeRango::with('patronIde.patron', 'rangoDerivas')->whereId($id)->first();
+        return view('panel.patrones.ide.deriva', compact('deriva'));
     }
 
     /**
@@ -78,8 +84,32 @@ class IdeRangoController extends Controller
      * @param  \App\Models\IdeRango  $ideRango
      * @return \Illuminate\Http\Response
      */
-    public function destroy(IdeRango $ideRango)
+    public function destroy($id)
     {
-        //
+        IdeRango::destroy($id);
+        return response()->json(Response::HTTP_OK);
     }
+
+
+    public function insertDeriva(Request $request){
+        $deriva = RangoDeriva::create($this->validateDeriva());
+        return response()->json($deriva);
+    }
+
+    public function validateDeriva()
+    {
+        return request()->validate([
+            'ip'           => 'required',
+            'u'            => 'required',
+            'k'            => 'required',
+            'uc'           => 'required',
+            'e_actual'     => 'required',
+            'e_anterior'   => 'nullable',
+            'deriva'       => 'required',
+            'ide_rango_id' => 'required',
+        ]);
+    }
+
+
+
 }
