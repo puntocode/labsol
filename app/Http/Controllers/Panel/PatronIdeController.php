@@ -99,9 +99,11 @@ class PatronIdeController extends Controller
      * @param  \App\Models\PatronIde  $patronIde
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PatronIde $patronIde)
+    public function destroy($id)
     {
-        //
+        $patronIde = PatronIde::findOrFail($id);
+        $patronIde->delete();
+        return response()->json(Response::HTTP_OK);
     }
 
 
@@ -120,7 +122,6 @@ class PatronIdeController extends Controller
         $ides = PatronIde::with('rangos.rangoDerivas')->where('patron_id', $patron_id)->get();
         if(request()->wantsJson()) return response()->json($ides);
         $patron = Patron::findOrFail($patron_id);
-        //dd($ides->toArray());
         return view('panel.patrones.ide.show', compact('ides', 'patron'));
     }
 
@@ -137,8 +138,5 @@ class PatronIdeController extends Controller
         }
     }
 
-
-    //TODO: crear vista calcular derivada
-    //TODO: cargar derivada
 
 }

@@ -25,6 +25,7 @@ Vue.component('asignar-tecnico',    require('./components/expedientes/AsignarTec
 Vue.component('expediente-form',    require('./components/expedientes/ExpedienteForm.vue').default);
 Vue.component('cliente-card',       require('./components/clientes/ClienteCard.vue').default);
 
+Vue.component('eliminar-magnitud',  require('./components/patrones/ide/EliminarMagnitud.vue').default);
 Vue.component('patron-maintenance', require('./components/patrones/PatronMaintenance.vue').default);
 Vue.component('magnitud-form',      require('./components/patrones/ide/MagnitudForm.vue').default);
 Vue.component('table-deriva',       require('./components/patrones/ide/TableDeriva.vue').default);

@@ -22,37 +22,6 @@ class IdeRangoController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\IdeRango  $ideRango
-     * @return \Illuminate\Http\Response
-     */
-    public function show(IdeRango $ideRango)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -66,17 +35,6 @@ class IdeRangoController extends Controller
         return view('panel.patrones.ide.deriva', compact('deriva'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\IdeRango  $ideRango
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, IdeRango $ideRango)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -91,9 +49,25 @@ class IdeRangoController extends Controller
     }
 
 
+
+
+    #Deriva Controller -------------------------------------------------------------------------
+
     public function insertDeriva(Request $request){
         $deriva = RangoDeriva::create($this->validateDeriva());
         return response()->json($deriva);
+    }
+
+    public function updateDeriva(Request $request, $id){
+        $deriva = RangoDeriva::findOrFail($id);
+        $deriva->update($this->validateDeriva());
+        return response()->json($deriva);
+    }
+
+    public function destroyDeriva($id){
+        $deriva = RangoDeriva::findOrFail($id);
+        $deriva->delete();
+        return response()->json(Response::HTTP_OK);
     }
 
     public function validateDeriva()

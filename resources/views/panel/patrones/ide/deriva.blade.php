@@ -60,11 +60,11 @@
 @section('rutas')
     <script>
         const unidadesIde = "{{ route('panel.patrones.unidades_medidas') }}";
-        const insertDeriva = "{{ route('panel.ide_rango.insert_deriva') }}";
+        const insertDeriva = "{{ route('panel.rango_deriva.insert') }}";
 
         window.routes = {
-            'insert': insertDeriva,
-            'unidades_ide': unidadesIde,
+            'ruta_deriva': insertDeriva,
+            'unidades_ide': unidadesIde
         }
     </script>
 @endsection

@@ -24,6 +24,7 @@
                     <button type="button" class="btn btn-outline-danger" @click="delAnterior" v-show="form.e_anterior.length > 1">- E</button>
                 </div>
             </div>
+
             <!----------------------------- Tabla Deriva -------------------------------->
             <div class="container-scroll">
                 <div class="row">
@@ -96,7 +97,7 @@
                     <hr>
                     <button type="submit" class="btn btn-primary" :disabled="$v.form.$invalid">
                         <i v-if="guardando" class="fas fa-spinner fa-spin"></i>
-                        <span v-else>Guardar</span>
+                        <span v-else>{{ textoBtn }}</span>
                     </button>
                 </div>
             </div>
@@ -104,7 +105,7 @@
 
         <div class="mt-8 row" v-if="table.length > 0">
             <div class="col-12">
-                <TableDeriva :derivas="table" />
+                <TableDeriva :derivas="table" @editarDeriva="editarPadre" />
             </div>
         </div>
     </div>
@@ -182,7 +183,8 @@
                 else this.form.e_anterior.push({valor: '', medida: this.form.e_actual.medida});
             },
             delAnterior(){
-                this.form.e_anterior.splice((this.form.e_anterior.length-1), 1);
+                this.form.e_anterior.pop();
+               // this.form.e_anterior.splice((this.form.e_anterior.length-1), 1);
             },
             alertaError(mensaje = 'Error al insertar!'){
                 this.$swal.fire('Error', mensaje, 'error');
@@ -195,10 +197,11 @@
                 this.guardando = false;
             },
             limpiarForm(){
+                this.form.id = 0;
                 this.form.ip.valor = '';
                 this.form.u.valor = '';
                 this.form.e_actual.valor = '';
-                this.form.e_anterior.valor = '';
+                this.form.e_anterior.forEach(anterior => anterior.valor = '');
             },
             submit(){
                 this.guardando = true;
@@ -206,7 +209,7 @@
                 else this.actualizar();
             },
             insertar(){
-                axios.post(this.rutas.insert, this.form)
+                axios.post(this.rutas.ruta_deriva, this.form)
                     .then(response => {
                         if(response.status == 200){
                             this.table.push(response.data);
@@ -214,6 +217,19 @@
                         }
                     })
                     .catch(error => this.alertaError())
+            },
+            async actualizar(){
+                try{
+                    const res = await axios.put(`${this.rutas.ruta_deriva}/${this.form.id}`, this.form);
+                    const datos = await res.data;
+                    this.table.splice(this.form.index, 1,datos);
+                    this.alertSuccess('Actualizado correctamente', 'Actualizado');
+                }catch(error){
+                    this.alertaError('Error al actualizar');
+                }
+            },
+            editarPadre(deriva){
+                this.form = deriva;
             }
         },
 
@@ -223,18 +239,19 @@
                 return this.e_actual.valor.trim() === '' ? 0 : Math.floor(this.e_actual.valor.trim());
             },
             valorDeriva(){
-                if (this.form.e_actual.valor.trim() == '') return '';
+                if (this.form.e_actual.valor == '') return '';
 
-                const valor = this.form.e_anterior[0].valor.trim() === ''
+                return this.form.e_anterior[0].valor == null || this.form.e_anterior[0].valor.trim() === ''
                     ? parseFloat(this.data.resolucion) / 2
                     : parseFloat(this.form.e_actual.valor - this.form.e_anterior[0].valor).toFixed(4);
-
-                return valor;
             },
             medidaDeriva(){
-                return this.form.e_anterior[0].valor.trim() === ''
+                return this.form.e_anterior[0].valor === null || this.form.e_anterior[0].valor.trim() === ''
                     ? this.data.resolucion_medida
                     : this.form.e_actual.medida
+            },
+            textoBtn(){
+                return this.form.id > 0 ? 'Actualizar' : 'Guardar';
             }
         },
 

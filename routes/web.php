@@ -107,12 +107,16 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/patrones-ide-all/{patron_id}', 'PatronIdeController@patronIdeShow')->name('patron_ide.show')->middleware('can:panel.database');
     Route::get('/patron-ide-unidades', 'PatronController@unidadesIde')->name('patrones.unidades_medidas')->middleware('can:panel.database');
     Route::get('/patron-ide/{id}', 'PatronController@ideForm')->name('patron.ide.form')->middleware('can:panel.database');
+    Route::delete('/patron-ide/{id}', 'PatronIdeController@destroy')->name('patron_ide.delete')->middleware('can:panel.database');
 
     # --  IDE Rangos --
     Route::get('/ide-rangos', 'IdeRangoController@index')->name('ide_rango.index')->middleware('can:panel.database');
     Route::get('/ide-rangos/{id}/edit', 'IdeRangoController@edit')->name('ide_rango.edit')->middleware('can:panel.database');
-    Route::post('/ide-rangos-insert-deriva', 'IdeRangoController@insertDeriva')->name('ide_rango.insert_deriva')->middleware('can:panel.database');
     Route::delete('/ide-rangos/{id}', 'IdeRangoController@destroy')->name('ide_rango.destroy')->middleware('can:panel.database');
+    # --  IDE Rangos Derivas--
+    Route::post('/derivas', 'IdeRangoController@insertDeriva')->name('rango_deriva.insert')->middleware('can:panel.database');
+    Route::put('/derivas/{id}', 'IdeRangoController@updateDeriva')->name('rango_deriva.update')->middleware('can:panel.database');
+    Route::delete('/derivas/{id}', 'IdeRangoController@destroyDeriva')->name('rango_deriva.destroy')->middleware('can:panel.database');
 
 
     # -- Equipos --
