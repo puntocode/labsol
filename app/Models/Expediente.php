@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Expediente extends Model
 {
@@ -61,7 +62,7 @@ class Expediente extends Model
         $query->with('instrumentos')
         ->where('entrada_instrumento_id', $entrada_id)
         ->groupBy('instrumento_id')
-        ->selectRaw('instrumento_id, count(id) as cantidad');
+        ->selectRaw('instrumento_id, count(id) cantidad');
     }
 
 

@@ -1,17 +1,16 @@
 <template>
     <div class="card-body">
-        <form class="mb-5 px-10" autocomplete="off" @submit.prevent="submit" v-if="formulario">
+        <form class="px-10 mb-5" autocomplete="off" @submit.prevent="submit" v-if="formulario">
             <!-- Información del Cliente -->
             <div class="row">
-                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+                <div class="p-2 mx-0 mb-5 text-center col-12 bg-secondary">
                     <h4 class="font-bold">INFORMACIÓN DEL CLIENTE</h4>
                 </div>
 
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label>Cliente <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" :value="cliente.name" disabled v-if="readOnly">
-                        <Select2 v-model="form.cliente_id" :options="selectClientes" @change="selectClienteChange($event)" v-else />
+                        <Select2 v-model="form.cliente_id" :options="selectClientes" @change="selectClienteChange($event)" />
                     </div>
                 </div>
 
@@ -24,12 +23,11 @@
             </div>
 
             <!-- Elegir el contacto del Cliente -->
-            <div class="row mt-8">
+            <div class="mt-8 row">
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label>Contacto <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" :value="form.contact.nombre" disabled v-if="readOnly">
-                        <Select2 id="select-contact" v-model="form.contact.nombre" :options="selectContacto" @select="selectContacChange($event)" v-else />
+                        <Select2 id="select-contact" v-model="form.contact.nombre" :options="selectContacto" @select="selectContacChange($event)" />
                     </div>
                 </div>
 
@@ -56,22 +54,21 @@
             </div>
 
             <!-- Control de ingreso de instrumentos -->
-            <div class="row mt-8">
-                <div class="col-12 text-center mx-0 p-2 bg-secondary position-relative">
+            <div class="mt-8 row">
+                <div class="p-2 mx-0 text-center col-12 bg-secondary position-relative">
                     <h4 class="font-bold w-100">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
                     <div class="position-absolute" style="top: 11px; right: 14px">
-                        <span class="hover-btn mr-3" @click="addService"><i class="fas fa-plus text-primary"></i></span>
+                        <span class="mr-3 hover-btn" @click="addService"><i class="fas fa-plus text-primary"></i></span>
                         <span class="hover-btn" @click="delService" v-show="cantidadServicio > 1"><i class="fas fa-minus text-danger"></i></span>
                     </div>
                 </div>
             </div>
 
             <!-- Agregar mas Instrumentos -->
-            <div class="row mt-2 border-bottom border-primary py-5" v-for="(v, index) in $v.form.servicio.$each.$iter" :key="index">
+            <div class="py-5 mt-2 row border-bottom border-primary" v-for="(v, index) in $v.form.servicio.$each.$iter" :key="index">
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label>Cantidad <span class="text-danger">*</span></label>
-                        <!-- <input class="form-control" :value="form.servicio.quantity" disabled v-if="readOnly"> -->
                         <input type="number" v-model.trim="v.quantity.$model" class="form-control" :class="{'is-invalid': v.quantity.$error}">
                         <div class="invalid-feedback"><span v-if="!v.quantity.$model">Este campo es requerido y de tipo numerico</span></div>
                     </div>
@@ -80,7 +77,6 @@
                  <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label>Equipo <span class="text-danger">*</span></label>
-                        <!-- <input class="form-control" :value="instrumento.name" disabled v-if="readOnly"> -->
                         <Select2 :id="`select-instrumento-${cantidadServicio}`" v-model="v.instrumento_id.$model" :options="selectInstumentos" />
                     </div>
                 </div>
@@ -137,7 +133,7 @@
 
             <!-- Obs general & Elegir LS o LSI -->
             <div class="row mt-14">
-                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+                <div class="p-2 mx-0 mb-5 text-center col-12 bg-secondary">
                     <h4 class="font-bold">OBSERVACIONES GENERALES</h4>
                 </div>
                 <div class="col-12">
@@ -151,8 +147,8 @@
                 </div> -->
 
                 <div class="col-12">
-                    <div class="radio-inline type mt-6" v-if="!readOnly">
-                        <p class="my-auto mx-4">Ingreso</p>
+                    <div class="mt-6 radio-inline type" v-if="!readOnly">
+                        <p class="mx-4 my-auto">Ingreso</p>
                         <input type="radio" id="LS" value="LS" v-model="form.type">
                         <label for="LS">LS</label>
                         <input type="radio" id="LSI" value="LSI" v-model="form.type">
@@ -162,8 +158,8 @@
             </div>
 
             <!-- Control de Recepción de istrumentos -->
-            <div class="row mt-8" v-if="form.type === 'LS'">
-                <div class="col-12 mb-5 text-center mx-0 p-2 bg-secondary">
+            <div class="mt-8 row" v-if="form.type === 'LS'">
+                <div class="p-2 mx-0 mb-5 text-center col-12 bg-secondary">
                     <h4 class="font-bold">CONTROL DE RECEPCIÓN DE INSTRUMENTOS</h4>
                 </div>
 
@@ -192,19 +188,19 @@
             </div>
 
             <!-- Boton de Insertar -->
-            <div class="row mt-8">
-                <div class="col-12 text-center">
+            <div class="mt-8 row">
+                <div class="text-center col-12">
                     <button type="submit" class="btn btn-primary" :disabled="disable" title="Completa todos los campos requeridos"> {{ textoBtn }}</button>
                 </div>
             </div>
         </form>
 
         <div class="row" v-else>
-            <div class="col-12 mb-8 text-center">
+            <div class="mb-8 text-center col-12">
                 <success-animation></success-animation>
                 <div class="d-flex justify-content-center">
                     <a :href="this.rutas.show" class="btn btn-info" v-if="this.form.id > 0">Ver Entrada</a>
-                    <a :href="this.rutas.index" class="btn btn-secondary mx-3">Ir a la lista</a>
+                    <a :href="this.rutas.index" class="mx-3 btn btn-secondary">Ir a la lista</a>
                     <a :href="this.rutas.create" class="btn btn-primary">Crear Nueva Entrada</a>
                 </div>
             </div>
@@ -311,11 +307,7 @@
             },
 
             submit() {
-                const method = this.form.id > 0 ? 'put' : 'post';
-                const url = this.form.id > 0 ? this.rutas.update : this.rutas.store;
-                let data = this.form;
-
-                axios({method, url, data})
+                axios.post(this.rutas.store, this.form)
                     .then(response =>{ if(response.status === 201) this.formulario = false })
                     .catch(error => console.log(error))
             },

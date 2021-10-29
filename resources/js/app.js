@@ -42,6 +42,7 @@ Vue.component('equipo-doc',         require('./components/equipos/EquipoDoc.vue'
 
 Vue.component('procedimiento-card', require('./components/procedimientos/ProcedimientoCard.vue').default);
 Vue.component('entrada-form',       require('./components/entrada-instrumentos/EntradaForm.vue').default);
+Vue.component('entrada-edit',       require('./components/entrada-instrumentos/EntradaEdit.vue').default);
 Vue.component('documentos',         require('./components/documentos/Documentos.vue').default);
 
 Vue.component('cabecera-print',     require('./components/CabeceraPrint.vue').default);

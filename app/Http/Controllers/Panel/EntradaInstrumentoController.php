@@ -83,8 +83,9 @@ class EntradaInstrumentoController extends Controller
     public function show(EntradaInstrumento $entradaInstrumento)
     {
         $entradaInstrumento = $entradaInstrumento->with('cliente', 'user')->first();
-        $expedientes = Expediente::cantidad($entradaInstrumento->id)->get();
-        return view('panel.instrumentos.entradas.show', compact('entradaInstrumento', 'expedientes'));
+        $expedientesCantidad = Expediente::cantidad($entradaInstrumento->id)->get();
+        $expedientes = Expediente::relaciones()->where('entrada_instrumento_id', $entradaInstrumento->id)->get();
+        return view('panel.instrumentos.entradas.show', compact('entradaInstrumento', 'expedientes', 'expedientesCantidad'));
     }
 
     /**
@@ -95,8 +96,13 @@ class EntradaInstrumentoController extends Controller
      */
     public function edit(EntradaInstrumento $entradaInstrumento)
     {
-        $data = $this->returnData($entradaInstrumento);
-        return view('panel.instrumentos.entradas.form', compact('data'));
+        $data = [
+            'entrada' => $entradaInstrumento->with('cliente', 'user')->first(),
+            'expedientes' => Expediente::where('entrada_instrumento_id', $entradaInstrumento->id)->get(),
+            'cantidades' =>  Expediente::cantidad($entradaInstrumento->id)->get(),
+            'instrumentos' => Instrumento::all(),
+        ];
+        return view('panel.instrumentos.entradas.edit', compact('data'));
     }
 
     /**
