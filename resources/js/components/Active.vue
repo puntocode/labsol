@@ -1,5 +1,5 @@
 <template>
-    <div class="badge text-white" :class="colorEstado" @click="activar">{{ texto }}</div>
+    <div class="badge text-white pointer" :class="colorEstado" @click="activar">{{ texto }}</div>
 </template>
 
 <script>
@@ -25,8 +25,4 @@ export default {
 }
 </script>
 
-<style>
-    .badge{
-        cursor: pointer;
-    }
-</style>
+

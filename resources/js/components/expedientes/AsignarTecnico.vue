@@ -1,31 +1,31 @@
 <template>
      <div class="modal-content">
         <div class="modal-header bg-primary rounded-0">
-            <h5 class="modal-title text-white" id="modal-label">Asignar Técnico</h5>
+            <h5 class="text-white modal-title" id="modal-label">Asignar Técnico</h5>
         </div>
         <form class="mb-5" autocomplete="off" @submit.prevent="asignar">
             <div class="modal-body">
-                <div class="row mb-6">
-                    <div class="col-10 mx-auto">
+                <div class="mb-6 row">
+                    <div class="mx-auto col-10">
                         <h4>Expediente N°:
-                            <span v-for="numero in numeros" :key="numero.number" id="nro-expediente" class="font-weight-bold">{{ numero.number }}</span>
+                            <span v-for="numero in numeros" :key="numero" id="nro-expediente" class="font-weight-bold"> {{ numero }} |</span>
                         </h4>
                     </div>
                 </div>
-                <div class="row mb-6">
-                    <div class="col-10 mx-auto">
+                <div class="mb-6 row">
+                    <div class="mx-auto col-10">
                         <label for="date">Fecha</label>
                         <date-picker v-model="formData.delivery_date" :config="options"></date-picker>
                     </div>
                 </div>
                 <div class="row h-100">
-                    <div class="col-10 mx-auto">
+                    <div class="mx-auto col-10">
                         <Kanban :asignados.sync="formData.asignados" :disponibles.sync="tecnicos" />
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-center border-0">
-                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal" id="btn-cancelar">Cancelar</button>
+            <div class="border-0 modal-footer justify-content-center">
+                <button type="button" class="btn btn-light-primary font-weight-bold" @click="cancelar" data-dismiss="modal" id="btn-cancelar">Cancelar</button>
                 <button type="button" class="btn btn-primary font-weight-bold" @click="asignar" :disabled="desactivado">Asignar</button>
             </div>
         </form>
@@ -66,18 +66,19 @@
             },
             asignar(){
                 this.formData.asignados.forEach(tecnico => this.formData.personales.push({id: tecnico.id, nombre: tecnico.fullname}) );
-                //this.formData.number = this.numeros;
-                //this.formData.number.push($('#nro-expediente').text());
 
-                this.numeros.forEach( expediente => {
-                    this.formData.number = expediente.number;
-                    axios.put(this.rutas.updateTecnicos, this.formData)
-                        .then(response => {
-                            if(response.status === 200) this.cambiarTecnico(this.formData.number);
-                        })
+                this.numeros.forEach( nroExpediente => {
+                    this.formData.number = nroExpediente;
+                    this.actualizar();
                 })
 
                 this.alerta();
+            },
+            async actualizar(){
+                const res = await axios.put(this.rutas.updateTecnicos, this.formData)
+                const datos = await res.data;
+                const index = await this.expedientes.findIndex( exp => exp.id === datos.id);
+                await this.expedientes.splice(index, 1, datos);
             },
             cancelar(){
                 this.formData.number = [];
@@ -85,56 +86,49 @@
                 this.formData.asignados = [];
                 this.formData.personales = [];
                 this.formData.delivery_date = '';
+                this.$emit('update:numeros', []);
                 $('#btn-cancelar').click();
             },
             alerta(){
                 this.$swal('Técnicos Asignado!', 'El expedientes se han acutalizado con éxito!','success')
-                    .then( result => {
-                        if (result.isConfirmed) this.cancelar();
-                        else this.cancelar();
-                    })
+                    .then( result => this.cancelar());
+                if(this.data !== null) location.reload();
             },
+            // cambiarNombre(){
+            //     if(this.data === null) this.vistaTabla();
+            //     else this.vistaShow();
+            // },
+            // vistaTabla(){
+            //     let html = '';
+            //     this.formData.asignados.forEach(tecnico => {
+            //         html += `<span><i class="mr-2 fas fa-user"></i>${tecnico.fullname}</span><br>`;
+            //     });
+            //     const exp = this.formData.number[0];
+            //     const deliveryDate = this.convertirFecha(this.formData.delivery_date);
 
-            cambiarTecnico(number_exp){
-                this.expedientes.forEach(expediente => {
-                    if(expediente.number == number_exp) expediente.tecnicos = this.formData.personales;
-                })
-            },
-            cambiarNombre(){
-                if(this.data === null) this.vistaTabla();
-                else this.vistaShow();
-            },
-            vistaTabla(){
-                let html = '';
-                this.formData.asignados.forEach(tecnico => {
-                    html += `<span><i class="fas fa-user mr-2"></i>${tecnico.fullname}</span><br>`;
-                });
-                const exp = this.formData.number[0];
-                const deliveryDate = this.convertirFecha(this.formData.delivery_date);
+            //     $(`#text-${exp}`).html(html);
+            //     $(`#date-${exp}`).html(deliveryDate);
 
-                $(`#text-${exp}`).html(html);
-                $(`#date-${exp}`).html(deliveryDate);
+            //     this.cancelar();
+            // },
+            // vistaShow(){
+            //     const deliveryDate = this.convertirFecha(this.formData.delivery_date);
 
-                this.cancelar();
-            },
-            vistaShow(){
-                const deliveryDate = this.convertirFecha(this.formData.delivery_date);
+            //     //crea y cargar el array de historial
+            //     const historial = { delivery_date: deliveryDate, tecnicos: this.formData.personales.slice()}
+            //     this.data.historial.push(historial);
 
-                //crea y cargar el array de historial
-                const historial = { delivery_date: deliveryDate, tecnicos: this.formData.personales.slice()}
-                this.data.historial.push(historial);
+            //     //modifica el array expediente
+            //     this.data.expediente.tecnicos = this.formData.personales.slice();
+            //     this.data.expediente.delivery_date = deliveryDate;
 
-                //modifica el array expediente
-                this.data.expediente.tecnicos = this.formData.personales.slice();
-                this.data.expediente.delivery_date = deliveryDate;
-
-                //cierra el modal
-                this.cancelar();
-            },
-            convertirFecha(date){
-                let fecha = moment(date, 'YYYY/MM/DD');
-                return moment(fecha).format('DD/MM/YYYY');
-            }
+            //     //cierra el modal
+            //     this.cancelar();
+            // },
+            // convertirFecha(date){
+            //     let fecha = moment(date, 'YYYY/MM/DD');
+            //     return moment(fecha).format('DD/MM/YYYY');
+            // }
         },
 
         computed: {

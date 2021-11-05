@@ -8,7 +8,6 @@
             :action="action"
             :rutas="rutas"
             :select-procedimientos="selectProcedimientos"
-            :select-formulario="selectFormulario"
         >
         </patron-form>
     </div>

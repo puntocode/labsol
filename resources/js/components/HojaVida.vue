@@ -82,7 +82,7 @@
                             <span>Tipo</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span>{{ array.data.type }}</span>
+                            <span>{{ array.data.type }} {{ array.data.type_description }}</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -299,7 +299,7 @@
                 return this.array.data.calibration === 'EXTERNA' ? 'X' : '-';
             },
             interna(){
-                return this.array.data.alert_calibration_id === 'INTERNA' ? 'X' : '-';
+                return this.array.data.calibration === 'INTERNA' ? 'X' : '-';
             },
             procedimiento(){
                 return this.array.data.procedimientos === null ? '-' : this.array.data.procedimientos.code;

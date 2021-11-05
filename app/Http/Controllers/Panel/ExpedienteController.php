@@ -60,7 +60,10 @@ class ExpedienteController extends Controller
      */
     public function show($id)
     {
-        $data = $this->cargarData($id);
+        $data = [
+            'expediente' => Expediente::relaciones()->find($id),
+            'historial'  => ExpedienteHistorial::where('expediente_id', $id)->get(),
+        ];
         return view('panel.expedientes.show', compact('data'));
     }
 
@@ -72,9 +75,9 @@ class ExpedienteController extends Controller
      */
     public function edit($id)
     {
-        $expediente = Expediente::find($id);
-        $historial = ExpedienteHistorial::where('expediente_id', $id)->get();
-        return view('panel.expedientes.form', compact('expediente', 'historial'));
+        // $expediente = Expediente::find($id);
+        // $historial = ExpedienteHistorial::where('expediente_id', $id)->get();
+        // return view('panel.expedientes.form', compact('expediente', 'historial'));
     }
 
     /**
@@ -86,8 +89,15 @@ class ExpedienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $request->all();
-        //return redirect(route('panel.expedientes.index'));
+        $expediente = Expediente::with('instrumentos', 'estados')->findOrFail($id);
+        $expediente->certificate = $request['certificate'];
+        $expediente->certificate_ruc = $request['certificate_ruc'];
+        $expediente->certificate_adress = $request['certificate_adress'];
+        $expediente->obs = $request['obs'];
+        $expediente->priority = $request['priority'];
+        $expediente->save();
+
+        return response()->json($expediente);
     }
 
     /**
@@ -124,27 +134,10 @@ class ExpedienteController extends Controller
 
     public function asignarTecnicos(Request $request)
     {
-        //foreach($request['number'] as $expediente){
-            $exp = Expediente::where('number', $request['number'])->first();
-            $exp->update(['tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
-            ExpedienteHistorial::create(['expediente_id' => $exp->id, 'tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
-        //}
-        return response()->json(Response::HTTP_OK);
+        $exp = Expediente::relaciones()->where('number', $request['number'])->first();
+        $exp->update(['tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
+        ExpedienteHistorial::create(['expediente_id' => $exp->id, 'tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
+        return response()->json($exp);
     }
 
-
-
-    public function cargarData($id)
-    {
-        $data = [
-            'expediente' => Expediente::with('entradaInstrumentos', 'estados', 'instrumentos')->find($id),
-            'historial'  => ExpedienteHistorial::where('expediente_id', $id)->get(),
-        ];
-        return $data;
-    }
-
-
-    //TODO: asignacion masiva tecnicos
-    //TODO: reasignar en vista show
-    //TODO: mostrar solo los que falta asignar
 }

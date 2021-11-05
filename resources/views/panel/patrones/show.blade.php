@@ -231,7 +231,7 @@
                                     </div>
 
                                     @if (count($ide))
-                                        <x-ide :data=$ide></x-ide>
+                                        <x-ide :data="$ide" :tipo="$patrone->type"></x-ide>
                                     @else
                                         <div class="mt-10 row">
                                             <div class="text-center col-12">
@@ -241,13 +241,21 @@
                                         </div>
                                     @endif
 
+
+                                    @if (count($ensayos))
+                                        <div class="py-2 mt-8 text-center col-12 bg-secondary position-relative">
+                                            <h4 class="font-bold w-100">Ensayos</h4>
+                                        </div>
+                                        <x-ensayo :data="$ensayos"></x-ensayo>
+
+                                    @endif
+
                                     <div class="row">
-                                        <div class="mt-4 text-center col-12">
+                                        <div class="mt-8 text-center col-12">
                                             <a href="{{ route('panel.patron.ide.form', $patrone->id) }}" class="btn btn-primary">Cargar Magnitudes</a>
+                                            <a href="{{ route('panel.patron.ensayo.form', $patrone->id) }}" class="btn btn-info">Cargar Ensayos</a>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 <template>
     <form id="form-step" class="mb-5" autocomplete="off" @submit.prevent="submit">
-        <!-- progressbar -->
+        <!-- progressbar --------------------------------------------------------------------------------------------------------------------->
         <ul id="progressbar">
             <li class="active" id="basic"><strong>Básicos</strong></li>
             <li :class="this.steps >= 2 ? 'active' : ''" id="status"><strong>Estados</strong></li>
@@ -12,7 +12,7 @@
             <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" :style="{'width': `${progress}%` }"></div>
         </div>
 
-        <!-- fieldsets Basico -->
+        <!-- Basico -------------------------------------------------------------------------------------------------------------------------->
         <fieldset v-if="this.steps == 1">
             <div class="form-card mb-12">
                 <div class="d-flex justify-content-between mb-3">
@@ -47,14 +47,22 @@
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-md-6">
-                        <label>Tipo</label>
-                        <input class="form-control" v-model="form.type" />
-                    </div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label>N° de serie</label>
                         <input type="text" class="form-control" v-model="form.serie_number" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Tipo</label>
+                        <select class="form-control" v-model="form.type">
+                            <option value="DIGITAL">DIGITAL</option>
+                            <option value="ANALOGICO">ANALOGICO</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <label>Descripcion del Tipo</label>
+                        <input type="text" class="form-control" v-model="form.type_description" />
                     </div>
                 </div>
 
@@ -74,7 +82,7 @@
             <button type="button" class="next action-button btn btn-primary float-right" @click="next">Siguiente</button>
         </fieldset>
 
-        <!-- fieldsets Calibración -->
+        <!-- Calibracion --------------------------------------------------------------------------------------------------------------------->
         <fieldset v-if="this.steps == 2">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">
@@ -163,7 +171,7 @@
             <input type="button" class="previous action-button-previous float-right btn btn-secondary mr-2" @click="previous" value="Anterior" />
         </fieldset>
 
-        <!-- fieldsets Precision/Error -->
+        <!-- Preciciosn ---------------------------------------------------------------------------------------------------------------------->
         <fieldset v-if="this.steps == 3">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">
@@ -235,6 +243,7 @@
             <input type="button" class="previous action-button-previous float-right btn btn-secondary mr-2" value="Anterior" @click="previous" />
         </fieldset>
 
+        <!-- Finish -------------------------------------------------------------------------------------------------------------------------->
         <fieldset v-if="this.steps == 4">
             <div class="form-card">
                 <div class="d-flex justify-content-between mb-3">

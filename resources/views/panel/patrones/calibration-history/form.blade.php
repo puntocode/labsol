@@ -65,12 +65,15 @@
     const hisNew = "{{ route('panel.patron.calibration-history', [$patron, 0]) }}";
     const updateHis = "{{ route('panel.history-calibration.update') }}";
     const getHis = "{{ route('panel.history-calibration.get', $id) }}";
+    const hisIndex = "{{ route('panel.historial.index') }}";
+
     window.routes = {
         'ficha' : ficha,
         'getHis': getHis,
         'hisNew': hisNew,
         'updateHis' : updateHis,
         'storeHis': storeHis,
+        'index': hisIndex
     }
 </script>
 @endsection

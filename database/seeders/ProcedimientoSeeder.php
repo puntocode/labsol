@@ -21,6 +21,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 1,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C02',
@@ -28,6 +29,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 2,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C03',
@@ -35,6 +37,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C04',
@@ -42,6 +45,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 1,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C05',
@@ -49,6 +53,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C06',
@@ -56,6 +61,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C07',
@@ -63,6 +69,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 1,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C08',
@@ -70,6 +77,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 1,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C09',
@@ -77,6 +85,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C10',
@@ -84,6 +93,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C11',
@@ -91,6 +101,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C12',
@@ -98,6 +109,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C13',
@@ -105,6 +117,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C14',
@@ -112,6 +125,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C15',
@@ -119,6 +133,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C16',
@@ -126,6 +141,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C17',
@@ -133,6 +149,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C18',
@@ -140,6 +157,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C19',
@@ -147,6 +165,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C20',
@@ -154,6 +173,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C21',
@@ -161,6 +181,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C22',
@@ -168,6 +189,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C23',
@@ -175,6 +197,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C24',
@@ -182,6 +205,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C25',
@@ -189,6 +213,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C26',
@@ -196,6 +221,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C27',
@@ -203,6 +229,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C28',
@@ -210,6 +237,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C29',
@@ -217,6 +245,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C31',
@@ -224,6 +253,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C32',
@@ -231,6 +261,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C33',
@@ -238,6 +269,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C34',
@@ -245,6 +277,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 0,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C35',
@@ -252,6 +285,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C36',
@@ -259,6 +293,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
             [
                 'code' => 'LS-PRO-C37',
@@ -266,6 +301,7 @@ class ProcedimientoSeeder extends Seeder
                 'revision' => 0,
                 'valve' => 'RC',
                 'accredited_scope' => 1,
+                'equipo_ambiental_id' => 1,
             ],
         ];
         DB::table('procedimientos')->insert($prodecimientos);

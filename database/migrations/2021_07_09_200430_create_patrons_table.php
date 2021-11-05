@@ -28,7 +28,8 @@ class CreatePatronsTable extends Migration
             $table->date('next_calibration')->nullable();
             $table->string('ubication')->nullable();
             $table->string('serie_number')->nullable();
-            $table->string('type')->nullable();
+            $table->enum('type', ['DIGITAL', 'ANALOGICO'])->default('DIGITAL');
+            $table->string('type_description')->nullable();
             $table->string('model', 100)->nullable();
             $table->string('uncertainty')->nullable();
             $table->string('tolerance')->nullable();
@@ -36,7 +37,7 @@ class CreatePatronsTable extends Migration
             $table->foreignId('condition_id')->constrained();
             $table->foreignId('magnitude_id')->constrained();
             $table->foreignId('alert_calibration_id')->constrained();
-            $table->foreignId('formulario_id')->constrained();
+            $table->unsignedBigInteger('formulario_id')->default(1);
             $table->timestamps();
         });
     }

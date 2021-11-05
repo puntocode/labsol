@@ -98,6 +98,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/patron-calibration-history/{patron}/{id}', 'PatronController@patronCalibrationHistory')->name('patron.calibration-history')->middleware('can:panel.database');
     Route::post('/patron-calibration-history/{id}', 'PatronController@storeCalibrationHistory')->name('patron.calibration-history.store')->middleware('can:panel.database');
 
+
      # -- Patrones Historial Mantenimiento--
     Route::get('/patron-maintenance-history/{patron}/{id}', 'PatronController@patronMaintenanceHistory')->name('patron.maintenance-history')->middleware('can:panel.database');
     Route::post('/patron-maintenance-history/{id}', 'PatronController@patronMaintenanceStore')->name('patron.maintenance-history.store')->middleware('can:panel.database');
@@ -109,11 +110,19 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/patron-ide/{id}', 'PatronController@ideForm')->name('patron.ide.form')->middleware('can:panel.database');
     Route::delete('/patron-ide/{id}', 'PatronIdeController@destroy')->name('patron_ide.delete')->middleware('can:panel.database');
 
-    # --  IDE Rangos --
+    # -- Patrones Ensayo --
+    Route::get('/patron-ensayo/{id}', 'PatronController@ensayoForm')->name('patron.ensayo.form')->middleware('can:panel.database');
+    Route::get('/patron-ensayo/{id}/edit', 'PatronController@ensayoEdit')->name('patron.ensayo.edit')->middleware('can:panel.database');
+    Route::post('/patron-ensayo/store', 'PatronController@ensayoStore')->name('patron.ensayo.store')->middleware('can:panel.database');
+    Route::put('/patron-ensayo/update', 'PatronController@ensayoUpdate')->name('patron.ensayo.update')->middleware('can:panel.database');
+    Route::delete('/patron-ensayo/{id}', 'PatronController@ensayoDestroy')->name('patron.ensayo.delete')->middleware('can:panel.database');
+
+
+    # --  Patrones IDE Rangos --
     Route::get('/ide-rangos', 'IdeRangoController@index')->name('ide_rango.index')->middleware('can:panel.database');
     Route::get('/ide-rangos/{id}/edit', 'IdeRangoController@edit')->name('ide_rango.edit')->middleware('can:panel.database');
     Route::delete('/ide-rangos/{id}', 'IdeRangoController@destroy')->name('ide_rango.destroy')->middleware('can:panel.database');
-    # --  IDE Rangos Derivas--
+    # --  Patrones IDE Rangos Derivas--
     Route::post('/derivas', 'IdeRangoController@insertDeriva')->name('rango_deriva.insert')->middleware('can:panel.database');
     Route::put('/derivas/{id}', 'IdeRangoController@updateDeriva')->name('rango_deriva.update')->middleware('can:panel.database');
     Route::delete('/derivas/{id}', 'IdeRangoController@destroyDeriva')->name('rango_deriva.destroy')->middleware('can:panel.database');
@@ -143,6 +152,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::put('/history-calibration-update', 'HistorialController@updateCalibrationHistory')->name('history-calibration.update')->middleware('can:panel.database');
     Route::get('/history-maintenance/{id}', 'HistorialController@getHistoryMaintenance')->name('history-maintenance.get');
     Route::put('/history-maintenance-update/{id}', 'HistorialController@updateHistoryMaintenance')->name('history-maintenance.update')->middleware('can:panel.database');
+    Route::post('/historial/doc-store/{id}', 'HistorialController@storeCertificate')->name('history-calibration.doc.store')->middleware('can:panel.database');
+    Route::post('/historial/doc-delete/{id}', 'HistorialController@deleteCertificate')->name('history-calibration.doc.del')->middleware('can:panel.database');
 
 
     # -- Incertidumbre --
@@ -161,8 +172,10 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Servicios --
     Route::resource('/procedimientos', 'ProcedimientoController')->middleware('can:panel.database');
     Route::get('/procedimiento/{id}', 'ProcedimientoController@getProcedimientoForId')->name('procedimientos.get')->middleware('can:panel.database');
-    Route::get('/procedimiento-doc/{procedimiento}', 'ProcedimientoController@documents')->name('procedimientos.doc')->middleware('can:panel.database');
-    Route::post('/procedimiento-doc/{id}', 'ProcedimientoController@storeDocument')->name('procedimientos.doc.store')->middleware('can:panel.database');
+    // Route::post('/procedimiento-doc/{procedimiento}', 'ProcedimientoController@documents')->name('procedimientos.doc')->middleware('can:panel.database');
+    Route::post('/procedimientos/doc-store/{id}', 'ProcedimientoController@storeDocument')->name('procedimientos.doc.store')->middleware('can:panel.database');
+    Route::post('/procedimientos/doc-delete/{id}', 'ProcedimientoController@deleteDocument')->name('procedimientos.doc.del')->middleware('can:panel.database');
+    Route::delete('/procedimientos/patron-delete/{id}', 'ProcedimientoController@destroyProcedimientoPatron')->name('patron_procedimiento.delete')->middleware('can:panel.database');
 
 
     # -- Expedientes --

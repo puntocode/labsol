@@ -21,7 +21,7 @@
                       <tr>
                         <th></th>
                         <th scope="col">Rango</th>
-                        <th scope="col">Resolución</th>
+                        <th scope="col">{{ $tipo == 'DIGITAL' ? 'Resolución' : 'División' }}</th>
                         <th scope="col">Acciones</th>
                       </tr>
                     </thead>

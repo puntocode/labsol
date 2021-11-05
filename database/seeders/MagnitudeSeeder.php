@@ -28,7 +28,7 @@ class MagnitudeSeeder extends Seeder
         Magnitude::create([
             'name' => 'DIMENSIONAL',
             'condition_type' => 'TODOS',
-            'unit_measurement' => ['m', 'cm', 'km', 'mm', 'ft', 'in']
+            'unit_measurement' => ['m','ft', 'in']
         ]);
 
         Magnitude::create([
@@ -62,7 +62,7 @@ class MagnitudeSeeder extends Seeder
         Magnitude::create([
             'name' => 'MASA',
             'condition_type' => 'TODOS',
-            'unit_measurement' => ['kg', 'g', 'lb']
+            'unit_measurement' => ['g', 'lb']
         ]);
 
         Magnitude::create([

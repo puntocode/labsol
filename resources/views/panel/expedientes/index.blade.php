@@ -9,27 +9,27 @@
 
 @section('content')
 	<div class="container-fluid">
-        <div class="row mb-6">
+        <div class="mb-6 row">
             <div class="col-12">
-                <h3 class="card-label mb-8">Expedientes <small class="font-weight-lighter">| Listado de todos los expedientes</small></h3>
+                <h3 class="mb-8 card-label">Expedientes <small class="font-weight-lighter">| Listado de todos los expedientes</small></h3>
             </div>
         </div>
 
 		<div class="card card-custom">
-			<div class="card-body pt-12">
+			<div class="pt-12 card-body">
                 <div class="row">
                     <div class="col-lg-3">
                         <form class="pt-8">
-                            <div class="input-icon float-left">
+                            <div class="float-left input-icon">
                                 <input type="text" class="form-control" placeholder="Buscar..." id="tableInpuntSearch">
                                 <span><i class="flaticon2-search-1 icon-md"></i></span>
                             </div>
                         </form>
                     </div>
-                    <div class="col-lg-9 p-8 p-lg-0">
+                    <div class="p-8 col-lg-9 p-lg-0">
                         <form class="mb-15">
                             <div class="d-flex flex-column flex-lg-row align-items-lg-end">
-                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                <div class="mb-6 mr-5 mb-lg-0 flex-fill">
                                     <label>Prioridad</label>
                                     <select class="form-control datatable-input" data-col-index="5">
                                         <option value="">Todas</option>
@@ -38,7 +38,7 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                <div class="mb-6 mr-5 mb-lg-0 flex-fill">
                                     <label>Estado</label>
                                     <select class="form-control datatable-input" data-col-index="3">
                                         <option value="">Todas</option>
@@ -48,12 +48,12 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                <div class="mb-6 mr-5 mb-lg-0 flex-fill">
                                     <label>Plazo de entrega</label>
                                     <input type="text" class="form-control datatable-input" id="fecha_entrega" readonly="readonly" data-col-index="7">
                                 </div>
 
-                                <div class="mb-lg-0 mb-6 mr-5 flex-fill">
+                                <div class="mb-6 mr-5 mb-lg-0 flex-fill">
                                     <label>Modalidad</label>
                                     <select class="form-control datatable-input" data-col-index="0">
                                         <option value="">Todas</option>
@@ -67,7 +67,7 @@
                                         <span><i class="fas fa-filter"></i>Filtrar</span>
                                     </button>&#160;&#160;
                                     <button class="btn btn-secondary btn-secondary--icon" id="kt_reset" title="Reiniciar filtros">
-                                        <i class="la la-close pr-0"></i>
+                                        <i class="pr-0 la la-close"></i>
                                     </button>
                                 </div>
                             </div>
@@ -106,14 +106,14 @@
                                 </td>
                                 {{-- <td>{{$expediente->obs}}</td> --}}
 								<td>
-                                    <span class="badge badge-{{ $expediente->priority['color'] }} ml-5 ml-md-0 mt-2 mt-md-0">
-                                        {{ $expediente->priority['prioridad'] }}
+                                    <span class="badge badge-{{ $expediente->prioridad['color'] }} ml-5 ml-md-0 mt-2 mt-md-0">
+                                        {{ $expediente->prioridad['priority'] }}
                                     </span>
 								</td>
                                 <td>
                                     @if (isset($expediente['tecnicos']))
                                         @foreach ($expediente['tecnicos'] as $tecnicos)
-                                            <span><i class="fas fa-user mr-2"></i>{{ $tecnicos['nombre'] }}</span><br>
+                                            <span><i class="mr-2 fas fa-user"></i>{{ $tecnicos['nombre'] }}</span><br>
                                         @endforeach
                                     @endif
                                 </td>

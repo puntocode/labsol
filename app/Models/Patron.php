@@ -35,7 +35,11 @@ class Patron extends Model
     }
 
     public function formulario(){
-        return $this->belongsTo(Formulario::class);
+        return $this->belongsTo(Formulario::class, 'formulario_id');
+    }
+
+    public function ensayos(){
+        return $this->hasMany(PatronEnsayo::class);
     }
 
     public function documents(){

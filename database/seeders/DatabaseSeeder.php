@@ -24,9 +24,10 @@ class DatabaseSeeder extends Seeder
         $this->call(PatronSeeder::class);
         $this->call(EquipoSeeder::class);
         $this->call(InstrumentoSeeder::class);
-        $this->call(ProcedimientoSeeder::class);
-        $this->call(InstrumentoProcedimientoSeeder::class);
-        $this->call(ExpedienteEstadoSeed::class);
         $this->call(UnidadMedidaSeeder::class);
+        $this->call(ExpedienteEstadoSeed::class);
+        $this->call(EquipoAmbientalSeeder::class);
+        $this->call(ProcedimientoSeeder::class);
+        $this->call(InstrumentoProcedimientoSeed::class);
     }
 }

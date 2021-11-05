@@ -1,9 +1,9 @@
 <template>
-    <div class="card-body">
+    <div class="card-body pt-0">
         <div class="d-flex justify-content-center" v-if="loading">
             <grid-loader :loading="loading" :color="color" :size="'25px'"></grid-loader>
         </div>
-        <procedimiento-form v-else :form="form" :action="action" :rutas="rutas"></procedimiento-form>
+        <procedimiento-form v-else :form="form"></procedimiento-form>
     </div>
 </template>
 
@@ -12,13 +12,12 @@
     import GridLoader from 'vue-spinner/src/GridLoader.vue'
 
     export default {
-        props: ['id'],
+        props: ['procedimiento'],
         components: { ProcedimientoForm, GridLoader },
         data() {
             return {
                 loading: true,
                 action: 'create',
-                rutas: window.routes,
                 color: '#009BDD',
                 form: {
                     id: 0,
@@ -28,8 +27,11 @@
                     validity: '',
                     valve: '',
                     accredited_scope: false,
-                    patron_id: [],
                     instrumento_id: [],
+                    patrones: [
+                        { id: 0, patron: '', code: [] }
+                    ],
+                    pdf: null
                 }
             }
         },
@@ -37,17 +39,8 @@
             this.fetch();
         },
         methods:{
-            async fetch(){
-                 if(this.id > 0){
-                    this.action = 'update'
-                    await axios.get(this.rutas.getProcedimiento)
-                        .then(response => {
-                            this.form = response.data;
-
-                        })
-                        .catch(error => console.log(error))
-                }
-
+            fetch(){
+                if(this.procedimiento != null) this.form = this.procedimiento;
                 this.loading = false;
             }
         }

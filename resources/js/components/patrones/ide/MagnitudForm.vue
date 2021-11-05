@@ -31,7 +31,7 @@
 
             <div class="col-4">
                 <div class="d-flex align-items-stretch">
-                    <span class="align-self-center">Resolución</span>
+                    <span class="align-self-center" v-text="resolution"></span>
                     <input class="mx-3 align-self-center form-control" v-model="rank.resolucion">
                     <select class="mx-3 form-control" v-model="rank.resolucion_medida">
                         <option v-for="(medida_resolucion,ixr) in selectUnidades" :key="ixr" :id="medida_resolucion">
@@ -95,6 +95,13 @@
                         resolucion_medida: {required},
                     }
                 }
+            }
+        },
+
+        //------------------------------------------------------------------------------------
+        computed: {
+            resolution(){
+                return this.data.type == 'DIGITAL' ? 'Resolución' : 'División';
             }
         },
 

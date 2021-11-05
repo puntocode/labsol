@@ -16,6 +16,10 @@ class EquipoController extends Controller
     public function index()
     {
         $equipos = Equipo::all();
+        if(request()->wantsJson()){
+            $equipos = Equipo::where('condition_id', '!=', 2)->orderBy('description')->get();
+            return response()->json($equipos);
+        }
         return view('panel.equipos.index', compact('equipos'));
     }
 

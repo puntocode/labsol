@@ -706,3 +706,7 @@ input[type=number] {
 .hiddenRow {
     padding: 0 !important;
 }
+
+.pointer{
+    cursor: pointer;
+}

@@ -500,7 +500,7 @@ class PatronSeeder extends Seeder
 
         Patron::create([
             'code' => 'PCT-02',
-            'description' => 'Multicalibrador de 14',
+            'description' => 'Multicalibrador de temperatura',
             'rank' => ['0°C - 150°C'],
             'brand' => 'Ecil',
             'precision' => [['title' => 'precision', 'value' => ['± 0,02 %']]],
@@ -518,7 +518,7 @@ class PatronSeeder extends Seeder
 
         Patron::create([
             'code' => 'PCT-03',
-            'description' => 'Termorresistecia PT 100 Ω',
+            'description' => 'Termorresistencia PT 100 Ω',
             'rank' => ['-25 °C a 375 °C'],
             'brand' => 'Consistec',
             'precision' => [['title' => 'precision', 'value' => ['Clase A']]],
@@ -632,7 +632,7 @@ class PatronSeeder extends Seeder
 
         Patron::create([
             'code' => 'PCT-14',
-            'description' => 'Termorresistecia PT 100 Ω',
+            'description' => 'Termorresistencia PT 100 Ω',
             'rank' => ['-200 °C - 850 °C'],
             'brand' => 'Isotech',
             'precision' => [['title' => 'precision', 'value' => ['Clase A']]],
@@ -1542,7 +1542,8 @@ class PatronSeeder extends Seeder
             'rank' => [ '0 V - 1025 V (DC)', '0 V - 1020 V (AC)', '0 A - 30 A (DC)', '0 A - 30 A (AC)', '0 Ω - Ω 1 GΩ' ],
             'brand' => 'TRANSMILLE',
             'model' => '3041ª',
-            'type' => 'Digital – Software: 3000 Series V.12.3.08 Firmware: Procal Supp V.6.1',
+            'type' => 'DIGITAL',
+            'type_description' => 'Software: 3000 Series V.12.3.08 Firmware: Procal Supp V.6.1',
             'serie_number' => 'L1370615',
             'precision' => [
                 ['title' => 'VDC', 'value' => ['0 V – 1 025 V: 25 ppm']],
@@ -1571,5 +1572,124 @@ class PatronSeeder extends Seeder
             'calibration' => 'EXTERNA',
             'formulario_id' => 1
         ]);
+
+        Patron::create([
+            'code' => 'PCT-66',
+            'description' => 'Termohigrómetro patrón',
+            'rank' => ['0°C - 100°C', '0% - 100%'],
+            'brand' => 'Vaisala',
+            'precision' => [
+                ['title' => 'precision', 'value' => ['@0 °C a 40 °C: ± 0,2 °C']],
+                ['title' => 'precision', 'value' => ['@-40 °C a 0 °C y +40 °C a 100 °C: ± 0,4 °C']],
+                ['title' => 'precision', 'value' => ['@0 % a 90 %: ± 3,0 % RH']],
+            ],
+            'error_max' => [
+                ['title' => 'error', 'value' => ['(0 a 40) °C: ± 0,5 %']],
+                ['title' => 'error', 'value' => ['-40 °C a 0 °C y +40°C a 100 °C: ± 1,0 %']],
+                ['title' => 'error', 'value' => ['@40 % a 80 %: ± 4,0 % RH']],
+            ],
+            'calibration_period' => '2',
+            'condition_id' => 1,
+            'magnitude_id' => 14,
+            'ubication' => 'Laboratorio',
+            'alert_calibration_id' => 1,
+            'formulario_id' => 1
+        ]);
+
+        Patron::create([
+            'code' => 'PCT-67',
+            'description' => 'Termorresistencia PT 100 Ω',
+            'rank' => ['-80°C - 450°C'],
+            'brand' => 'Isotech',
+            'precision' => [
+                ['title' => 'precision', 'value' => ['@ -80,0 °C a 199,999 °C ±0,01 °C']],
+                ['title' => 'precision', 'value' => ['@ 200 °C a 450 °C ±0,02 °C ± 0,0015 % O.R.']],
+            ],
+            'error_max' => [['title' => 'error', 'value' => ['Clase A']]],
+            'calibration_period' => '3',
+            'condition_id' => 1,
+            'magnitude_id' => 14,
+            'ubication' => 'Laboratorio',
+            'alert_calibration_id' => 1,
+            'formulario_id' => 1
+        ]);
+
+        Patron::create([
+            'code' => 'PCT-68',
+            'description' => 'Termorresistencia PT 100 Ω',
+            'rank' => ['-80°C - 450°C'],
+            'brand' => 'Isotech',
+            'precision' => [
+                ['title' => 'precision', 'value' => ['@ -80,0 °C a 199,999 °C ±0,01 °C']],
+                ['title' => 'precision', 'value' => ['@ 200 °C a 450 °C ±0,02 °C ± 0,0015 % O.R.']],
+            ],
+            'error_max' => [['title' => 'error', 'value' => ['Clase A']]],
+            'calibration_period' => '3',
+            'condition_id' => 1,
+            'magnitude_id' => 14,
+            'ubication' => 'Laboratorio',
+            'alert_calibration_id' => 1,
+            'formulario_id' => 1
+        ]);
+
+        Patron::create([
+            'code' => 'PCT-69',
+            'description' => 'Termorresistencia PT 100 Ω',
+            'rank' => ['-50°C - 250°C'],
+            'brand' => 'Isotech',
+            'precision' => [
+                ['title' => 'precision', 'value' => ['@ -50,0 °C a 199,999 °C ±0,01 °C']],
+                ['title' => 'precision', 'value' => ['@ 200 °C a 250 °C ±0,02 °C ± 0,0015 % O.R.']],
+            ],
+            'error_max' => [['title' => 'error', 'value' => ['Clase A']]],
+            'calibration_period' => '2',
+            'condition_id' => 1,
+            'magnitude_id' => 14,
+            'ubication' => 'Laboratorio',
+            'alert_calibration_id' => 1,
+            'formulario_id' => 1
+        ]);
+
+        Patron::create([
+            'code' => 'PCT-70',
+            'description' => 'Termorresistencia PT 100 Ω',
+            'rank' => ['-50°C - 250°C'],
+            'brand' => 'Isotech',
+            'precision' => [
+                ['title' => 'precision', 'value' => ['@ -50,0 °C a 199,999 °C ±0,01 °C']],
+                ['title' => 'precision', 'value' => ['@ 200 °C a 250 °C ±0,02 °C ± 0,0015 % O.R.']],
+            ],
+            'error_max' => [['title' => 'error', 'value' => ['Clase A']]],
+            'calibration_period' => '2',
+            'condition_id' => 1,
+            'magnitude_id' => 14,
+            'ubication' => 'Laboratorio',
+            'alert_calibration_id' => 1,
+            'formulario_id' => 1
+        ]);
+
+        Patron::create([
+            'code' => 'PCT-71',
+            'description' => 'Indicador de temperatura Patrón',
+            'rank' => ['-80°C - 600°C'],
+            'brand' => 'Isotech',
+            'model' => 'PTI-10',
+            'type' => 'DIGITAL',
+            'precision' => [
+                ['title' => 'precision', 'value' => ['@ -80,0 °C a 199,999 °C ±0,01 °C']],
+                ['title' => 'precision', 'value' => ['@ 200 °C a 600 °C ±0,02 °C ± 0,0015 % O.R.']],
+            ],
+            'error_max' => [['title' => 'error', 'value' => ['Clase A']]],
+            'calibration_period' => '3',
+            'condition_id' => 1,
+            'magnitude_id' => 14,
+            'ubication' => 'Laboratorio',
+            'alert_calibration_id' => 1,
+            'last_calibration' => '2020/09/02',
+            'next_calibration' => '2023/09/02',
+            'calibration' => 'EXTERNA',
+            'formulario_id' => 1
+        ]);
+
     }
 }

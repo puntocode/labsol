@@ -10,6 +10,7 @@ use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PatronEnsayo;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -24,7 +25,12 @@ class PatronController extends Controller
     public function index()
     {
         $patrones = Patron::all();
-        if(request()->wantsJson()) return response()->json($patrones);
+
+        if(request()->wantsJson()){
+            $patrones = Patron::where('condition_id', '!=', 2)->orderBy('description')->get();
+            return response()->json($patrones);
+        }
+
         return view('panel.patrones.index', compact('patrones'));
     }
 
@@ -63,7 +69,8 @@ class PatronController extends Controller
         $historyCalibration = Historycalibration::where('historycalibration_id', $patrone->id)->where('historycalibration_type', 'App\Models\Patron')->get();
         $historyMaintenance = Historymaintenance::where('historymaintenance_id', $patrone->id)->where('historymaintenance_type', 'App\Models\Patron')->get();
         $ide = PatronIde::with('rangos')->where('patron_id',$patrone->id)->get();
-        return view('panel.patrones.show', compact('patrone', 'documentos', 'historyCalibration', 'historyMaintenance', 'ide'));
+        $ensayos = PatronEnsayo::where('patron_id', $patrone->id)->get();
+        return view('panel.patrones.show', compact('patrone', 'documentos', 'historyCalibration', 'historyMaintenance', 'ide', 'ensayos'));
     }
 
     /**
@@ -106,27 +113,27 @@ class PatronController extends Controller
     public function validateData()
     {
         return request()->validate([
-            'code'                 => 'required',
-            'description'          => 'required',
-            'condition_id'         => 'required',
-            'magnitude_id'         => 'required',
             'alert_calibration_id' => 'required',
             'brand'                => 'nullable',
-            'certificate_no'       => 'nullable',
-            'rank'                 => 'nullable',
-            'precision'            => 'nullable',
+            'calibration'          => 'required',
             'calibration_period'   => 'nullable',
+            'certificate_no'       => 'nullable',
+            'code'                 => 'required',
+            'condition_id'         => 'required',
+            'description'          => 'required',
             'error_max'            => 'nullable',
             'last_calibration'     => 'nullable',
-            'next_calibration'     => 'nullable',
-            'ubication'            => 'nullable',
+            'magnitude_id'         => 'required',
             'model'                => 'nullable',
-            'type'                 => 'nullable',
-            'serie_number'         => 'nullable',
-            'uncertainty'          => 'nullable',
-            'tolerance'            => 'nullable',
+            'next_calibration'     => 'nullable',
+            'precision'            => 'nullable',
             'procedimiento_id'     => 'nullable',
-            'headboard'            => 'nullable'
+            'rank'                 => 'nullable',
+            'serie_number'         => 'nullable',
+            'tolerance'            => 'nullable',
+            'type'                 => 'nullable',
+            'ubication'            => 'nullable',
+            'uncertainty'          => 'nullable',
         ]);
     }
 
@@ -151,7 +158,7 @@ class PatronController extends Controller
     }
 
 
-    #Documentos -------------------------------------------------------------------------
+    #Documentos ----------------------------------------------------------------------------------------------------------------------------
     public function documents(Patron $patron)
     {
         return view('panel.patrones.documents.doc', compact('patron'));
@@ -171,7 +178,6 @@ class PatronController extends Controller
         return response()->json($patron);
     }
 
-    #Carga docuemtos de Patron ------------------------------------------------------------
     public function cargarDocumento($request)
     {
         $file = $request->file('documento')->getClientOriginalName();
@@ -188,7 +194,7 @@ class PatronController extends Controller
     }
 
 
-    #Historial de calibracion ----------------------------------------------
+    #Historial de calibracion --------------------------------------------------------------------------------------------------
     public function patronCalibrationHistory(Patron $patron, $id)
     {
         return view('panel.patrones.calibration-history.form', compact('patron', 'id'));
@@ -196,18 +202,12 @@ class PatronController extends Controller
 
     public function storeCalibrationHistory(Request $request, $id)
     {
+        $historial = new Historycalibration($this->validacionHistorial());
+
         $patron = Patron::findOrFail($id);
+        $patron->historycalibrations()->save($historial);
 
-        $data = $this->validacionHistorial();
-        if($request->file('documento')){
-            $documento = $this->cargarDocumento($request);
-            $data['certificate'] = $documento['nombre'];
-        }
-
-        $patron->historycalibrations()->create($data);
-        $patron->certificate_no = $request['certificate_no'];
-        $patron->save();
-        return response()->json($request);
+        return response()->json($historial);
     }
 
     public function validacionHistorial()
@@ -218,13 +218,11 @@ class PatronController extends Controller
             'next_calibration' => 'nullable',
             'done'             => 'required',
             'obs'              => 'nullable',
-            'documento'        => 'nullable|array',
-            'documento'        => 'file|mimes:pdf,xls,doc,docx,pptx,pps',
         ]);
     }
 
 
-    #Historial de Mantenimiento --------------------------------------------------------
+    #Historial de Mantenimiento ---------------------------------------------------------------------------------------------------
     public function patronMaintenanceHistory(Patron $patron, $id)
     {
         return view('panel.patrones.maintenance-history.form', compact('patron', 'id'));
@@ -239,7 +237,7 @@ class PatronController extends Controller
 
 
 
-    #Patron IDE -------------------------------------------------------------------------
+    #Patron IDE ---------------------------------------------------------------------------------------------------------------------
     public function unidadesIde()
     {
         $unidades = DB::table('unidad_medidas')->get();
@@ -250,6 +248,52 @@ class PatronController extends Controller
     {
         $patron = Patron::with('magnitude', 'procedimientos')->whereId($id)->first();
         return view('panel.patrones.ide.form', compact('patron'));
+    }
+
+
+    #Patron Ensayos ------------------------------------------------------------------------------------------------------------------
+
+    public function ensayoForm($id)
+    {
+        $patron = Patron::with('magnitude')->whereId($id)->first();
+        return view('panel.patrones.ensayos.form', compact('patron'));
+    }
+
+    public function ensayoStore(Request $request)
+    {
+        $ensayo = PatronEnsayo::create($this->validacionEnsayo());
+        return response()->json($ensayo);
+    }
+
+    public function ensayoEdit($id)
+    {
+        $ensayo = PatronEnsayo::with('patron.magnitude')->findOrFail($id);
+        return view('panel.patrones.ensayos.edit', compact('ensayo'));
+    }
+
+    public function ensayoUpdate(Request $request)
+    {
+        $ensayo = PatronEnsayo::find($request['id']);
+        $ensayo->update($this->validacionEnsayo());
+        return response()->json($ensayo);
+    }
+
+    public function ensayoDestroy($id)
+    {
+        $ensayo = PatronEnsayo::findOrFail($id);
+        $ensayo->delete();
+        return response()->json(Response::HTTP_OK);
+    }
+
+
+    public function validacionEnsayo()
+    {
+        return request()->validate([
+            'patron_id'        => 'required',
+            'ensayo'           => 'required',
+            'unit_measurement' => 'required',
+            'rangos'           => 'required',
+        ]);
     }
 
 

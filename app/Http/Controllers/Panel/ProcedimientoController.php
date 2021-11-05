@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Panel;
 
-use Illuminate\Support\Str;
-use App\Models\Procedimiento;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Document;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\Procedimiento;
+use App\Models\PatronProcedimiento;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class ProcedimientoController extends Controller
@@ -43,8 +45,18 @@ class ProcedimientoController extends Controller
     public function store(Request $request)
     {
         $procedimiento = Procedimiento::create($this->validateData());
-        if($request->has('patron_id')) $procedimiento->patron()->attach($request->patron_id);
-        if($request->has('instrumento_id')) $procedimiento->instrumento()->attach($request->instrumento_id);
+        $procedimiento->instrumentos()->attach($request->instrumento_id);
+        //if($request->has('instrumento_id')) $procedimiento->instrumento()->attach($request->instrumento_id);
+
+        $patrones = $request['patrones'];
+        foreach($patrones as $patron){
+            $pattern = new PatronProcedimiento;
+            $pattern->patron = $patron['patron'];
+            $pattern->code = $patron['code'];
+            $pattern->procedimiento_id = $procedimiento->id;
+            $pattern->save();
+        }
+
         return response()->json($procedimiento);
     }
 
@@ -54,10 +66,10 @@ class ProcedimientoController extends Controller
      * @param  \App\Models\Procedimiento  $procedimiento
      * @return \Illuminate\Http\Response
      */
-    public function show(Procedimiento $procedimiento)
+    public function show($id)
     {
-        $documentos = Document::where('document_id', $procedimiento->id)->where('document_type', 'App\Models\Procedimiento')->get();
-        return view('panel.procedimientos.show', compact('procedimiento', 'documentos'));
+        $procedimiento = Procedimiento::with('patrones', 'ambiental', 'instrumentos')->findOrFail($id);
+        return view('panel.procedimientos.show', compact('procedimiento'));
     }
 
     /**}
@@ -66,8 +78,9 @@ class ProcedimientoController extends Controller
      * @param  \App\Models\Procedimiento  $procedimiento
      * @return \Illuminate\Http\Response
      */
-    public function edit(Procedimiento $procedimiento)
+    public function edit($id)
     {
+        $procedimiento = Procedimiento::with('patrones', 'instrumentos')->find($id);
         return view('panel.procedimientos.form', compact('procedimiento'));
     }
 
@@ -81,14 +94,15 @@ class ProcedimientoController extends Controller
     public function update(Request $request, Procedimiento $procedimiento)
     {
         $procedimiento->update($this->validateData());
-        if($request->has('patron_id')){
-            $procedimiento->patron()->detach();
-            $procedimiento->patron()->attach($request->patron_id);
-        }
+        $procedimiento->instrumentos()->sync($request->instrumento_id);
 
-        if($request->has('instrumento_id')){
-            $procedimiento->instrumento()->detach();
-            $procedimiento->instrumento()->attach($request->instrumento_id);
+        $patrones = $request['patrones'];
+        foreach($patrones as $patron){
+            $pattern = $patron['id'] == 0 ? new PatronProcedimiento : PatronProcedimiento::findOrFail($patron['id']);
+            $pattern->patron = $patron['patron'];
+            $pattern->code = $patron['code'];
+            $pattern->procedimiento_id = $procedimiento->id;
+            $pattern->save();
         }
 
         return response()->json($procedimiento);
@@ -106,6 +120,14 @@ class ProcedimientoController extends Controller
     }
 
 
+    public function destroyProcedimientoPatron($id)
+    {
+        $patron = PatronProcedimiento::findOrFail($id);
+        $patron->delete();
+        return response()->json(Response::HTTP_OK);
+    }
+
+
     public function getProcedimientoForId($id){
         return response()->json(Procedimiento::find($id));
     }
@@ -120,7 +142,6 @@ class ProcedimientoController extends Controller
             'validity'         => 'nullable',
             'valve'            => 'nullable',
             'accredited_scope' => 'nullable',
-            'pdf'              => 'nullable',
         ]);
     }
 
@@ -139,18 +160,24 @@ class ProcedimientoController extends Controller
         $extension = $request->documento->guessExtension();
         $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
         $nombreArchivo = $slug.".".$extension;
-        $url = 'media/docs/'.$request->header('folder');
+        $url = 'media/docs/procedimientos';
 
         $request->documento->move(public_path($url), $nombreArchivo);
 
         $procedimiento = Procedimiento::findOrFail($id);
-        $procedimiento->documents()->create([
-            'extension' => $extension,
-            'name' => $nombreArchivo,
-            'category' => $request->header('category'),
-            'url' => $url
-        ]);
+        $procedimiento->pdf = $nombreArchivo;
+        $procedimiento->save();
+
         return response()->json($procedimiento);
+    }
+
+    public function deleteDocument($id){
+        $procedimiento = Procedimiento::findOrFail($id);
+        $path = public_path()."/media/docs/procedimientos/".$procedimiento->pdf;
+        unlink($path);
+        $procedimiento->pdf = null;
+        $procedimiento->save();
+        return response()->json(Response::HTTP_OK);
     }
 
 

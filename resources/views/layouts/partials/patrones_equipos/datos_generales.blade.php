@@ -45,7 +45,7 @@
     <div class="form-group col-md-4">
         <label>Tipo</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->type }}</span>
+            <span class="font-weight-bold">{{ $data->type }} {{ $data->type_description }}</span>
         </div>
     </div>
 

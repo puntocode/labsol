@@ -1,5 +1,5 @@
 <template>
-    <a title="Eliminar registro" @click="eliminar" class="cursor">
+    <a title="Eliminar registro" @click="eliminar" class="pointer">
         <i class="la la-trash text-danger"></i>
     </a>
 </template>
@@ -48,9 +48,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-    .cursor{
-        cursor: pointer;
-    }
-</style>

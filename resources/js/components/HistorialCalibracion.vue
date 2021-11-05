@@ -7,7 +7,7 @@
             <div class="col-12 col-lg-6">
                 <div class="form-group">
                     <label>N° de Certificado <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" v-model="$v.form.certificate_no.$model" :class="{'is-invalid': $v.form.certificate_no.$error}">
+                    <input type="text" class="form-control" v-model="$v.form.certificate_no.$model" :class="{'is-invalid': $v.form.certificate_no.$error}" :disabled="form.id > 0">
                     <div class="invalid-feedback"><span v-if="!$v.form.certificate_no.$model">Este campo es requerido</span></div>
                 </div>
             </div>
@@ -51,13 +51,15 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>Certificado</label>
-                    <div class="custom-file mb-3" v-if="form.id === 0">
+                    <div class="custom-file mb-3" v-if="form.certificate === null">
                         <input type="file" class="custom-file-input" :class="{'is-invalid': error}" accept=".xlsx, .xls, .doc, .docx, .ppt, .pptx, .pdf" @change="cargarArchivo($event)">
-                        <label class="custom-file-label">Click para subir certificado...</label>
+                        <label id="text-certificate" class="custom-file-label">Click para subir certificado...</label>
                         <span class="text-danger" v-if="error">Por favor suba un archivo tipo documento</span>
                     </div>
 
-                    <input class="form-control" :value="form.certificate" disabled v-else>
+                    <input class="form-control mb-3" :value="form.certificate" disabled v-else>
+                    <span class="text-danger pointer" v-if="eliminarCertificado" @click="delCertificado">Eliminar certificado</span>
+
                 </div>
             </div>
 
@@ -90,17 +92,16 @@
                 error: false,
                 file: null,
                 format: { format: 'yyyy/MM/DD' },
-                form:{ certificate_no: '', done: '', id: 0, next_calibration: '', calibration: '', obs: '' },
-                header: {},
-                options: {
-                    icon: "success",
-                    showCancelButton: false,
-                    showDenyButton: true,
-                    confirmButtonColor: "#3699FF",
-                    denyButtonColor: "#808080",
-                    confirmButtonText: 'Ir a la ficha',
-                    denyButtonText: 'Crear Nuevo',
+                form:{
+                    certificate: null,
+                    certificate_no: '',
+                    done: '',
+                    id: 0,
+                    next_calibration: '',
+                    calibration: '',
+                    obs: ''
                 },
+                header: {},
                 spin: false
             }
         },
@@ -120,31 +121,40 @@
 
         },
 
+        //-------------------------------------------------------------------------------------------------
         methods: {
-            submit(){
-                this.spin = true;
-                if(this.id > 0) this.actualizar();
-                else this.crear();
-            },
-
             getHistory(){
                 axios.get(this.rutas.getHis)
                     .then(response => this.form = response.data)
             },
+            async submit(){
+                this.spin = true;
 
-            crear(){
-                let data = this.form;
-                if(this.file) data = this.serializar(data);
+                let datos;
+                if(this.id > 0) datos = await this.actualizar();
+                else datos = await this.crear();
 
-                axios.post(this.rutas.storeHis, data, this.header)
-                    .then(response =>{ if(response.status == 200) this.alerta();})
-                    .catch(error => this.alertaError('Archivo invalido'))
+                if(this.file !== null) this.guardarArchivo(datos.id);
+                this.spin = false;
+                this.alerta();
             },
-
-            actualizar(){
-                axios.put(this.rutas.updateHis, this.form)
-                    .then(response => { if(response.status == 200) this.alerta("Historial actualizado correctamente!!", 'Actualizado'); })
-                    .catch(error => console.log(error))
+            async crear(){
+                try{
+                    const res = await axios.post(this.rutas.storeHis, this.form);
+                    const datos = await res.data;
+                    return datos;
+                }catch(error){
+                    this.alertaError('Error al guardar');
+                }
+            },
+            async actualizar(){
+                try{
+                    const res = await axios.put(this.rutas.updateHis, this.form);
+                    const datos = await res.data;
+                    return datos;
+                }catch(error){
+                    this.alertaError('Error al guardar');
+                }
             },
 
             cargarArchivo(event){
@@ -163,28 +173,60 @@
                 }
 
             },
+            guardarArchivo(id){
+                const formData = new FormData();
+                formData.append("certificate", this.file);
 
-            serializar(data){
-                this.header = { headers: {'Content-Type': 'multipart/form-data', 'FOLDER': 'historial-calibracion', 'X-CSRF-TOKEN': window._token}};
-                let formData = new FormData();
-                Object.keys(data).forEach(key => formData.append(key, data[key]));
-                formData.append('documento', this.file);
-                return formData;
+                axios.post(`${this.rutas.index}/doc-store/${id}`,
+                    formData, { headers: {'Content-Type': 'multipart/form-data'} })
+                    .then( response => response.data)
+                    .catch( error => this.alertaError('Error al subir el archivo'))
+            },
+            deleteDocument(){
+                axios.post(`${this.rutas.index}/doc-delete/${this.form.id}`)
+                    .then(response =>{ if(response.status == 200) this.form.certificate = null })
+                    .catch(error => this.alertaError('No se pudo eliminar el documento'))
             },
 
-            alerta(mensaje = 'Historial insertado correctamente!', tipo = 'Insertado'){
-                this.spin = false;
-                this.options.text = mensaje;
-                this.options.title = tipo;
-                this.$swal(this.options)
+
+            delCertificado(){
+                if(this.form.certificate !== null){
+                    this.$swal.fire({
+                        title: 'Eliminar',
+                        text: 'Este certificado está guardado en la BD. Desea eliminar este certificado?',
+                        icon: 'question',
+                        confirmButtonText: 'Si',
+                        cancelButtonText: 'Cancelar',
+                        showCancelButton: true,
+                    })
+                    .then( result => { if(result.isConfirmed) this.deleteDocument(); });
+                }else{
+                    this.file = null;
+                    this.error = false;
+                    $('#text-certificate').text('Click para subir certificado...');
+                }
+            },
+            alerta(){
+                const options = {
+                    icon: "success",
+                    showCancelButton: false,
+                    showDenyButton: true,
+                    confirmButtonColor: "#3699FF",
+                    denyButtonColor: "#808080",
+                    confirmButtonText: 'Ir a la ficha',
+                    denyButtonText: 'Crear Nuevo',
+                    text: this.form.id === 0 ? 'Historial insertado correctamente' : 'Historial actualizado correctamente',
+                    title: this.form.id === 0 ? 'Insertado' : 'Actualizado'
+                };
+
+                this.$swal(options)
                     .then( result => {
                         if (result.isConfirmed) location.href = this.rutas.ficha;
                         else location.href = this.rutas.hisNew
                     })
             },
             alertaError(text){
-                this.$swal({icon: 'error', title: 'Error', text: text});
-                this.spin = false;
+                this.$swal('Error', text, 'error');
             },
         },
 
@@ -197,6 +239,9 @@
             },
             calibrationEmpty(){
                 return this.form.calibration === null || !this.form.calibration.trim().length;
+            },
+            eliminarCertificado(){
+                return this.form.certificate !== null || this.file !== null;
             },
         },
 

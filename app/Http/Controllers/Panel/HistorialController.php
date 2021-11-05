@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class HistorialController extends Controller
@@ -28,13 +29,12 @@ class HistorialController extends Controller
         return response()->json(Historycalibration::whereId($id)->first());
     }
 
-
     public function updateCalibrationHistory(Request $request)
     {
-       $history = Historycalibration::whereId($request->id)->update($this->validateHistorial());
-       return response()->json($history);
+        $history = Historycalibration::whereId($request->id)->first();
+        $history->update($this->validateHistorial());
+        return response()->json($history);
     }
-
 
     public function validateHistorial()
     {
@@ -78,14 +78,31 @@ class HistorialController extends Controller
 
 
     #cargar documento -------------------------------------------------------------------------------
-    public function cargarDocumento($request){
-        $file = $request->file('documento')->getClientOriginalName();
-        $extension = $request->documento->guessExtension();
+    public function storeCertificate(Request $request, $id)
+    {
+        $file = $request->file('certificate')->getClientOriginalName();
+        $extension = $request->certificate->guessExtension();
         $slug = Str::slug(pathinfo($file,PATHINFO_FILENAME));
         $nombreArchivo = $slug.".".$extension;
-        $url = 'media/docs/'.$request->header('folder');
-        $request->documento->move(public_path($url), $nombreArchivo);
-        return $nombreArchivo;
+        $url = 'media/docs/historial-calibracion';
+
+        $request->certificate->move(public_path($url), $nombreArchivo);
+
+        $historial = Historycalibration::findOrFail($id);
+        $historial->certificate = $nombreArchivo;
+        $historial->save();
+
+        return response()->json($historial);
+    }
+
+
+    public function deleteCertificate($id){
+        $history = Historycalibration::findOrFail($id);
+        $path = public_path()."/media/docs/historial-calibracion/".$history->certificate;
+        unlink($path);
+        $history->certificate = null;
+        $history->save();
+        return response()->json(Response::HTTP_OK);
     }
 
   }

@@ -16,7 +16,7 @@
                     <h3>{{ data.rango }} {{ data.rango_medida }}</h3>
                 </div>
                 <div class="col-md-3">
-                    <label for="rango">Resolución</label>
+                    <label for="rango" v-text="resolution"></label>
                     <h3>{{ data.resolucion }} {{ data.resolucion_medida }}</h3>
                 </div>
                 <div class="pt-4 text-right col-md-2">
@@ -252,6 +252,9 @@
             },
             textoBtn(){
                 return this.form.id > 0 ? 'Actualizar' : 'Guardar';
+            },
+            resolution(){
+                return this.data.type == 'DIGITAL' ? 'Resolución' : 'División';
             }
         },
 

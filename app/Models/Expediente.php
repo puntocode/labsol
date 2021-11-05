@@ -12,6 +12,7 @@ class Expediente extends Model
 
     protected $guarded = ['id'];
     protected $casts   = ['tecnicos' => 'array'];
+    protected $appends = ['prioridad'];
 
     public function instrumentos(){
         return $this->belongsTo(Instrumento::class, 'instrumento_id');
@@ -33,12 +34,12 @@ class Expediente extends Model
         return $this->hasMany(ExpedienteHistorial::class);
     }
 
-    public function getPriorityAttribute(){
-        $priority = [
-            'prioridad' => $this->attributes['priority'],
+    public function getPrioridadAttribute(){
+        $prioridad = [
+            'priority' => $this->attributes['priority'],
             'color' => $this->attributes['priority'] == 'NORMAL' ? 'success' : 'danger',
         ];
-        return $priority;
+        return $prioridad;
     }
 
     public function scopeSuma($query)
