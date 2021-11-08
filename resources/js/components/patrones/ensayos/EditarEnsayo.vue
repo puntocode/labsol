@@ -2,7 +2,7 @@
     <div class="card-body">
         <form autocomplete="off" @submit.prevent="submit">
             <div class="px-3 row">
-                <div class="py-2 text-center col-12 bg-secondary text-center">
+                <div class="py-2 text-center col-12 bg-secondary">
                     <h4 class="font-bold w-100">Editar Ensayos</h4>
                 </div>
             </div>
@@ -16,7 +16,7 @@
 
                 <div class="col-4">
                     <label>Unidad de medida</label>
-                    <select class="form-control text-capitalize" v-model="$v.form.unit_measurement.$model" @change="changeUnidadMedida()">
+                    <select class="form-control" v-model="$v.form.unit_measurement.$model" @change="changeUnidadMedida()">
                         <option v-for="(unidad, index) in unidades" :key="index" :id="unidad">{{ unidad }}</option>
                     </select>
                 </div>

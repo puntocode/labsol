@@ -206,6 +206,8 @@ class PatronController extends Controller
 
         $patron = Patron::findOrFail($id);
         $patron->historycalibrations()->save($historial);
+        $patron->certificate_no = $request['certificate_no'];
+        $patron->save();
 
         return response()->json($historial);
     }

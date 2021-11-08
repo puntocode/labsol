@@ -304,8 +304,7 @@
             },
 
 
-            addRank(index) {
-                //index se utiliza para dar nombre a variables cuando es array de objeto
+            addRank() {
                 this.form.rank.push('')
             },
             delRank(index){
@@ -366,7 +365,11 @@
         },
         computed: {
             disable() {
-                return  this.form.code.trim() === '' || this.form.description.trim() === '' || this.form.precision[0].title.trim() === '' || this.form.condition_id === 0 ||  this.form.magnitude_id === 0 ||  this.form.alert_calibration_id === 0  ? true : false;
+                return  this.form.code.trim() === '' || this.form.description.trim() === ''
+                    || this.form.precision[0].title.trim() === ''
+                    || this.form.condition_id === 0
+                    ||  this.form.magnitude_id === 0
+                    ||  this.form.alert_calibration_id === 0  ? true : false;
             },
             btnTitle(){
                 return this.disable ? 'Completa todos los campos obligatorios*' : 'Guarda los datos';

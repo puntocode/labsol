@@ -23,6 +23,9 @@ Vue.component('expediente-tecnicos', require('./components/expedientes/Expedient
 Vue.component('asignar-tecnico',     require('./components/expedientes/AsignarTecnico.vue').default);
 Vue.component('expediente-form',     require('./components/expedientes/ExpedienteForm.vue').default);
 
+Vue.component('calibracion-form',    require('./components/calibracion/CalibracionForm.vue').default);
+
+
 Vue.component('patron-maintenance',  require('./components/patrones/PatronMaintenance.vue').default);
 Vue.component('patron-historial',    require('./components/patrones/PatronHistorial.vue').default);
 Vue.component('patron-card',         require('./components/patrones/PatronCard.vue').default);

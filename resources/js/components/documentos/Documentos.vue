@@ -19,16 +19,19 @@
                     acceptedFiles: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt',
                     headers: {
                         'X-CSRF-TOKEN': window._token,
-                        'FOLDER': this.data.folder,
-                        'CATEGORY': this.data.category,
+                        folder: this.data.folder,
+                        category: this.data.category,
                         idioma: this.data.idioma,
                     }
                 }
             }
         },
         watch:{
-            'data.idioma': function(){
+            data(){
                 this.dropzoneOptions.headers.idioma = this.data.idioma;
+                this.dropzoneOptions.headers.folder = this.data.folder;
+                this.dropzoneOptions.headers.category = this.data.category;
+                $(".dz-preview").remove();
             }
         }
     }

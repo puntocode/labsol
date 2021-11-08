@@ -62,9 +62,9 @@
 								<a class="nav-link active" href="#"><span class="nav-text">Agenda</span></a>
 							</li>
 
-							<li class="nav-item">
+							{{-- <li class="nav-item">
 								<a class="nav-link" href="?vista=calendario"><span class="nav-text">Calendario</span></a>
-							</li>
+							</li> --}}
 						</ul>
 
 						<div class="pt-5 tab-content">
@@ -111,7 +111,7 @@
                                         <th>Estado</th>
                                         <th>Técnico asignado</th>
                                         <th>Fecha de entrega</th>
-                                        <th>Observaciones</th>
+                                        <th>Calibrar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -136,7 +136,8 @@
                                                 @endforeach
                                             </td>
                                             <td id="date-{{ $expediente->number }}">{{ $expediente->delivery_date }}</td>
-                                            <td>{{$expediente->obs}}</td>
+                                            {{-- <td>{{$expediente->obs}}</td> --}}
+                                            <td><a href="{{ route('panel.calibrar.expediente', $expediente->id) }}" class="btn btn-primary">Calibrar</a></td>
                                         </tr>
                                     @empty
                                         <tr>

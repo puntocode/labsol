@@ -43,7 +43,7 @@
                         </div>
 
                         @if (count($ides))
-                            <x-ide :data=$ides></x-ide>
+                            <x-ide :data=$ides :tipo="$patron->type"></x-ide>
                         @else
                             <div class="mt-10 row">
                                 <div class="text-center col-12">

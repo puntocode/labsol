@@ -10,7 +10,7 @@
 
             <div class="col-4">
                 <label>Unidad de medida</label>
-                <select class="form-control text-capitalize" v-model="$v.form.unit_measurement.$model" @change="cargarSelectUnidades()">
+                <select class="form-control" v-model="$v.form.unit_measurement.$model" @change="cargarSelectUnidades()">
                     <option v-for="(unidad, index) in unidades" :key="index" :id="unidad">{{ unidad }}</option>
                 </select>
                 <div class="invalid-feedback"><span v-if="!$v.form.unit_measurement.$model">Este campo es requerido</span></div>

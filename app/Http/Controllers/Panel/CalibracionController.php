@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\AlertCalibration;
+use App\Models\Expediente;
 use Illuminate\Http\Request;
 
 class CalibracionController extends Controller
@@ -100,6 +101,13 @@ class CalibracionController extends Controller
 
     public function getAlertCalibration(){
         return response()->json(AlertCalibration::all());
+    }
+
+
+    public function calibrarExpediente($expediente_id)
+    {
+        $expediente = Expediente::with('entradaInstrumentos.cliente')->findOrFail($expediente_id);
+        return view('panel.calibracion.form', compact('expediente'));
     }
 
 }

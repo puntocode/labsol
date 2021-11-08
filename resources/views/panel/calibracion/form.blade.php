@@ -1,23 +1,23 @@
 @extends('layouts.panel')
-
 @section('title')Calibración |@endsection
-@section('styles')
-  <link href="{{asset('css/pages/wizard/wizard-2.css')}}" rel="stylesheet" type="text/css" />
-@endsection
+
 @section('content')
-	<!--begin::Container-->
+
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Calibración
-			<small class="font-weight-lighter">
-				@if($calibracion != NULL)
-					| {{isset($view_mode) && $view_mode == 'readonly' ? 'Ver': 'Editar'}}: {{$calibracion->razon_social}} </strong>
-				@else
-				 	| Crear
-				@endif
-			</small>
+		<h3 class="card-label mb-8">Calibración <small class="font-weight-lighter">| Crear</small>
 		</h3>
 
-		<div class="row">
+        <div class="row">
+			<div class="col-lg-12 col-xl-12">
+				<div class="card card-custom mb-5">
+					<div class="card-body">
+                        <calibracion-form :data="{{ json_encode($expediente) }}"></calibracion-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		{{-- <div class="row">
 
 			<div class="col-lg-12 col-xl-12">
 				<!--begin::Card-->
@@ -487,57 +487,9 @@
 				</div>
 				<!--end::Card-->
 			</div>
-		</div>
+		</div> --}}
 	</div>
 @endsection
-@section('scripts')
-  <script src="{{asset('js/pages/custom/wizard/wizard-2.js')}}"></script>
-  <script src="{{asset('js/pages/crud/forms/widgets/jquery-mask.js')}}"></script>
-  <script src="{{asset('js/pages/crud/forms/widgets/form-repeater.js')}}"></script>
-  <script>
-  $('#expedienteSelect').select2({
-    placeholder: "Seleccione un expediente"
-  });
 
-  $('#solicitanteSelect').select2({
-    placeholder: "Seleccione un cliente"
-  });
 
-  $('#instrumentoSelect').select2({
-    placeholder: "Seleccione un instrumento"
-  });
 
-  $('#patronSelect, #patronSelect2, #patronSelect3, #patronSelect4').select2({
-    placeholder: "Seleccione un patrón"
-  });
-
-  $('#lugarSelect').select2({
-    placeholder: "Seleccione un lugar"
-  });
-
-  $('#fecha_fin, #fecha_calibracion').datepicker({
-    todayHighlight: true,
-    orientation: "bottom left"
-  });
-
-  $("#lugarSelect").on("change", function (e) {
-    let selected = $("#lugarSelect option:selected").val();
-    if (selected == "Otro") {
-      $( "#input_lugar" ).prop( "disabled", false );
-    } else {
-      $( "#input_lugar" ).prop( "disabled", true );
-    }
-  });
-
-  $("#marcaSelect").on("change", function (e) {
-    let selected = $("#marcaSelect option:selected").val();
-    if (selected == "Otro") {
-      $( "#input_marca" ).prop( "disabled", false );
-    } else {
-      $( "#input_marca" ).prop( "disabled", true );
-    }
-  });
-
-  </script>
-
-@endsection

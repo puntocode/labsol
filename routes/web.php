@@ -71,14 +71,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
 
     # -- Calibración  --
-    Route::resource('/calibracion', 'CalibracionController')->names([
-        'create' => 'calibracion.create',
-        'edit'  => 'calibracion.edit',
-        'update' => 'calibracion.update',
-        'store' => 'calibracion.store',
-        'show'  => 'calibracion.show',
-        'destroy' => 'calibracion.destroy'
-    ])->middleware('can:panel.admin');
+    Route::resource('/calibracion', 'CalibracionController')->middleware('can:panel.database');
+    Route::get('/calibrar-expediente/{expediente_id}', 'CalibracionController@calibrarExpediente')->name('calibrar.expediente')->middleware('can:panel.database');
+
 
     Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration')->name('alert.calibration');
     Route::get('/condition', [PanelController::class, 'getCondition'])->name('condition.all');
@@ -172,7 +167,6 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Servicios --
     Route::resource('/procedimientos', 'ProcedimientoController')->middleware('can:panel.database');
     Route::get('/procedimiento/{id}', 'ProcedimientoController@getProcedimientoForId')->name('procedimientos.get')->middleware('can:panel.database');
-    // Route::post('/procedimiento-doc/{procedimiento}', 'ProcedimientoController@documents')->name('procedimientos.doc')->middleware('can:panel.database');
     Route::post('/procedimientos/doc-store/{id}', 'ProcedimientoController@storeDocument')->name('procedimientos.doc.store')->middleware('can:panel.database');
     Route::post('/procedimientos/doc-delete/{id}', 'ProcedimientoController@deleteDocument')->name('procedimientos.doc.del')->middleware('can:panel.database');
     Route::delete('/procedimientos/patron-delete/{id}', 'ProcedimientoController@destroyProcedimientoPatron')->name('patron_procedimiento.delete')->middleware('can:panel.database');
