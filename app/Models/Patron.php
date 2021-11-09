@@ -79,7 +79,7 @@ class Patron extends Model
 
     public function getIdiomaAttribute()
     {
-        $manual = $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'MANUAL')->first();
+        $manual = $this->documents()->where('document_id', $this->id)->where('document_type', 'App\Models\Patron')->where('category', 'MANUAL')->orderBy('created_at', 'DESC')->first();
         return isset($manual) ? $manual->idioma : '-';
     }
 

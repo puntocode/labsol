@@ -145,7 +145,7 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($historyCalibration as $key => $history)
-                                                        <tr>
+                                                        <tr id="calibration-{{ $history->id }}">
                                                             <td>{{ $key+1 }}</td>
                                                             <td>{{ $history->certificate_no }}</td>
                                                             <td>{{ $history->done }}</td>
@@ -163,7 +163,10 @@
                                                                <a href="{{ route('panel.patron.calibration-history', [$patrone, $history->id]) }}" title="Editar registro">
                                                                    <i class="la la-edit text-primary"></i>
                                                                </a>
-                                                               {{-- <table-delete url=""></table-delete> --}}
+                                                               <eliminar-historial
+                                                                    ruta="{{ route('panel.history-calibration.destroy', $history->id) }}"
+                                                                    titulo="calibration-{{ $history->id }}">
+                                                                </eliminar-historial>
                                                            </td>
                                                         </tr>
                                                     @endforeach
@@ -191,7 +194,7 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($historyMaintenance as $key => $history)
-                                                    <tr>
+                                                    <tr id="maintenance-{{ $history->id }}">
                                                         <td>{{ $key+1 }}</td>
                                                         <td>{{ $history->description }}</td>
                                                         <td>{{ $history->reason }}</td>
@@ -202,7 +205,10 @@
                                                             <a href="{{ route('panel.patron.maintenance-history', [$patrone, $history->id]) }}" title="Editar registro">
                                                                 <i class="la la-edit text-primary"></i>
                                                             </a>
-                                                            {{-- <table-delete url=""></table-delete> --}}
+                                                            <eliminar-historial
+                                                                ruta="{{ route('panel.history-maintenance.destroy', $history->id) }}"
+                                                                titulo="maintenance-{{ $history->id }}">
+                                                            </eliminar-historial>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -214,7 +220,7 @@
 
                                 {{-- tab documentos ------------------------------------------------------------------------------------------------------}}
                                 <div class="tab-pane fade" id="tab_documentos" role="tabpanel" aria-labelledby="tab_documentos">
-                                    <list-doc :documents="{{ json_encode($documentos) }}"></list-doc>
+                                    <list-doc :alldocs="{{ json_encode($documentos) }}" ruta="{{ route('panel.document.destroy') }}"></list-doc>
                                 </div>
 
 

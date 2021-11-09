@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
 use App\Http\Controllers\Controller;
+use App\Models\Document;
+use App\Models\Equipo;
+use App\Models\Patron;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -33,7 +36,25 @@ class HistorialController extends Controller
     {
         $history = Historycalibration::whereId($request->id)->first();
         $history->update($this->validateHistorial());
+        $this->actualizarNroCertificado($history);
         return response()->json($history);
+    }
+
+
+    public function actualizarNroCertificado($history)
+    {
+        $ultimoHistorial = Historycalibration::where('historycalibration_id', $history->historycalibration_id)
+            ->where('historycalibration_type', $history->historycalibration_type)
+            ->orderBy('created_at', 'DESC')->first();
+
+        if($ultimoHistorial->id === $history->id){
+            if($ultimoHistorial->historycalibration_type == 'App\Models\Patron') $modelo = Patron::whereId($ultimoHistorial->historycalibration_id);
+            else $modelo = Equipo::whereId($ultimoHistorial->historycalibration_id);
+
+            $modelo->update(['certificate_no' => $ultimoHistorial->certificate_no]);
+        }
+
+        return;
     }
 
     public function validateHistorial()
@@ -104,5 +125,30 @@ class HistorialController extends Controller
         $history->save();
         return response()->json(Response::HTTP_OK);
     }
+
+
+    #eliminar --------------------------------------------------------------------------------------
+    public function destroyCalibracion($id)
+    {
+        $history = Historycalibration::whereId($id)->first();
+        if($history->certificate) $this->deleteCertificate($id);
+        $history->delete();
+        return response()->json(Response::HTTP_OK);
+    }
+
+    public function destroyMaintenance($id)
+    {
+        $history = Historymaintenance::whereId($id)->first();
+        $history->delete();
+        return response()->json(Response::HTTP_OK);
+    }
+
+    public function destroyDocument(Request $request)
+    {
+        $history = Document::whereId($request['id'])->first();
+        $history->delete();
+        return response()->json(Response::HTTP_OK);
+    }
+
 
   }

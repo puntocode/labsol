@@ -91,12 +91,12 @@
                 <span class="font-bold">Servicio</span>
             </div>
 
-            @foreach ($expedientes as $servicio)
+            @foreach ($expedientesCantidad as $expediente)
                 <div class="col-2 bg-light py-2 border-white">
-                    <span>{{  $servicio->cantidad }}</span>
+                    <span>{{  $expediente->cantidad }}</span>
                 </div>
                 <div class="col-6 bg-light py-2 border-white">
-                    <span>{{  $servicio->instrumentos->name }}</span>
+                    <span>{{  $expediente->instrumentos->name }}</span>
                 </div>
                 <div class="col-4 bg-light py-2 border-white">
                     <span>Calibración</span>

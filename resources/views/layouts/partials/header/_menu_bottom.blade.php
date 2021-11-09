@@ -129,13 +129,13 @@
 						<!--begin::Nav-->
 						<ul class="menu-nav">
 
-							@can('panel.admin')
+							{{-- @can('panel.admin')
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.calibracion.create') menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.calibracion.create')}}" class="menu-link" title="Crear calibración">
 										<span class="menu-text">Crear Calibración</span>
 									</a>
 								</li>
-							@endcan
+							@endcan --}}
 
 								<li class="menu-item @if (Route::currentRouteName() == 'panel.calibracion.certificados.index') menu-item-active @endif" aria-haspopup="true">
 									<a href="{{route('panel.calibracion.certificados.index')}}" class="menu-link" title="Ver certificados">

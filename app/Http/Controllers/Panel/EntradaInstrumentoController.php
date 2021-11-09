@@ -48,12 +48,6 @@ class EntradaInstrumentoController extends Controller
         $servicios = $request['servicio'];
         $entradaInstrumento = EntradaInstrumento::create($this->validateData());
 
-        #-- Insertamos los servicios en EntradaInstrumentoService-----------------------------------
-        // foreach ($request['servicio'] as $servicio) {
-        //     $servicioModel[] = new EntradaInstrumentoService($servicio);
-        // }
-        // $entradaInstrumentoServicio = $entradaInstrumento->servicio()->saveMany($servicioModel);
-
         #-- Creamos los expedientes de acuerdo a la cantidad de servicios---------------------------
         foreach($servicios as $servicio){
             for ($i = 1; $i <= $servicio['quantity']; $i++) {
@@ -82,10 +76,10 @@ class EntradaInstrumentoController extends Controller
      */
     public function show(EntradaInstrumento $entradaInstrumento)
     {
-        $entradaInstrumento = $entradaInstrumento->with('cliente', 'user')->first();
-        $expedientesCantidad = Expediente::cantidad($entradaInstrumento->id)->get();
+        $entradaInstrumento = $entradaInstrumento->with('cliente', 'user')->findOrFail($entradaInstrumento->id);
+        // $expedientesCantidad = Expediente::cantidad($entradaInstrumento->id)->get();
         $expedientes = Expediente::relaciones()->where('entrada_instrumento_id', $entradaInstrumento->id)->get();
-        return view('panel.instrumentos.entradas.show', compact('entradaInstrumento', 'expedientes', 'expedientesCantidad'));
+        return view('panel.instrumentos.entradas.show', compact('entradaInstrumento', 'expedientes'));
     }
 
     /**
@@ -139,7 +133,8 @@ class EntradaInstrumentoController extends Controller
      */
     public function print(EntradaInstrumento $entradaInstrumento)
     {
-        return view('panel.instrumentos.entradas.print', compact('entradaInstrumento'));
+        $expedientesCantidad = Expediente::cantidad($entradaInstrumento->id)->get();
+        return view('panel.instrumentos.entradas.print', compact('entradaInstrumento', 'expedientesCantidad'));
     }
 
 

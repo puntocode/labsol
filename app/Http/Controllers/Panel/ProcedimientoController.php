@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Procedimiento;
 use App\Models\PatronProcedimiento;
 use App\Http\Controllers\Controller;
+use App\Models\EquipoAmbiental;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -46,7 +47,6 @@ class ProcedimientoController extends Controller
     {
         $procedimiento = Procedimiento::create($this->validateData());
         $procedimiento->instrumentos()->attach($request->instrumento_id);
-        //if($request->has('instrumento_id')) $procedimiento->instrumento()->attach($request->instrumento_id);
 
         $patrones = $request['patrones'];
         foreach($patrones as $patron){
@@ -132,6 +132,17 @@ class ProcedimientoController extends Controller
         return response()->json(Procedimiento::find($id));
     }
 
+    public function getProcedimientoForInstrumento($instrumento){
+       // $procedimiento = Procedimiento::with('instrumentos')->where()
+        return response()->json();
+    }
+
+    public function updateEma(Request $request)
+    {
+        $ema = EquipoAmbiental::whereId(1)->update(['code' => $request->all()]);
+        return response()->json(Response::HTTP_OK);
+    }
+
 
     public function validateData()
     {
@@ -147,12 +158,6 @@ class ProcedimientoController extends Controller
 
 
     #Documentos ------------------------------------------------------------------------------
-
-    public function documents(Procedimiento $procedimiento)
-    {
-        return view('panel.procedimientos.doc', compact('procedimiento'));
-    }
-
 
     public function storeDocument(Request $request, $id)
     {

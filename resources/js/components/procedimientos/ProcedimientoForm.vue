@@ -57,7 +57,7 @@
             </div>
             <div class="col-12">
                <div class="form-group">
-                    <label>Certificado</label>
+                    <label>Documento</label>
 
                     <div class="custom-file mb-3" v-if="form.pdf === null">
                         <input type="file" class="custom-file-input" :class="{'is-invalid': error}" accept=".xlsx, .xls, .doc, .docx, .ppt, .pptx, .pdf" @change="cargarArchivo($event)">
@@ -214,6 +214,7 @@
                 if(ext === 'pdf' || ext === 'doc' || ext === 'docx' || ext === 'xlsx' || ext === 'xls' || ext === 'pptx' || ext === 'ppt'){
                     this.file = event.target.files[0]
                     this.error = false
+                    $('#text-certificate').text(name);
                 }else{
                     this.error = true
                     this.file = null

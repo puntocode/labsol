@@ -7,7 +7,7 @@
             <div class="col-12 col-lg-6">
                 <div class="form-group">
                     <label>N° de Certificado <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" v-model="$v.form.certificate_no.$model" :class="{'is-invalid': $v.form.certificate_no.$error}" :disabled="form.id > 0">
+                    <input type="text" class="form-control" v-model="$v.form.certificate_no.$model" :class="{'is-invalid': $v.form.certificate_no.$error}">
                     <div class="invalid-feedback"><span v-if="!$v.form.certificate_no.$model">Este campo es requerido</span></div>
                 </div>
             </div>
@@ -166,6 +166,7 @@
                 if(ext === 'pdf' || ext === 'doc' || ext === 'docx' || ext === 'xlsx' || ext === 'xls' || ext === 'pptx' || ext === 'ppt'){
                     this.file = event.target.files[0]
                     this.error = false
+                    $('#text-certificate').text(name);
                 }else{
                     this.error = true
                     this.file = null

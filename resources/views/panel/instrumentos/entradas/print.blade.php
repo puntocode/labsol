@@ -25,6 +25,7 @@
             <section class="row noPrint">
                 <div class="col text-center my-10">
                     <a href="{{ route('panel.entrada-instrumentos.show', $entradaInstrumento) }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Ir al Detalle</a>
+                    <a href="{{ route('panel.entrada-instrumentos.show', $entradaInstrumento) }}" class="btn btn-info mx-4"><i class="fas fa-list"></i> Ir a la Lista</a>
                     <button type="button" class="btn btn-primary" onclick="imprimir()"><i class="fas fa-print"></i> Imprimir</button>
                 </div>
             </section>

@@ -14,14 +14,14 @@
 
                     <div class="col-md-9">
                         <label>Solicitante <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" :value="basico.cliente_name" disabled />
+                        <input type="text" class="form-control" :value="form.cliente_name" disabled />
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-md-3">
-                        <label>N° Expediente <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="basico.expediente" />
+                    <div class="col-md-4">
+                        <label>Instrumento <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" :value="basico.instrumento" disabled />
                     </div>
                 </div>
 

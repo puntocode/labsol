@@ -9,4 +9,5 @@ class EquipoAmbiental extends Model
 {
     use HasFactory;
     protected $casts = ['code' => 'array'];
+    protected $fillable = ['code'];
 }

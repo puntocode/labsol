@@ -141,15 +141,17 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::post('/equipo-maintenance-history/{id}', 'EquipoController@equipoMaintenanceStore')->name('equipo.maintenance-history.store')->middleware('can:panel.database');
 
 
-    # -- Historial --
-    Route::resource('/historial', 'HistorialController')->middleware('can:panel.database');
+    # -- Historial PATRONES / EQUIPOS --
+    Route::get('/historial', 'HistorialController@index')->name('historial.index')->middleware('can:panel.database');
     Route::get('/history-calibracion/{id}', 'HistorialController@getHistoryCalibration')->name('history-calibration.get');
     Route::put('/history-calibration-update', 'HistorialController@updateCalibrationHistory')->name('history-calibration.update')->middleware('can:panel.database');
+    Route::delete('/history-calibration/{id}', 'HistorialController@destroyCalibracion')->name('history-calibration.destroy')->middleware('can:panel.database');
+    Route::post('/historial-calibracion/doc-store/{id}', 'HistorialController@storeCertificate')->name('history-calibration.doc.store')->middleware('can:panel.database');
+    Route::post('/historial-calibracion/doc-delete/{id}', 'HistorialController@deleteCertificate')->name('history-calibration.doc.del')->middleware('can:panel.database');
     Route::get('/history-maintenance/{id}', 'HistorialController@getHistoryMaintenance')->name('history-maintenance.get');
     Route::put('/history-maintenance-update/{id}', 'HistorialController@updateHistoryMaintenance')->name('history-maintenance.update')->middleware('can:panel.database');
-    Route::post('/historial/doc-store/{id}', 'HistorialController@storeCertificate')->name('history-calibration.doc.store')->middleware('can:panel.database');
-    Route::post('/historial/doc-delete/{id}', 'HistorialController@deleteCertificate')->name('history-calibration.doc.del')->middleware('can:panel.database');
-
+    Route::delete('/history-maintenance/{id}', 'HistorialController@destroyMaintenance')->name('history-maintenance.destroy')->middleware('can:panel.database');
+    Route::delete('/documento', 'HistorialController@destroyDocument')->name('document.destroy')->middleware('can:panel.database');
 
     # -- Incertidumbre --
     Route::resource('/incertidumbre', 'IncertidumbreController')->names([
@@ -164,13 +166,13 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/incertidumbre', 'IncertidumbreController')->middleware('can:panel.admin');
 
 
-    # -- Servicios --
+    # -- Procedimientos --
     Route::resource('/procedimientos', 'ProcedimientoController')->middleware('can:panel.database');
     Route::get('/procedimiento/{id}', 'ProcedimientoController@getProcedimientoForId')->name('procedimientos.get')->middleware('can:panel.database');
     Route::post('/procedimientos/doc-store/{id}', 'ProcedimientoController@storeDocument')->name('procedimientos.doc.store')->middleware('can:panel.database');
     Route::post('/procedimientos/doc-delete/{id}', 'ProcedimientoController@deleteDocument')->name('procedimientos.doc.del')->middleware('can:panel.database');
     Route::delete('/procedimientos/patron-delete/{id}', 'ProcedimientoController@destroyProcedimientoPatron')->name('patron_procedimiento.delete')->middleware('can:panel.database');
-
+    Route::put('/procedimiento/update-ema', 'ProcedimientoController@updateEma')->name('procedimientos.update.ema')->middleware('can:panel.database');
 
     # -- Expedientes --
     Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');

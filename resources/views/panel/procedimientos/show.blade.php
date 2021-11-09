@@ -143,17 +143,18 @@
                                 </span>
                             </div>
 
-                            <div class="form-group col-md-8">
+                            <div class="form-group col-10 col-md-6">
                                 @foreach ($procedimiento->ambiental->code as $codigo)
                                     {{ $codigo }} <span class="mx-2 font-weight-bold">|</span>
                                 @endforeach
                             </div>
 
+                            <editar-ema :data="{{ $procedimiento->ambiental }}"></editar-ema>
                         </div>
 
                         <div class="row mt-6">
                             <div class="col-12">
-                                <h3>Certificado</h3>
+                                <h3>Documento</h3>
                                 <hr>
                                 @if (isset($procedimiento->pdf))
                                     <a href="{{ $procedimiento->certificadoURL() }}" target="_blank"><i class="fas fa-file mr-3"></i>{{ $procedimiento->pdf }}</a>
@@ -176,7 +177,20 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('rutas')
+<script>
+    const updateRoute = "{{ route('panel.procedimientos.update.ema') }}";
+    const getPatron = "{{ route('panel.patrones.index') }}";
+    const getEquipos = "{{ route('panel.equipos.index') }}";
+
+    window.routes = {
+        'getEquipos': getEquipos,
+        'getPatron': getPatron,
+        'update': updateRoute,
+    }
+</script>
 @endsection
 
 @section('scripts')

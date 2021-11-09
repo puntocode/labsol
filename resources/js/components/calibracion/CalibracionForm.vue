@@ -48,6 +48,7 @@
             async fetch() {
                 this.form.number = this.data.number;
                 this.form.cliente_name = this.data.entrada_instrumentos.cliente.name;
+                this.form.instrumento = this.data.instrumentos.name;
             },
 
             next(){

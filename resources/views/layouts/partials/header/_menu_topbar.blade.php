@@ -213,9 +213,9 @@
                                     </div>
                                     <!--end::Symbol-->
                                     <!--begin::Text-->
-                                    <div class="d-flex flex-column font-weight-bold">
+                                    {{-- <div class="d-flex flex-column font-weight-bold">
                                         <a href="{{ route('panel.historial.index') }}" class="text-dark text-hover-success mb-1 font-size-lg">Historial de cambios</a>
-                                    </div>
+                                    </div> --}}
                                     <!--end::Text-->
                                 </div>
                                 <!--end::Item-->

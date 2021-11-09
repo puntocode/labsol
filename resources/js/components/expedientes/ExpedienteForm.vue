@@ -92,7 +92,7 @@
         <HistorialTable :historial="historial" v-if="historial != null && historial.length > 1" />
 
 
-         <div class="modal fade" id="modal-tecnico" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal fade" id="modal-tecnico" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <AsignarTecnico data="show" :numeros.sync="numeros" :expedientes.sync="expediente" />
             </div>

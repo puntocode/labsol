@@ -1,6 +1,6 @@
 <template>
-    <section>
-        <div class="row mb-10 noPrint">
+    <section class="mt-5">
+        <!-- <div class="row mb-10 noPrint">
             <div class="col-12">
                 <form>
                     <div class="form-row">
@@ -21,7 +21,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div>-->
 
         <div class="row justify-content-center w-100">
             <div class="col-md-3 py-4 mx-0">

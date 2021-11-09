@@ -296,10 +296,10 @@
                 return this.array.data.calibration === 'N/A' ? 'NO' : 'SI';
             },
             externa(){
-                return this.array.data.calibration === 'EXTERNA' ? 'X' : '-';
+                return this.array.data.calibration === 'EXTERNA' || 'INT/EXT' ? 'X' : '-';
             },
             interna(){
-                return this.array.data.calibration === 'INTERNA' ? 'X' : '-';
+                return this.array.data.calibration === 'INTERNA' || 'INT/EXT' ? 'X' : '-';
             },
             procedimiento(){
                 return this.array.data.procedimientos === null ? '-' : this.array.data.procedimientos.code;

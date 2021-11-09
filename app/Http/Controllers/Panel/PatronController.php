@@ -148,11 +148,6 @@ class PatronController extends Controller
     }
 
 
-    public function historial(){
-        return view('panel.historial.index');
-    }
-
-
     public function getPatronForId($id){
         return response()->json(Patron::find($id));
     }
@@ -170,7 +165,7 @@ class PatronController extends Controller
         $patron = Patron::findOrFail($id);
         $patron->documents()->create([
             'category' => $request->header('category'),
-            'idioma' => $request->header('idioma'),
+            'idioma' => $request->header('idioma') == 'ESPANOL' ? 'ESPAÑOL' : $request->header('idioma'),
             'extension' => $arrayDoc['extension'],
             'name' => $arrayDoc['nombre'],
             'url' => $arrayDoc['url']

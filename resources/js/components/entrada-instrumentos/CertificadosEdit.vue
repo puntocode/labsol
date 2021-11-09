@@ -12,7 +12,7 @@
                         <th>Direccion</th>
                         <th>Equipo</th>
                         <th>Servicio</th>
-                        <th>Estado</th>
+                        <!-- <th>Estado</th> -->
                         <th>Prioridad</th>
                         <th>Observaciones</th>
                     </tr>
@@ -26,11 +26,11 @@
                         <td>{{ formated(expediente.certificate_adress) }}</td>
                         <td>{{ expediente.instrumentos.name }}</td>
                         <td>{{ expediente.service }}</td>
-                        <td>
+                        <!-- <td>
                             <span class="mt-2 ml-5 badge ml-md-0 mt-md-0" :class="`badge-${expediente.estados.color}`">
                                 {{ expediente.estados.name }}
                             </span>
-                        </td>
+                        </td> -->
                         <td>
                             <span class="mt-2 ml-5 badge ml-md-0 mt-md-0" :class="`badge-${expediente.prioridad.color}`">
                                 {{ expediente.priority }}

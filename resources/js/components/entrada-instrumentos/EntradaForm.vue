@@ -1,7 +1,7 @@
 <template>
     <div class="card-body">
         <form class="px-10 mb-5" autocomplete="off" @submit.prevent="submit" v-if="formulario">
-            <!-- Información del Cliente -->
+            <!-- Información del Cliente ------------------------------------------------------------------------------------------------------------->
             <div class="row">
                 <div class="p-2 mx-0 mb-5 text-center col-12 bg-secondary">
                     <h4 class="font-bold">INFORMACIÓN DEL CLIENTE</h4>
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <!-- Elegir el contacto del Cliente -->
+            <!-- Elegir contacto del Cliente --------------------------------------------------------------------------------------------------------->
             <div class="mt-8 row">
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <!-- Control de ingreso de instrumentos -->
+            <!-- Control de ingreso de instrumentos -------------------------------------------------------------------------------------------------->
             <div class="mt-8 row">
                 <div class="p-2 mx-0 text-center col-12 bg-secondary position-relative">
                     <h4 class="font-bold w-100">CONTROL DE INGRESO DE INSTRUMENTOS</h4>
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <!-- Agregar mas Instrumentos -->
+            <!-- Agregar mas Instrumentos ------------------------------------------------------------------------------------------------------------>
             <div class="py-5 mt-2 row border-bottom border-primary" v-for="(v, index) in $v.form.servicio.$each.$iter" :key="index">
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
@@ -131,7 +131,7 @@
                 </div>
             </div>
 
-            <!-- Obs general & Elegir LS o LSI -->
+            <!-- Obs general & Elegir LS o LSI ------------------------------------------------------------------------------------------------------->
             <div class="row mt-14">
                 <div class="p-2 mx-0 mb-5 text-center col-12 bg-secondary">
                     <h4 class="font-bold">OBSERVACIONES GENERALES</h4>
@@ -139,12 +139,6 @@
                 <div class="col-12">
                     <VueEditor v-model="form.obs_general" />
                 </div>
-                <!-- <div class="col-12">
-                    <div class="form-group">
-                        <label>Observaciones Generales </label>
-                        <textarea v-model="form.obs_general" class="form-control"></textarea>
-                    </div>
-                </div> -->
 
                 <div class="col-12">
                     <div class="mt-6 radio-inline type" v-if="!readOnly">
@@ -157,7 +151,7 @@
                 </div>
             </div>
 
-            <!-- Control de Recepción de istrumentos -->
+            <!-- Control de Recepción de istrumentos ------------------------------------------------------------------------------------------------->
             <div class="mt-8 row" v-if="form.type === 'LS'">
                 <div class="p-2 mx-0 mb-5 text-center col-12 bg-secondary">
                     <h4 class="font-bold">CONTROL DE RECEPCIÓN DE INSTRUMENTOS</h4>
@@ -187,10 +181,13 @@
                 </div>
             </div>
 
-            <!-- Boton de Insertar -->
+            <!-- Boton de Insertar ------------------------------------------------------------------------------------------------------------------->
             <div class="mt-8 row">
                 <div class="text-center col-12">
-                    <button type="submit" class="btn btn-primary" :disabled="disable" title="Completa todos los campos requeridos"> {{ textoBtn }}</button>
+                    <button type="submit" class="btn btn-primary" :disabled="disable" title="Completa todos los campos requeridos">
+                         <i v-if="spin" class="fas fa-spinner fa-spin"></i>
+                        <span v-else>{{ textoBtn }}</span>
+                    </button>
                 </div>
             </div>
         </form>
@@ -217,13 +214,13 @@
 
     export default {
         components: { Select2, SuccessAnimation },
-
         props: {
             data: {
                 type: Object,
                 default: [],
             },
         },
+        //------------------------------------------------------------------------------------------------------
 
         data() {
             return {
@@ -256,13 +253,16 @@
                 servicio: {},
                 rutas: window.routes,
                 user: {},
+                spin: false
             }
         },
+        //------------------------------------------------------------------------------------------------------
 
         created () {
             this.cargarSelect();
             if(this.data.id > 0) this.datosModificar();
         },
+        //------------------------------------------------------------------------------------------------------
 
         validations:{
             form:{
@@ -281,23 +281,28 @@
                 }
             }
         },
+        //------------------------------------------------------------------------------------------------------
 
         methods: {
             addService() {
+                const servicio = this.getServicio();
+                this.form.servicio.push(servicio);
+            },
+            delService(){
+                this.form.servicio.pop()
+            },
+            getServicio(){
                 const servicio = {
-                    certificate: '',
-                    certificate_adress: '',
-                    certificate_ruc: '',
+                    certificate: Object.keys(this.cliente).length ? this.cliente.name : '',
+                    certificate_adress: Object.keys(this.form.contact).length ? this.form.contact.direccion : '',
+                    certificate_ruc: Object.keys(this.cliente).length ? this.cliente.ruc : '',
                     instrumento_id: 1,
                     obs: '',
                     priority: 'NORMAL',
                     quantity: '',
                     service: 'calibración',
-                }
-                this.form.servicio.push(servicio);
-            },
-            delService(){
-                this.form.servicio.splice((this.form.servicio.length-1), 1)
+                };
+                return servicio;
             },
 
             cargarSelect(){
@@ -307,6 +312,7 @@
             },
 
             submit() {
+                this.spin = true;
                 axios.post(this.rutas.store, this.form)
                     .then(response =>{ if(response.status === 201) this.formulario = false })
                     .catch(error => console.log(error))
@@ -327,9 +333,11 @@
                     })
                 );
 
-                this.form.servicio[0].certificate = this.cliente.name;
-                this.form.servicio[0].certificate_ruc = this.cliente.ruc;
-                this.form.servicio[0].certificate_adress = '';
+                this.form.servicio.forEach(servicio => {
+                    servicio.certificate = this.cliente.name;
+                    servicio.certificate_ruc = this.cliente.ruc;
+                    servicio.certificate_adress = '';
+                });
             },
 
             async datosModificar(){
@@ -341,9 +349,12 @@
 
             selectContacChange(event){
                 this.form.contact = { nombre: event.text, email: event.email, telefono: event.telefono, direccion: event.direccion};
-                this.form.servicio[0].certificate_adress = event.direccion;
+                this.form.servicio.forEach(servicio => {
+                    servicio.certificate_adress = event.direccion;
+                });
             },
         },
+        //------------------------------------------------------------------------------------------------------
 
         computed: {
             disable() {

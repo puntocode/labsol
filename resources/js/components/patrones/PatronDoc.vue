@@ -39,17 +39,17 @@
                 rutas: window.routes,
                 manualBan: false,
                 documento: { folder: 'patrones/', category: 'DOCUMENTOS', idioma: 'SPANISH' },
-                idiomas: ['SPANISH', 'INGLES', 'PORTUGUES', 'CHINO', 'JAPONES', 'ALEMAN']
+                idiomas: ['ESPANOL', 'INGLES', 'PORTUGUES', 'CHINO', 'JAPONES', 'ALEMAN']
             }
         },
         methods: {
             docTab() {
                 this.manualBan = false;
-                this.documento = { folder: 'patrones/', category: 'DOCUMENTOS', idioma: 'SPANISH' };
+                this.documento = { folder: 'patrones/', category: 'DOCUMENTOS', idioma: 'ESPANOL' };
             },
             manualTab(){
                 this.manualBan = true;
-                this.documento = { folder: 'patrones/manual/', category: 'MANUAL', idioma: 'SPANISH' };
+                this.documento = { folder: 'patrones/manual/', category: 'MANUAL', idioma: 'ESPANOL' };
             }
         },
     }

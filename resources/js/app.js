@@ -27,6 +27,7 @@ Vue.component('calibracion-form',    require('./components/calibracion/Calibraci
 
 
 Vue.component('patron-maintenance',  require('./components/patrones/PatronMaintenance.vue').default);
+Vue.component('eliminar-historial',  require('./components/patrones/EliminarHistorial.vue').default);
 Vue.component('patron-historial',    require('./components/patrones/PatronHistorial.vue').default);
 Vue.component('patron-card',         require('./components/patrones/PatronCard.vue').default);
 Vue.component('patron-doc',          require('./components/patrones/PatronDoc.vue').default);
@@ -51,6 +52,8 @@ Vue.component('entrada-form',        require('./components/entrada-instrumentos/
 Vue.component('entrada-edit',        require('./components/entrada-instrumentos/EntradaEdit.vue').default);
 
 Vue.component('procedimiento-card',  require('./components/procedimientos/ProcedimientoCard.vue').default);
+Vue.component('editar-ema',          require('./components/procedimientos/EditarEma.vue').default);
+
 Vue.component('documentos',          require('./components/documentos/Documentos.vue').default);
 Vue.component('cliente-card',        require('./components/clientes/ClienteCard.vue').default);
 
