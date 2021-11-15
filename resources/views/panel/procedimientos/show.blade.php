@@ -52,44 +52,50 @@
 
                     <div class="card-body">
                         <div class="row">
-
-                            <div class="form-group col-md-8">
+                            <div class="form-group col-md-9">
                                 <label>Nombre</label>
                                 <div class="h-auto p-0 border-0 form-control">
                                     <span class="font-weight-bold">{{ $procedimiento->name }}</span>
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-4">
-                                <label>Alcance Acreditado</label>
-                                <div class="h-auto p-0 border-0 form-control">
-                                    <span class="badge badge-{{$procedimiento->getAlcanceColor() }} font-weight-bold">
-                                        {{ $procedimiento->accreditedScope() }}
-                                    </span>
-                                </div>
+                            <div class="form-group col-md-3">
+                                <label>Magnitud</label>
+                                <span class="badge badge-info font-weight-bold">
+                                    {{ isset($procedimiento->magnitud) ? $procedimiento->magnitud->name : '-' }}
+                                </span>
                             </div>
                         </div>
                         <hr>
 
                         <div class="mt-3 row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Revisión</label>
                                 <div class="h-auto p-0 border-0 form-control">
                                     <span class="font-weight-bold">{{ $procedimiento->revision }}</span>
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Detentor</label>
                                 <div class="h-auto p-0 border-0 form-control">
                                     <span class="font-weight-bold">{{ $procedimiento->valve }}</span>
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Vigencia</label>
                                 <div class="h-auto p-0 border-0 form-control">
                                     <span class="font-weight-bold">{{ $procedimiento->validity }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label>Alcance Acreditado</label>
+                                <div class="h-auto p-0 border-0 form-control">
+                                    <span class="badge badge-{{$procedimiento->getAlcanceColor() }} font-weight-bold">
+                                        {{ $procedimiento->accreditedScope() }}
+                                    </span>
                                 </div>
                             </div>
                         </div>

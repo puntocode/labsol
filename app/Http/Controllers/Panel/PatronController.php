@@ -132,6 +132,7 @@ class PatronController extends Controller
             'serie_number'         => 'nullable',
             'tolerance'            => 'nullable',
             'type'                 => 'nullable',
+            'type_description'     => 'nullable',
             'ubication'            => 'nullable',
             'uncertainty'          => 'nullable',
         ]);

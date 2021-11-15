@@ -135,7 +135,7 @@ class ExpedienteController extends Controller
     public function asignarTecnicos(Request $request)
     {
         $exp = Expediente::relaciones()->where('number', $request['number'])->first();
-        $exp->update(['tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
+        $exp->update(['tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date'], 'expediente_estado_id' => 2]);
         ExpedienteHistorial::create(['expediente_id' => $exp->id, 'tecnicos' => $request['personales'], 'delivery_date' => $request['delivery_date']]);
         return response()->json($exp);
     }

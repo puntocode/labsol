@@ -3,9 +3,9 @@
         <!-- progressbar --------------------------------------------------------------------------------------------------------------------->
         <ul id="progressbar">
             <li class="active" id="basic"><strong>Básicos</strong></li>
-            <li :class="this.steps >= 2 ? 'active' : ''" id="status"><strong>Estados</strong></li>
-            <li :class="this.steps >= 3 ? 'active' : ''" id="period"><strong>Periodo</strong></li>
-            <li :class="this.steps == 4 ? 'active' : ''" id="confirm"><strong>Finalizado</strong></li>
+            <li :class="{ active: steps >= 2 }" id="status"><strong>Estados</strong></li>
+            <li :class="{ active: steps >= 3 }" id="period"><strong>Periodo</strong></li>
+            <li :class="{ active: steps == 4 }" id="confirm"><strong>Finalizado</strong></li>
         </ul>
 
         <div class="progress mb-10">

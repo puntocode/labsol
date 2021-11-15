@@ -94,41 +94,6 @@
                     .then( result => this.cancelar());
                 if(this.data !== null) location.reload();
             },
-            // cambiarNombre(){
-            //     if(this.data === null) this.vistaTabla();
-            //     else this.vistaShow();
-            // },
-            // vistaTabla(){
-            //     let html = '';
-            //     this.formData.asignados.forEach(tecnico => {
-            //         html += `<span><i class="mr-2 fas fa-user"></i>${tecnico.fullname}</span><br>`;
-            //     });
-            //     const exp = this.formData.number[0];
-            //     const deliveryDate = this.convertirFecha(this.formData.delivery_date);
-
-            //     $(`#text-${exp}`).html(html);
-            //     $(`#date-${exp}`).html(deliveryDate);
-
-            //     this.cancelar();
-            // },
-            // vistaShow(){
-            //     const deliveryDate = this.convertirFecha(this.formData.delivery_date);
-
-            //     //crea y cargar el array de historial
-            //     const historial = { delivery_date: deliveryDate, tecnicos: this.formData.personales.slice()}
-            //     this.data.historial.push(historial);
-
-            //     //modifica el array expediente
-            //     this.data.expediente.tecnicos = this.formData.personales.slice();
-            //     this.data.expediente.delivery_date = deliveryDate;
-
-            //     //cierra el modal
-            //     this.cancelar();
-            // },
-            // convertirFecha(date){
-            //     let fecha = moment(date, 'YYYY/MM/DD');
-            //     return moment(fecha).format('DD/MM/YYYY');
-            // }
         },
 
         computed: {

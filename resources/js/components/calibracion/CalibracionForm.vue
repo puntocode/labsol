@@ -1,28 +1,83 @@
 <template>
     <form id="form-step" class="mb-5" autocomplete="off" @submit.prevent="submit">
-        <!-- progressbar --------------------------------------------------------------------------------------------------------------------->
+        <!-- progressbar ---------------------------------------------------------------------------------------------------------------->
         <ul id="progressbar">
-            <li class="active" id="basic"><strong>Básicos</strong></li>
-            <li :class="this.steps >= 2 ? 'active' : ''" id="status"><strong>Estados</strong></li>
-            <li :class="this.steps >= 3 ? 'active' : ''" id="period"><strong>Periodo</strong></li>
-            <li :class="this.steps >= 4 ? 'active' : ''" id="period"><strong>Periodo</strong></li>
-            <li :class="this.steps == 5 ? 'active' : ''" id="confirm"><strong>Finalizado</strong></li>
-            <li :class="this.steps == 5 ? 'active' : ''" id="confirm"><strong>Finalizado</strong></li>
-            <li :class="this.steps == 5 ? 'active' : ''" id="confirm"><strong>Finalizado</strong></li>
+            <li :class="activeOne" class="basic"><strong>Datos</strong></li>
+            <li :class="activeTwo" class="basic"><strong>Patrones</strong></li>
+            <li :class="activeThree" class="basic"><strong>Iniciales</strong></li>
+            <li :class="activeFour" class="basic"><strong>Valores</strong></li>
+            <li :class="activeFive" class="basic"><strong>Finales</strong></li>
+            <li :class="{ succ: steps == 6 }" id="confirm"><strong>Terminado</strong></li>
         </ul>
 
-        <!-- Basico -------------------------------------------------------------------------------------------------------------------------->
-        <StepOne :form.sync="form" v-if="this.steps == 1" @click-next="next" />
+        <!-- paso 1 --------------------------------------------------------------------------------------------------------------------->
+        <step-one
+            :form.sync="form"
+            :medida="magnitud"
+            @click-next="next"
+            v-if="this.steps == 1">
+            <h2 class="font-weight-bold">Datos del Equipo Calibrado:</h2>
+            <span class="steps">Paso {{steps}} - 6</span>
+        </step-one>
 
+        <!-- paso 2 --------------------------------------------------------------------------------------------------------------------->
+        <step-two
+            :form.sync="form"
+            :procedimiento="data.instrumentos.procedimiento[0]"
+            @click-next="next"
+            v-if="this.steps == 2">
+            <h2 class="font-weight-bold">Patrones utilizados:</h2>
+            <span class="steps">Paso {{steps}} - 6</span>
+        </step-two>
 
+        <!-- paso 3 --------------------------------------------------------------------------------------------------------------------->
+        <step-three
+            :form.sync="form"
+            @click-next="next"
+            v-if="this.steps == 3">
+            <h2 class="font-weight-bold">Datos iniciales de Calibración:</h2>
+            <span class="steps">Paso {{steps}} - 6</span>
+        </step-three>
+
+        <!-- paso 4 --------------------------------------------------------------------------------------------------------------------->
+        <step-four
+            :form.sync="form"
+            :medida="magnitud"
+            @click-next="next"
+            v-if="this.steps == 4">
+            <h2 class="font-weight-bold">Valores Obtenidos:</h2>
+            <span class="steps">Paso {{steps}} - 6</span>
+        </step-four>
+
+        <!-- paso 5 --------------------------------------------------------------------------------------------------------------------->
+        <step-five
+            :form.sync="form"
+            @click-next="next"
+            v-if="this.steps == 5">
+            <h2 class="font-weight-bold">Datos finales de Calibración:</h2>
+            <span class="steps">Paso {{steps}} - 6</span>
+        </step-five>
+
+        <!-- paso 6 --------------------------------------------------------------------------------------------------------------------->
+        <step-six
+            :form.sync="form"
+            v-if="this.steps == 6">
+            <h2 class="font-weight-bold">Calibración Finalizada:</h2>
+            <span class="steps">Paso {{steps}} - 6</span>
+        </step-six>
     </form>
 </template>
 
 <script>
-    import StepOne from './steps/StepOne'
+    import StepOne from './steps/StepOne';
+    import StepTwo from './steps/StepTwo';
+    import StepThree from './steps/StepThree';
+    import StepFour from './steps/StepFour';
+    import StepFive from './steps/StepFive';
+    import StepSix from './steps/StepSix';
 
     export default {
-        components: { StepOne, },
+        components: { StepOne, StepTwo, StepThree, StepFive, StepSix, StepFour },
         props: {
             data: {
                 type: Object,
@@ -34,7 +89,8 @@
         data() {
             return {
                 steps: 1,
-                form: {}
+                form: {},
+                magnitud: []
             }
         },
         //------------------------------------------------------------------------------------
@@ -49,14 +105,37 @@
                 this.form.number = this.data.number;
                 this.form.cliente_name = this.data.entrada_instrumentos.cliente.name;
                 this.form.instrumento = this.data.instrumentos.name;
+                this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
+                this.form.procedimiento = this.data.instrumentos.procedimiento[0].code;
             },
 
             next(){
                 this.steps++;
             }
         },
+        //------------------------------------------------------------------------------------
 
-
+        computed: {
+            activeOne() {
+                return this.steps >= 1 && this.steps != 6 ? 'active' : 'succ';
+            },
+            activeTwo() {
+                if(this.steps < 2) return;
+                return this.steps >= 2 && this.steps != 6 ? 'active' : 'succ';
+            },
+            activeThree() {
+                if(this.steps < 3) return;
+                return this.steps >= 3 && this.steps != 6 ? 'active' : 'succ';
+            },
+            activeFour() {
+                if(this.steps < 4) return;
+                return this.steps >= 4 && this.steps != 6 ? 'active' : 'succ';
+            },
+            activeFive() {
+                if(this.steps < 5) return;
+                return this.steps >= 5 && this.steps != 6 ? 'active' : 'succ';
+            },
+        },
     }
 </script>
 
@@ -64,20 +143,20 @@
 #form-step { text-align: center; position: relative; margin-top: 20px;
     fieldset:not(:first-of-type) {display: none;} //selecciona los fieldset que no sea el primer elemento
     .form-card{text-align: left;
-        .steps { font-size: 18px; color: gray;}
+        .steps { font-size: 18px; color: #afafaf;}
     }
 }
 
 #progressbar {margin-bottom: 30px; overflow: hidden; color: lightgrey; padding: 0;
-    li {list-style-type: none; font-size: 12px; width: 14.2%; float: left; position: relative; z-index: 1; font-weight: 400;
+    li {list-style-type: none; font-size: 12px; width: 16.6%; float: left; position: relative; z-index: 1; font-weight: 400;
         &:before{ width: 30px; height: 30px; display: block; font-size: 15px; color: #ffffff; background: lightgray; border-radius: 50%; margin: 10px auto; padding: 5px;}
         &:after { content: ''; width: 100%; height: 2px; background: lightgray;  left: 0; top: 25px; position: absolute; z-index: -1;}
         &.active:before, &.active::after{background: #009bdd}
+        &.succ:before, &.succ::after{background: #4bb71b}
     }
-    .active {color: #009bdd;}
-    #basic:before { font-family: "Font Awesome 5 Free"; content: "\f15c"; }
-    #status:before { font-family: "Font Awesome 5 Free"; content: "\f28d"; }
-    #period:before { font-family: "Font Awesome 5 Free"; content: "\f073"; }
+    .active{color: #009bdd;}
+    .succ{color: #4bb71b;}
+    .basic:before { font-family: "Font Awesome 5 Free"; content: "\f15c"; }
     #confirm:before { font-family: "Font Awesome 5 Free"; content: "\f058"; }
 }
 </style>

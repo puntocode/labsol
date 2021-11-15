@@ -11,6 +11,9 @@ class Instrumento extends Model
 
     protected $appends = [ 'code' ];
 
+    public function procedimiento(){
+        return $this->belongsToMany(Procedimiento::class);
+    }
 
     public function getCodeAttribute(){
         return $this->name;

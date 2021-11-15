@@ -13,6 +13,7 @@ class Procedimiento extends Model
     protected $guarded = [];
     protected $casts = ['accredited_scope' => 'boolean'];
     protected $appends = [ 'fullname' ];
+    protected $with = ['patrones', 'ambiental', 'magnitud'];
 
     public function patrones(){
         return $this->hasMany(PatronProcedimiento::class);
@@ -24,6 +25,10 @@ class Procedimiento extends Model
 
     public function instrumentos(){
         return $this->belongsToMany(Instrumento::class);
+    }
+
+    public function magnitud(){
+        return $this->belongsTo(Magnitude::class, 'magnitud_id');
     }
 
     public function setValveAttribute($value){

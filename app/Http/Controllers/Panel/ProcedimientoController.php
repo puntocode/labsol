@@ -68,7 +68,7 @@ class ProcedimientoController extends Controller
      */
     public function show($id)
     {
-        $procedimiento = Procedimiento::with('patrones', 'ambiental', 'instrumentos')->findOrFail($id);
+        $procedimiento = Procedimiento::with('patrones', 'ambiental', 'instrumentos', 'magnitud')->findOrFail($id);
         return view('panel.procedimientos.show', compact('procedimiento'));
     }
 

@@ -12,7 +12,7 @@
 			</span>
 
 			<!--begin::Tab Navs(for tablet and mobile modes)-->
-			<ul class="header-tabs mt-10 p-5 p-lg-0 d-flex d-lg-none nav nav-bold nav-tabs" role="tablist">
+			<ul class="p-5 mt-10 header-tabs p-lg-0 d-flex d-lg-none nav nav-bold nav-tabs" role="tablist">
 				@include('layouts.partials.header._nav_top')
 			</ul>
 			<!--begin::Tab Navs-->
@@ -20,7 +20,7 @@
 			<!--begin::Tab Content-->
 			<div class="tab-content">
 				<!--begin::Tab Pane Home-->
-				<div class="tab-pane py-5 p-lg-0 @if (Request::is('panel') || Request::is('panel/perfil/dashboard') || Request::is('panel/perfil/informes*')) show active @endif" id="kt_header_tab_1">
+				{{-- <div class="tab-pane py-5 p-lg-0 @if (Request::is('panel') || Request::is('panel/perfil/dashboard') || Request::is('panel/perfil/informes*')) show active @endif" id="kt_header_tab_1">
 					<!--begin::Menu-->
 					<div class="header-menu header-menu-mobile header-menu-layout-default">
 						<!--begin::Nav-->
@@ -34,7 +34,7 @@
 						<!--end::Nav-->
 					</div>
 					<!--end::Menu-->
-				</div>
+				</div> --}}
 				<!--begin::Tab Pane Home-->
 
 				<!--begin::Tab Pane Clientes-->

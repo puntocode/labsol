@@ -491,5 +491,17 @@
 	</div>
 @endsection
 
+@section('rutas')
+    <script>
+        window.username = "{{ auth()->user()->fullname }}";
+        const submultiplos = "{{ route('panel.patrones.unidades_medidas') }}";
+
+        window.routes = {
+            'submultiplos': submultiplos,
+        }
+    </script>
+@endsection
+
+
 
 

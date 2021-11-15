@@ -188,7 +188,7 @@
                                 </div>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <div class="d-flex align-items-center mb-6">
+                                {{--<div class="d-flex align-items-center mb-6">
                                     <!--begin::Symbol-->
                                     <div class="symbol symbol-40 symbol-light-success mr-5">
                                         <span class="symbol-label">
@@ -213,11 +213,11 @@
                                     </div>
                                     <!--end::Symbol-->
                                     <!--begin::Text-->
-                                    {{-- <div class="d-flex flex-column font-weight-bold">
+                                     <div class="d-flex flex-column font-weight-bold">
                                         <a href="{{ route('panel.historial.index') }}" class="text-dark text-hover-success mb-1 font-size-lg">Historial de cambios</a>
-                                    </div> --}}
+                                    </div>
                                     <!--end::Text-->
-                                </div>
+                                </div>--}}
                                 <!--end::Item-->
                             </div>
                             <!--end::Nav-->

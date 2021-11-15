@@ -59,7 +59,6 @@
 
                     <input class="form-control mb-3" :value="form.certificate" disabled v-else>
                     <span class="text-danger pointer" v-if="eliminarCertificado" @click="delCertificado">Eliminar certificado</span>
-
                 </div>
             </div>
 

@@ -72,7 +72,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     # -- Calibración  --
     Route::resource('/calibracion', 'CalibracionController')->middleware('can:panel.database');
-    Route::get('/calibrar-expediente/{expediente_id}', 'CalibracionController@calibrarExpediente')->name('calibrar.expediente')->middleware('can:panel.database');
+    Route::get('/calibraciones/expediente/{expediente_id}', 'CalibracionController@calibrarExpediente')->name('calibrar.expediente')->middleware('can:panel.database');
 
 
     Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration')->name('alert.calibration');
@@ -146,7 +146,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/history-calibracion/{id}', 'HistorialController@getHistoryCalibration')->name('history-calibration.get');
     Route::put('/history-calibration-update', 'HistorialController@updateCalibrationHistory')->name('history-calibration.update')->middleware('can:panel.database');
     Route::delete('/history-calibration/{id}', 'HistorialController@destroyCalibracion')->name('history-calibration.destroy')->middleware('can:panel.database');
-    Route::post('/historial-calibracion/doc-store/{id}', 'HistorialController@storeCertificate')->name('history-calibration.doc.store')->middleware('can:panel.database');
+    Route::post('/historial/doc-store/{id}', 'HistorialController@storeCertificate')->name('history-calibration.doc.store')->middleware('can:panel.database');
     Route::post('/historial-calibracion/doc-delete/{id}', 'HistorialController@deleteCertificate')->name('history-calibration.doc.del')->middleware('can:panel.database');
     Route::get('/history-maintenance/{id}', 'HistorialController@getHistoryMaintenance')->name('history-maintenance.get');
     Route::put('/history-maintenance-update/{id}', 'HistorialController@updateHistoryMaintenance')->name('history-maintenance.update')->middleware('can:panel.database');
