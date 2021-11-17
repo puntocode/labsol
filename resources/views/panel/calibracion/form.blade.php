@@ -494,10 +494,12 @@
 @section('rutas')
     <script>
         window.username = "{{ auth()->user()->fullname }}";
+        const patronUmIde = "{{ route('panel.patron.ide.um') }}";
         const submultiplos = "{{ route('panel.patrones.unidades_medidas') }}";
 
         window.routes = {
-            'submultiplos': submultiplos,
+            'patronUmIde': patronUmIde,
+            'submultiplos': submultiplos
         }
     </script>
 @endsection

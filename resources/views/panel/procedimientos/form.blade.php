@@ -78,6 +78,7 @@
 @section('rutas')
 <script>
     const getInstrumentos = "{{ route('panel.instrumentos.all') }}";
+    const getMagnitudes = "{{ route('panel.magnitud.all') }}";
     const updateRoute = "{{ route('panel.procedimientos.update', isset($procedimiento) ? $procedimiento->id : 0) }}";
     const createRoute = `{{ route('panel.procedimientos.create') }}`
     const indexRoute = "{{ route('panel.procedimientos.index') }}";
@@ -87,12 +88,13 @@
 
     window.routes = {
         'getInstrumentos': getInstrumentos,
+        'getMagnitudes': getMagnitudes,
         'getEquipos': getEquipos,
         'getPatron': getPatron,
         'create': createRoute,
         'update': updateRoute,
         'index': indexRoute,
-        'store': storeRoute,
+        'store': storeRoute
     }
 </script>
 @endsection

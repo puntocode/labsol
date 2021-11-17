@@ -38,6 +38,10 @@ class Patron extends Model
         return $this->belongsTo(Formulario::class, 'formulario_id');
     }
 
+    public function ide(){
+        return $this->hasMany(PatronIde::class);
+    }
+
     public function ensayos(){
         return $this->hasMany(PatronEnsayo::class);
     }

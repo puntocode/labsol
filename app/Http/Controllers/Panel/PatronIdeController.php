@@ -125,6 +125,12 @@ class PatronIdeController extends Controller
         return view('panel.patrones.ide.show', compact('ides', 'patron'));
     }
 
+    public function getUmIde(Request $request)
+    {
+        $patron = Patron::where('code', $request['patron'])->with('ide')->first();
+        return response()->json($patron);
+    }
+
 
     public function insertUpdateRank($rangos, $patronIde_id){
         foreach($rangos as $rango){

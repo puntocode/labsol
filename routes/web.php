@@ -103,7 +103,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/patrones-ide-all/{patron_id}', 'PatronIdeController@patronIdeShow')->name('patron_ide.show')->middleware('can:panel.database');
     Route::get('/patron-ide-unidades', 'PatronController@unidadesIde')->name('patrones.unidades_medidas')->middleware('can:panel.database');
     Route::get('/patron-ide/{id}', 'PatronController@ideForm')->name('patron.ide.form')->middleware('can:panel.database');
+    Route::get('/patron-ide-um/get-unidad-medida', 'PatronIdeController@getUmIde')->name('patron.ide.um')->middleware('can:panel.database');
     Route::delete('/patron-ide/{id}', 'PatronIdeController@destroy')->name('patron_ide.delete')->middleware('can:panel.database');
+
 
     # -- Patrones Ensayo --
     Route::get('/patron-ensayo/{id}', 'PatronController@ensayoForm')->name('patron.ensayo.form')->middleware('can:panel.database');

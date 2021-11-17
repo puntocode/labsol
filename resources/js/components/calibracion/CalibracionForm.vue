@@ -107,6 +107,7 @@
                 this.form.instrumento = this.data.instrumentos.name;
                 this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
                 this.form.procedimiento = this.data.instrumentos.procedimiento[0].code;
+                this.form.type = this.data.type === 'LS' ? 'Labsol' : 'e';
             },
 
             next(){

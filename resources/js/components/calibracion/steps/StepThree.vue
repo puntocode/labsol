@@ -80,9 +80,9 @@
                 formulario: {
                     ...this.form,
                     fecha_inicio: new Date().toISOString().substr(0, 10),
-                    lugar: '',
-                    temperatura_inicial: '',
-                    humedad_inicial: '',
+                    lugar: this.form.type,
+                    temperatura_inicial: '20.4',
+                    humedad_inicial: '54.8',
                     obs: '',
                 }
             }

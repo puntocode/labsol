@@ -28,6 +28,7 @@
                     valve: '',
                     accredited_scope: false,
                     instrumento_id: [],
+                    magnitud_id: 0,
                     patrones: [
                         { id: 0, patron: '', code: [] }
                     ],

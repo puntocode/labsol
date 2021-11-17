@@ -2,7 +2,7 @@
     <form class="mb-5" autocomplete="off" @submit.prevent="submit">
         <!-- Codigo -------------------------------------------------------------------------------------------------------------------------->
         <div class="row">
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-lg-3">
                 <div class="form-group">
                     <label>Código <span class="text-danger">*</span></label>
                     <input autofocus type="text" class="form-control" v-model.trim="$v.form.code.$model" :class="{'is-invalid': $v.form.code.$error }">
@@ -10,7 +10,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-8">
+            <div class="col-12 col-lg-9">
                 <div class="form-group">
                     <label>Procedimiento <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" v-model.trim="$v.form.name.$model" :class="{'is-invalid': $v.form.name.$error }">
@@ -23,18 +23,16 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
-                    <label>Revisión</label>
-                    <input type="number" class="form-control" v-model.trim="$v.form.revision.$model" :class="{'is-invalid': $v.form.revision.$error }">
-                    <div class="invalid-feedback"><span v-if="!$v.form.revision.numeric">Este campo debe ser numerico</span></div>
-                    <div class="invalid-feedback"><span v-if="!$v.form.revision.required">Este campo es requerido</span></div>
+                    <label>Magnitud <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <select name="" class="form-control" v-model="form.magnitud_id">
+                            <option value="null" disabled>-- Selecciona una magnitud --</option>
+                            <option v-for="magnitud in selectMagnitudes" :key="magnitud.id" :value="magnitud.id" v-text="magnitud.value"></option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <label>Detentor</label>
-                    <input type="text" class="form-control text-uppercase" v-model="form.valve">
-                </div>
-            </div>
+
             <div class="col-lg-3">
                 <div class="form-group">
                     <label>Vigencia</label>
@@ -46,7 +44,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Revisión</label>
+                    <input type="number" class="form-control" v-model.trim="$v.form.revision.$model" :class="{'is-invalid': $v.form.revision.$error }">
+                    <div class="invalid-feedback"><span v-if="!$v.form.revision.numeric">Este campo debe ser numerico</span></div>
+                    <div class="invalid-feedback"><span v-if="!$v.form.revision.required">Este campo es requerido</span></div>
+                </div>
+            </div>
+
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Detentor</label>
+                    <input type="text" class="form-control text-uppercase" v-model="form.valve">
+                </div>
+            </div>
+
+            <div class="col-lg-2">
                 <div class="form-group">
                     <label>Alcance Acreditado</label>
                     <label class="switchBtn">
@@ -55,6 +70,7 @@
                     </label>
                 </div>
             </div>
+
             <div class="col-12">
                <div class="form-group">
                     <label>Documento</label>
@@ -140,6 +156,7 @@
                 formato: { format: 'yyyy/MM/DD', },
                 selectInstrumentos: [],
                 selectPatrones: [],
+                selectMagnitudes: [],
                 rutas: window.routes,
                 spin: false
             }
@@ -235,6 +252,10 @@
                 res = await axios.get(this.rutas.getInstrumentos)
                 const instrumentos = await res.data;
                 this.selectInstrumentos = instrumentos.map( instrumento => { return {id: instrumento.id, text: instrumento.name} });
+
+                res = await axios.get(this.rutas.getMagnitudes)
+                const magnitudes = await res.data;
+                this.selectMagnitudes = magnitudes.map( magnitud => { return {id: magnitud.id, value: magnitud.name} });
 
                if(this.form.patrones.length === 0) this.addPatron();
                if(this.form.instrumentos.length) this.form.instrumento_id = this.form.instrumentos.map(instrumento => instrumento.id );

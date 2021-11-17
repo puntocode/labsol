@@ -108,6 +108,7 @@
                 title="Por favor completa todos los campos para continuar"
                 @click="siguiente">Siguiente
             </button>
+
         </fieldset>
 </template>
 
@@ -118,16 +119,16 @@
             return {
                 formulario: {
                     ...this.form,
-                    serie: '',
-                    identificacion: '',
-                    unidad_medida: '',
+                    serie: '1',
+                    identificacion: '0',
+                    unidad_medida: 'Bar',
                     tipo: 'DIGITAL',
-                    resolucion: '',
-                    resolucion_medida: '',
-                    intervalo_desde: '',
-                    intervalo_desde_medida: '',
-                    intervalo_hasta: '',
-                    intervalo_hasta_medida: '',
+                    resolucion: '0.1',
+                    resolucion_medida: 'Bar',
+                    intervalo_desde: '0',
+                    intervalo_desde_medida: 'Bar',
+                    intervalo_hasta: '1',
+                    intervalo_hasta_medida: 'Bar',
                     marca: 'GENERICO',
                     especificacion: '',
                     modelo: ''

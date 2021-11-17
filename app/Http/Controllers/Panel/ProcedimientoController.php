@@ -149,9 +149,10 @@ class ProcedimientoController extends Controller
         return request()->validate([
             'code'             => 'required',
             'name'             => 'required',
+            'valve'            => 'nullable',
             'revision'         => 'numeric',
             'validity'         => 'nullable',
-            'valve'            => 'nullable',
+            'magnitud_id'      => 'nullable',
             'accredited_scope' => 'nullable',
         ]);
     }
