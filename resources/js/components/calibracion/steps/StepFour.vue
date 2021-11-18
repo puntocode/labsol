@@ -21,14 +21,14 @@
 
             <div class="row mt-4" v-for="(valor, indice) in formulario.valores" :key="indice">
                 <div class="col-md-2">
-                    <select class="form-control" v-model="valor.patron" :disabled="disableIpMedida" :id="`patron-${indice}`">
+                    <select class="form-control" v-model="valor.patron" :disabled="resultados.length != indice" :id="`patron-${indice}`">
                         <option v-for="(patron, i) in selectPatrones" :key="i">{{ patron }}</option>
                     </select>
                 </div>
 
                 <div class="col-md-5 d-flex">
                     <select class="form-control mr-3" v-model="valor.ip_medida" @change="changeUMValor($event, indice, 'ip')"
-                    :id="`ip-medida-${indice}`" :disabled="valor.patron === ''">
+                    :id="`ip-medida-${indice}`" :disabled="resultados.length != indice">
                         <option v-for="(ip, i) in selectIP" :key="i">{{ ip }}</option>
                     </select>
                     <input type="number" step="0.01" class="form-control mr-3" :id="`ip-valor-0-${indice}`" @blur="bloquear(`#ip-valor-0-${indice}`)"
@@ -43,7 +43,7 @@
 
                 <div class="col-md-5 d-flex">
                     <select class="form-control mr-3" v-model="valor.iec_medida" :id="`iec-medida-${indice}`"
-                        :disabled="valor.ip_valor[0] === ''" @change="changeUMValor($event, indice, 'iec')" >
+                    :disabled="resultados.length != indice" @change="changeUMValor($event, indice, 'iec')" >
                         <option v-for="(iec, i) in selectIEC" :key="i">{{ iec }}</option>
                     </select>
 
@@ -59,7 +59,7 @@
             </div>
             <hr>
 
-            <div class="row mt-15">
+            <!-- <div class="row mt-15">
                 <div class="col-12" v-for="(resultado, index) in resultados" :key="index">
                     <span class="text-primary">Promedio carga:</span>
                     <span class="mr-10">{{ resultado.promedioIp }} {{ resultado.unidadIp }}</span>
@@ -70,9 +70,9 @@
                     <span class="text-primary">Convertido a Unidad del Patron:</span>
                     <span>{{ resultado.promedioPatron }} {{ resultado.unidadPatron }}</span>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- <div class="row mt-18">
+            <div class="row mt-18">
                 <div class="col-12">
                     <table class="table table-striped">
                         <thead>
@@ -87,22 +87,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1502 Bar</td>
-                                <td>0,0076 Bar</td>
-                                <td>0,0061 Bar</td>
-                                <td>1.51 Bar</td>
-                                <td>1.500 Bar</td>
-                                <td>0,00 Bar</td>
-                                <td>-0,0077 Bar</td>
+                            <tr v-for="(resultado, index) in resultados" :key="index">
+                                <td>{{ resultado.ip }} {{ resultado.unidad }} </td>
+                                <td>{{ resultado.desvIP }} {{ resultado.unidad }}</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
                             </tr>
 
                         </tbody>
                     </table>
                 </div>
-            </div> -->
+            </div>
 
             <button type="button"
+                :disabled="disable"
                 class="float-right next action-button btn btn-primary mt-12"
                 title="Por favor completa todos los campos para continuar"
                 @click="siguiente">Siguiente
@@ -112,8 +113,9 @@
 </template>
 
 <script>
-import convertirBase from "../../../functions/convertir-base.js"
-import convertirUnidad from "../../../functions/convertir-unidad.js"
+import calcularDes from "../../../functions/calcular-desviacion.js";
+import convertirBase from "../../../functions/convertir-base.js";
+import convertirUnidad from "../../../functions/convertir-unidad.js";
 
     export default {
         props: ['form', 'medida'],
@@ -131,13 +133,14 @@ import convertirUnidad from "../../../functions/convertir-unidad.js"
                     ]
                 },
                 medidaGlobal: this.form.unidad_medida,
+                redondeo: 2,
+                resultados: [],
+                rutas: window.routes,
                 subMultiplos: [],
-                unidadMedidas: [],
                 selectPatrones: [],
                 selectIEC: [],
                 selectIP: [],
-                resultados: [],
-                rutas: window.routes
+                unidadMedidas: [],
             }
         },
         //------------------------------------------------------------------------------------
@@ -148,8 +151,8 @@ import convertirUnidad from "../../../functions/convertir-unidad.js"
         //------------------------------------------------------------------------------------
 
         computed: {
-            disableIpMedida(){
-                return this.formulario.valores_medidas.ip_medida_general.trim() === '';
+            disable(){
+                return this.resultados.length === this.formulario.valores.length;
             }
         },
         //------------------------------------------------------------------------------------
@@ -165,6 +168,12 @@ import convertirUnidad from "../../../functions/convertir-unidad.js"
                 this.selectIEC = this.subMultiplos.map(unidad => {
                     return unidad.simbolo === '-' ? this.medidaGlobal : unidad.simbolo+this.medidaGlobal;
                 });
+
+                const resolution = this.form.resolucion.split('.');
+                if(resolution.length === 2){
+                    const redondeo = resolution[1].split('');
+                    this.redondeo = redondeo.length+1;
+                }
             },
 
             async calcularIP(indice){
@@ -191,47 +200,60 @@ import convertirUnidad from "../../../functions/convertir-unidad.js"
                 const unidadIde = ide[0].unit_measurement;
                 const unidadIPgeneral = this.formulario.valores_medidas.ip_medida_general;
                 const unidadMedidaIP = this.formulario.valores[indice].ip_medida;
+
+                //Array de valores convertidos a unidad Base
+                const arrayValores = this.convertirUnidadBase(this.formulario.valores[indice].ip_valor, unidadMedidaIP, unidadIPgeneral);
+
+                //Array de valores convertidos a la unidad IDE
+                const arrayEnIde = this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
+
+                //Calculo IP
+                const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
+                const desviacion = calcularDes(arrayEnIde);
+
+
                 // const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
                 // const unidadMedidaIEC = this.formulario.valores[indice].iec_medida;
 
 
-                // Hallamos el promedio IP
-                const valoresIP = this.formulario.valores[indice].ip_valor;
-                const sumaIP = valoresIP.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-                const promedioIP = sumaIP/3;
+                const result = {
+                    ip: promedio.toFixed(this.redondeo),
+                    desvIP: desviacion.toFixed(5),
+                    unidad: unidadIde,
+                }
+                this.resultados.push(result);
 
 
-                // Convertimos en la unidad base
-                let baseIP = {};
-                if(unidadMedidaIP !== unidadIPgeneral) baseIP = convertirBase(unidadIPgeneral, unidadMedidaIP, promedioIP);
-                else baseIP = {promedio: promedioIP, unidad: unidadIPgeneral};
-                console.log(baseIP);
-
-                // Convertimos a la unidad del patron
-                let basePatron = {};
-                if(unidadIPgeneral !== unidadIde) basePatron = convertirUnidad(unidadIde, baseIP.unidad, baseIP.promedio);
-                else basePatron = {promedio: baseIP.promedio, unidadPatron: unidadIde};
-                console.log(basePatron);
-
-                this.resultados.push({
-                    promedioIp: promedioIP,
-                    unidadIp: unidadMedidaIP,
-                    promedioBase: baseIP.promedio,
-                    unidadBase: baseIP.unidad,
-                    promedioPatron: basePatron.promedio,
-                    unidadPatron: basePatron.unidadPatron,
-                });
-
-                this.finalizarCalculo(indice);
-            },
-
-            finalizarCalculo(indice){
-                $(`#ip-medida-${indice}`).attr('disabled', true);
-                $(`#patron-${indice}`).attr('disabled', true);
-                $(`#iec-medida-${indice}`).attr('disabled', true);
                 $(`#iec-valor-2-${indice}`).attr('disabled', true);
                 this.$swal.close();
             },
+
+
+            convertirUnidadBase(array, unidadMedida, UnidadBase){
+                console.log('De uM: '+unidadMedida+'a uBase: ' +UnidadBase);
+
+                if(unidadMedida !== UnidadBase){
+                    const valorUno = convertirBase(UnidadBase, unidadMedida, parseFloat(array[0]));
+                    const valorDos = convertirBase(UnidadBase, unidadMedida, parseFloat(array[1]));
+                    const valorTres = convertirBase(UnidadBase, unidadMedida, parseFloat(array[2]));
+                    return [valorUno, valorDos, valorTres];
+                }
+
+                return [ parseFloat(array[0]), parseFloat(array[1]), parseFloat(array[2]) ]
+            },
+
+            convertirUnidadIde(array, unidadBase, unidadIde){
+                console.log('De uBase: '+unidadBase+' uIde: ' +unidadIde);
+                if(unidadBase !== unidadIde){
+                    const valorUno = convertirUnidad(unidadIde, unidadBase, array[0]);
+                    const valorDos = convertirUnidad(unidadIde, unidadBase, array[1]);
+                    const valorTres = convertirUnidad(unidadIde, unidadBase, array[2]);
+                    return [valorUno, valorDos, valorTres];
+                }
+
+                return array;
+            },
+
 
             changeUnidadMedida(event){
                 const medida = event.target.value;
