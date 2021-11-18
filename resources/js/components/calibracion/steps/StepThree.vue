@@ -81,8 +81,8 @@
                     ...this.form,
                     fecha_inicio: new Date().toISOString().substr(0, 10),
                     lugar: this.form.type,
-                    temperatura_inicial: '20.4',
-                    humedad_inicial: '54.8',
+                    temperatura_inicial: '',
+                    humedad_inicial: '',
                     obs: '',
                 }
             }
