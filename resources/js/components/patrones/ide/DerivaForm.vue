@@ -31,7 +31,7 @@
                     <div class="pb-4 col-4">
                         <label class="text-center">IP</label>
                         <div class="d-flex">
-                            <input id="ip-value" class="form-control" v-model="form.ip.valor">
+                            <input id="ip-value" type="number" step="0.000001" class="form-control" v-model="form.ip.valor">
                             <select class="mx-3 form-control" v-model="form.ip.medida">
                                 <option v-for="(medida,i) in selectUnidades" :key="i" :id="medida">{{ medida }}</option>
                             </select>
@@ -41,7 +41,7 @@
                     <div class="pb-4 col-4">
                         <label class="text-center">U</label>
                         <div class="d-flex">
-                            <input class="form-control" v-model="form.u.valor">
+                            <input class="form-control" type="number" step="0.000001" v-model="form.u.valor">
                             <select class="mx-3 form-control" v-model="form.u.medida">
                                 <option v-for="(medida,i) in selectUnidades" :key="i" :id="medida">{{ medida }}</option>
                             </select>
@@ -51,7 +51,7 @@
                     <div class="pb-4 col-2 col-lg-2">
                         <label class="text-center">K</label>
                         <div class="d-flex">
-                            <input class="form-control" v-model="form.k">
+                            <input type="number" step="0.000001" class="form-control" v-model="form.k">
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@
                     <div class="pb-4 col-4">
                         <label class="text-center">E (actual)</label>
                         <div class="d-flex">
-                            <input class="form-control" v-model="form.e_actual.valor">
+                            <input type="number" step="0.000001" class="form-control" v-model="form.e_actual.valor">
                             <select class="mx-3 form-control" v-model="form.e_actual.medida">
                                 <option v-for="(medida,ix) in selectUnidades" :key="ix" :id="medida">{{ medida }}</option>
                             </select>
@@ -76,7 +76,7 @@
                     <div class="col-4" v-for="(e, i) in form.e_anterior" :key="i">
                         <label class="text-center">E (anterior)</label>
                         <div class="d-flex">
-                            <input class="form-control" v-model="e.valor">
+                            <input type="number" step="0.000001" class="form-control" v-model="e.valor">
                             <input class="mx-3 form-control" v-model="e.medida" disabled>
                         </div>
                     </div>

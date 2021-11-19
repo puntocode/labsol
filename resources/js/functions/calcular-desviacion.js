@@ -1,29 +1,15 @@
 
 function calcularDes(arr){
-    console.log({arr})
 
-    // Creating the mean with Array.reduce
-    let mean = arr.reduce((acc, curr)=>{
-        return acc + curr
-    }, 0) / arr.length;
+    const contador = arr.length;
+    let sum = arr.reduce((previous, current) => current += previous);
+    let avg = sum / contador;
 
-    // Assigning (value - mean) ^ 2 to every array item
-    arr = arr.map((k)=>{
-        return (k - mean) ** 2
-    })
+    const x = arr.map( valor => (valor-avg) ** 2 );
+    const suma = x.reduce((anterior, siguiente) => siguiente += anterior);
+    const desviacion = (suma / (contador-1)) ** 0.5;
 
-    // Calculating the sum of updated array
-    let sum = arr.reduce((acc, curr)=> acc + curr, 0);
-
-    // Calculating the variance
-    let variance = sum / arr.length
-
-    // Returning the Standered deviation
-    return Math.sqrt(sum / arr.length)
+    return desviacion;
 }
-
-
-// console.log(calcularDes([1.5, 1.59, 1.49]))
-// console.log(calcularDes([750, 750, 749.3]))
 
 export default calcularDes;

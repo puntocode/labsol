@@ -90,7 +90,7 @@
                             <tr v-for="(resultado, index) in resultados" :key="index">
                                 <td>{{ resultado.ip }} {{ resultado.unidad }} </td>
                                 <td>{{ resultado.desvIP }} {{ resultado.unidad }}</td>
-                                <td>-</td>
+                                <td>{{ resultado.errorIP }}</td>
                                 <td>-</td>
                                 <td>-</td>
                                 <td>-</td>
@@ -113,9 +113,11 @@
 </template>
 
 <script>
+import interpolar from "../../../functions/interpolar.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
 import convertirBase from "../../../functions/convertir-base.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
+import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 
     export default {
         props: ['form', 'medida'],
@@ -147,12 +149,14 @@ import convertirUnidad from "../../../functions/convertir-unidad.js";
 
         mounted () {
             this.fetch();
+            const interpolacion = interpolar(0.015, 0, 2.48, 0, 0.01);
+            console.log(interpolacion);
         },
         //------------------------------------------------------------------------------------
 
         computed: {
             disable(){
-                return this.resultados.length === this.formulario.valores.length;
+                return this.resultados.length !== this.formulario.valores.length;
             }
         },
         //------------------------------------------------------------------------------------
@@ -198,6 +202,7 @@ import convertirUnidad from "../../../functions/convertir-unidad.js";
 
                 //Unidades de medida
                 const unidadIde = ide[0].unit_measurement;
+                const rangosDeriva = ide[0].rangos[0].rango_derivas;
                 const unidadIPgeneral = this.formulario.valores_medidas.ip_medida_general;
                 const unidadMedidaIP = this.formulario.valores[indice].ip_medida;
 
@@ -210,15 +215,15 @@ import convertirUnidad from "../../../functions/convertir-unidad.js";
                 //Calculo IP
                 const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
                 const desviacion = calcularDes(arrayEnIde);
-
+                const errorIp = this.calcularError(rangosDeriva, promedio);
 
                 // const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
                 // const unidadMedidaIEC = this.formulario.valores[indice].iec_medida;
 
-
                 const result = {
                     ip: promedio.toFixed(this.redondeo),
                     desvIP: desviacion.toFixed(5),
+                    errorIP: errorIp === 'Error' ? 'Error' : `${errorIp} ${unidadIde}`,
                     unidad: unidadIde,
                 }
                 this.resultados.push(result);
@@ -230,8 +235,6 @@ import convertirUnidad from "../../../functions/convertir-unidad.js";
 
 
             convertirUnidadBase(array, unidadMedida, UnidadBase){
-                console.log('De uM: '+unidadMedida+'a uBase: ' +UnidadBase);
-
                 if(unidadMedida !== UnidadBase){
                     const valorUno = convertirBase(UnidadBase, unidadMedida, parseFloat(array[0]));
                     const valorDos = convertirBase(UnidadBase, unidadMedida, parseFloat(array[1]));
@@ -243,7 +246,6 @@ import convertirUnidad from "../../../functions/convertir-unidad.js";
             },
 
             convertirUnidadIde(array, unidadBase, unidadIde){
-                console.log('De uBase: '+unidadBase+' uIde: ' +unidadIde);
                 if(unidadBase !== unidadIde){
                     const valorUno = convertirUnidad(unidadIde, unidadBase, array[0]);
                     const valorDos = convertirUnidad(unidadIde, unidadBase, array[1]);
@@ -252,6 +254,27 @@ import convertirUnidad from "../../../functions/convertir-unidad.js";
                 }
 
                 return array;
+            },
+
+            calcularError(deriva, promedio){
+                let arrayDeriva = [];
+                deriva.map( numero => arrayDeriva.push(parseFloat(numero.ip.valor)) );
+                const cercanos = encontrarCercanos(arrayDeriva, promedio);
+
+                if(cercanos[0] === undefined || cercanos[1] === undefined) return 'Error';
+
+                const x = promedio;
+                const x0 = cercanos[0];
+                const x1 = cercanos[1];
+
+                const y0Busqueda = deriva.find( error => error.ip.valor == x0 );
+                const y1Busqueda = deriva.find( error => error.ip.valor == x1 );
+
+                const y0 = parseFloat(y0Busqueda.e_actual.valor);
+                const y1 = parseFloat(y1Busqueda.e_actual.valor);
+
+                const interpolacion = interpolar(x, x0, x1, y0, y1);
+                return interpolacion.toFixed(5);
             },
 
 

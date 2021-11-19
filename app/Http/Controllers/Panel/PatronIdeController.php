@@ -127,7 +127,7 @@ class PatronIdeController extends Controller
 
     public function getUmIde(Request $request)
     {
-        $patron = Patron::where('code', $request['patron'])->with('ide')->first();
+        $patron = Patron::where('code', $request['patron'])->with('ide.rangos.rangoDerivas')->first();
         return response()->json($patron);
     }
 
