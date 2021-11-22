@@ -21,14 +21,14 @@
 
             <div class="row mt-4" v-for="(valor, indice) in formulario.valores" :key="indice">
                 <div class="col-md-2">
-                    <select class="form-control" v-model="valor.patron" :disabled="resultados.length != indice" :id="`patron-${indice}`">
+                    <select class="form-control" v-model="valor.patron" :disabled="formulario.resultados.length != indice" :id="`patron-${indice}`">
                         <option v-for="(patron, i) in selectPatrones" :key="i">{{ patron }}</option>
                     </select>
                 </div>
 
                 <div class="col-md-5 d-flex">
                     <select class="form-control mr-3" v-model="valor.ip_medida" @change="changeUMValor($event, indice, 'ip')"
-                    :id="`ip-medida-${indice}`" :disabled="resultados.length != indice">
+                    :id="`ip-medida-${indice}`" :disabled="formulario.resultados.length != indice">
                         <option v-for="(ip, i) in selectIP" :key="i">{{ ip }}</option>
                     </select>
                     <input type="number" step="0.01" class="form-control mr-3" :id="`ip-valor-0-${indice}`" @blur="bloquear(`#ip-valor-0-${indice}`)"
@@ -43,7 +43,7 @@
 
                 <div class="col-md-5 d-flex">
                     <select class="form-control mr-3" v-model="valor.iec_medida" :id="`iec-medida-${indice}`"
-                    :disabled="resultados.length != indice" @change="changeUMValor($event, indice, 'iec')" >
+                    :disabled="formulario.resultados.length != indice" @change="changeUMValor($event, indice, 'iec')" >
                         <option v-for="(iec, i) in selectIEC" :key="i">{{ iec }}</option>
                     </select>
 
@@ -87,14 +87,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(resultado, index) in resultados" :key="index">
-                                <td>{{ resultado.ip }} {{ resultado.unidad }} </td>
+                            <tr v-for="(resultado, index) in formulario.resultados" :key="index">
+                                <td>{{ resultado.ip }} {{ resultado.unidad }}</td>
                                 <td>{{ resultado.desvIP }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.errorIP }}</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
+                                <td v-text="resultado.errorIP === 'Error'
+                                    ? 'Error'
+                                    : `${resultado.errorIP} ${resultado.unidad}`">
+                                </td>
+                                <td>{{ resultado.ipCorregido }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.iec }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.desvIEC }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.errorIEC }}</td>
                             </tr>
 
                         </tbody>
@@ -132,11 +135,11 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
                         {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
                         {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
                         {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                    ]
+                    ],
+                    resultados: [],
                 },
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
-                resultados: [],
                 rutas: window.routes,
                 subMultiplos: [],
                 selectPatrones: [],
@@ -149,14 +152,12 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 
         mounted () {
             this.fetch();
-            const interpolacion = interpolar(0.015, 0, 2.48, 0, 0.01);
-            console.log(interpolacion);
         },
         //------------------------------------------------------------------------------------
 
         computed: {
             disable(){
-                return this.resultados.length !== this.formulario.valores.length;
+                return this.formulario.resultados.length !== this.formulario.valores.length;
             }
         },
         //------------------------------------------------------------------------------------
@@ -215,18 +216,34 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
                 //Calculo IP
                 const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
                 const desviacion = calcularDes(arrayEnIde);
-                const errorIp = this.calcularError(rangosDeriva, promedio);
+                const errorIp = await this.calcularError(rangosDeriva, promedio);
+                let ipCorregido = promedio;
 
-                // const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
-                // const unidadMedidaIEC = this.formulario.valores[indice].iec_medida;
+                //Calculo IP corregido
+                if(errorIp !== 'Error') ipCorregido += parseFloat(errorIp);
+
+
+                //Calculo IEC
+                const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
+                const unidadMedidaIEC = this.formulario.valores[indice].iec_medida;
+                const arrayValoresIEC = this.convertirUnidadBase(this.formulario.valores[indice].iec_valor, unidadMedidaIEC, unidadIECgeneral);
+                const arrayEnIdeIEC = this.convertirUnidadIde(arrayValoresIEC, unidadIECgeneral, unidadIde)
+                const promedioIEC = (arrayEnIdeIEC.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
+                const desviacionIEC = calcularDes(arrayEnIdeIEC);
+                const errorIec = promedioIEC - ipCorregido;
+
 
                 const result = {
                     ip: promedio.toFixed(this.redondeo),
-                    desvIP: desviacion.toFixed(5),
-                    errorIP: errorIp === 'Error' ? 'Error' : `${errorIp} ${unidadIde}`,
+                    desvIP: desviacion.toFixed(4),
+                    errorIP: errorIp,
+                    ipCorregido: ipCorregido.toFixed(this.redondeo),
+                    iec: promedioIEC.toFixed(this.redondeo),
+                    desvIEC: desviacionIEC.toFixed(4),
+                    errorIEC: errorIec.toFixed(2),
                     unidad: unidadIde,
                 }
-                this.resultados.push(result);
+                this.formulario.resultados.push(result);
 
 
                 $(`#iec-valor-2-${indice}`).attr('disabled', true);
@@ -340,8 +357,9 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 
             siguiente() {
                 this.$emit('click-next')
-                this.updateForm()
+                this.$emit('update:form', this.formulario);
             },
+
         }
 
 

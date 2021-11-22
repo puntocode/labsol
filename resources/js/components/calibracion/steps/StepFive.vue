@@ -49,7 +49,7 @@
             class="float-right btn btn-primary"
             :disabled="disable"
             title="Por favor completa todos los campos para continuar"
-            @click="siguiente">Siguiente
+            @click="siguiente">Finalizar
         </button>
     </fieldset>
 </template>

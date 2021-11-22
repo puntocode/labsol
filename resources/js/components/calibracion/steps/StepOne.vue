@@ -55,7 +55,7 @@
                     <div class="col-md-6 d-flex">
                         <label class="label-line">{{resolution}} <span class="text-danger">*</span></label>
                         <div class="d-flex w-100">
-                            <input type="number" step="0.01" class="form-control mr-5" v-model="formulario.resolucion" :disabled="medidasEmpty" />
+                            <input type="number" step="0.000001" class="form-control mr-5" v-model="formulario.resolucion" :disabled="medidasEmpty" />
                             <select class="mx-3 form-control" v-model="formulario.resolucion_medida" :disabled="medidasEmpty">
                                 <option v-for="(medida,ix) in selectMedidas" :key="ix" :id="medida">{{ medida }}</option>
                             </select>
@@ -67,7 +67,7 @@
                    <div class="col-md-6 d-flex">
                         <label class="label-line">Intervalo <span class="text-danger">*</span></label>
                         <div class="d-flex w-100">
-                            <input type="number" step="0.01" class="form-control mr-5" v-model="formulario.intervalo_desde" :disabled="medidasEmpty"  />
+                            <input type="number" step="0.000001" class="form-control mr-5" v-model="formulario.intervalo_desde" :disabled="medidasEmpty"  />
                             <input type="text" class="form-control" v-model="formulario.intervalo_desde_medida" disabled  />
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                    <div class="col-md-6 d-flex">
                         <label class="label-line">Hasta <span class="text-danger">*</span></label>
                         <div class="d-flex w-100">
-                            <input type="number" step="0.01" class="form-control mr-5" v-model="formulario.intervalo_hasta" :disabled="medidasEmpty" />
+                            <input type="number" step="0.000001" class="form-control mr-5" v-model="formulario.intervalo_hasta" :disabled="medidasEmpty" />
                             <select class="mx-3 form-control" v-model="formulario.intervalo_hasta_medida" :disabled="medidasEmpty" @change="changeIntervaloHasta($event)">
                                 <option v-for="(medida,ix) in selectMedidas" :key="ix" :id="medida">{{ medida }}</option>
                             </select>
@@ -155,11 +155,9 @@
 
             siguiente() {
                 this.$emit('click-next')
-                this.updateForm()
-            },
-            updateForm() {
                 this.$emit('update:form', this.formulario);
             },
+
             changeUnidadMedida(event){
                 const medida = event.target.value;
                 this.selectMedidas = this.subMultiplos.map(unidad => {

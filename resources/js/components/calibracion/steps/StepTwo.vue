@@ -69,9 +69,6 @@
             },
             siguiente() {
                 this.$emit('click-next')
-                this.updateForm()
-            },
-            updateForm() {
                 this.$emit('update:form', this.formulario);
             },
         },
