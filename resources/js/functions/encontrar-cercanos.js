@@ -11,7 +11,7 @@ function encontrarCercanos(array, numero) {
 
     const cercanos = [cercano, proximo];
     cercanos.sort();
-
+    console.log({cercanos})
     return cercanos;
 }
 

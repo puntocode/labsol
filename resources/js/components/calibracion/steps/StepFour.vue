@@ -59,20 +59,7 @@
             </div>
             <hr>
 
-            <!-- <div class="row mt-15">
-                <div class="col-12" v-for="(resultado, index) in resultados" :key="index">
-                    <span class="text-primary">Promedio carga:</span>
-                    <span class="mr-10">{{ resultado.promedioIp }} {{ resultado.unidadIp }}</span>
-
-                    <span class="text-primary">Convertido a Unidad Base:</span>
-                    <span class="mr-10">{{ resultado.promedioBase }} {{ resultado.unidadBase }}</span>
-
-                    <span class="text-primary">Convertido a Unidad del Patron:</span>
-                    <span>{{ resultado.promedioPatron }} {{ resultado.unidadPatron }}</span>
-                </div>
-            </div> -->
-
-            <div class="row mt-18">
+            <div class="row my-18">
                 <div class="col-12">
                     <table class="table table-striped">
                         <thead>
@@ -88,22 +75,24 @@
                         </thead>
                         <tbody>
                             <tr v-for="(resultado, index) in formulario.resultados" :key="index">
-                                <td>{{ resultado.ip }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.desvIP }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.ip.toFixed(redondeo) }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.desvIP.toFixed(4) }} {{ resultado.unidad }}</td>
                                 <td v-text="resultado.errorIP === 'Error'
                                     ? 'Error'
                                     : `${resultado.errorIP} ${resultado.unidad}`">
                                 </td>
-                                <td>{{ resultado.ipCorregido }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.iec }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.desvIEC }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.errorIEC }}</td>
+                                <td>{{ resultado.ipCorregido.toFixed(redondeo) }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.iec.toFixed(redondeo) }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.desvIEC.toFixed(4) }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.errorIEC.toFixed(redondeo) }}</td>
                             </tr>
 
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <PresupuestoIncertidumbre :incertidumbres="formulario.incertidumbre" />
 
             <button type="button"
                 :disabled="disable"
@@ -119,10 +108,13 @@
 import interpolar from "../../../functions/interpolar.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
 import convertirBase from "../../../functions/convertir-base.js";
+import calcularFormula from "../../../functions/formulas.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
+import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     export default {
+        components: { PresupuestoIncertidumbre },
         props: ['form', 'medida'],
         data() {
             return {
@@ -137,6 +129,7 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
                         {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
                     ],
                     resultados: [],
+                    incertidumbre: [],
                 },
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
@@ -146,6 +139,8 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
                 selectIEC: [],
                 selectIP: [],
                 unidadMedidas: [],
+                incertidumbre_ebc: [],
+                incertidumbre_patron: [],
             }
         },
         //------------------------------------------------------------------------------------
@@ -179,6 +174,87 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
                     const redondeo = resolution[1].split('');
                     this.redondeo = redondeo.length+1;
                 }
+
+                //selecciona las incertidumbre del procedimiento
+                this.incertidumbre_ebc = [
+                    {
+                        contribucion: 'EBC',
+                        nombre: 'Incertidumbre repetibilidad EBC',
+                        tipo: 'A',
+                        distribucion: 'normal',
+                        formula: 'u_rep_ebc',
+                        fuente: '𝑠',
+                        divisor: '√3',
+                        contribucion_u:  0,
+                        coeficiente: 1,
+                        contribucion_du: 1,
+                        u_du: 0,
+                        grados_libertad_for: 'n-1',
+                        grados_libertad: 0
+                    },
+                    {
+                        contribucion: 'EBC',
+                        nombre: 'Incertidumbre resolución EBC',
+                        tipo: 'B',
+                        distribucion: 'rectangular',
+                        formula: 'u_res_ebc',
+                        fuente: '𝑟/2',
+                        divisor: '√3',
+                        contribucion_u:  0,
+                        coeficiente: 1,
+                        contribucion_du: 1,
+                        u_du: 0,
+                        grados_libertad_for: '∞',
+                        grados_libertad: '∞'
+                    },
+                ];
+                this. incertidumbre_patron = [
+                    {
+                        contribucion: 'PATRON',
+                        nombre: 'Incertidumbre patrón',
+                        tipo: 'B',
+                        distribucion: 'normal',
+                        formula: 'p_inc_p',
+                        fuente: 'U',
+                        divisor: 'k',
+                        contribucion_u:  0,
+                        coeficiente: 1,
+                        contribucion_du: 1,
+                        u_du: 0,
+                        grados_libertad_for: '∞',
+                        grados_libertad: '∞'
+                    },
+                    {
+                        contribucion: 'PATRON',
+                        nombre: 'Incertidumbre resolución EBC',
+                        tipo: 'B',
+                        distribucion: 'rectangular',
+                        formula: 'p_inc_res',
+                        fuente: '𝑟/2',
+                        divisor: '√3',
+                        contribucion_u:  0,
+                        coeficiente: 1,
+                        contribucion_du: 1,
+                        u_du: 0,
+                        grados_libertad_for: '∞',
+                        grados_libertad: '∞'
+                    },
+                    {
+                        contribucion: 'PATRON',
+                        nombre: 'Incertidumbre repetibilidad patrón',
+                        tipo: 'A',
+                        distribucion: 'normal',
+                        formula: 'p_inc_rep',
+                        fuente: '𝑠',
+                        divisor: '√3',
+                        contribucion_u:  0,
+                        coeficiente: 1,
+                        contribucion_du: 1,
+                        u_du: 0,
+                        grados_libertad_for: 'n-1',
+                        grados_libertad: 0
+                    },
+                ];
             },
 
             async calcularIP(indice){
@@ -209,17 +285,23 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 
                 //Array de valores convertidos a unidad Base
                 const arrayValores = this.convertirUnidadBase(this.formulario.valores[indice].ip_valor, unidadMedidaIP, unidadIPgeneral);
-
                 //Array de valores convertidos a la unidad IDE
                 const arrayEnIde = this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
 
                 //Calculo IP
                 const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
                 const desviacion = calcularDes(arrayEnIde);
-                const errorIp = await this.calcularError(rangosDeriva, promedio);
-                let ipCorregido = promedio;
+                let errorIp = null;
+
+                //array con la columna deriva para encontrar Error Patron
+                const arrayDeriva = rangosDeriva.map( numero => numero.ip.valor);
+                const cercanos = encontrarCercanos(arrayDeriva, promedio);
+
+                if(cercanos[0] === undefined || cercanos[1] === undefined) errorIp = 'Error';
+                else errorIp = this.calcularInterpolacion(promedio, cercanos, rangosDeriva);
 
                 //Calculo IP corregido
+                let ipCorregido = promedio;
                 if(errorIp !== 'Error') ipCorregido += parseFloat(errorIp);
 
 
@@ -232,30 +314,59 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
                 const desviacionIEC = calcularDes(arrayEnIdeIEC);
                 const errorIec = promedioIEC - ipCorregido;
 
+                let uk = 0
+                if(cercanos[0] != undefined || cercanos[1] != undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
 
                 const result = {
-                    ip: promedio.toFixed(this.redondeo),
-                    desvIP: desviacion.toFixed(4),
+                    patron: patron,
+                    ip: promedio,
+                    desvIP: desviacion,
                     errorIP: errorIp,
-                    ipCorregido: ipCorregido.toFixed(this.redondeo),
-                    iec: promedioIEC.toFixed(this.redondeo),
-                    desvIEC: desviacionIEC.toFixed(4),
-                    errorIEC: errorIec.toFixed(2),
+                    ipCorregido: ipCorregido,
+                    iec: promedioIEC,
+                    desvIEC: desviacionIEC,
+                    errorIEC: errorIec,
                     unidad: unidadIde,
+                    uk: parseFloat(uk),
                 }
                 this.formulario.resultados.push(result);
+                this.calcularIncertidumbre(result);
 
 
                 $(`#iec-valor-2-${indice}`).attr('disabled', true);
                 this.$swal.close();
             },
 
+            calcularIncertidumbre(resultado){
+                const ebc = this.incertidumbre_ebc;
+                const patron = this.incertidumbre_patron;
+                let resolucion = convertirBase(this.formulario.resolucion_medida, parseFloat(this.formulario.resolucion));
+                resolucion = convertirUnidad(resultado.unidad, this.formulario.unidad_medida, resolucion);
+
+                const valores = {
+                    ip: resultado.ip,
+                    sIEC: resultado.desvIEC,
+                    sIP: resultado.desvIP,
+                    n: 3,
+                    uk: resultado.uk,
+                    patron: resultado.patron,
+                    r: resolucion,
+                    unidad: resultado.unidad
+                };
+                console.log({valores})
+
+                this.cargarIncertidumbre(ebc, valores);
+                this.cargarIncertidumbre(patron, valores);
+
+                this.formulario.incertidumbre.push( {incertidumbre_ebc: ebc, incertidumbre_patron: patron, valores} )
+            },
+
 
             convertirUnidadBase(array, unidadMedida, UnidadBase){
                 if(unidadMedida !== UnidadBase){
-                    const valorUno = convertirBase(UnidadBase, unidadMedida, parseFloat(array[0]));
-                    const valorDos = convertirBase(UnidadBase, unidadMedida, parseFloat(array[1]));
-                    const valorTres = convertirBase(UnidadBase, unidadMedida, parseFloat(array[2]));
+                    const valorUno = convertirBase(unidadMedida, parseFloat(array[0]));
+                    const valorDos = convertirBase(unidadMedida, parseFloat(array[1]));
+                    const valorTres = convertirBase(unidadMedida, parseFloat(array[2]));
                     return [valorUno, valorDos, valorTres];
                 }
 
@@ -273,25 +384,39 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
                 return array;
             },
 
-            calcularError(deriva, promedio){
-                let arrayDeriva = [];
-                deriva.map( numero => arrayDeriva.push(parseFloat(numero.ip.valor)) );
-                const cercanos = encontrarCercanos(arrayDeriva, promedio);
-
-                if(cercanos[0] === undefined || cercanos[1] === undefined) return 'Error';
-
+            calcularInterpolacion(promedio, cercanos, deriva, buscarError = true){
                 const x = promedio;
                 const x0 = cercanos[0];
                 const x1 = cercanos[1];
+                const y0Busqueda = deriva.find( der => der.ip.valor == x0 );
+                const y1Busqueda = deriva.find( der => der.ip.valor == x1 );
+                let y0 = 0;
+                let y1 = 0;
 
-                const y0Busqueda = deriva.find( error => error.ip.valor == x0 );
-                const y1Busqueda = deriva.find( error => error.ip.valor == x1 );
-
-                const y0 = parseFloat(y0Busqueda.e_actual.valor);
-                const y1 = parseFloat(y1Busqueda.e_actual.valor);
+                if(buscarError){
+                    y0 = parseFloat(y0Busqueda.e_actual.valor);
+                    y1 = parseFloat(y1Busqueda.e_actual.valor);
+                }else{
+                    y0 = parseFloat(y0Busqueda.uc.valor);
+                    y1 = parseFloat(y1Busqueda.uc.valor);
+                }
 
                 const interpolacion = interpolar(x, x0, x1, y0, y1);
                 return interpolacion.toFixed(5);
+            },
+
+            cargarIncertidumbre(array, valores){
+              array.forEach( incer => {
+                    const u = calcularFormula(incer.formula, valores);
+                    const uDu = u * incer.contribucion_du;
+                    const gLibertad = incer.tipo == 'A' ? valores.n -1 : '∞';
+                    const potencia = incer.tipo == 'A' ? Math.pow(uDu, 4) / gLibertad : 0;
+
+                    incer.contribucion_u = u.toExponential(2);
+                    incer.u_du =  uDu.toExponential(2);
+                    incer.grados_libertad = gLibertad;
+                    incer.potenciado = potencia === 0 ? 0 : potencia.toExponential(2);
+                });
             },
 
 

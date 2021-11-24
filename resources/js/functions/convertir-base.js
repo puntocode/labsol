@@ -1,4 +1,4 @@
-function convertirBase(unidad, submultiplo, numero){
+function convertirBase(submultiplo, numero){
 
     //let arrBase = unidad.split('');
     //const diferencia = arrSub.filter(elemento => arrBase.indexOf(elemento) == -1);
