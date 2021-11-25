@@ -25,7 +25,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="ebc in incertidumbre.incertidumbre_ebc" :key="ebc.id">
+                            <tr v-for="ebc in incertidumbre.incertidumbreEbc" :key="ebc.id">
                                 <td>{{ ebc.nombre }}</td>
                                 <td>{{ ebc.tipo }}</td>
                                 <td>{{ ebc.distribucion }}</td>
@@ -63,7 +63,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="patron in incertidumbre.incertidumbre_patron" :key="patron.id">
+                            <tr v-for="patron in incertidumbre.incertidumbrePatron" :key="patron.id">
                                 <td>{{ patron.nombre }}</td>
                                 <td>{{ patron.tipo }}</td>
                                 <td>{{ patron.distribucion }}</td>

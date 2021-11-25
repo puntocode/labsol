@@ -4,9 +4,9 @@ function calcularFormula(formula, valores) {
     switch (formula) {
         case 'u_rep_ebc': resultado = uRepEbcPat(valores.sIEC, valores.n); break;
         case 'u_res_ebc': resultado = uResEbcPat(valores.r, valores.n); break;
-        case 'p_inc_p': resultado = valores.uk; break;
         case 'p_inc_res': resultado = uResEbcPat(valores.r, valores.n); break;
         case 'p_inc_rep': resultado = uRepEbcPat(valores.sIP, valores.n); break;
+        case 'p_inc_p':   resultado = valores.uk; break;
         default: 0;
     }
 

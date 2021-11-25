@@ -31,14 +31,33 @@
                     :id="`ip-medida-${indice}`" :disabled="formulario.resultados.length != indice">
                         <option v-for="(ip, i) in selectIP" :key="i">{{ ip }}</option>
                     </select>
-                    <input type="number" step="0.01" class="form-control mr-3" :id="`ip-valor-0-${indice}`" @blur="bloquear(`#ip-valor-0-${indice}`)"
-                        v-model="valor.ip_valor[0]" :disabled="valor.patron.trim() === '' || valor.ip_medida.trim() === ''">
 
-                    <input type="number" step="0.01" class="form-control mr-3" :id="`ip-valor-1-${indice}`" @blur="bloquear(`#ip-valor-1-${indice}`)"
-                        v-model="valor.ip_valor[1]" :disabled="valor.ip_valor[0] === '' || valor.iec_valor[0] === ''">
+                    <input
+                        type="number"
+                        step="0.01"
+                        class="form-control mr-3"
+                        :id="`ip-valor-0-${indice}`"
+                        v-model="valor.ip_valor[0]"
+                        @blur="bloquear(`#ip-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'ip-valor'})"
+                        :disabled="valor.patron.trim() === '' || valor.ip_medida.trim() === '' || formulario.resultados.length != indice">
 
-                    <input type="number" step="0.01" class="form-control" :id="`ip-valor-2-${indice}`" @blur="bloquear(`#ip-valor-2-${indice}`)"
-                        v-model="valor.ip_valor[2]" :disabled="valor.ip_valor[1] === '' || valor.iec_valor[1] === ''">
+                    <input
+                        type="number"
+                        step="0.01"
+                        class="form-control mr-3"
+                        :id="`ip-valor-1-${indice}`"
+                        @blur="bloquear(`#ip-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'ip-valor'})"
+                        v-model="valor.ip_valor[1]"
+                        :disabled="valor.ip_valor[0] === '' || valor.iec_valor[0] === ''">
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        class="form-control"
+                        :id="`ip-valor-2-${indice}`"
+                        @blur="bloquear(`#ip-valor-2-${indice}`, {fila:indice, columna: 2, valor: 'ip-valor'})"
+                        v-model="valor.ip_valor[2]"
+                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[1] === ''">
                 </div>
 
                 <div class="col-md-5 d-flex">
@@ -47,17 +66,39 @@
                         <option v-for="(iec, i) in selectIEC" :key="i">{{ iec }}</option>
                     </select>
 
-                    <input type="number" step="0.01" class="form-control mr-3" :id="`iec-valor-0-${indice}`" @blur="bloquear(`#iec-valor-0-${indice}`)"
-                        v-model="valor.iec_valor[0]" :disabled="valor.ip_valor[0] === '' || valor.iec_medida === ''">
+                    <input
+                        type="number"
+                        step="0.01"
+                        class="form-control mr-3"
+                        :id="`iec-valor-0-${indice}`"
+                        @blur="bloquear(`#iec-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'iec-valor'})"
+                        v-model="valor.iec_valor[0]"
+                        :disabled="valor.ip_valor[0] === '' || valor.iec_medida === ''">
 
-                    <input type="number" step="0.01" class="form-control mr-3" :id="`iec-valor-1-${indice}`" @blur="bloquear(`#iec-valor-1-${indice}`)"
-                        v-model="valor.iec_valor[1]" :disabled="valor.ip_valor[1] === '' || valor.iec_valor[0] === ''">
+                    <input
+                        type="number"
+                        step="0.01" class="form-control mr-3"
+                        :id="`iec-valor-1-${indice}`"
+                        @blur="bloquear(`#iec-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'iec-valor'})"
+                        v-model="valor.iec_valor[1]"
+                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[0] === ''">
 
-                    <input type="number" step="0.01" class="form-control" :id="`iec-valor-2-${indice}`" @blur="calcularIP(indice)"
-                        v-model="valor.iec_valor[2]" :disabled="valor.ip_valor[2] === '' || valor.iec_valor[1] === ''">
+                    <input
+                        type="number"
+                        step="0.01"
+                        class="form-control"
+                        :id="`iec-valor-2-${indice}`"
+                        @blur="calcularIP(indice)"
+                        v-model="valor.iec_valor[2]"
+                        :disabled="valor.ip_valor[2] === '' || valor.iec_valor[1] === ''">
                 </div>
             </div>
-            <hr>
+
+
+            <div class="col-12 text center mt-6">
+                <button type="button" @click="editar" class="btn btn-primary" v-if="Object.keys(registroEdit).length != 0">Editar Último</button>
+                <hr>
+            </div>
 
             <div class="row my-18">
                 <div class="col-12">
@@ -115,7 +156,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     export default {
         components: { PresupuestoIncertidumbre },
-        props: ['form', 'medida'],
+        props: ['form', 'medida', 'incertidumbres'],
         data() {
             return {
                 formulario: {
@@ -131,6 +172,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     resultados: [],
                     incertidumbre: [],
                 },
+                registroEdit: {},
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
                 rutas: window.routes,
@@ -139,8 +181,6 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 selectIEC: [],
                 selectIP: [],
                 unidadMedidas: [],
-                incertidumbre_ebc: [],
-                incertidumbre_patron: [],
             }
         },
         //------------------------------------------------------------------------------------
@@ -153,7 +193,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
         computed: {
             disable(){
                 return this.formulario.resultados.length !== this.formulario.valores.length;
-            }
+            },
         },
         //------------------------------------------------------------------------------------
 
@@ -175,94 +215,19 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     this.redondeo = redondeo.length+1;
                 }
 
-                //selecciona las incertidumbre del procedimiento
-                this.incertidumbre_ebc = [
-                    {
-                        contribucion: 'EBC',
-                        nombre: 'Incertidumbre repetibilidad EBC',
-                        tipo: 'A',
-                        distribucion: 'normal',
-                        formula: 'u_rep_ebc',
-                        fuente: '𝑠',
-                        divisor: '√3',
-                        contribucion_u:  0,
-                        coeficiente: 1,
-                        contribucion_du: 1,
-                        u_du: 0,
-                        grados_libertad_for: 'n-1',
-                        grados_libertad: 0
-                    },
-                    {
-                        contribucion: 'EBC',
-                        nombre: 'Incertidumbre resolución EBC',
-                        tipo: 'B',
-                        distribucion: 'rectangular',
-                        formula: 'u_res_ebc',
-                        fuente: '𝑟/2',
-                        divisor: '√3',
-                        contribucion_u:  0,
-                        coeficiente: 1,
-                        contribucion_du: 1,
-                        u_du: 0,
-                        grados_libertad_for: '∞',
-                        grados_libertad: '∞'
-                    },
-                ];
-                this. incertidumbre_patron = [
-                    {
-                        contribucion: 'PATRON',
-                        nombre: 'Incertidumbre patrón',
-                        tipo: 'B',
-                        distribucion: 'normal',
-                        formula: 'p_inc_p',
-                        fuente: 'U',
-                        divisor: 'k',
-                        contribucion_u:  0,
-                        coeficiente: 1,
-                        contribucion_du: 1,
-                        u_du: 0,
-                        grados_libertad_for: '∞',
-                        grados_libertad: '∞'
-                    },
-                    {
-                        contribucion: 'PATRON',
-                        nombre: 'Incertidumbre resolución EBC',
-                        tipo: 'B',
-                        distribucion: 'rectangular',
-                        formula: 'p_inc_res',
-                        fuente: '𝑟/2',
-                        divisor: '√3',
-                        contribucion_u:  0,
-                        coeficiente: 1,
-                        contribucion_du: 1,
-                        u_du: 0,
-                        grados_libertad_for: '∞',
-                        grados_libertad: '∞'
-                    },
-                    {
-                        contribucion: 'PATRON',
-                        nombre: 'Incertidumbre repetibilidad patrón',
-                        tipo: 'A',
-                        distribucion: 'normal',
-                        formula: 'p_inc_rep',
-                        fuente: '𝑠',
-                        divisor: '√3',
-                        contribucion_u:  0,
-                        coeficiente: 1,
-                        contribucion_du: 1,
-                        u_du: 0,
-                        grados_libertad_for: 'n-1',
-                        grados_libertad: 0
-                    },
-                ];
+                if(this.selectPatrones.length === 1){
+                    this.formulario.valores.forEach( valor => valor.patron = this.selectPatrones[0]);
+                }
             },
 
-            async calcularIP(indice){
-
+            async calcularIP(indice)
+            {
                 if( this.formulario.valores[indice].iec_valor[2] === '' ){
                     this.alertaError('No puedes dejar un campo vacío!!');
                     return;
                 }
+
+                this.registroEdit = {fila: indice, columna: 2, valor: 'iec-valor'};
 
                 // Buscamos la unidad de medida en el IDE
                 const patron = this.formulario.valores[indice].patron;
@@ -315,7 +280,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 const errorIec = promedioIEC - ipCorregido;
 
                 let uk = 0
-                if(cercanos[0] != undefined || cercanos[1] != undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
+                if(cercanos[0] !== undefined && cercanos[1] !== undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
 
                 const result = {
                     patron: patron,
@@ -337,9 +302,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 this.$swal.close();
             },
 
-            calcularIncertidumbre(resultado){
-                const ebc = this.incertidumbre_ebc;
-                const patron = this.incertidumbre_patron;
+            async calcularIncertidumbre(resultado){
                 let resolucion = convertirBase(this.formulario.resolucion_medida, parseFloat(this.formulario.resolucion));
                 resolucion = convertirUnidad(resultado.unidad, this.formulario.unidad_medida, resolucion);
 
@@ -355,10 +318,13 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 };
                 console.log({valores})
 
-                this.cargarIncertidumbre(ebc, valores);
-                this.cargarIncertidumbre(patron, valores);
+                const ebcModel = this.incertidumbres.ebc.map(objeto => ({...objeto}));
+                const ebc = await this.cargarIncertidumbre(ebcModel, valores);
 
-                this.formulario.incertidumbre.push( {incertidumbre_ebc: ebc, incertidumbre_patron: patron, valores} )
+                const patronModel = this.incertidumbres.patron.map(objeto => ({...objeto}));
+                const patron = await this.cargarIncertidumbre(patronModel, valores);
+
+                this.formulario.incertidumbre.push( {incertidumbreEbc: ebc, incertidumbrePatron: patron, valores} )
             },
 
 
@@ -406,7 +372,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
             },
 
             cargarIncertidumbre(array, valores){
-              array.forEach( incer => {
+                const incertidumbre = array.map( incer => {
                     const u = calcularFormula(incer.formula, valores);
                     const uDu = u * incer.contribucion_du;
                     const gLibertad = incer.tipo == 'A' ? valores.n -1 : '∞';
@@ -416,9 +382,11 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     incer.u_du =  uDu.toExponential(2);
                     incer.grados_libertad = gLibertad;
                     incer.potenciado = potencia === 0 ? 0 : potencia.toExponential(2);
+                    return incer;
                 });
-            },
 
+                return incertidumbre;
+            },
 
             changeUnidadMedida(event){
                 const medida = event.target.value;
@@ -455,8 +423,6 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 })
             },
 
-
-
             alertaError(mensaje){
                 this.$swal.fire('Error', mensaje, 'error')
             },
@@ -474,17 +440,35 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 })
             },
 
-            bloquear(inputName){
-                if( $(inputName).val() === '' ) this.alertaError('No puedes dejar un campo vacío!!')
-                else $(inputName).attr('disabled', true);
+            bloquear(inputName, edit){
+                if( $(inputName).val() === '' ){
+                    this.alertaError('No puedes dejar un campo vacío!!');
+                    return;
+                }
+
+               $(inputName).attr('disabled', true);
+               this.registroEdit = edit;
             },
 
+            editar(){
+                console.log(this.registroEdit.fila+', '+this.registroEdit.columna+', '+this.registroEdit.valor);
+                const fila = this.registroEdit.fila;
+                const col = this.registroEdit.columna;
+                const valor = this.registroEdit.valor;
+
+                $(`#${valor}-${col}-${fila}`).attr('disabled', false);
+                $(`#${valor}-${col}-${fila}`).select();
+
+                if(valor === 'iec-valor' && col === 2){
+                    this.formulario.resultados.pop();
+                    this.formulario.incertidumbre.pop();
+                }
+            },
 
             siguiente() {
                 this.$emit('click-next')
                 this.$emit('update:form', this.formulario);
             },
-
         }
 
 
