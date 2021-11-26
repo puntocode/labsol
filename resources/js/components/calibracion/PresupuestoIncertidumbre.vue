@@ -32,10 +32,10 @@
                                 <td>{{ ebc.formula }}</td>
                                 <td>{{ ebc.fuente }}</td>
                                 <td>{{ ebc.divisor }}</td>
-                                <td>{{ ebc.contribucion_u }}</td>
+                                <td>{{ ebc.contribucion_u.toExponential(2) }}</td>
                                 <td>{{ ebc.coeficiente }}</td>
                                 <td>{{ ebc.contribucion_du }}</td>
-                                <td>{{ ebc.u_du }}</td>
+                                <td>{{ ebc.u_du.toExponential(2) }}</td>
                                 <td>{{ ebc.grados_libertad_for }}</td>
                                 <td>{{ ebc.grados_libertad }}</td>
                             </tr>
@@ -70,15 +70,37 @@
                                 <td>{{ patron.formula }}</td>
                                 <td>{{ patron.fuente }}</td>
                                 <td>{{ patron.divisor }}</td>
-                                <td>{{ patron.contribucion_u }}</td>
+                                <td>{{ patron.contribucion_u.toExponential(2) }}</td>
                                 <td>{{ patron.coeficiente }}</td>
                                 <td>{{ patron.contribucion_du }}</td>
-                                <td>{{ patron.u_du }}</td>
+                                <td>{{ patron.u_du.toExponential(2) }}</td>
                                 <td>{{ patron.grados_libertad_for }}</td>
                                 <td>{{ patron.grados_libertad }}</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+
+                <div class="row m-6">
+                    <div class="co-lg-6">
+                        <div class="d-flex">
+                            <h4 class="mr-4 text-primary">Incertidumbre combinada</h4>
+                            <strong>{{ resultados[index].combinada.toExponential(2)  }} {{ incertidumbre.valores.unidad }}</strong>
+                        </div>
+                        <div class="d-flex">
+                            <h4 class="mr-4 text-primary">Grados de libertad efectivos</h4>
+                            <strong>{{ resultados[index].g_libertad_efectivos.toExponential(2) }}</strong>
+                        </div>
+                        <div class="d-flex">
+                            <h4 class="mr-4 text-primary">Factor de cobertura (95,45%)</h4>
+                            <strong>{{ resultados[index].factor_cobertura  }}</strong>
+                        </div>
+                        <div class="d-flex">
+                            <h4 class="mr-4 text-primary">Incertidumbre combinada</h4>
+                            <strong>{{ resultados[index].expandida.toExponential(2)  }} {{ incertidumbre.valores.unidad }}</strong>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -89,7 +111,7 @@
 
 <script>
     export default {
-        props:  ['incertidumbres'],
+        props:  ['incertidumbres', 'resultados'],
     }
 </script>
 

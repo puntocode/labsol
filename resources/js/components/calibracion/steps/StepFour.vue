@@ -118,9 +118,8 @@
                             <tr v-for="(resultado, index) in formulario.resultados" :key="index">
                                 <td>{{ resultado.ip.toFixed(redondeo) }} {{ resultado.unidad }}</td>
                                 <td>{{ resultado.desvIP.toFixed(4) }} {{ resultado.unidad }}</td>
-                                <td v-text="resultado.errorIP === 'Error'
-                                    ? 'Error'
-                                    : `${resultado.errorIP} ${resultado.unidad}`">
+                                <td>{{resultado.errorIP}}
+                                    <span v-if="resultado.errorIP !== 'Error'">{{resultado.unidad}}</span>
                                 </td>
                                 <td>{{ resultado.ipCorregido.toFixed(redondeo) }} {{ resultado.unidad }}</td>
                                 <td>{{ resultado.iec.toFixed(redondeo) }} {{ resultado.unidad }}</td>
@@ -133,7 +132,7 @@
                 </div>
             </div>
 
-            <PresupuestoIncertidumbre :incertidumbres="formulario.incertidumbre" />
+            <PresupuestoIncertidumbre :incertidumbres="formulario.incertidumbre" :resultados="formulario.incertidumbre_result" />
 
             <button type="button"
                 :disabled="disable"
@@ -146,6 +145,7 @@
 </template>
 
 <script>
+import encontrark from "../../../functions/encontrar-k.js";
 import interpolar from "../../../functions/interpolar.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
 import convertirBase from "../../../functions/convertir-base.js";
@@ -171,6 +171,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     ],
                     resultados: [],
                     incertidumbre: [],
+                    incertidumbre_result: []
                 },
                 registroEdit: {},
                 medidaGlobal: this.form.unidad_medida,
@@ -324,7 +325,34 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 const patronModel = this.incertidumbres.patron.map(objeto => ({...objeto}));
                 const patron = await this.cargarIncertidumbre(patronModel, valores);
 
-                this.formulario.incertidumbre.push( {incertidumbreEbc: ebc, incertidumbrePatron: patron, valores} )
+                this.formulario.incertidumbre.push( {incertidumbreEbc: ebc, incertidumbrePatron: patron, valores} );
+
+                this.incertidumbreResultado(ebc, patron);
+            },
+
+            incertidumbreResultado(ebc, patron)
+            {
+                let uDuEbc = ebc.reduce((total, ebc) => { return total + (ebc.u_du ** 2) }, 0);
+                let uDuPatron = patron.reduce((total, patron) => { return total + (patron.u_du ** 2) }, 0);
+                const suma = uDuEbc + uDuPatron;
+                const incerCombinada = Math.sqrt(suma);
+
+                let potenciaEbc = ebc.reduce((total, ebc) => { return total + ebc.potenciado }, 0);
+                let potenciaPatron = patron.reduce((total, patron) => { return total + patron.potenciado }, 0);
+                const gLibertadEfectivos = Math.pow(incerCombinada, 4) / (potenciaEbc+potenciaPatron);
+                const k = encontrark(gLibertadEfectivos);
+
+                //const cmc = 0;
+                let incertidumbreExpandida = incerCombinada * k;
+                //if(incertidumbreExpandida < cmc) incertidumbreExpandida = cmc;
+
+                const resultado = {
+                    combinada: incerCombinada,
+                    g_libertad_efectivos: gLibertadEfectivos,
+                    factor_cobertura: k,
+                    expandida: incertidumbreExpandida,
+                }
+                this.formulario.incertidumbre_result.push(resultado);
             },
 
 
@@ -378,10 +406,10 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     const gLibertad = incer.tipo == 'A' ? valores.n -1 : '∞';
                     const potencia = incer.tipo == 'A' ? Math.pow(uDu, 4) / gLibertad : 0;
 
-                    incer.contribucion_u = u.toExponential(2);
-                    incer.u_du =  uDu.toExponential(2);
+                    incer.contribucion_u = u;
+                    incer.u_du =  uDu;
                     incer.grados_libertad = gLibertad;
-                    incer.potenciado = potencia === 0 ? 0 : potencia.toExponential(2);
+                    incer.potenciado = potencia === 0 ? 0 : potencia;
                     return incer;
                 });
 
@@ -474,7 +502,3 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
