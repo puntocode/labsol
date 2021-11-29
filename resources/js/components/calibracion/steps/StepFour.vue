@@ -117,13 +117,15 @@
                         <tbody>
                             <tr v-for="(resultado, index) in formulario.resultados" :key="index">
                                 <td>{{ resultado.ip.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.desvIP.toFixed(4) }} {{ resultado.unidad }}</td>
-                                <td>{{resultado.errorIP}}
-                                    <span v-if="resultado.errorIP !== 'Error'">{{resultado.unidad}}</span>
+                                <td>{{ resultado.desvIP.toFixed(redondeo) }} {{ resultado.unidad }}</td>
+                                <td>
+                                    {{ resultado.errorIP === 'Error'
+                                    ? 'Error'
+                                    : `${resultado.errorIP.toFixed(redondeo)} ${resultado.unidad}` }}
                                 </td>
                                 <td>{{ resultado.ipCorregido.toFixed(redondeo) }} {{ resultado.unidad }}</td>
                                 <td>{{ resultado.iec.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.desvIEC.toFixed(4) }} {{ resultado.unidad }}</td>
+                                <td>{{ resultado.desvIEC.toFixed(redondeo) }} {{ resultado.unidad }}</td>
                                 <td>{{ resultado.errorIEC.toFixed(redondeo) }}</td>
                             </tr>
 
@@ -396,7 +398,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 }
 
                 const interpolacion = interpolar(x, x0, x1, y0, y1);
-                return interpolacion.toFixed(5);
+                return interpolacion;
             },
 
             cargarIncertidumbre(array, valores){

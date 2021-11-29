@@ -2,7 +2,7 @@
     <div class="row text-left">
         <div class="col-12 mb-18" v-for="(incertidumbre, index) in incertidumbres" :key="index">
             <h3 class="mb-5 pointer" data-toggle="collapse" :data-target="`#collapse-incertidumbre-${index}`">
-                <i class="fas fa-plus mr-3"></i> {{ index+1 }}. Puntode de medición: {{ incertidumbre.valores.ip.toFixed(2) }} {{ incertidumbre.valores.unidad }}
+                <i class="fas fa-plus mr-3"></i> {{ index+1 }}. Punto de medición: {{ incertidumbre.valores.ip.toFixed(2) }} {{ incertidumbre.valores.unidad }}
             </h3>
 
             <div class="collapse" :id="`collapse-incertidumbre-${index}`">
@@ -29,7 +29,7 @@
                                 <td>{{ ebc.nombre }}</td>
                                 <td>{{ ebc.tipo }}</td>
                                 <td>{{ ebc.distribucion }}</td>
-                                <td>{{ ebc.formula }}</td>
+                                <td class="text-center"><img :src="`${asset}media/formulas/${ebc.formula}.jpg`" alt="formula" height="45"></td>
                                 <td>{{ ebc.fuente }}</td>
                                 <td>{{ ebc.divisor }}</td>
                                 <td>{{ ebc.contribucion_u.toExponential(2) }}</td>
@@ -67,7 +67,7 @@
                                 <td>{{ patron.nombre }}</td>
                                 <td>{{ patron.tipo }}</td>
                                 <td>{{ patron.distribucion }}</td>
-                                <td>{{ patron.formula }}</td>
+                                <td class="text-center"><img :src="`${asset}media/formulas/${patron.formula}.jpg`" alt="formula" height="45"></td>
                                 <td>{{ patron.fuente }}</td>
                                 <td>{{ patron.divisor }}</td>
                                 <td>{{ patron.contribucion_u.toExponential(2) }}</td>
@@ -82,9 +82,33 @@
                 </div>
 
 
-                <div class="row m-6">
+                <div class="row mt-10 px-4">
                     <div class="co-lg-6">
-                        <div class="d-flex">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Incertidumbre Combinada</th>
+                                    <td><img :src="`${asset}media/formulas/incer_combinada.jpg`" alt="formula" height="55"></td>
+                                    <td>{{ resultados[index].combinada.toExponential(2)  }} {{ incertidumbre.valores.unidad }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Grados de libertad efectivos</th>
+                                    <td><img :src="`${asset}media/formulas/g_libertad_efectivos.jpg`" alt="formula" height="55"></td>
+                                    <td>{{ resultados[index].g_libertad_efectivos.toExponential(2) }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Factor de cobertura (95,45%)</th>
+                                    <td class="text-center"><img :src="`${asset}media/formulas/k.jpg`" alt="formula" height="35"></td>
+                                    <td>{{ resultados[index].factor_cobertura  }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Incertidumbre Expandida</th>
+                                    <td class="text-center"><img :src="`${asset}media/formulas/incer_expandida.jpg`" alt="formula" height="35"></td>
+                                    <td>{{ resultados[index].expandida.toExponential(2)  }} {{ incertidumbre.valores.unidad }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <div class="d-flex">
                             <h4 class="mr-4 text-primary">Incertidumbre combinada</h4>
                             <strong>{{ resultados[index].combinada.toExponential(2)  }} {{ incertidumbre.valores.unidad }}</strong>
                         </div>
@@ -99,7 +123,7 @@
                         <div class="d-flex">
                             <h4 class="mr-4 text-primary">Incertidumbre combinada</h4>
                             <strong>{{ resultados[index].expandida.toExponential(2)  }} {{ incertidumbre.valores.unidad }}</strong>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -112,6 +136,11 @@
 <script>
     export default {
         props:  ['incertidumbres', 'resultados'],
+        data() {
+            return {
+                asset: window.asset
+            }
+        },
     }
 </script>
 

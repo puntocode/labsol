@@ -494,6 +494,8 @@
 @section('rutas')
     <script>
         window.username = "{{ auth()->user()->fullname }}";
+        window.asset = "{{ URL::asset('')  }}";
+
         const patronUmIde = "{{ route('panel.patron.ide.um') }}";
         const submultiplos = "{{ route('panel.patrones.unidades_medidas') }}";
 

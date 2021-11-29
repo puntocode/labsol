@@ -31,7 +31,7 @@
 
             <div class="form-group row text-left mt-10">
                 <div class="col-md-6 d-flex">
-                    <label class="label-line">Temperatura Inical <span class="text-danger">*</span></label>
+                    <label class="label-line">Temperatura Inicial <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <input class="form-control" type="number" step="0.01" v-model="formulario.temperatura_inicial" />
                         <div class="input-group-append">
