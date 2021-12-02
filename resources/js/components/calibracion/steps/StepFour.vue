@@ -188,12 +188,12 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 selectIEC: [],
                 selectIP: [],
                 unidadMedidas: [],
-                resol: this.form.resolucion
+                resol: this.form.resolucion,
             }
         },
         //------------------------------------------------------------------------------------
 
-        created () {
+        mounted () {
             this.fetch();
         },
         //------------------------------------------------------------------------------------
@@ -226,10 +226,6 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
                 if(this.selectPatrones.length === 1){
                     this.formulario.valores.forEach( valor => valor.patron = this.selectPatrones[0]);
-                }
-
-                if(this.medidaGlobal != this.form.resolucion_medida){
-                    this.resol = convertirBase(this.form.resolucion_medida, parseFloat(this.form.resolucion));
                 }
             },
 
@@ -318,7 +314,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
             async calcularIncertidumbre(resultado)
             {
-                const resolucion = convertirUnidad(resultado.unidad, this.medidaGlobal, this.resol);
+                const resolucion = await this.convertirResolucion(resultado.unidad);
 
                 const valores = {
                     ip: resultado.ip,
@@ -419,6 +415,20 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 }
 
                 return array;
+            },
+
+            convertirResolucion(unidad){
+                let resolucion = this.resol;
+
+                if(this.medidaGlobal !== this.form.resolucion_medida){
+                    resolucion = convertirBase(this.form.resolucion_medida, parseFloat(resolucion));
+                }
+
+                if(unidad !== this.medidaGlobal){
+                    resolucion = convertirUnidad(unidad, this.medidaGlobal, resolucion);
+                }
+
+                return resolucion;
             },
 
             calcularInterpolacion(promedio, cercanos, deriva, buscarError = true){
