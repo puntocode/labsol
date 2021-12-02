@@ -8,36 +8,36 @@
                 <div class="form-group row text-left">
                     <div class="col-md-6 d-flex">
                         <label class="label-line">N° de Expediente</label>
-                        <input type="text" class="form-control" disabled :value="form.number" />
+                        <input type="text" class="form-control" disabled :value="datos.number" />
                     </div>
 
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Solicitante</label>
-                        <input type="text" class="form-control" :value="form.cliente_name" disabled />
+                        <input type="text" class="form-control" :value="datos.cliente_name" disabled />
                     </div>
                 </div>
 
                 <div class="form-group row text-left">
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Instrumento <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="formulario.instrumento" disabled />
+                        <input type="text" class="form-control" :value="datos.instrumento" disabled />
                     </div>
 
                     <div class="col-md-6 d-flex">
                         <label class="label-line">N° de Serie</label>
-                        <input type="text" class="form-control" v-model="formulario.serie" />
+                        <input type="text" class="form-control" v-model="formulario.nro_serie" />
                     </div>
                 </div>
 
                 <div class="form-group row text-left">
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Identificación <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="formulario.identificacion"  />
+                        <input type="text" class="form-control" v-model="$v.formulario.identificacion.$model"  />
                     </div>
 
                     <div class="col-md-6 d-flex">
                         <label class="label-line">U. de Medida <span class="text-danger">*</span></label>
-                        <select class="form-control" v-model="formulario.unidad_medida" @change="changeUnidadMedida($event)">
+                        <select class="form-control" v-model="$v.formulario.unidad_medida.$model" @change="changeUnidadMedida($event)">
                             <option v-for="(unidad, index) in unidadMedidas" :key="index" :id="unidad">{{ unidad }}</option>
                         </select>
                     </div>
@@ -55,8 +55,8 @@
                     <div class="col-md-6 d-flex">
                         <label class="label-line">{{resolution}} <span class="text-danger">*</span></label>
                         <div class="d-flex w-100">
-                            <input type="number" step="0.000001" class="form-control mr-5" v-model="formulario.resolucion" :disabled="medidasEmpty" />
-                            <select class="mx-3 form-control" v-model="formulario.resolucion_medida" :disabled="medidasEmpty">
+                            <input type="number" step="0.000001" class="form-control mr-5" v-model="$v.formulario.resolucion.$model" :disabled="medidasEmpty" />
+                            <select class="mx-3 form-control" v-model="$v.formulario.resolucion_medida.$model" :disabled="medidasEmpty">
                                 <option v-for="(medida,ix) in selectMedidas" :key="ix" :id="medida">{{ medida }}</option>
                             </select>
                         </div>
@@ -67,16 +67,16 @@
                    <div class="col-md-6 d-flex">
                         <label class="label-line">Intervalo <span class="text-danger">*</span></label>
                         <div class="d-flex w-100">
-                            <input type="number" step="0.000001" class="form-control mr-5" v-model="formulario.intervalo_desde" :disabled="medidasEmpty"  />
-                            <input type="text" class="form-control" v-model="formulario.intervalo_desde_medida" disabled  />
+                            <input type="number" step="0.000001" class="form-control mr-5" v-model="$v.formulario.intervalo_desde.$model" :disabled="medidasEmpty"  />
+                            <input type="text" class="form-control" :value="formulario.intervalo_desde_medida" disabled  />
                         </div>
                     </div>
 
                    <div class="col-md-6 d-flex">
                         <label class="label-line">Hasta <span class="text-danger">*</span></label>
                         <div class="d-flex w-100">
-                            <input type="number" step="0.000001" class="form-control mr-5" v-model="formulario.intervalo_hasta" :disabled="medidasEmpty" />
-                            <select class="mx-3 form-control" v-model="formulario.intervalo_hasta_medida" :disabled="medidasEmpty" @change="changeIntervaloHasta($event)">
+                            <input type="number" step="0.000001" class="form-control mr-5" v-model="$v.formulario.intervalo_hasta.$model" :disabled="medidasEmpty" />
+                            <select class="mx-3 form-control" v-model="$v.formulario.intervalo_medida.$model" :disabled="medidasEmpty" @change="changeIntervaloHasta($event)">
                                 <option v-for="(medida,ix) in selectMedidas" :key="ix" :id="medida">{{ medida }}</option>
                             </select>
                         </div>
@@ -91,21 +91,21 @@
                                 <option value="GENERICO">Genérico</option>
                                 <option value="OTRO">Otro</option>
                             </select>
-                            <input type="text" class="form-control" v-model="formulario.especificacion" :disabled="!otraMarca"  />
+                            <input type="text" class="form-control" v-model="formulario.especificacion_marca" :disabled="!otraMarca"  />
                         </div>
                     </div>
 
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Modelo</label>
-                        <input type="text" class="form-control" :v-model="formulario.modelo" />
+                        <input type="text" class="form-control" v-model="formulario.modelo" />
                     </div>
                 </div>
             </div>
 
             <button type="button"
                 class="float-right next action-button btn btn-primary"
-                :disabled="disable"
                 title="Por favor completa todos los campos para continuar"
+                :disabled="$v.$invalid"
                 @click="siguiente">Siguiente
             </button>
 
@@ -113,30 +113,30 @@
 </template>
 
 <script>
+    import {required} from "vuelidate/lib/validators";
+
     export default {
-        props: ['form', 'medida'],
+        props: ['form', 'datos', 'medida'],
         data() {
             return {
-                formulario: {
-                    ...this.form,
-                    serie: '',
-                    identificacion: '',
-                    unidad_medida: '',
-                    tipo: 'DIGITAL',
-                    resolucion: '',
-                    resolucion_medida: '',
-                    intervalo_desde: '',
-                    intervalo_desde_medida: '',
-                    intervalo_hasta: '',
-                    intervalo_hasta_medida: '',
-                    marca: 'GENERICO',
-                    especificacion: '',
-                    modelo: ''
-                },
+                formulario: { ...this.form },
                 unidadMedidas: [],
                 subMultiplos: [],
                 selectMedidas: [],
-                rutas: window.routes
+                rutas: window.routes,
+            }
+        },
+        //------------------------------------------------------------------------------------
+
+        validations:{
+            formulario: {
+                resolucion: {required},
+                unidad_medida: {required},
+                identificacion: {required},
+                intervalo_desde: {required},
+                intervalo_hasta: {required},
+                intervalo_medida: {required},
+                resolucion_medida: {required},
             }
         },
         //------------------------------------------------------------------------------------
@@ -153,9 +153,10 @@
                 this.unidadMedidas = this.medida != null ? this.medida.unit_measurement : [];
             },
 
-            siguiente() {
-                this.$emit('click-next')
+            async siguiente() {
+                await this.submit();
                 this.$emit('update:form', this.formulario);
+                this.$emit('click-next');
             },
 
             changeUnidadMedida(event){
@@ -163,25 +164,27 @@
                 this.selectMedidas = this.subMultiplos.map(unidad => {
                     return unidad.simbolo === '-' ? medida : unidad.simbolo+medida;
                 });
+
                 this.formulario.intervalo_desde_medida = '';
+                this.formulario.resolucion_medida = '';
+                this.formulario.intervalo_medida = '';
             },
             changeIntervaloHasta(event){
                 this.formulario.intervalo_desde_medida = event.target.value;
+            },
+
+            async submit(){
+                try{
+                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+                    this.formulario = await res.data;
+                }catch(error){
+                    this.$swal.fire('Error', 'Error al actualizar', 'error');
+                }
             },
         },
         //------------------------------------------------------------------------------------
 
         computed: {
-            disable() {
-                return this.formulario.identificacion.trim() === ''
-                    || this.formulario.unidad_medida.trim() === ''
-                    || this.formulario.resolucion.trim() === ''
-                    || this.formulario.resolucion_medida.trim() === ''
-                    || this.formulario.intervalo_desde.trim() === ''
-                    || this.formulario.intervalo_desde_medida.trim() === ''
-                    || this.formulario.intervalo_hasta.trim() === ''
-                    || this.formulario.intervalo_hasta_medida.trim() === ''
-            },
             resolution(){
                 return this.formulario.tipo === 'DIGITAL' ? 'Resolución' : 'División';
             },
@@ -192,6 +195,7 @@
                 return this.selectMedidas.length === 0;
             }
         },
+
     }
 </script>
 

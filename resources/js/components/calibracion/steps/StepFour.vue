@@ -134,6 +134,7 @@
                 </div>
             </div>
 
+            <CertificadoTable :certificados="certificado" :redondeo="redondeo"  />
             <PresupuestoIncertidumbre :incertidumbres="formulario.incertidumbre" :resultados="formulario.incertidumbre_result" />
 
             <button type="button"
@@ -153,16 +154,18 @@ import calcularDes from "../../../functions/calcular-desviacion.js";
 import convertirBase from "../../../functions/convertir-base.js";
 import calcularFormula from "../../../functions/formulas.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
+import CertificadoTable from "../CertificadoTable";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
+import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     export default {
-        components: { PresupuestoIncertidumbre },
+        components: { PresupuestoIncertidumbre, CertificadoTable },
         props: ['form', 'medida', 'incertidumbres'],
         data() {
             return {
                 formulario: {
-                    ...this.form,
+                    //...this.form,
                     valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
                     valores: [
                         {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
@@ -175,6 +178,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     incertidumbre: [],
                     incertidumbre_result: []
                 },
+                certificado: [],
                 registroEdit: {},
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
@@ -184,11 +188,12 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 selectIEC: [],
                 selectIP: [],
                 unidadMedidas: [],
+                resol: this.form.resolucion
             }
         },
         //------------------------------------------------------------------------------------
 
-        mounted () {
+        created () {
             this.fetch();
         },
         //------------------------------------------------------------------------------------
@@ -205,8 +210,9 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
             async fetch(){
                 const res = await axios.get(this.rutas.submultiplos);
                 this.subMultiplos = await res.data;
+
                 this.unidadMedidas = this.medida != null ? this.medida.unit_measurement : [];
-                this.selectPatrones = this.formulario.patrones[0].code
+                this.selectPatrones = this.form.patrones[0].code
 
                 this.selectIEC = this.subMultiplos.map(unidad => {
                     return unidad.simbolo === '-' ? this.medidaGlobal : unidad.simbolo+this.medidaGlobal;
@@ -220,6 +226,10 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
                 if(this.selectPatrones.length === 1){
                     this.formulario.valores.forEach( valor => valor.patron = this.selectPatrones[0]);
+                }
+
+                if(this.medidaGlobal != this.form.resolucion_medida){
+                    this.resol = convertirBase(this.form.resolucion_medida, parseFloat(this.form.resolucion));
                 }
             },
 
@@ -297,17 +307,18 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     unidad: unidadIde,
                     uk: parseFloat(uk),
                 }
-                this.formulario.resultados.push(result);
-                this.calcularIncertidumbre(result);
 
+                this.formulario.resultados.push(result);
+                await this.calcularIncertidumbre(result);
+                this.calcularCertificado(indice);
 
                 $(`#iec-valor-2-${indice}`).attr('disabled', true);
                 this.$swal.close();
             },
 
-            async calcularIncertidumbre(resultado){
-                let resolucion = convertirBase(this.formulario.resolucion_medida, parseFloat(this.formulario.resolucion));
-                resolucion = convertirUnidad(resultado.unidad, this.formulario.unidad_medida, resolucion);
+            async calcularIncertidumbre(resultado)
+            {
+                const resolucion = convertirUnidad(resultado.unidad, this.medidaGlobal, this.resol);
 
                 const valores = {
                     ip: resultado.ip,
@@ -357,6 +368,36 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 this.formulario.incertidumbre_result.push(resultado);
             },
 
+            async calcularCertificado(indice){
+                const unidadAconvertir = this.formulario.valores[0].iec_medida;
+                const unidad = this.formulario.resultados[indice].unidad;
+                const k = this.formulario.incertidumbre_result[indice].factor_cobertura;
+
+                let ip = this.formulario.resultados[indice].ipCorregido;
+                let iec = this.formulario.resultados[indice].iec;
+                let e = this.formulario.resultados[indice].errorIEC;
+                let u = this.formulario.incertidumbre_result[indice].expandida;
+
+                if(unidad !== this.medidaGlobal){
+                    ip = convertirUnidad(this.medidaGlobal, unidad, ip);
+                    iec = convertirUnidad(this.medidaGlobal, unidad, iec);
+                    e = convertirUnidad(this.medidaGlobal, unidad, e);
+                    u = convertirUnidad(this.medidaGlobal, unidad, u);
+                }
+
+                if(unidadAconvertir !== this.medidaGlobal){
+                    const arrSub = unidadAconvertir.split('');
+                    const diferencia = arrSub[0];
+
+                    ip = convertirBaseInverso(diferencia, ip);
+                    iec = convertirBaseInverso(diferencia, iec);
+                    e = convertirBaseInverso(diferencia, e);
+                    u = convertirBaseInverso(diferencia, u);
+                }
+
+                this.certificado.push({ip, iec, e, u, k, unidad: unidadAconvertir});
+            },
+
 
             convertirUnidadBase(array, unidadMedida, UnidadBase){
                 if(unidadMedida !== UnidadBase){
@@ -366,7 +407,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     return [valorUno, valorDos, valorTres];
                 }
 
-                return [ parseFloat(array[0]), parseFloat(array[1]), parseFloat(array[2]) ]
+                return [ parseFloat(array[0]), parseFloat(array[1]), parseFloat(array[2]) ];
             },
 
             convertirUnidadIde(array, unidadBase, unidadIde){
@@ -492,12 +533,13 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 if(valor === 'iec-valor' && col === 2){
                     this.formulario.resultados.pop();
                     this.formulario.incertidumbre.pop();
+                    this.certificado.pop();
                 }
             },
 
             siguiente() {
                 this.$emit('click-next')
-                this.$emit('update:form', this.formulario);
+                //this.$emit('update:form', this.formulario);
             },
         }
 

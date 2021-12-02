@@ -180,6 +180,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');
     Route::get('/expediente/espera', 'ExpedienteController@getExpedienteEspera')->name('expedientes.espera')->middleware('can:panel.admin');
     Route::put('/expediente/update-tecnicos', 'ExpedienteController@asignarTecnicos')->name('expedientes.update_tecnicos')->middleware('can:panel.admin');
+    Route::put('/expediente/update-estado', 'ExpedienteController@cambiarEstadoExpediente')->name('expedientes.update_estado')->middleware('can:panel.admin');
     Route::get('/expediente/agenda', 'ExpedienteController@agenda')->name('expedientes.agenda')->middleware('can:panel.admin');
     Route::get('/expediente/asignar-tecnico', 'ExpedienteController@asignarTecnicoIndex')->name('expedientes.asignar')->middleware('can:panel.admin');
     Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:panel.admin');

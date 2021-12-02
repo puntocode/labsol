@@ -34,6 +34,10 @@ class Expediente extends Model
         return $this->hasMany(ExpedienteHistorial::class);
     }
 
+    public function calibracion(){
+        return $this->hasOne(Calibracion::class);
+    }
+
     public function getPrioridadAttribute(){
         $prioridad = [
             'priority' => $this->attributes['priority'],
@@ -56,6 +60,10 @@ class Expediente extends Model
 
     public function scopeRelaciones($query){
         $query->with('instrumentos', 'estados', 'entradaInstrumentos');
+    }
+
+    public function scopeCalibration($query){
+        $query->with('entradaInstrumentos.cliente', 'instrumentos.procedimiento', 'calibracion');
     }
 
     public function scopeCantidad($query, $entrada_id)

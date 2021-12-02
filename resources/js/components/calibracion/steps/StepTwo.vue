@@ -14,7 +14,7 @@
                <label class="col-sm-3 col-form-label">Equipos De Medición Ambiental</label>
                 <div class="col-md-9">
                     <select v-model="formulario.ema" class="form-control">
-                        <option v-for="(ema, i) in ambiental" :key="i" :value="ema">{{ ema }}</option>
+                        <option v-for="(ema, i) in ambiental" :key="i">{{ ema }}</option>
                     </select>
                 </div>
             </div>
@@ -23,14 +23,14 @@
         <button
             type="button"
             class="float-right next action-button btn btn-primary"
-            :disabled="disable"
+            :disabled="$v.$invalid"
             @click="siguiente">Siguiente
         </button>
     </fieldset>
 </template>
 
 <script>
-    import {required, numeric} from "vuelidate/lib/validators";
+    import {required} from "vuelidate/lib/validators";
     import SelectMultiple from 'v-select2-multiple-component';
 
     export default {
@@ -38,14 +38,11 @@
         props: ['form', 'procedimiento'],
         data() {
             return {
+                formulario: { ...this.form },
                 error: true,
-                formulario: {
-                    ...this.form,
-                    patrones: [],
-                    ema: ''
-                },
                 patrones: [],
-                ambiental: []
+                ambiental: [],
+                rutas: window.routes
             }
         },
         //------------------------------------------------------------------------------------
@@ -57,27 +54,31 @@
 
         methods: {
             async fetch(){
+                this.ambiental = await this.procedimiento.ambiental.code
                 this.patrones = await this.procedimiento.patrones.map(patron => {
                     return {name: patron.patron, code: patron.code}
                 });
-                this.formulario.patrones = await this.procedimiento.patrones.map(patron => {
-                    return {name: patron.patron, code: []}
-                });
-                this.ambiental = await this.procedimiento.ambiental.code
-                this.formulario.ema = this.ambiental[0];
 
+                if(this.form.patrones === null){
+                    this.formulario.patrones = this.patrones.map(patron => { return {name: patron.name, code: []} });
+                    this.formulario.ema = this.ambiental[0];
+                }
             },
-            siguiente() {
-                this.$emit('click-next')
+
+            async siguiente() {
+                await this.submit();
                 this.$emit('update:form', this.formulario);
+                this.$emit('click-next')
             },
-        },
-        //------------------------------------------------------------------------------------
 
-        computed: {
-            disable() {
-                return this.$v.$invalid;
-            },
+            async submit(){
+                try{
+                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+                    this.formulario = await res.data;
+                }catch(error){
+                    this.$swal.fire('Error', 'Error al actualizar', 'error');
+                }
+            }
         },
         //------------------------------------------------------------------------------------
 
@@ -97,7 +98,6 @@
 </script>
 
 <style lang="scss" scoped>
-
 
 table{
     background: #fff none repeat scroll 0 0;

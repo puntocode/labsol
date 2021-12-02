@@ -14,7 +14,7 @@
                 <div class="col-md-6 d-flex">
                     <label class="label-line">Fecha de Culminación<span class="text-danger">*</span></label>
                     <div class="input-group">
-                        <date-picker v-model="formulario.fecha_final" :config="options"></date-picker>
+                        <date-picker v-model="$v.formulario.fecha_fin.$model" :config="options"></date-picker>
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                         </div>
@@ -47,14 +47,15 @@
 
         <button type="button"
             class="float-right btn btn-primary"
-            :disabled="disable"
             title="Por favor completa todos los campos para continuar"
+            :disabled="$v.$invalid"
             @click="siguiente">Finalizar
         </button>
     </fieldset>
 </template>
 
 <script>
+    import {required} from "vuelidate/lib/validators";
     import datePicker from 'vue-bootstrap-datetimepicker';
 
     export default {
@@ -62,34 +63,48 @@
         props: ['form'],
         data() {
             return {
-                options: { format: 'yyyy/MM/DD'},
-                formulario: {
-                    ...this.form,
-                    fecha_final: new Date().toISOString().substr(0, 10),
-                    temperatura_final: '',
-                    humedad_final: '',
-                    responsable: '',
-                },
+                formulario: {...this.form},
+                options: { format: 'yyyy/MM/DD' },
+                rutas: window.routes,
                 username: window.username,
-            }
-        },
-         //------------------------------------------------------------------------------------
-
-         computed: {
-            disable() {
-                return this.formulario.fecha_final.trim() === ''
-                    || this.formulario.temperatura_final.trim() === ''
-                    || this.formulario.humedad_final.trim() === ''
             }
         },
         //------------------------------------------------------------------------------------
 
-        methods: {
-            siguiente() {
+        mounted () {
+           if(this.formulario.fecha_fin === null) this.formulario.fecha_fin = new Date().toISOString().substr(0, 10);
+        },
+        //------------------------------------------------------------------------------------
+
+       methods: {
+            async siguiente() {
+                await this.submit();
                 this.$emit('click-next')
                 this.$emit('update:form', this.formulario);
+            },
+
+            async submit(){
+                try{
+                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+                    this.formulario = await res.data;
+
+                    const data = {expediente_id: this.formulario.expediente_id, expediente_estado_id: 3};
+                    const response = await axios.put(this.rutas.estadoExpediente, data);
+                }catch(error){
+                    this.$swal.fire('Error', 'Error al actualizar', 'error');
+                }
             }
         },
+        //------------------------------------------------------------------------------------
+
+        validations:{
+            formulario:{
+                humedad_final: {required},
+                temperatura_final: {required},
+                fecha_fin: {required},
+            }
+        },
+
     }
 </script>
 

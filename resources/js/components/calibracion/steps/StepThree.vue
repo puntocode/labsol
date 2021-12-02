@@ -8,7 +8,7 @@
             <div class="form-group row text-left mt-10">
                 <div class="col-12 d-flex">
                     <label class="label-line">Procedimiento</label>
-                    <input type="text" class="form-control" :value="form.procedimiento" disabled />
+                    <input type="text" class="form-control" :value="datos.procedimiento" disabled />
                 </div>
             </div>
 
@@ -61,50 +61,66 @@
 
         <button type="button"
             class="float-right btn btn-primary"
-            :disabled="disable"
             title="Por favor completa todos los campos para continuar"
+            :disabled="$v.$invalid"
             @click="siguiente">Siguiente
         </button>
     </fieldset>
 </template>
 
 <script>
+    import {required} from "vuelidate/lib/validators";
     import datePicker from 'vue-bootstrap-datetimepicker';
 
     export default {
         components: { datePicker },
-        props: ['form'],
+        props: ['form', 'datos'],
         data() {
             return {
-                options: { format: 'yyyy/MM/DD'},
-                formulario: {
-                    ...this.form,
-                    fecha_inicio: new Date().toISOString().substr(0, 10),
-                    lugar: this.form.type,
-                    temperatura_inicial: '',
-                    humedad_inicial: '',
-                    obs: '',
+                formulario: {...this.form},
+                options: { format: 'yyyy/MM/DD' },
+                rutas: window.routes
+            }
+        },
+        //------------------------------------------------------------------------------------
+
+        mounted () {
+            this.fetch();
+        },
+        //------------------------------------------------------------------------------------
+
+        methods: {
+            fetch(){
+                if(this.formulario.fecha_inicio === null) this.formulario.fecha_inicio = new Date().toISOString().substr(0, 10);
+                if(this.formulario.lugar === null) this.formulario.lugar = this.datos.tipo == 'LS' ? 'Labsol' : '';
+            },
+
+            async siguiente() {
+                await this.submit();
+                this.$emit('click-next')
+                this.$emit('update:form', this.formulario);
+            },
+
+            async submit(){
+                try{
+                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+                    this.formulario = await res.data;
+                }catch(error){
+                    this.$swal.fire('Error', 'Error al actualizar', 'error');
                 }
             }
         },
         //------------------------------------------------------------------------------------
 
-         computed: {
-            disable() {
-                return this.formulario.fecha_inicio.trim() === ''
-                    || this.formulario.lugar.trim() === ''
-                    || this.formulario.temperatura_inicial.trim() === ''
-                    || this.formulario.humedad_inicial.trim() === ''
+        validations:{
+            formulario:{
+                obs: {},
+                lugar: {required},
+                fecha_inicio: {required},
+                humedad_inicial: {required},
+                temperatura_inicial: {required},
             }
-        },
-        //------------------------------------------------------------------------------------
-
-        methods: {
-            siguiente() {
-                this.$emit('click-next')
-                this.$emit('update:form', this.formulario);
-            }
-        },
+        }
     }
 </script>
 

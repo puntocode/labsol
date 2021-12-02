@@ -13,6 +13,7 @@
         <!-- paso 1 --------------------------------------------------------------------------------------------------------------------->
         <step-one
             :form.sync="form"
+            :datos="datos"
             :medida="magnitud"
             @click-next="next"
             v-if="this.steps == 1">
@@ -33,6 +34,7 @@
         <!-- paso 3 --------------------------------------------------------------------------------------------------------------------->
         <step-three
             :form.sync="form"
+            :datos="{ tipo: data.type, procedimiento: data.instrumentos.procedimiento[0].code }"
             @click-next="next"
             v-if="this.steps == 3">
             <h2 class="font-weight-bold">Datos iniciales de Calibración:</h2>
@@ -41,7 +43,7 @@
 
         <!-- paso 4 --------------------------------------------------------------------------------------------------------------------->
         <step-four
-            :form.sync="form"
+            :form="form"
             :medida="magnitud"
             :incertidumbres="incertidumbres"
             @click-next="next"
@@ -60,9 +62,7 @@
         </step-five>
 
         <!-- paso 6 --------------------------------------------------------------------------------------------------------------------->
-        <step-six
-            :form.sync="form"
-            v-if="this.steps == 6">
+        <step-six v-if="this.steps == 6">
             <h2 class="font-weight-bold">Calibración Finalizada:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
         </step-six>
@@ -91,6 +91,7 @@
             return {
                 steps: 1,
                 form: {},
+                datos: {},
                 magnitud: [],
                 incertidumbres: {}
             }
@@ -104,12 +105,12 @@
 
         methods: {
             async fetch() {
-                this.form.number = this.data.number;
-                this.form.cliente_name = this.data.entrada_instrumentos.cliente.name;
-                this.form.instrumento = this.data.instrumentos.name;
+                this.form = {...this.data.calibracion};
+                this.datos.number = this.data.number;
+                this.datos.cliente_name = this.data.entrada_instrumentos.cliente.name;
+                this.datos.instrumento = this.data.instrumentos.name;
                 this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
-                this.form.procedimiento = this.data.instrumentos.procedimiento[0].code;
-                this.form.type = this.data.type === 'LS' ? 'Labsol' : '';
+
 
                 const incertidumbreEbc = [
                     {

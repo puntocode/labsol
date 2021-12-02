@@ -17,12 +17,7 @@
     import SuccessAnimation from '../../SuccessAnimation';
 
     export default {
-        props: ['form'],
         components: { SuccessAnimation },
-
     }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
