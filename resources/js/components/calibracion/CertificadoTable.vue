@@ -1,6 +1,6 @@
 <template>
     <div class="row my-18">
-        <div class="col-10 mx-auto">
+        <div class="col-lg-6">
             <table class="table table-bordered table-sm">
                 <thead class="thead-light">
                     <tr>
@@ -30,11 +30,52 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="col-lg-6">
+            <Plotly v-if="graph" :key="key" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+        </div>
     </div>
 </template>
 
 <script>
+    import { Plotly } from 'vue-plotly'
+
     export default {
         props:  ['certificados', 'redondeo'],
+        components: { Plotly },
+
+        data() {
+            return {
+                key: 0,
+                data:[{
+                    x: [],
+                    y: [],
+                    error_y: {
+                        type: 'data',
+                        array: [],
+                        visible: true
+                    },
+                    type: 'scatter'
+                }],
+                layout:{ title: "Error + Incertidumbre" }
+            }
+        },
+        watch: {
+            certificados() {
+                this.graph = false;
+                const indice = this.certificados.length - 1;
+                this.data[0].x.push(this.certificados[indice].ip);
+                this.data[0].y.push(this.certificados[indice].e);
+                this.data[0].error_y.array.push(this.certificados[indice].u);
+
+                this.key++;
+            }
+        },
+
+        computed: {
+            graph() {
+                return this.certificados.length;
+            }
+        },
     }
 </script>

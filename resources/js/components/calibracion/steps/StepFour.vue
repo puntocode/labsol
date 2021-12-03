@@ -100,41 +100,8 @@
                 <hr>
             </div>
 
-            <div class="row my-18">
-                <div class="col-12">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                            <th scope="col">IP</th>
-                            <th scope="col">Desvío estandar IP</th>
-                            <th scope="col">Error Patrón</th>
-                            <th scope="col">IP Corregido</th>
-                            <th scope="col">IEC</th>
-                            <th scope="col">Desvío estandar IEC</th>
-                            <th scope="col">Error</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(resultado, index) in formulario.resultados" :key="index">
-                                <td>{{ resultado.ip.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.desvIP.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                                <td>
-                                    {{ resultado.errorIP === 'Error'
-                                    ? 'Error'
-                                    : `${resultado.errorIP.toFixed(redondeo)} ${resultado.unidad}` }}
-                                </td>
-                                <td>{{ resultado.ipCorregido.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.iec.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.desvIEC.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                                <td>{{ resultado.errorIEC.toFixed(redondeo) }}</td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <CertificadoTable :certificados="certificado" :redondeo="redondeo"  />
+            <ResultadoTable :resultados="formulario.resultados" :redondeo="redondeo"  />
             <PresupuestoIncertidumbre :incertidumbres="formulario.incertidumbre" :resultados="formulario.incertidumbre_result" />
 
             <button type="button"
@@ -152,6 +119,7 @@ import encontrark from "../../../functions/encontrar-k.js";
 import interpolar from "../../../functions/interpolar.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
 import convertirBase from "../../../functions/convertir-base.js";
+import ResultadoTable from "../ResultadoTable";
 import calcularFormula from "../../../functions/formulas.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
 import CertificadoTable from "../CertificadoTable";
@@ -160,7 +128,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     export default {
-        components: { PresupuestoIncertidumbre, CertificadoTable },
+        components: { PresupuestoIncertidumbre, CertificadoTable, ResultadoTable },
         props: ['form', 'medida', 'incertidumbres'],
         data() {
             return {

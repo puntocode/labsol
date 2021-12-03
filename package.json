@@ -28,6 +28,8 @@
     },
     "dependencies": {
         "@lottiefiles/lottie-player": "^1.1.1",
+        "highcharts": "^9.3.2",
+        "highcharts-vue": "^1.4.0",
         "jspdf": "^2.3.1",
         "lottie-player-vue": "^0.0.16",
         "moment": "^2.29.1",
@@ -35,6 +37,7 @@
         "v-select2-component": "^0.4.7",
         "v-select2-multiple-component": "^0.1.1",
         "vue-bootstrap-datetimepicker": "^5.0.1",
+        "vue-plotly": "^1.1.0",
         "vue-select2": "^0.2.6",
         "vue-spinner": "^1.0.4",
         "vue-sweetalert2": "^5.0.2",
