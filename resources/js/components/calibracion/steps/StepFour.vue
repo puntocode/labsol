@@ -5,7 +5,26 @@
                 <slot></slot>
             </div>
 
-            <div class="row">
+            <div class="form-group row text-left">
+                <label class="col-md-2 col-form-label">Documentos</label>
+                <div class="col-md-10">
+                    <a  v-if="datos.procedimiento.accredited_scope"
+                        class="text-primary mr-5"
+                        target="_parent"
+                        :href="`${asset}media/docs/alcance-acreditado.pdf`">
+                        Alcance Acreditado |
+                    </a>
+                </div>
+            </div>
+
+            <div class="form-group row text-left">
+                <label class="col-md-2 col-form-label">Observaciones Generales</label>
+                <div class="col-md-10">
+                    <textarea type="text" class="form-control" v-model="datos.general" disabled></textarea>
+                </div>
+            </div>
+
+            <div class="row mt-10">
                 <div class="col-md-5 offset-md-2 text-center">
                     <h4 class="mb-4">Indicación del Patrón (IP)</h4>
                     <select class="form-control" v-model="formulario.valores_medidas.ip_medida_general" @change="changeUnidadMedida($event)">
@@ -129,11 +148,11 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     export default {
         components: { PresupuestoIncertidumbre, CertificadoTable, ResultadoTable },
-        props: ['form', 'medida', 'incertidumbres'],
+        props: ['form', 'medida', 'incertidumbres', 'datos'],
         data() {
             return {
+                asset: window.asset,
                 formulario: {
-                    //...this.form,
                     valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
                     valores: [
                         {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
@@ -517,7 +536,6 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
             siguiente() {
                 this.$emit('click-next')
-                //this.$emit('update:form', this.formulario);
             },
         }
 

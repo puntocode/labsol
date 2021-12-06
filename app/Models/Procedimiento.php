@@ -12,8 +12,8 @@ class Procedimiento extends Model
 
     protected $guarded = [];
     protected $casts = ['accredited_scope' => 'boolean'];
-    protected $appends = [ 'fullname' ];
     protected $with = ['patrones', 'ambiental', 'magnitud'];
+    protected $appends = [ 'fullname' ];
 
     public function patrones(){
         return $this->hasMany(PatronProcedimiento::class);
@@ -50,5 +50,9 @@ class Procedimiento extends Model
 
     public function getFullnameAttribute(){
         return $this->name .'  - '. $this->code;
+    }
+
+    public function acreditedScopeURL(){
+        return asset('media/docs/alcance-acreditado.pdf');
     }
 }

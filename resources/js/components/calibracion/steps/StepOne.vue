@@ -102,6 +102,13 @@
                 </div>
             </div>
 
+            <div class="form-group row text-left">
+                <div class="col-12 d-flex">
+                    <label class="label-line">Observaciones Generales</label>
+                    <textarea type="text" class="form-control" v-model="datos.general" disabled></textarea>
+                </div>
+            </div>
+
             <button type="button"
                 class="float-right next action-button btn btn-primary"
                 title="Por favor completa todos los campos para continuar"

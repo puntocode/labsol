@@ -169,6 +169,12 @@
                                 @endif
                             </div>
 
+                            @if($procedimiento->accredited_scope)
+                                <div class="col-10 mt-4">
+                                    <a href="{{ $procedimiento->acreditedScopeURL() }}" target="_blank"><i class="fas fa-file mr-3"></i>Alcance Acreditado</a>
+                                </div>
+                                <editar-acreditado></editar-acreditado>
+                            @endif
                         </div>
 
                         <div class="mt-6 row">
@@ -187,12 +193,14 @@
 
 @section('rutas')
 <script>
+    const acreditado = "{{ route('panel.procedimientos.update.acreditado') }}";
     const updateRoute = "{{ route('panel.procedimientos.update.ema') }}";
     const getPatron = "{{ route('panel.patrones.index') }}";
     const getEquipos = "{{ route('panel.equipos.index') }}";
 
     window.routes = {
         'getEquipos': getEquipos,
+        'acreditado': acreditado,
         'getPatron': getPatron,
         'update': updateRoute,
     }

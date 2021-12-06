@@ -51,6 +51,7 @@ Vue.component('entrada-form',        require('./components/entrada-instrumentos/
 Vue.component('entrada-edit',        require('./components/entrada-instrumentos/EntradaEdit.vue').default);
 
 Vue.component('procedimiento-card',  require('./components/procedimientos/ProcedimientoCard.vue').default);
+Vue.component('editar-acreditado',   require('./components/procedimientos/EditarAcreditado.vue').default);
 Vue.component('editar-ema',          require('./components/procedimientos/EditarEma.vue').default);
 
 Vue.component('documentos',          require('./components/documentos/Documentos.vue').default);

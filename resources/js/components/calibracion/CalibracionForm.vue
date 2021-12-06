@@ -24,7 +24,7 @@
         <!-- paso 2 --------------------------------------------------------------------------------------------------------------------->
         <step-two
             :form.sync="form"
-            :procedimiento="data.instrumentos.procedimiento[0]"
+            :datos="datos"
             @click-next="next"
             v-if="this.steps == 2">
             <h2 class="font-weight-bold">Patrones utilizados:</h2>
@@ -34,7 +34,7 @@
         <!-- paso 3 --------------------------------------------------------------------------------------------------------------------->
         <step-three
             :form.sync="form"
-            :datos="{ tipo: data.type, procedimiento: data.instrumentos.procedimiento[0].code }"
+            :datos="datos"
             @click-next="next"
             v-if="this.steps == 3">
             <h2 class="font-weight-bold">Datos iniciales de Calibración:</h2>
@@ -46,6 +46,7 @@
             :form="form"
             :medida="magnitud"
             :incertidumbres="incertidumbres"
+            :datos="datos"
             @click-next="next"
             v-if="this.steps == 4">
             <h2 class="font-weight-bold">Valores Obtenidos:</h2>
@@ -55,6 +56,7 @@
         <!-- paso 5 --------------------------------------------------------------------------------------------------------------------->
         <step-five
             :form.sync="form"
+            :datos="datos"
             @click-next="next"
             v-if="this.steps == 5">
             <h2 class="font-weight-bold">Datos finales de Calibración:</h2>
@@ -109,6 +111,9 @@
                 this.datos.number = this.data.number;
                 this.datos.cliente_name = this.data.entrada_instrumentos.cliente.name;
                 this.datos.instrumento = this.data.instrumentos.name;
+                this.datos.general = this.data.entrada_instrumentos.obs_general;
+                this.datos.procedimiento = this.data.instrumentos.procedimiento[0];
+                this.datos.tipo = this.data.type;
                 this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
 
 

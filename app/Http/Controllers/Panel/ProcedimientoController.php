@@ -132,10 +132,6 @@ class ProcedimientoController extends Controller
         return response()->json(Procedimiento::find($id));
     }
 
-    public function getProcedimientoForInstrumento($instrumento){
-       // $procedimiento = Procedimiento::with('instrumentos')->where()
-        return response()->json();
-    }
 
     public function updateEma(Request $request)
     {
@@ -183,6 +179,12 @@ class ProcedimientoController extends Controller
         unlink($path);
         $procedimiento->pdf = null;
         $procedimiento->save();
+        return response()->json(Response::HTTP_OK);
+    }
+
+    public function updateAcreditado(Request $request){
+        $url = 'media/docs';
+        $request->documento->move(public_path($url), 'alcance-acreditado.pdf');
         return response()->json(Response::HTTP_OK);
     }
 

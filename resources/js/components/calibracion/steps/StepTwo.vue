@@ -14,8 +14,16 @@
                <label class="col-sm-3 col-form-label">Equipos De Medición Ambiental</label>
                 <div class="col-md-9">
                     <select v-model="formulario.ema" class="form-control">
+                        <option value="null" disabled>-- Selecione un equipo --</option>
                         <option v-for="(ema, i) in ambiental" :key="i">{{ ema }}</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="form-group row text-left">
+                <label class="col-sm-3 col-form-label">Observaciones Generales</label>
+                <div class="col-md-9">
+                    <textarea type="text" class="form-control" v-model="datos.general" disabled></textarea>
                 </div>
             </div>
         </div>
@@ -35,7 +43,7 @@
 
     export default {
         components: { SelectMultiple },
-        props: ['form', 'procedimiento'],
+        props: ['form', 'datos'],
         data() {
             return {
                 formulario: { ...this.form },
@@ -54,14 +62,13 @@
 
         methods: {
             async fetch(){
-                this.ambiental = await this.procedimiento.ambiental.code
-                this.patrones = await this.procedimiento.patrones.map(patron => {
+                this.ambiental = await this.datos.procedimiento.ambiental.code
+                this.patrones = await this.datos.procedimiento.patrones.map(patron => {
                     return {name: patron.patron, code: patron.code}
                 });
 
                 if(this.form.patrones === null){
                     this.formulario.patrones = this.patrones.map(patron => { return {name: patron.name, code: []} });
-                    this.formulario.ema = this.ambiental[0];
                 }
             },
 
@@ -84,6 +91,7 @@
 
         validations:{
             formulario:{
+                ema: {required},
                 patrones: {
                     $each: {
                         name: {required},

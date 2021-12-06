@@ -43,6 +43,20 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-group row text-left mt-10">
+                <div class="col-md-12 d-flex">
+                    <label class="label-line">Observaciones</label>
+                    <textarea class="form-control w-100" v-model="formulario.obs"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group row text-left">
+                <div class="col-12 d-flex">
+                    <label class="label-line">Observaciones Generales</label>
+                    <textarea type="text" class="form-control" v-model="datos.general" disabled></textarea>
+                </div>
+            </div>
         </div>
 
         <button type="button"
@@ -60,7 +74,7 @@
 
     export default {
         components: { datePicker },
-        props: ['form'],
+        props: ['form', 'datos'],
         data() {
             return {
                 formulario: {...this.form},

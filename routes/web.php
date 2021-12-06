@@ -175,6 +175,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::post('/procedimientos/doc-delete/{id}', 'ProcedimientoController@deleteDocument')->name('procedimientos.doc.del')->middleware('can:panel.database');
     Route::delete('/procedimientos/patron-delete/{id}', 'ProcedimientoController@destroyProcedimientoPatron')->name('patron_procedimiento.delete')->middleware('can:panel.database');
     Route::put('/procedimiento/update-ema', 'ProcedimientoController@updateEma')->name('procedimientos.update.ema')->middleware('can:panel.database');
+    Route::post('/procedimiento/update-acreditado', 'ProcedimientoController@updateAcreditado')->name('procedimientos.update.acreditado')->middleware('can:panel.database');
 
     # -- Expedientes --
     Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');
