@@ -189,6 +189,11 @@ class PatronController extends Controller
         ];
     }
 
+    public function getManuales(Request $request){
+        $patron = Patron::with('documents')->where('code', $request['patron'])->first();
+        return response()->json($patron);
+    }
+
 
     #Historial de calibracion --------------------------------------------------------------------------------------------------
     public function patronCalibrationHistory(Patron $patron, $id)

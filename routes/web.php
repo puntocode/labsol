@@ -73,6 +73,10 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Calibración  --
     Route::resource('/calibracion', 'CalibracionController')->middleware('can:panel.database');
     Route::get('/calibraciones/expediente/{expediente_id}', 'CalibracionController@calibrarExpediente')->name('calibrar.expediente')->middleware('can:panel.database');
+    Route::resource('/valors', 'ValorController')->middleware('can:panel.database');
+    Route::resource('/valor-resultado', 'ValorResultadoController')->middleware('can:panel.database');
+    Route::resource('/valor-incertidumbre', 'ValorIncertidumbreController')->middleware('can:panel.database');
+    Route::resource('/incertidumbre-resultados', 'ValorIncertidumbreResultadoController')->middleware('can:panel.database');
 
 
     Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration')->name('alert.calibration');
@@ -88,6 +92,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Patrones Documentos--
     Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
     Route::post('/patron-doc/{patron}', 'PatronController@storeDocument')->name('patrones.doc.store')->middleware('can:panel.database');
+    Route::get('/patron-manuales', 'PatronController@getManuales')->name('patrones.manuales')->middleware('can:panel.database');
+
 
     # -- Patrones Historial Calibracion--
     Route::get('/patron-calibration-history/{patron}/{id}', 'PatronController@patronCalibrationHistory')->name('patron.calibration-history')->middleware('can:panel.database');
@@ -156,15 +162,6 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::delete('/documento', 'HistorialController@destroyDocument')->name('document.destroy')->middleware('can:panel.database');
 
     # -- Incertidumbre --
-    Route::resource('/incertidumbre', 'IncertidumbreController')->names([
-        'create' => 'incertidumbre.create',
-        'edit'  => 'incertidumbre.edit',
-        'update' => 'incertidumbre.update',
-        'store' => 'incertidumbre.store',
-        'show'  => 'incertidumbre.show',
-        'destroy' => 'incertidumbre.destroy'
-    ])->middleware('can:panel.admin');
-
     Route::resource('/incertidumbre', 'IncertidumbreController')->middleware('can:panel.admin');
 
 

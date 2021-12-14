@@ -9,22 +9,30 @@
                 <label class="col-md-2 col-form-label">Documentos</label>
                 <div class="col-md-10">
                     <a  v-if="datos.procedimiento.accredited_scope"
-                        class="text-primary mr-5"
-                        target="_parent"
+                        class="badge badge-info mr-5"
+                        target="_blank"
                         :href="`${asset}media/docs/alcance-acreditado.pdf`">
-                        Alcance Acreditado |
+                        Alcance Acreditado
+                    </a>
+
+                    <a  v-for="(documento, index) of documentos" :key="index"
+                        class="badge badge-info mr-5"
+                        target="_blank"
+                        :href="documento.url">
+                        {{documento.nombre }}
                     </a>
                 </div>
+
             </div>
 
-            <div class="form-group row text-left">
+            <div class="form-group row text-left border-bottom border-primary pb-10">
                 <label class="col-md-2 col-form-label">Observaciones Generales</label>
                 <div class="col-md-10">
                     <textarea type="text" class="form-control" v-model="datos.general" disabled></textarea>
                 </div>
             </div>
 
-            <div class="row mt-10">
+            <div class="row mt-12">
                 <div class="col-md-5 offset-md-2 text-center">
                     <h4 class="mb-4">Indicación del Patrón (IP)</h4>
                     <select class="form-control" v-model="formulario.valores_medidas.ip_medida_general" @change="changeUnidadMedida($event)">
@@ -121,7 +129,10 @@
 
             <CertificadoTable :certificados="certificado" :redondeo="redondeo"  />
             <ResultadoTable :resultados="formulario.resultados" :redondeo="redondeo"  />
-            <PresupuestoIncertidumbre :incertidumbres="formulario.incertidumbre" :resultados="formulario.incertidumbre_result" />
+            <PresupuestoIncertidumbre
+                :incertidumbres="formulario.incertidumbre"
+                :resultados="formulario.incertidumbre_result"
+            />
 
             <button type="button"
                 :disabled="disable"
@@ -148,34 +159,35 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     export default {
         components: { PresupuestoIncertidumbre, CertificadoTable, ResultadoTable },
-        props: ['form', 'medida', 'incertidumbres', 'datos'],
+        props: ['form', 'medida', 'datos', 'incertidumbres'],
         data() {
             return {
                 asset: window.asset,
+                certificado: [],
+                documentos: [],
                 formulario: {
                     valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
                     valores: [
-                        {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['-1595', '-1596', '-1595'], iec_medida: '', iec_valor: ['-15.95', '-15.92', '-15.93']},
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
                     ],
                     resultados: [],
                     incertidumbre: [],
                     incertidumbre_result: []
                 },
-                certificado: [],
-                registroEdit: {},
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
+                registroEdit: {},
+                resol: this.form.resolucion,
                 rutas: window.routes,
-                subMultiplos: [],
-                selectPatrones: [],
                 selectIEC: [],
                 selectIP: [],
+                selectPatrones: [],
+                subMultiplos: [],
                 unidadMedidas: [],
-                resol: this.form.resolucion,
             }
         },
         //------------------------------------------------------------------------------------
@@ -195,25 +207,30 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
         methods: {
             async fetch(){
-                const res = await axios.get(this.rutas.submultiplos);
-                this.subMultiplos = await res.data;
+                this.selectPatrones = this.form.patrones[0].code;
+                this.unidadMedidas = this.medida.unit_measurement;
 
-                this.unidadMedidas = this.medida != null ? this.medida.unit_measurement : [];
-                this.selectPatrones = this.form.patrones[0].code
-
-                this.selectIEC = this.subMultiplos.map(unidad => {
-                    return unidad.simbolo === '-' ? this.medidaGlobal : unidad.simbolo+this.medidaGlobal;
-                });
-
-                const resolution = this.form.resolucion.split('.');
+                let resolution = String(this.form.resolucion);
+                resolution = resolution.split('.');
                 if(resolution.length === 2){
-                    const redondeo = resolution[1].split('');
+                    let redondeo = resolution[1].split('');
                     this.redondeo = redondeo.length+1;
                 }
 
-                if(this.selectPatrones.length === 1){
-                    this.formulario.valores.forEach( valor => valor.patron = this.selectPatrones[0]);
-                }
+                //si existe un solo patron entonces autocompletar los patrones
+                if(this.selectPatrones.length == 1) this.formulario.valores.forEach( valor => valor.patron = this.selectPatrones[0] );
+                if(this.form.ip_medida) this.formulario.valores_medidas.ip_medida_general = this.form.ip_medida;
+
+                this.getDocumentos(this.selectPatrones);
+
+                const RESP = await axios.get(this.rutas.submultiplos);
+                this.subMultiplos = await RESP.data;
+
+                this.subMultiplos.forEach(multiplo =>{
+                    let unidad = multiplo.simbolo === '-' ? this.medidaGlobal : multiplo.simbolo + this.medidaGlobal;
+                    this.selectIEC.push(unidad);
+                });
+
             },
 
             async calcularIP(indice)
@@ -226,9 +243,8 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 this.registroEdit = {fila: indice, columna: 2, valor: 'iec-valor'};
 
                 // Buscamos la unidad de medida en el IDE
-                const patron = this.formulario.valores[indice].patron;
-                const res = await axios.get(this.rutas.patronUmIde, {params: {'patron': patron}})
-                const ide = await res.data.ide;
+                const PATRON = this.formulario.valores[indice].patron;
+                const ide = await this.ide(PATRON);
 
                 if(ide.length === 0){
                     this.alertaError('Por favor carga el IDE del patron seleccionado!')
@@ -245,9 +261,8 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 const unidadMedidaIP = this.formulario.valores[indice].ip_medida;
 
                 //Array de valores convertidos a unidad Base
-                const arrayValores = this.convertirUnidadBase(this.formulario.valores[indice].ip_valor, unidadMedidaIP, unidadIPgeneral);
-                //Array de valores convertidos a la unidad IDE
-                const arrayEnIde = this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
+                const arrayValores = await this.convertirUnidadBase(this.formulario.valores[indice].ip_valor, unidadMedidaIP, unidadIPgeneral);
+                const arrayEnIde = await this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
 
                 //Calculo IP
                 const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
@@ -278,87 +293,47 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 let uk = 0
                 if(cercanos[0] !== undefined && cercanos[1] !== undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
 
-                const result = {
-                    patron: patron,
-                    ip: promedio,
-                    desvIP: desviacion,
-                    errorIP: errorIp,
-                    ipCorregido: ipCorregido,
+
+                //Guarda Valores en la BD
+                const VALOR_ID = await this.guardarValores(indice);
+
+                let result = {
+                    valor_id: VALOR_ID,
+                    desv_ip: desviacion,
+                    desv_iec: desviacionIEC,
+                    error_iec: errorIec,
+                    error_ip: errorIp,
+                    patron: PATRON,
                     iec: promedioIEC,
-                    desvIEC: desviacionIEC,
-                    errorIEC: errorIec,
+                    ip: promedio,
+                    ip_corregido: ipCorregido,
                     unidad: unidadIde,
                     uk: parseFloat(uk),
                 }
+                const RESULTADO = await this.guardarValoresResultados(result);
+                this.formulario.resultados.push(RESULTADO);
 
-                this.formulario.resultados.push(result);
-                await this.calcularIncertidumbre(result);
-                this.calcularCertificado(indice);
+                //Guarda las Incertidumbres en la BD
+                let incertidumbres = await this.calcularIncertidumbre(result);
+                this.formulario.incertidumbre.push(incertidumbres);
+
+                let incertidumbre_result = await this.incertidumbreResultado(incertidumbres, indice);
+                this.formulario.incertidumbre_result.push(incertidumbre_result);
+
+                //await this.calcularCertificado(indice);
 
                 $(`#iec-valor-2-${indice}`).attr('disabled', true);
                 this.$swal.close();
             },
 
-            async calcularIncertidumbre(resultado)
-            {
-                const resolucion = await this.convertirResolucion(resultado.unidad);
-
-                const valores = {
-                    ip: resultado.ip,
-                    sIEC: resultado.desvIEC,
-                    sIP: resultado.desvIP,
-                    n: 3,
-                    uk: resultado.uk,
-                    patron: resultado.patron,
-                    r: resolucion,
-                    unidad: resultado.unidad
-                };
-                console.log({valores})
-
-                const ebcModel = this.incertidumbres.ebc.map(objeto => ({...objeto}));
-                const ebc = await this.cargarIncertidumbre(ebcModel, valores);
-
-                const patronModel = this.incertidumbres.patron.map(objeto => ({...objeto}));
-                const patron = await this.cargarIncertidumbre(patronModel, valores);
-
-                this.formulario.incertidumbre.push( {incertidumbreEbc: ebc, incertidumbrePatron: patron, valores} );
-
-                this.incertidumbreResultado(ebc, patron);
-            },
-
-            incertidumbreResultado(ebc, patron)
-            {
-                let uDuEbc = ebc.reduce((total, ebc) => { return total + (ebc.u_du ** 2) }, 0);
-                let uDuPatron = patron.reduce((total, patron) => { return total + (patron.u_du ** 2) }, 0);
-                const suma = uDuEbc + uDuPatron;
-                const incerCombinada = Math.sqrt(suma);
-
-                let potenciaEbc = ebc.reduce((total, ebc) => { return total + ebc.potenciado }, 0);
-                let potenciaPatron = patron.reduce((total, patron) => { return total + patron.potenciado }, 0);
-                const gLibertadEfectivos = Math.pow(incerCombinada, 4) / (potenciaEbc+potenciaPatron);
-                const k = encontrark(gLibertadEfectivos);
-
-                //const cmc = 0;
-                let incertidumbreExpandida = incerCombinada * k;
-                //if(incertidumbreExpandida < cmc) incertidumbreExpandida = cmc;
-
-                const resultado = {
-                    combinada: incerCombinada,
-                    g_libertad_efectivos: gLibertadEfectivos,
-                    factor_cobertura: k,
-                    expandida: incertidumbreExpandida,
-                }
-                this.formulario.incertidumbre_result.push(resultado);
-            },
-
-            async calcularCertificado(indice){
+            calcularCertificado(indice){
                 const unidadAconvertir = this.formulario.valores[0].iec_medida;
                 const unidad = this.formulario.resultados[indice].unidad;
                 const k = this.formulario.incertidumbre_result[indice].factor_cobertura;
 
-                let ip = this.formulario.resultados[indice].ipCorregido;
+                let ip = this.formulario.resultados[indice].ip_corregido;
                 let iec = this.formulario.resultados[indice].iec;
-                let e = this.formulario.resultados[indice].errorIEC;
+                let e = this.formulario.resultados[indice].error_iec;
                 let u = this.formulario.incertidumbre_result[indice].expandida;
 
                 if(unidad !== this.medidaGlobal){
@@ -380,7 +355,6 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
                 this.certificado.push({ip, iec, e, u, k, unidad: unidadAconvertir});
             },
-
 
             convertirUnidadBase(array, unidadMedida, UnidadBase){
                 if(unidadMedida !== UnidadBase){
@@ -439,21 +413,71 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 return interpolacion;
             },
 
-            cargarIncertidumbre(array, valores){
-                const incertidumbre = array.map( incer => {
-                    const u = calcularFormula(incer.formula, valores);
-                    const uDu = u * incer.contribucion_du;
-                    const gLibertad = incer.tipo == 'A' ? valores.n -1 : '∞';
-                    const potencia = incer.tipo == 'A' ? Math.pow(uDu, 4) / gLibertad : 0;
+            async calcularIncertidumbre(resultado)
+            {
+                const resolucion = await this.convertirResolucion(resultado.unidad);
 
-                    incer.contribucion_u = u;
-                    incer.u_du =  uDu;
-                    incer.grados_libertad = gLibertad;
-                    incer.potenciado = potencia === 0 ? 0 : potencia;
-                    return incer;
-                });
+                const valores = {
+                    ip: resultado.ip,
+                    sIEC: resultado.desv_iec,
+                    sIP: resultado.desv_ip,
+                    n: 3,
+                    uk: resultado.uk,
+                    patron: resultado.patron,
+                    r: resolucion,
+                    unidad: resultado.unidad,
+                    valor_id: resultado.valor_id
+                };
+                console.log({valores})
 
-                return incertidumbre;
+                const INCER_MODEL = this.incertidumbres.map(objeto => ({...objeto}));
+                const INCERTIDUMBRES = await this.cargarIncertidumbre(INCER_MODEL, valores);
+
+                let incer_result = [];
+                for(let i = 0; i < INCER_MODEL.length; i++){
+                    incer_result.push({...INCER_MODEL[i], ...INCERTIDUMBRES[i]});
+                }
+
+                return incer_result;
+            },
+
+            cargarIncertidumbre(incertidumbres, valores){
+                let incer = [];
+
+                for (let incertidumbre of incertidumbres){
+                    let u = calcularFormula(incertidumbre.formula, valores);
+                    let u_du = u * incertidumbre.contribucion_du;
+                    let g_libertad = incertidumbre.tipo == 'A' ? valores.n -1 : '∞';
+                    let potencia = incertidumbre.tipo == 'A' ? Math.pow(u_du, 4) / g_libertad : 0;
+                    let incertidumbre_id = incertidumbre.id;
+                    let valor_id = valores.valor_id;
+
+                    let data = {u, u_du, g_libertad, potencia, incertidumbre_id, valor_id};
+                    incer.push(data);
+                }
+
+                return axios.post(this.rutas.valorIncertidumbreStore, incer)
+                    .then(response => response.data);
+            },
+
+            incertidumbreResultado(incertidumbres, indice){
+                let uDu = incertidumbres.reduce((total, incer) => { return total + (incer.u_du ** 2) }, 0);
+                let incertidumbre_combinada = Math.sqrt(uDu);
+                let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
+                let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
+                let k = encontrark(g_libertad_efectivos);
+                let incertidumbre_expandida = incertidumbre_combinada * k;
+                let ip = this.formulario.resultados[indice].ip;
+                let unidad = this.formulario.resultados[indice].unidad;
+                let patron = this.formulario.valores[indice].patron;
+                let valor_id = incertidumbres[0].valor_id;
+                console.log({valor_id});
+                console.log(incertidumbres)
+
+                let data = {incertidumbre_combinada, potencia, g_libertad_efectivos, k, incertidumbre_expandida, ip, unidad, patron, valor_id};
+                return axios.post(this.rutas.valorIncertidumbreResultadoStore, data)
+                    .then(response => response.data);
+
             },
 
             changeUnidadMedida(event){
@@ -489,6 +513,23 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     if(name === 'ip') valor.ip_medida = medida;
                     else valor.iec_medida = medida;
                 })
+            },
+
+            async getDocumentos(patrones){
+                try{
+                    for (let patron of patrones){
+                        const RES = await axios.get(this.rutas.manuales, {params: {'patron': patron}})
+                        let documents = await RES.data.documents;
+
+                        if(documents){
+                            documents.forEach(documento => {
+                                if(documento.category == 'MANUAL') this.documentos.push({paton: patron, url: documento.url, nombre: documento.name})
+                            })
+                        }
+                    }
+                }catch(error){
+                    console.log(error);
+                }
             },
 
             alertaError(mensaje){
@@ -535,10 +576,36 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
             },
 
             siguiente() {
+                this.submit();
                 this.$emit('click-next')
             },
-        }
 
+            submit(){
+                if(this.form.ip_medida !== this.formulario.valores_medidas.ip_medida_general){
+                    let formulario = {...this.form};
+                    formulario.ip_medida = this.formulario.valores_medidas.ip_medida_general;
+                    axios.put(`${this.rutas.index}/${formulario.id}`, formulario)
+                        .then(response => { if(response.status === 200) this.$emit('update:form', formulario); });
+                }
+            },
+
+            ide(patron){
+                return axios.get(this.rutas.patronUmIde, {params: {'patron': patron}})
+                    .then(response => response.data.ide);
+            },
+
+            guardarValores(indice){
+                return axios.post(this.rutas.valorStore, this.formulario.valores[indice])
+                    .then(response => response.data.id);
+            },
+
+            guardarValoresResultados(resultado){
+                return axios.post(this.rutas.valorResultadoStore, resultado)
+                    .then(response => response.data);
+            },
+
+
+        }
 
     }
 </script>

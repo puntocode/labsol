@@ -62,12 +62,10 @@
         },
         watch: {
             certificados() {
-                this.graph = false;
                 const indice = this.certificados.length - 1;
                 this.data[0].x.push(this.certificados[indice].ip);
                 this.data[0].y.push(this.certificados[indice].e);
                 this.data[0].error_y.array.push(this.certificados[indice].u);
-
                 this.key++;
             }
         },

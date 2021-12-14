@@ -16,16 +16,16 @@
                 <tbody>
                     <tr v-for="(resultado, index) in resultados" :key="index">
                         <td>{{ resultado.ip.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                        <td>{{ resultado.desvIP.toFixed(redondeo) }} {{ resultado.unidad }}</td>
+                        <td>{{ resultado.desv_ip.toFixed(redondeo) }} {{ resultado.unidad }}</td>
                         <td>
-                            {{ resultado.errorIP === 'Error'
+                            {{ resultado.error_ip === 'Error'
                             ? 'Error'
-                            : `${resultado.errorIP.toFixed(redondeo)} ${resultado.unidad}` }}
+                            : `${resultado.error_ip.toFixed(redondeo)} ${resultado.unidad}` }}
                         </td>
-                        <td>{{ resultado.ipCorregido.toFixed(redondeo) }} {{ resultado.unidad }}</td>
+                        <td>{{ resultado.ip_corregido.toFixed(redondeo) }} {{ resultado.unidad }}</td>
                         <td>{{ resultado.iec.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                        <td>{{ resultado.desvIEC.toFixed(redondeo) }} {{ resultado.unidad }}</td>
-                        <td>{{ resultado.errorIEC.toFixed(redondeo) }}</td>
+                        <td>{{ resultado.desv_iec.toFixed(redondeo) }} {{ resultado.unidad }}</td>
+                        <td>{{ resultado.error_iec.toFixed(redondeo) }}</td>
                     </tr>
 
                 </tbody>

@@ -27,6 +27,10 @@ class Procedimiento extends Model
         return $this->belongsToMany(Instrumento::class);
     }
 
+    public function incertidumbres(){
+        return $this->belongsToMany(Incertidumbre::class);
+    }
+
     public function magnitud(){
         return $this->belongsTo(Magnitude::class, 'magnitud_id');
     }

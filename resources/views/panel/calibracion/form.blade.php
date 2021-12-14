@@ -25,18 +25,28 @@
         window.user_id = "{{ auth()->user()->id }}";
         window.asset = "{{ URL::asset('')  }}";
 
-        const patronUmIde = "{{ route('panel.patron.ide.um') }}";
-        const submultiplos = "{{ route('panel.patrones.unidades_medidas') }}";
-        const storeCalibracion = "{{ route('panel.calibracion.store') }}";
-        const indexCalibracion = "{{ route('panel.calibracion.index') }}";
-        const estadoExpediente = "{{ route('panel.expedientes.update_estado') }}";
+        const INDEX = "{{ route('panel.calibracion.index') }}";
+        const MANUALES = "{{ route('panel.patrones.manuales') }}";
+        const VALOR_STORE = "{{ route('panel.valors.store') }}";
+        const SUBMULTIPLOS = "{{ route('panel.patrones.unidades_medidas') }}";
+        const PATRON_UM_IDE = "{{ route('panel.patron.ide.um') }}";
+        const STORE_CALIBRACION = "{{ route('panel.calibracion.store') }}";
+        const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
+        const VALOR_RESULTADO_STORE = "{{ route('panel.valor-resultado.store') }}";
+        const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor-incertidumbre.store') }}";
+        const VALOR_INCERTIDUMBRE_RESULTADO_STORE = "{{ route('panel.incertidumbre-resultados.store') }}";
 
         window.routes = {
-            'index': indexCalibracion,
-            'store': storeCalibracion,
-            'patronUmIde': patronUmIde,
-            'submultiplos': submultiplos,
-            'estadoExpediente': estadoExpediente
+            'index': INDEX,
+            'store': STORE_CALIBRACION,
+            'manuales': MANUALES,
+            'valorStore': VALOR_STORE,
+            'patronUmIde': PATRON_UM_IDE,
+            'submultiplos': SUBMULTIPLOS,
+            'estadoExpediente': ESTADO_EXPEDIENTE,
+            'valorResultadoStore': VALOR_RESULTADO_STORE,
+            'valorIncertidumbreStore': VALOR_INCERTIDUMBRE_STORE,
+            'valorIncertidumbreResultadoStore': VALOR_INCERTIDUMBRE_RESULTADO_STORE,
         }
     </script>
 @endsection
