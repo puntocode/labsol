@@ -435,6 +435,14 @@ div.form-readonly .form-control,
     background-color: var(--brand_cyan);
 }
 
+.border-white{
+    border: 2px solid white;
+}
+
+.font-bold{
+    font-weight: 600;
+}
+
 @media (max-width: 991px) {
     .modal-dialog {
         max-width: 75%;
@@ -487,7 +495,7 @@ div.form-readonly .form-control,
         border-radius: 0;
         /*color: var(--brand_cyan);*/
         color: white;
-        background-color: var(--brand_cyan_medium)];
+        background-color: var(--brand_cyan_medium);
     }
 
     .header-tabs .nav-item .nav-link{
@@ -681,4 +689,24 @@ h3.wizard-title {
 #tableIncertidumbre tbody th, #tableIncertidumbre tbody td{
     border-bottom-width: 1px;
     text-align: center;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#wrap{
+    min-height: 100vh;
+}
+
+.hiddenRow {
+    padding: 0 !important;
+}
+
+.pointer{
+    cursor: pointer;
 }

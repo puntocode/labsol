@@ -11,7 +11,7 @@ class ContratoController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -31,10 +31,7 @@ class ContratoController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
         $contrato = NULL;
-
         return view('panel.contratos.form', compact('contrato'));
     }
 
@@ -46,7 +43,6 @@ class ContratoController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         return redirect(route('panel.clientes.contratos.index'));
     }
 
@@ -58,7 +54,7 @@ class ContratoController extends Controller
      */
     public function show($id)
     {
-        $view_mode = 'readonly';        
+        $view_mode = 'readonly';
         $contrato = config('demo.clientes')[$id];
 
         return view('panel.contratos.form', compact('contrato', 'view_mode'));
@@ -72,10 +68,7 @@ class ContratoController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
         $contrato = config('demo.clientes')[$id];
-
         return view('panel.contratos.form', compact('contrato'));
     }
 
@@ -88,8 +81,6 @@ class ContratoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
         return redirect(route('panel.clientes.contratos.index'));
     }
 
@@ -101,6 +92,5 @@ class ContratoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 }

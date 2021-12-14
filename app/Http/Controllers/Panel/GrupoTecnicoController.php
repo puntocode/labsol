@@ -11,7 +11,7 @@ class GrupoTecnicoController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -31,9 +31,7 @@ class GrupoTecnicoController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         $grupo_tecnico = NULL;
-
         return view('panel.tecnicos.grupos.form', compact('grupo_tecnico'));
     }
 
@@ -45,7 +43,6 @@ class GrupoTecnicoController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         return redirect(route('panel.tecnicos.grupos.index'));
     }
 
@@ -71,9 +68,7 @@ class GrupoTecnicoController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         $grupo_tecnico = config('demo.gruposTecnicos')[$id];
-
         return view('panel.tecnicos.grupos.form', compact('grupo_tecnico'));
     }
 
@@ -86,7 +81,6 @@ class GrupoTecnicoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         return redirect(route('panel.tecnicos.grupos.index'));
     }
 
@@ -98,6 +92,5 @@ class GrupoTecnicoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 }

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Condition;
+use App\Models\Magnitude;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PanelController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+
     }
 
     public function index(){
@@ -115,11 +118,23 @@ class PanelController extends Controller
     		]
     	];
 
-        $auth_user = \Auth::user();
+        $auth_user = Auth::user();
 
-        if($auth_user->hasRole('tecnico'))
-            return redirect(route('panel.perfil.index'));
+        // if($auth_user->hasRole('tecnico'))
+        //     return redirect(route('panel.perfil.index'));
 
         return view('panel.index', compact('resumen'));
     }
+
+
+    public function getCondition(){
+        return response()->json(Condition::patron()->get());
+    }
+
+
+    public function getMagnitudes(){
+        return response()->json(Magnitude::all());
+    }
+
+
 }

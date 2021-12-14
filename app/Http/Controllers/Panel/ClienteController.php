@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -19,8 +16,7 @@ class ClienteController extends Controller
      */
 
     public function index(){
-        $clientes = config('demo.clientesContacto');
-
+        $clientes = Cliente::all();
         return view('panel.clientes.index', compact('clientes'));
     }
 
@@ -32,10 +28,7 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-        $cliente = NULL;
-
+        $cliente = null;
         return view('panel.clientes.form', compact('cliente'));
     }
 
@@ -47,9 +40,9 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-        $clientes = config('demo.clientesContacto');
-        return view('panel.clientes.index', compact('clientes'));
+        //dd($request->all());
+        $customer = Cliente::create($this->validateData());
+        return response()->json($customer);
     }
 
     /**
@@ -60,14 +53,13 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $view_mode = 'readonly';
-        $cliente = config('demo.clientesContacto')[$id];
-
-        return view('panel.clientes.form', compact('cliente', 'view_mode'));
+        $cliente = Cliente::findOrFail($id);
+        return response()->json($cliente);
+        //return view('panel.clientes.form', compact('cliente', 'view_mode'));
     }
 
     public function ficha($id){
-      $cliente = config('demo.clientesContacto')[$id];
+      $cliente = Cliente::find($id);
       $facturas = config('demo.facturas');
       $expedientes = config('demo.expedientes');
 
@@ -82,10 +74,7 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-        $cliente = config('demo.clientesContacto')[$id];
-
+        $cliente = Cliente::find($id);
         return view('panel.clientes.form', compact('cliente'));
     }
 
@@ -98,9 +87,8 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
-
-        return redirect(route('panel.clientes.index'));
+        $cliente = Cliente::whereId($id)->update($this->validateData());
+        return response()->json($cliente);
     }
 
     /**
@@ -111,13 +99,22 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calibracion', 'laboratorio')) abort(403);
 
     }
 
     public function equipos(){
         $equipos = config('demo.equiposClientes');
-
         return view('panel.clientes.equipos.index', compact('equipos'));
+    }
+
+
+    public function validateData()
+    {
+        return request()->validate([
+            'code'    => 'nullable',
+            'name'    => 'required',
+            'contact' => 'nullable',
+            'ruc'     => 'nullable',
+        ]);
     }
 }

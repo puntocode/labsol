@@ -3,10 +3,10 @@
 	<!--begin::Container-->
 	<div class="container-fluid">
 		<!--begin::Left-->
-		<div class="d-none d-lg-flex align-items-center mr-3">
+		<div class="mr-3 d-none d-lg-flex align-items-center">
 			<!--begin::Logo-->
-			<a href="#!" class="mr-5">
-				<img alt="Logo" src="{{asset('media/logos/logo_color_large.png')}}" class="max-h-35px" />
+			<a href="{{route('panel.index')}}" class="mr-5">
+				<img alt="Logo" src="{{asset('media/logos/logo_color_large.png')}}" class="max-h-30px" />
 			</a>
 			<!--end::Logo-->
 

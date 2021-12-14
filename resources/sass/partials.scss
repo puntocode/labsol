@@ -1,0 +1,40 @@
+.priority {
+    display: flex;
+
+    input[type="radio"] {
+        display: none;
+        &:checked + label {
+            background-color: var(--color);
+            color: #fff !important;
+            transition: background-color 0.5s ease-out;
+            &:before {
+                height: 12px;
+                width: 12px;
+                border: 2px solid white;
+                background-color: var(--color);
+                transition: background-color 0.5s ease-out;
+            }
+        }
+    }
+
+    label {
+        position: relative;
+        font-size: 12px;
+        border: 1px solid #e4e6ef;
+        padding: 8px 15px;
+        border-radius: 5px;
+        display: flex;
+        margin-right: 15px;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: auto;
+        &:before {
+            content: "";
+            height: 15px;
+            width: 15px;
+            border: 1px solid #e4e6ef;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    }
+}

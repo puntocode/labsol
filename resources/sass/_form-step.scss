@@ -1,0 +1,19 @@
+#form-step { text-align: center; position: relative; margin-top: 20px;
+    fieldset:not(:first-of-type) {display: none;} //selecciona los fieldset que no sea el primer elemento
+    .form-card{text-align: left;
+        .steps { font-size: 18px; color: gray;}
+    }
+}
+
+#progressbar {margin-bottom: 30px; overflow: hidden; color: lightgrey; padding: 0;
+    li {list-style-type: none; font-size: 15px; width: 25%; float: left; position: relative; z-index: 1; font-weight: 400;
+        &:before{ width: 50px; height: 50px; line-height: 45px; display: block; font-size: 20px; color: #ffffff; background: lightgray; border-radius: 50%; margin: 0 auto 10px auto; padding: 2px;}
+        &:after { content: ''; width: 100%; height: 2px; background: lightgray;  left: 0; top: 25px; position: absolute; z-index: -1;}
+        &.active:before, &.active::after{background: #009bdd}
+    }
+    .active {color: #009bdd;}
+    #basic:before { font-family: "Font Awesome 5 Free"; content: "\f15c"; }
+    #status:before { font-family: "Font Awesome 5 Free"; content: "\f28d"; }
+    #period:before { font-family: "Font Awesome 5 Free"; content: "\f073"; }
+    #confirm:before { font-family: "Font Awesome 5 Free"; content: "\f058"; }
+}
