@@ -32,7 +32,6 @@ class FacturacionController extends Controller
      */
     public function create()
     {
-          if (\Auth::user()->hasAnyRole('jefatura_calidad', 'jefatura_calibracion', 'laboratorio')) abort(403);
     }
 
     /**
@@ -43,7 +42,6 @@ class FacturacionController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('jefatura_calidad', 'jefatura_calibracion', 'laboratorio')) abort(403);
     }
 
     /**
@@ -77,7 +75,6 @@ class FacturacionController extends Controller
      */
     public function update(Request $request, $id)
     {
-          if (\Auth::user()->hasAnyRole('jefatura_calidad', 'jefatura_calibracion', 'laboratorio')) abort(403);
         return redirect(route('panel.facturacion.index'));
     }
 
@@ -89,7 +86,6 @@ class FacturacionController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 
 }

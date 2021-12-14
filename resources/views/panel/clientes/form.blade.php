@@ -5,66 +5,59 @@
 @section('content')
 	<!--begin::Container-->
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Clientes
-			<small class="font-weight-lighter">
-				@if($cliente != NULL)
-					| {{isset($view_mode) && $view_mode == 'readonly' ? 'Ver': 'Editar'}}: {{$cliente->razon_social}} </strong>
-				@else
-				 	| Crear
-				@endif
-			</small>
-		</h3>
+        <h3 class="card-label mb-8">Clientes <small class="font-weight-lighter">| {{ (isset($cliente)) ? 'Editar' : 'Crear' }}</small> </h3>
 
 		<div class="row">
 			<div class="col-lg-3 col-xl-2">
 				<div class="card card-custom card-fixed gutter-b">
 					<div class="card-body ">
-						<div class="flex-grow-1">
-							<ul class="list-unstyled px-0">
-								<li class="mb-5">
-									<a href="{{route('panel.clientes.index')}}" class="as-text text-hover-primary" title="Ir a listado de clientes">
-										<i class="fas fa-arrow-left text-hover-primary"></i>
-										Ir a listado
-									</a>
-								</li>
+						@if (isset($cliente))
+                            <div class="flex-grow-1">
+                                <a href="{{ route('panel.clientes.ficha', $cliente) }}" class="as-text text-hover-primary" title="Ver detalles del Cliente">
+                                    <i class="fas fa-arrow-left text-hover-primary mr-2"></i> Ir al Cliente
+                                </a>
+                                <hr>
+                            </div>
 
-								@if(in_array('crear', $role_actions))
-									<li><hr></li>
+                            <div class="flex-grow-1">
+                                <a href="{{ route('panel.clientes.create') }}" class="as-text text-hover-primary" title="Eliminar este Patrón">
+                                    <i class="far fa-plus-square text-hover-primary mr-2"></i> Nuevo Cliente
+                                </a>
+                                <hr>
+                            </div>
 
-									<li class="mb-5">
-										<a href="{{route('panel.clientes.create')}}" class="as-text text-hover-primary" title="Crear nuevo cliente">
-											<i class="far fa-plus-square text-hover-primary"></i>
-											Crear nuevo
-										</a>
-									</li>
+                            {{-- <div class="flex-grow-1">
+                                <a href="{{ route('panel.patrones.destroy', $patrone) }}" class="as-text text-hover-primary" title="Eliminar este Patrón">
+                                    <i class="fas fa-trash text-hover-primary mr-2"></i> Eliminar Patrón
+                                </a>
+                                <hr>
+                            </div> --}}
+                        @endif
 
-									{{-- <li class="mb-5">
-										<a href="{{route('panel.clientes.contratos.create')}}" class="as-text text-hover-primary" title="Agregar nuevo contrato">
-											<i class="far fa-plus-square text-hover-primary"></i>
-											Agregar contrato
-										</a>
-									</li> --}}
-								@endif
 
-								@if($cliente != NULL && in_array('eliminar', $role_actions))
-									<li><hr></li>
-
-									<li>
-										<a href="#!" class="as-text text-hover-primary" title="Eliminar registro actual">
-											<i class="fas fa-trash-alt text-hover-primary"></i>
-											Eliminar
-										</a>
-									</li>
-								@endif
-							</ul>
-						</div>
+                        <div class="flex-grow-1">
+                            <a href="{{ route('panel.clientes.index') }}" class="as-text text-hover-primary" title="Ir a listado de patrones">
+                                <i class="fas {{ (isset($cliente)) ? 'fa-list' : 'fa-arrow-left' }} text-hover-primary mr-2"></i> Ir a la Lista
+                            </a>
+                        </div>
 					</div>
 				</div>
 			</div>
 
 			<div class="col-lg-9 col-xl-10">
+                <div class="card">
+                    <div class="card-header border-0 pb-0">
+                        <div class="card-title pt-8 border-bottom w-100">
+                            <h3 class="font-weight-bolder text-dark">Datos de cliente <small class="text-danger pl-2"> *Campos requeridos</small></h3>
+                        </div>
+                    </div>
+                    <cliente-card id="{{ isset($cliente) ? $cliente->id : 0 }}"></cliente-card>
+                </div>
+
+
+
 				<!--begin::Card-->
-				<div class="card card-custom mb-5">
+				{{-- <div class="card card-custom mb-5">
 					<div class="card-header border-0">
 						<div class="card-title pt-8 d-block">
 							<h3 class="card-title font-weight-bolder text-dark">Datos del cliente</h3>
@@ -146,9 +139,27 @@
 							</div>
 						@endif
 					</div>
-				</div>
+				</div> --}}
 				<!--end::Card-->
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('rutas')
+    <script>
+        const showRoute   = `{{ route('panel.clientes.show',   isset($cliente) ? $cliente->id : 0) }}`
+        const updateRoute = `{{ route('panel.clientes.update', isset($cliente) ? $cliente->id : 0) }}`
+        const fichaRoute  = `{{ route('panel.clientes.ficha',  isset($cliente) ? $cliente->id : 0) }}`
+        const indexRoute  = `{{ route('panel.clientes.index') }}`
+        const storeRoute  = `{{ route('panel.clientes.store') }}`
+
+        window.routes = {
+            'show'  : showRoute,
+            'store' : storeRoute,
+            'update': updateRoute,
+            'ficha' : fichaRoute,
+            'index' : indexRoute,
+        }
+    </script>
 @endsection

@@ -30,7 +30,6 @@ class EgresoController extends Controller
      */
     public function create()
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
 
       $salida_instrumento = NULL;
       $tecnicos = config('demo.tecnicos');
@@ -47,7 +46,6 @@ class EgresoController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         $salida_instrumentos = config('demo.salida_instrumentos');
         return view('panel.egreso.index', compact('salida_instrumentos'));
     }
@@ -75,11 +73,8 @@ class EgresoController extends Controller
      */
     public function edit($id)
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
       $salida_instrumento = config('demo.salida_instrumentos')[$id];
       $tecnicos = config('demo.tecnicos');
-
       return view('panel.egreso.form', compact('salida_instrumento', 'tecnicos'));
     }
 
@@ -92,8 +87,6 @@ class EgresoController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
       return redirect(route('panel.egreso.index'));
     }
 
@@ -105,7 +98,6 @@ class EgresoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 
     public function historial(){

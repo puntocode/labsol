@@ -18,7 +18,7 @@
 				</div>
 				<div class="card-toolbar pt-7">
 					@include('layouts.partials.extras.dropdown._export_list')
-					
+
 					@if(in_array('crear', $role_actions))
 						<!--begin::Button-->
 						<a href="{{route('panel.clientes.create')}}" class="btn btn-primary font-weight-bolder mb-5">
@@ -61,13 +61,13 @@
 								<td>{{$tecnico->grupo}}</td>
 								<td>
 									<span class="badge text-white {{$tecnico->estado == 'activo' ? 'bg-success' : 'bg-gray-600'}}">
-										{{$tecnico->estado}}	
-									</span>									
+										{{$tecnico->estado}}
+									</span>
 								</td>
 								<td>
 									@if(in_array('ver', $role_actions))
 										<a href="{{route('panel.tecnicos.show', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">
-											<i class="la la-eye text-primary"></i>
+											<i class="fas fa-list text-primary"></i>
 										</a>
 									@elseif(in_array('editar', $role_actions))
 										<a href="{{route('panel.tecnicos.edit', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Editar registro">
@@ -82,7 +82,7 @@
 									@endif
 								</td>
 							</tr>
-						@endforeach												
+						@endforeach
 					</tbody>
 				</table>
 				<!--end: Datatable-->
@@ -105,6 +105,6 @@
 			$('#tableInpuntSearch').keyup(function(){
 			    oTable.search($(this).val()).draw() ;
 			});
-		});		
+		});
 	</script>
 @endsection

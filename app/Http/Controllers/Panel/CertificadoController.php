@@ -32,8 +32,6 @@ class CertificadoController extends Controller
      */
     public function create()
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
       return redirect(route('panel.calibracion.certificados.index'));
     }
 
@@ -45,8 +43,6 @@ class CertificadoController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
         return redirect(route('panel.calibracion.certificados.index'));
     }
 
@@ -69,8 +65,6 @@ class CertificadoController extends Controller
      */
     public function edit($id)
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
       return redirect(route('panel.calibracion.certificados.index'));
     }
 
@@ -83,8 +77,6 @@ class CertificadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
-
         return redirect(route('panel.calibracion.certificados.index'));
     }
 
@@ -96,6 +88,5 @@ class CertificadoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 }

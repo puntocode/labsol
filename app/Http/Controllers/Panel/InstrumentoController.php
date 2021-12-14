@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Instrumento;
 use Illuminate\Http\Request;
 
 class InstrumentoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -19,8 +16,9 @@ class InstrumentoController extends Controller
      */
     public function index()
     {
-        $entrada_instrumentos = config('demo.entrada_instrumentos');
-        return view('panel.instrumentos.index', compact('entrada_instrumentos'));
+        $instrumentos = Instrumento::all();
+        if(request()->wantsJson()) return response()->json($instrumentos);
+        //return view('panel.instrumentos.index', compact('entrada_instrumentos'));
     }
 
     /**
@@ -30,7 +28,6 @@ class InstrumentoController extends Controller
      */
     public function create()
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
 
       $entrada_instrumento = NULL;
       $tecnicos = config('demo.tecnicos');
@@ -49,9 +46,8 @@ class InstrumentoController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
         $entrada_instrumentos = config('demo.entrada_instrumentos');
-        return view('panel.instrumentos.index', compact('entrada_instrumentos'));
+        // return view('panel.instrumentos.index', compact('entrada_instrumentos'));
     }
 
     /**
@@ -78,7 +74,6 @@ class InstrumentoController extends Controller
      */
     public function edit($id)
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
 
       $entrada_instrumento = config('demo.entrada_instrumentos')[$id];
       $tecnicos = config('demo.tecnicos');
@@ -96,9 +91,8 @@ class InstrumentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if (\Auth::user()->hasRole('administrador') === false) abort(403);
 
-      return redirect(route('panel.instrumentos.index'));
+    //   return redirect(route('panel.instrumentos.index'));
     }
 
     /**
@@ -109,11 +103,16 @@ class InstrumentoController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasRole('administrador') === false) abort(403);
     }
 
     public function historial(){
 
+    }
+
+
+    public function getInstrumentos(){
+        $instrumentos = Instrumento::all();
+        return response()->json($instrumentos);
     }
 
 

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlertCalibration;
+use App\Models\Calibracion;
+use App\Models\Expediente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CalibracionController extends Controller
 {
@@ -32,8 +36,6 @@ class CalibracionController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
-
         $calibracion = NULL;
         $expedientes = config('demo.expedientes');
         $clientes = config('demo.clientesContacto');
@@ -49,8 +51,7 @@ class CalibracionController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
-        return redirect(route('panel.calibracion.index'));
+
     }
 
     /**
@@ -61,7 +62,8 @@ class CalibracionController extends Controller
      */
     public function show($id)
     {
-      $view_mode = 'readonly';
+      $calibracion = Calibracion::find($id);
+      return response()->json($calibracion);
     }
 
     /**
@@ -72,9 +74,7 @@ class CalibracionController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
         $calibracion = config('demo.calibraciones')[$id];
-
         return view('panel.clientes.form', compact('calibracion'));
     }
 
@@ -87,9 +87,13 @@ class CalibracionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
-        return redirect(route('panel.calibracion.index'));
+        $calibracion = Calibracion::find($request['id'])->fill($request->all());
+        if($calibracion->isDirty()){
+            $calibracion->update($request->all());
+        }
+        return response()->json($calibracion);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -99,7 +103,26 @@ class CalibracionController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->hasAnyRole('secretaria', 'jefatura_calidad', 'laboratorio')) abort(403);
+    }
+
+
+    public function getAlertCalibration(){
+        return response()->json(AlertCalibration::all());
+    }
+
+
+    public function calibrarExpediente($expediente_id)
+    {
+        $userId = Auth::id();
+        $calibracion = Calibracion::where('expediente_id', $expediente_id)->first();
+
+        if($calibracion == null){
+            $calibracion = Calibracion::create(['expediente_id' => $expediente_id, 'user_id' => $userId]);
+        }
+
+        $expediente = Expediente::calibration()->findOrFail($expediente_id);
+        $expediente->update(['expediente_estado_id' => 11 ]);
+        return view('panel.calibracion.form', compact('expediente'));
     }
 
 }

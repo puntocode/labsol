@@ -3083,7 +3083,7 @@ input[type="button"].btn-block {
   .custom-file-input:disabled ~ .custom-file-label {
     background-color: #F3F6F9; }
   .custom-file-input:lang(en) ~ .custom-file-label::after {
-    content: "Browse"; }
+    content: "Buscar"; }
   .custom-file-input ~ .custom-file-label[data-browse]::after {
     content: attr(data-browse); }
 
@@ -3113,7 +3113,7 @@ input[type="button"].btn-block {
     padding: 0.65rem 1rem;
     line-height: 1.5;
     color: #3F4254;
-    content: "Browse";
+    content: "Buscar";
     background-color: #F3F6F9;
     border-left: inherit;
     border-radius: 0 0.42rem 0.42rem 0; }
@@ -40651,9 +40651,9 @@ code {
   .dropdown-menu.dropdown-menu-md {
     width: 250px; } }
 
-@media (min-width: 380px) {
+@media (min-width: 382px) {
   .dropdown-menu.dropdown-menu-lg {
-    width: 350px; } }
+    width: 382px; } }
 
 @media (min-width: 430px) {
   .dropdown-menu.dropdown-menu-xl {
@@ -41150,10 +41150,10 @@ code {
 .table.table-separate th, .table.table-separate td {
   border-top: 0;
   border-bottom: 1px solid #EBEDF3; }
-  .table.table-separate th:first-child, .table.table-separate td:first-child {
+  /* .table.table-separate th:first-child, .table.table-separate td:first-child {
     padding-left: 0 !important; }
   .table.table-separate th:last-child, .table.table-separate td:last-child {
-    padding-right: 0 !important; }
+    padding-right: 0 !important; } */
 
 .table.table-separate tfoot th, .table.table-separate tfoot td {
   border-bottom: 0;
@@ -54021,7 +54021,11 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
   body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown):not(.sweetalert2-nopadding) {
     padding-right: 0 !important; }
 
-.swal2-popup {
+    .swal2-popup {
+        padding: 2rem;
+    }
+
+ /*.swal2-popup {
   padding: 2rem;
   border-radius: 0.42rem; }
   .swal2-popup .swal2-icon {
@@ -54078,7 +54082,7 @@ body.swal2-height-auto {
 
 .swal2-icon.swal2-question {
   border-color: #3699FF;
-  color: #3699FF; }
+  color: #3699FF; } */
 
 .tagify {
   border-radius: 0.42rem;

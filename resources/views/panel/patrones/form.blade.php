@@ -1,136 +1,94 @@
 @extends('layouts.panel')
 
 @section('title')Patrones |@endsection
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+@endsection
 
 @section('content')
 	<!--begin::Container-->
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Patrones
-			<small class="font-weight-lighter">
-				@if($patron != NULL)
-					| {{isset($view_mode) && $view_mode == 'readonly' ? 'Ver': 'Editar'}}: {{$patron->descripcion}} </strong>
-				@else
-				 	| Crear
-				@endif
-			</small>
-		</h3>
+        <h3 class="card-label mb-8">Patrones <small class="font-weight-lighter">| {{ (isset($patrone)) ? 'Editar' : 'Crear' }}</small> </h3>
+
 
 		<div class="row">
 			<div class="col-lg-3 col-xl-2">
-				<div class="card card-custom card-fixed gutter-b">
-					<div class="card-body ">
-						<div class="flex-grow-1">
-							<ul class="list-unstyled px-0">
-								<li class="mb-5">
-									<a href="{{route('panel.patrones.index')}}" class="as-text text-hover-primary" title="Ir a listado de patrones">
-										<i class="fas fa-arrow-left text-hover-primary"></i>
-										Ir a listado
-									</a>
-								</li>
+                <div class="card card-custom card-fixed gutter-b">
+                    <div class="card-body ">
+                        @if (isset($patrone))
+                            <div class="flex-grow-1">
+                                <a href="{{ route('panel.patrones.show', $patrone) }}" class="as-text text-hover-primary" title="Ver detalles del Patrón">
+                                    <i class="fas fa-arrow-left text-hover-primary mr-2"></i> Ir al Patrón
+                                </a>
+                                <hr>
+                            </div>
 
-								@if(in_array('crear', $role_actions))
-									<li><hr></li>
+                            <div class="flex-grow-1">
+                                <a href="{{ route('panel.patrones.create') }}" class="as-text text-hover-primary" title="Eliminar este Patrón">
+                                    <i class="far fa-plus-square text-hover-primary mr-2"></i> Nuevo Patrón
+                                </a>
+                                <hr>
+                            </div>
 
-									<li class="mb-5">
-										<a href="{{route('panel.patrones.create')}}" class="as-text text-hover-primary" title="Crear nuevo usuario">
-											<i class="far fa-plus-square text-hover-primary"></i>
-											Crear nuevo
-										</a>
-									</li>
-								@endif
+                            {{-- <div class="flex-grow-1">
+                                <a href="{{ route('panel.patrones.destroy', $patrone) }}" class="as-text text-hover-primary" title="Eliminar este Patrón">
+                                    <i class="fas fa-trash text-hover-primary mr-2"></i> Eliminar Patrón
+                                </a>
+                                <hr>
+                            </div> --}}
+                        @endif
 
-								@if($patron != NULL && in_array('eliminar', $role_actions))
-									<li><hr></li>
 
-									<li>
-										<a href="#!" class="as-text text-hover-primary" title="Eliminar registro actual">
-											<i class="fas fa-trash-alt text-hover-primary"></i>
-											Eliminar
-										</a>
-									</li>
-								@endif
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
+                        <div class="flex-grow-1">
+                            <a href="{{ route('panel.patrones.index') }}" class="as-text text-hover-primary" title="Ir a listado de patrones">
+                                <i class="fas {{ (isset($patrone)) ? 'fa-list' : 'fa-arrow-left' }} text-hover-primary mr-2"></i> Ir a la Lista
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 			<div class="col-lg-9 col-xl-10">
-				<!--begin::Card-->
-				<div class="card card-custom mb-5">
-					<div class="card-header border-0">
-						<div class="card-title pt-8 d-block">
-							<h3 class="card-title font-weight-bolder text-dark">Datos de patrón</h3>
-							<p class="text-muted font-size-sm"><span class="text-danger">*</span> Campos requeridos</p>
-						</div>
-
-						@if($patron != NULL)
-							<div class="card-toolbar">
-								@include('layouts.partials.extras.dropdown._export_list')
-							</div>
-						@endif
-					</div>
-					<div class="card-body">
-						@if(!isset($view_mode) || $view_mode != 'readonly')
-						<form class="mb-5" method="POST" action="{{ $patron != NULL ? route('panel.patrones.update', ($patron->id -1)) : route('panel.patrones.store')}}">
-							{{ csrf_field() }}
-							@if ($patron != NULL)
-				              {{ method_field('PATCH') }}
-				            @endif
-				        @else
-				        	<div class="mb-5 form-readonly">
-				        @endif
-							<div class="row align-items-end">
-
-								<div class="col-12 col-lg-4">
-									<div class="form-group">
-										<label>Descripción <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="descripcion" required value="{{$patron != NULL ? $patron->descripcion : old('descripcion')}}">
-									</div>
-								</div>
-								<div class="col-12 col-lg-4">
-									<div class="form-group">
-										<label>Certificado <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="certificado" required value="{{$patron != NULL ? $patron->certificado : old('certificado')}}">
-									</div>
-								</div>
-
-                <div class="col-12 col-lg-4">
-                  <div class="form-group">
-                    <label>Próxima calibración</label>
-                    <input type="text" class="form-control" name="prox_calibracion" id="prox_calibracion" value="{{$patron != NULL ? $patron->prox_calibracion : old('prox_calibracion')}}">
-                  </div>
+                <div class="card card-custom card-step mb-5">
+                    <div class="card-header border-0">
+                        <div class="card-title pt-8 border-bottom w-100">
+                            <h3 class="card-title font-weight-bolder text-dark">Datos de patrón <small class="text-danger pl-2"> *Campos requeridos</small></h3>
+                            <hr>
+                        </div>
+                    </div>
+                    <patron-card id="{{ isset($patrone) ? $patrone->id : 0 }}"></patron-card>
                 </div>
-
-
-
-
-							</div>
-							<div class="row mt-5">
-								@if(!isset($view_mode) || $view_mode != 'readonly')
-									<button class="btn btn-primary mx-auto">{{$patron != NULL ? 'Guardar' : 'Crear patrón'}}</button>
-								@else
-									<a href="{{route('panel.patrones.index')}}" class="btn btn-primary mx-auto" title="Volver a listado">Volver</a>
-								@endif
-							</div>
-						@if(!isset($view_mode) || $view_mode != 'readonly')
-							</form>
-						@else
-							</div>
-						@endif
-					</div>
-				</div>
-				<!--end::Card-->
-			</div>
+            </div>
 		</div>
 	</div>
 @endsection
-@section('scripts')
-	<script>
-  $('#prox_calibracion').datepicker({
-    todayHighlight: true,
-    orientation: "bottom left"
-  });
 
-  </script>
+@section('rutas')
+    <script>
+        const showRoute        = '{{ route('panel.patrones.show', isset($patrone) ? $patrone->id : 0) }}'
+        const updateRoute      = '{{ route('panel.patrones.update', isset($patrone) ? $patrone->id : 0) }}'
+        const getPatron        = '{{ route('panel.patron.get', isset($patrone) ? $patrone->id : 0) }}'
+        const procedimientos   = '{{ route('panel.procedimientos.index') }}'
+        const formularios      = '{{ route('panel.formularios.index') }}'
+        const alertCalibration = '{{ route('panel.alert.calibration') }}'
+        const createRoute      = '{{ route('panel.patrones.create') }}'
+        const indexRoute       = '{{ route('panel.patrones.index') }}'
+        const storeRoute       = '{{ route('panel.patrones.store') }}'
+        const patronCondition  = '{{ route('panel.condition.all') }}'
+        const patronMagnitud   = '{{ route('panel.magnitud.all') }}'
+
+        window.routes = {
+            'show': showRoute,
+            'store': storeRoute,
+            'index': indexRoute,
+            'update': updateRoute,
+            'create': createRoute,
+            'getPatron': getPatron,
+            'formularios': formularios,
+            'magnitud': patronMagnitud,
+            'condition': patronCondition,
+            'alertCal': alertCalibration,
+            'procedimientos': procedimientos,
+        }
+    </script>
 @endsection

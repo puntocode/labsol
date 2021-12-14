@@ -22,7 +22,7 @@
 							</div>
 						</div>
 						<!--end::Header-->
-						
+
 						<!--begin::Body-->
 						<div class="card-body pb-5 pt-5">
 							<div class="card-content">
@@ -85,7 +85,7 @@
 												<option value="{{$i}}">{{ ($equipo->serie != NULL ?  $equipo->serie .' - ' : '') . $equipo->nombre}}</option>
 											@endforeach
 										</select>
-									</div>							
+									</div>
 
 									<div class="col-12 mb-6">
 										<label>Técnico</label>
@@ -119,7 +119,7 @@
 					<!--end::List Widget 13-->
 				</div>
 
-				<div class="col-md-6 col-lg-7">	
+				<div class="col-md-6 col-lg-7">
 					<div class="card card-custom card-stretch gutter-b pt-7">
 						<!--begin::Header-->
 						<div class="card-header border-0 pt-5">
@@ -135,7 +135,7 @@
 							<!--begin::Body-->
 							<div class="card-body pt-2 px-0">
 								@for ($i = 0; $i < 10; $i++)
-									@include('layouts.components.service_ticket_item_list')
+									@include('components.service_ticket_item_list')
 								@endfor
 							</div>
 						</div>

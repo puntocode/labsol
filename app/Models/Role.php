@@ -14,4 +14,8 @@ class Role extends Model
 	        ->belongsToMany('App\User')
 	        ->withTimestamps();
 	}
+
+    public function getNameAttribute(){
+        return str_replace('_', ' ', $this->attributes['name']);
+    }
 }
