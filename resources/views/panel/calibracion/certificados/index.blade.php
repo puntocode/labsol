@@ -48,20 +48,21 @@
 							<th>Solicitante</th>
 							<th>Instrumento</th>
 							<th>Fecha calibración</th>
-							<th>Acciones</th>
+							<th class="text-center">Detalle</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach ($calibraciones as $i => $calibracion)
+						@foreach ($calibraciones as $calibracion)
 							<tr>
 								<td>{{$calibracion->nro_expediente}}</td>
 								<td>{{$calibracion->solicitante}}</td>
 								<td>{{$calibracion->instrumento}}</td>
 								<td>{{$calibracion->fecha_calibracion}}</td>
-								<td>
-									<a href="{{asset('media//docs/certificado-calibracion.pdf')}}" target="_blank" rel="noreferrer"><i class="nav-icon la la-file-pdf-o"></i> Ver PDF</a>
+								<td class="text-center">
+									<a href="{{ route('panel.calibracion.certificados.print', 11) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles">
+										<i class="fas fa-print text-primary"></i>
+									</a>
 								</td>
-
 							</tr>
 						@endforeach
 					</tbody>
