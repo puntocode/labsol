@@ -74,5 +74,32 @@ class Expediente extends Model
         ->selectRaw('instrumento_id, count(id) cantidad');
     }
 
+    /**
+     * Returns the patterns used for print in Calibration Certificate
+     *
+     * @return array
+     */
+    public function getPatternsForCalibrationCertificate()
+    {
+        $patrones = [];
 
+        foreach ($this->calibracion->patrones as $patronCalibracion) {
+            foreach ($patronCalibracion['code'] as $code) {
+                if (count($patrones) == 4) {
+                    break;
+                }
+
+                $patron = Patron::where('code', $code)->first();
+
+                $patrones[] = (object) [
+                    'code'             => $code,
+                    'description'      => $patronCalibracion['name'],
+                    'certificate'      => $patron->certificate_no,
+                    'next_calibration' => $patron->next_calibration
+                ];
+            }
+        }
+
+        return $patrones;
+    }
 }

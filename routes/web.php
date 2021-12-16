@@ -185,6 +185,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
 
     # -- Certificados --
+    Route::get('/calibracion/certificados/print/{expedienteId}', [CertificadoController::class, 'print'])->name('calibracion.certificados.print')->middleware('can:panel.admin');
+
     Route::resource('/calibracion/certificados', 'CertificadoController')->names([
         'index' => 'calibracion.certificados.index',
         'create' => 'calibracion.certificados.create',

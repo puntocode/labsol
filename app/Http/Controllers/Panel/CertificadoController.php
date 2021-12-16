@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Expediente;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CertificadoController extends Controller
 {
@@ -88,5 +90,26 @@ class CertificadoController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    /**
+     * Imprime los datos el detalle del certificado de calibración
+     *
+     * @param  int expedienteId
+     * @return \Illuminate\Http\Response
+     */
+    public function print($expedienteId)
+    {
+        $expediente = Expediente::calibration()->findOrFail($expedienteId);
+
+        $patrones = $expediente->getPatternsForCalibrationCertificate();
+
+        $tecnicoRealizador = User::where('id', $expediente->tecnicos[0]['id'])->first();
+
+        return view('panel.calibracion.certificados.print', compact(
+            'expediente',
+            'patrones',
+            'tecnicoRealizador'
+        ));
     }
 }
