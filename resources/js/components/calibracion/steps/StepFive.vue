@@ -91,8 +91,8 @@
         //------------------------------------------------------------------------------------
 
        methods: {
-            async siguiente() {
-                await this.submit();
+            siguiente() {
+                this.submit();
                 this.$emit('click-next')
                 this.$emit('update:form', this.formulario);
             },
@@ -101,9 +101,6 @@
                 try{
                     const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
                     this.formulario = await res.data;
-
-                    const data = {expediente_id: this.formulario.expediente_id, expediente_estado_id: 3};
-                    const response = await axios.put(this.rutas.estadoExpediente, data);
                 }catch(error){
                     this.$swal.fire('Error', 'Error al actualizar', 'error');
                 }

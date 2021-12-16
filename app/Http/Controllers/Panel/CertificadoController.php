@@ -32,7 +32,7 @@ class CertificadoController extends Controller
      */
     public function create()
     {
-      return redirect(route('panel.calibracion.certificados.index'));
+      return redirect(route('panel.certificados.index'));
     }
 
     /**
@@ -43,7 +43,7 @@ class CertificadoController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect(route('panel.calibracion.certificados.index'));
+        return redirect(route('panel.certificados.index'));
     }
 
     /**
@@ -65,7 +65,7 @@ class CertificadoController extends Controller
      */
     public function edit($id)
     {
-      return redirect(route('panel.calibracion.certificados.index'));
+      return redirect(route('panel.certificados.index'));
     }
 
     /**
@@ -77,7 +77,7 @@ class CertificadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return redirect(route('panel.calibracion.certificados.index'));
+        return redirect(route('panel.certificados.index'));
     }
 
     /**

@@ -76,6 +76,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/valors', 'ValorController')->middleware('can:panel.database');
     Route::resource('/valor-resultado', 'ValorResultadoController')->middleware('can:panel.database');
     Route::resource('/valor-incertidumbre', 'ValorIncertidumbreController')->middleware('can:panel.database');
+    Route::resource('/valor-certificados', 'ValorCertificadoController')->middleware('can:panel.database');
     Route::resource('/incertidumbre-resultados', 'ValorIncertidumbreResultadoController')->middleware('can:panel.database');
 
 
@@ -185,15 +186,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
 
     # -- Certificados --
-    Route::resource('/calibracion/certificados', 'CertificadoController')->names([
-        'index' => 'calibracion.certificados.index',
-        'create' => 'calibracion.certificados.create',
-        'edit'  => 'calibracion.certificados.edit',
-        'update' => 'calibracion.certificados.update',
-        'store' => 'calibracion.certificados.store',
-        'destroy' => 'calibracion.certificados.destroy',
-        'show' => 'calibracion.certificados.show'
-    ])->middleware('can:panel.admin');
+    Route::resource('/calibracion/certificados', 'CertificadoController')->middleware('can:panel.admin');
 
     Route::resource('/mantenimientos/tecnicos/grupos', 'GrupoTecnicoController')->names([
         'index' => 'tecnicos.grupos.index',

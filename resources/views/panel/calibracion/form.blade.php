@@ -28,11 +28,13 @@
         const INDEX = "{{ route('panel.calibracion.index') }}";
         const MANUALES = "{{ route('panel.patrones.manuales') }}";
         const VALOR_STORE = "{{ route('panel.valors.store') }}";
+        const CERTIFICADOS = "{{ route('panel.certificados.index') }}";
         const SUBMULTIPLOS = "{{ route('panel.patrones.unidades_medidas') }}";
         const PATRON_UM_IDE = "{{ route('panel.patron.ide.um') }}";
         const STORE_CALIBRACION = "{{ route('panel.calibracion.store') }}";
         const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
         const VALOR_RESULTADO_STORE = "{{ route('panel.valor-resultado.store') }}";
+        const VALOR_CERTIFICADO_STORE = "{{ route('panel.valor-certificados.store') }}";
         const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor-incertidumbre.store') }}";
         const VALOR_INCERTIDUMBRE_RESULTADO_STORE = "{{ route('panel.incertidumbre-resultados.store') }}";
 
@@ -42,9 +44,11 @@
             'manuales': MANUALES,
             'valorStore': VALOR_STORE,
             'patronUmIde': PATRON_UM_IDE,
+            'certificados': CERTIFICADOS,
             'submultiplos': SUBMULTIPLOS,
             'estadoExpediente': ESTADO_EXPEDIENTE,
             'valorResultadoStore': VALOR_RESULTADO_STORE,
+            'valorCertificadoStore': VALOR_CERTIFICADO_STORE,
             'valorIncertidumbreStore': VALOR_INCERTIDUMBRE_STORE,
             'valorIncertidumbreResultadoStore': VALOR_INCERTIDUMBRE_RESULTADO_STORE,
         }

@@ -1,6 +1,6 @@
 <template>
     <div class="row text-left">
-        <div class="col-12 mb-18" v-for="(incertidumbre, index) in incertidumbres" :key="index">
+        <div class="col-12 mb-18" v-for="(incer, index) in incertidumbres" :key="index">
             <h3 class="mb-5 pointer" data-toggle="collapse" :data-target="`#collapse-incertidumbre-${index}`">
                 <i class="fas fa-plus mr-3"></i> {{ index+1 }}. Punto de medición: {{ resultados[index].ip.toFixed(2) }} {{ resultados[index].unidad }}
             </h3>
@@ -137,7 +137,7 @@
                 let patron = array.filter(patron => patron.contribucion === 'PATRON');
                 this.ebcs.push(ebc);
                 this.patrons.push(patron);
-            }
+            },
         }
     }
 </script>

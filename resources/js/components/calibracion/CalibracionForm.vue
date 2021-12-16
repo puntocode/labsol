@@ -64,7 +64,7 @@
         </step-five>
 
         <!-- paso 6 --------------------------------------------------------------------------------------------------------------------->
-        <step-six v-if="this.steps == 6">
+        <step-six v-if="this.steps == 6" :expediente_id="data.id">
             <h2 class="font-weight-bold">Calibración Finalizada:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
         </step-six>
@@ -114,95 +114,8 @@
                 this.datos.general = this.data.entrada_instrumentos.obs_general;
                 this.datos.procedimiento = this.data.instrumentos.procedimiento[0];
                 this.datos.tipo = this.data.type;
+                this.datos.expediente_id = this.data.id;
                 this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
-
-
-                // const incertidumbreEbc = [
-                //     {
-                //         contribucion: 'EBC',
-                //         nombre: 'Incertidumbre repetibilidad EBC',
-                //         tipo: 'A',
-                //         distribucion: 'normal',
-                //         formula: 'u_rep_ebc',
-                //         fuente: '𝑠',
-                //         divisor: '√3',
-                //         contribucion_u:  0,
-                //         coeficiente: 1,
-                //         contribucion_du: 1,
-                //         u_du: 0,
-                //         grados_libertad_for: 'n-1',
-                //         grados_libertad: 0
-                //     },
-                //     {
-                //         contribucion: 'EBC',
-                //         nombre: 'Incertidumbre resolución EBC',
-                //         tipo: 'B',
-                //         distribucion: 'rectangular',
-                //         formula: 'u_res_ebc',
-                //         fuente: '𝑟/2',
-                //         divisor: '√3',
-                //         contribucion_u:  0,
-                //         coeficiente: 1,
-                //         contribucion_du: 1,
-                //         u_du: 0,
-                //         grados_libertad_for: '∞',
-                //         grados_libertad: '∞'
-                //     },
-                // ];
-
-                // const incertidumbrePatron = [
-                //     {
-                //         contribucion: 'PATRON',
-                //         nombre: 'Incertidumbre patrón',
-                //         tipo: 'B',
-                //         distribucion: 'normal',
-                //         formula: 'p_inc_p',
-                //         fuente: 'U',
-                //         divisor: 'k',
-                //         contribucion_u:  0,
-                //         coeficiente: 1,
-                //         contribucion_du: 1,
-                //         u_du: 0,
-                //         grados_libertad_for: '∞',
-                //         grados_libertad: '∞'
-                //     },
-                //     {
-                //         contribucion: 'PATRON',
-                //         nombre: 'Incertidumbre resolución EBC',
-                //         tipo: 'B',
-                //         distribucion: 'rectangular',
-                //         formula: 'p_inc_res',
-                //         fuente: '𝑟/2',
-                //         divisor: '√3',
-                //         contribucion_u:  0,
-                //         coeficiente: 1,
-                //         contribucion_du: 1,
-                //         u_du: 0,
-                //         grados_libertad_for: '∞',
-                //         grados_libertad: '∞'
-                //     },
-                //     {
-                //         contribucion: 'PATRON',
-                //         nombre: 'Incertidumbre repetibilidad patrón',
-                //         tipo: 'A',
-                //         distribucion: 'normal',
-                //         formula: 'p_inc_rep',
-                //         fuente: '𝑠',
-                //         divisor: '√3',
-                //         contribucion_u:  0,
-                //         coeficiente: 1,
-                //         contribucion_du: 1,
-                //         u_du: 0,
-                //         grados_libertad_for: 'n-1',
-                //         grados_libertad: 0
-                //     },
-                // ];
-
-                //this.incertidumbres = this.data.instrumentos.procedimiento[0].incertidumbres.map(objeto => ({...objeto}));
-                //let incertidumbreEbc = incertidumbres.filter(ebc => ebc.contribucion === 'EBC' );
-                //let incertidumbrePatron = incertidumbres.filter(patron => patron.contribucion === 'PATRON');
-
-                //this.incertidumbres = { ebc: incertidumbreEbc, patron: incertidumbrePatron}
             },
 
             next(){
