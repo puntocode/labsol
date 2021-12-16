@@ -52,14 +52,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach ($calibraciones as $calibracion)
+						@foreach ($expedientes as $expediente)
 							<tr>
-								<td>{{$calibracion->nro_expediente}}</td>
-								<td>{{$calibracion->solicitante}}</td>
-								<td>{{$calibracion->instrumento}}</td>
-								<td>{{$calibracion->fecha_calibracion}}</td>
+								<td>{{$expediente->number}}</td>
+								<td>{{$expediente->certificate}}</td>
+								<td>{{$expediente->instrumentos->name}}</td>
+								<td>{{$expediente->calibracion->fecha_fin}}</td>
 								<td class="text-center">
-									<a href="{{ route('panel.calibracion.certificados.print', 11) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles">
+									<a href="{{ route('panel.calibracion.certificados.print', $expediente->id) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles">
 										<i class="fas fa-print text-primary"></i>
 									</a>
 								</td>

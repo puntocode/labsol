@@ -118,7 +118,7 @@ class ExpedienteController extends Controller
 
     public function agenda(Request $request){
         $estados = ExpedienteEstado::activo()->get();
-        $expedientes = Expediente::whereNotNull('delivery_date')->get();
+        $expedientes = Expediente::agenda()->get();
         $estadosSum = Expediente::suma()->get();
         return view('panel.expedientes.agenda.index', compact('estados','expedientes', 'estadosSum'));
     }

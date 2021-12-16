@@ -137,8 +137,8 @@
 								</li>
 							@endcan --}}
 
-								<li class="menu-item @if (Route::currentRouteName() == 'panel.calibracion.certificados.index') menu-item-active @endif" aria-haspopup="true">
-									<a href="{{route('panel.calibracion.certificados.index')}}" class="menu-link" title="Ver certificados">
+								<li class="menu-item @if (Route::currentRouteName() == 'panel.certificados.index') menu-item-active @endif" aria-haspopup="true">
+									<a href="{{route('panel.certificados.index')}}" class="menu-link" title="Ver certificados">
 										<span class="menu-text">Certificados</span>
 									</a>
 								</li>

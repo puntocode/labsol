@@ -53,7 +53,7 @@
             <section class="row noPrint">
                 <div class="col text-center my-10">
                     <a href="#" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Ir al Detalle</a>
-                    <a href="{{ route('panel.calibracion.certificados.index') }}" class="btn btn-info mx-4"><i class="fas fa-list"></i> Ir a la Lista</a>
+                    <a href="{{ route('panel.certificados.index') }}" class="btn btn-info mx-4"><i class="fas fa-list"></i> Ir a la Lista</a>
                     <button type="button" class="btn btn-primary" onclick="imprimir()"><i class="fas fa-print"></i> Imprimir</button>
                 </div>
             </section>
@@ -109,7 +109,7 @@
                         </tr>
                         <tr>
                             <th>Modelo:</th>
-                            <td colspan="2">{{ $expediente->instrumentos->modelo }}</td>
+                            <td colspan="2">{{ $expediente->calibracion->modelo }}</td>
                             <th>Tipo:</th>
                             <td>{{ $expediente->calibracion->tipo }}</td>
                         </tr>
