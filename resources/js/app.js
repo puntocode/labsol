@@ -24,6 +24,7 @@ Vue.component('asignar-tecnico',     require('./components/expedientes/AsignarTe
 Vue.component('expediente-form',     require('./components/expedientes/ExpedienteForm.vue').default);
 
 Vue.component('calibracion-form',    require('./components/calibracion/CalibracionForm.vue').default);
+Vue.component('estado-calibracion',  require('./components/calibracion/EstadoCalibracion.vue').default);
 
 Vue.component('patron-maintenance',  require('./components/patrones/PatronMaintenance.vue').default);
 Vue.component('eliminar-historial',  require('./components/patrones/EliminarHistorial.vue').default);

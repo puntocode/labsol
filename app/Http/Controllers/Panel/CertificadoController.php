@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Expediente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Patron;
 
 class CertificadoController extends Controller
 {
@@ -54,7 +55,10 @@ class CertificadoController extends Controller
      */
     public function show($id)
     {
-        $view_mode = 'readonly';
+        $expediente = Expediente::relaciones()->findOrFail($id);
+        $patrones = $expediente->getPatternsForCalibrationCertificate();
+        // dd($expediente->toArray());
+        return view('panel.calibracion.certificados.show', compact('expediente', 'patrones'));
     }
 
     /**
@@ -65,7 +69,7 @@ class CertificadoController extends Controller
      */
     public function edit($id)
     {
-      return redirect(route('panel.certificados.index'));
+        return redirect(route('panel.certificados.index'));
     }
 
     /**
