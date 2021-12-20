@@ -10,6 +10,7 @@ class Calibracion extends Model
     use HasFactory;
 
     protected $casts = [ 'patrones' => 'array'];
+    protected $with = [ 'tecnico' ];
     protected $fillable  = [
         'expediente_id',
         'nro_serie',
@@ -39,4 +40,7 @@ class Calibracion extends Model
     ];
 
 
+    public function tecnico(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

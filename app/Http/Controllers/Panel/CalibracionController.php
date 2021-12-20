@@ -121,7 +121,11 @@ class CalibracionController extends Controller
         }
 
         $expediente = Expediente::calibration()->findOrFail($expediente_id);
-        $expediente->update(['expediente_estado_id' => 11 ]);
+
+        $expediente->update([
+            'expediente_estado_id' => 11,
+        ]);
+
         return view('panel.calibracion.form', compact('expediente'));
     }
 

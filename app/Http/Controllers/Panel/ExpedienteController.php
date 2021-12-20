@@ -144,7 +144,10 @@ class ExpedienteController extends Controller
     {
         $exp = Expediente::findOrFail($request['expediente_id']);
         $exp->expediente_estado_id = $request['expediente_estado_id'];
+
         if($request->has('estado_comentario')) $exp->estado_comentario = $request['estado_comentario'];
+        if($request->has('autorizado_id')) $exp->autorizado_id = $request['autorizado_id'];
+
         $exp->save();
         return response()->json($exp);
     }

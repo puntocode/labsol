@@ -19,4 +19,11 @@ class ValorCertificado extends Model
     {
         return $this->belongsTo(Valor::class);
     }
+
+
+    public function scopeValorTable($query, $id){
+        $query->whereHas('valor', function ($q) use ($id) {
+            return $q->where('calibracion_id', $id);
+        });
+    }
 }

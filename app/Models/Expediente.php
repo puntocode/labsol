@@ -38,6 +38,10 @@ class Expediente extends Model
         return $this->hasOne(Calibracion::class);
     }
 
+    public function autorizado(){
+        return $this->belongsTo(User::class, 'autorizado_id');
+    }
+
     public function getPrioridadAttribute(){
         $prioridad = [
             'priority' => $this->attributes['priority'],

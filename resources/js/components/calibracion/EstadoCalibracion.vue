@@ -44,9 +44,10 @@
                 form: {
                     expediente_id: this.expediente_id,
                     expediente_estado_id: 0,
-                    estado_comentario: ''
+                    estado_comentario: '',
+                    autorizado_id: window.user
                 },
-                rutas: window.routes
+                rutas: window.routes,
             }
         },
 

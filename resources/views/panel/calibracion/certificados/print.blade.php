@@ -87,7 +87,7 @@
         <div class="container">
             <section class="row noPrint">
                 <div class="col text-center my-10">
-                    <a href="#" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Ir al Detalle</a>
+                    <a href="{{ route('panel.certificados.show', $expediente->id) }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Ir al Detalle</a>
                     <a href="{{ route('panel.certificados.index') }}" class="btn btn-info mx-4"><i class="fas fa-list"></i> Ir a la Lista</a>
                     <button type="button" class="btn btn-primary" onclick="imprimir()"><i class="fas fa-print"></i> Imprimir</button>
                 </div>
@@ -238,14 +238,14 @@
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <b>Realizado por:</b>
-                                    {{ $tecnicoRealizador->full_name }}
+                                    {{ $expediente->calibracion->tecnico->name }} {{ $expediente->calibracion->tecnico->last_name }}
                                 </td>
                                 <th colspan="5">6. OBSERVACIONES</th>
                             </tr>
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <b>Código:</b>
-                                    {{ $tecnicoRealizador->uuid }}
+                                    {{ $expediente->calibracion->tecnico->uuid }}
                                 </td>
                                 <td colspan="5">
                                     La incertidumbre expandida de medida informada se expresa como la
@@ -256,6 +256,7 @@
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <b>Autorizado por:</b>
+                                    {{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}
                                 </td>
                                 <td colspan="5" rowspan="2" >
                                     La incertidumbre típica combinada fue determinada en conformidad con
@@ -266,6 +267,7 @@
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <b>Código:</b>
+                                    {{ $expediente->autorizado->uuid }}
                                 </td>
                             </tr>
                         </tbody>
@@ -296,7 +298,7 @@
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
-                                <th colspan="7" class="text-center">PRESIÓN ({{ $valoresCertificado->first()->unidad ?? '' }})</th>
+                                <th colspan="7" class="text-center">{{$ide->magnitude}} ({{ $valoresCertificado->first()->unidad ?? '' }})</th>
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
@@ -308,7 +310,7 @@
                                 <th class="text-center border-left">IEC ({{ $valoresCertificado->first()->unidad ?? '' }})</th>
                                 <th class="text-center border-left">E ({{ $valoresCertificado->first()->unidad ?? '' }})</th>
                                 <th class="text-center border-left">U ({{ $valoresCertificado->first()->unidad ?? '' }})</th>
-                                <th class="text-center border-left">k ({{ $valoresCertificado->first()->unidad ?? '' }})</th>
+                                <th class="text-center border-left">k</th>
                                 <td colspan="2">&nbsp;</td>
                             </tr>
                             @foreach ($valoresCertificado as $valorCertificado)
@@ -375,7 +377,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
 
-            xAxisTitle = '<b>Presión ({{ $valoresCertificado->first()->unidad ?? '' }})</b>'
+            xAxisTitle = '<b>{{$ide->magnitude}} ({{ $valoresCertificado->first()->unidad ?? '' }})</b>'
 
             xData = {{ $valoresCertificado->pluck('ip') }}
             yData = {{ $valoresCertificado->pluck('e') }}

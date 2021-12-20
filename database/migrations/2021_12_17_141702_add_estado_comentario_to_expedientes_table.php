@@ -15,6 +15,7 @@ class AddEstadoComentarioToExpedientesTable extends Migration
     {
         Schema::table('expedientes', function (Blueprint $table) {
             $table->text('estado_comentario')->nullable();
+            $table->unsignedBigInteger('autorizado_id')->nullable();
         });
     }
 

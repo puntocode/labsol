@@ -27,7 +27,7 @@
 
                                 <li class="mb-5">
                                     <hr>
-                                    <a href="{{ route('panel.calibracion.certificados.print', $expediente->id) }}" class="as-text text-hover-primary" title="Imprimir Certificado">
+                                    <a href="{{ route('panel.calibracion.certificados.print', $expediente->id) }}" class="as-text text-hover-primary" title="Imprimir Certificado" target="_blank">
                                         <i class="fas fa-print text-hover-primary"></i> Imprimir
                                     </a>
                                 </li>
@@ -147,26 +147,28 @@
                                 <h3>3. Patrones utilizados</h3>
                             </div>
 
-                            <table class="table table-bordered table-sm">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col" class="text-center">Identificación</th>
-                                        <th scope="col" class="text-center">Descripción</th>
-                                        <th scope="col" class="text-center">Certificado</th>
-                                        <th scope="col" class="text-center">Próx. Calibración</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($patrones as $patron)
+                            <div class="col-10 mx-auto mb-12">
+                                <table class="table table-bordered table-sm">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col" class="text-center">Identificación</th>
+                                            <th scope="col" class="text-center">Descripción</th>
+                                            <th scope="col" class="text-center">Certificado</th>
+                                            <th scope="col" class="text-center">Próx. Calibración</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($patrones as $patron)
                                         <tr>
                                             <td>{{ $patron->code }}</td>
                                             <td>{{ $patron->description }}</td>
                                             <td>{{ $patron->certificate }}</td>
                                             <td>{{ $patron->next_calibration }}</td>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <div class="mt-6 row">
@@ -236,7 +238,7 @@
                             <div class="form-group col-md-12">
                                 <label>Observaciones</label>
                                 <div class="h-auto p-0 border-0 form-control">
-                                    <span class="font-weight-bold">{{ $expediente->calibracion->obs }} %</span>
+                                    <span class="font-weight-bold">{{ $expediente->calibracion->obs }}</span>
                                 </div>
                             </div>
                         </div>
@@ -246,8 +248,42 @@
                                 <h3>5. Resultados</h3>
                             </div>
 
-                            <div class="col-md-6 max-auto">
+                            <div class="col-md-8 mx-auto">
+                                <h4></h4>
+                                <table class="table table-bordered table-sm">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col" colspan="5" class="text-center">{{ $ide->magnitude }} ({{ $valoresCertificado->first()->unidad }})</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="table-active">
+                                            <td class="text-center font-bold">IP ({{ $valoresCertificado->first()->unidad }})</td>
+                                            <td class="text-center font-bold">IEC ({{ $valoresCertificado->first()->unidad }})</td>
+                                            <td class="text-center font-bold">E ({{ $valoresCertificado->first()->unidad }})</td>
+                                            <td class="text-center font-bold">U ({{ $valoresCertificado->first()->unidad }})</td>
+                                            <td class="text-center font-bold">k</td>
+                                        </tr>
 
+                                        @foreach ($valoresCertificado as $valor)
+                                            <tr>
+                                                <td class="text-center">{{ Helper::numberFormat($valor->ip) }}</td>
+                                                <td class="text-center">{{ Helper::numberFormat($valor->iec) }}</td>
+                                                <td class="text-center">{{ Helper::numberFormat($valor->e) }}</td>
+                                                <td class="text-center">{{ Helper::numberFormat($valor->u) }}</td>
+                                                <td class="text-center">{{ Helper::numberFormat($valor->k) }}</td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-8 mx-auto">
+                                <calibracion-grafico
+                                    :valores="{{ $valoresCertificado }}"
+                                    magnitud="{{ $ide->magnitude }}">
+                                </calibracion-grafico>
                             </div>
                         </div>
 
@@ -259,14 +295,14 @@
                             <div class="form-group col-md-6">
                                 <label>Realizado por</label>
                                 <div class="h-auto p-0 border-0 form-control">
-                                    <span class="font-weight-bold">{{ $expediente->calibracion->realizado }}</span>
+                                    <span class="font-weight-bold">{{ $expediente->calibracion->tecnico->name }} {{ $expediente->calibracion->tecnico->last_name }}</span>
                                 </div>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label>Autorizado por</label>
                                 <div class="h-auto p-0 border-0 form-control">
-                                    <span class="font-weight-bold">{{ $expediente->calibracion->autorizado }}</span>
+                                    <span class="font-weight-bold">{{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}</span>
                                 </div>
                             </div>
 
@@ -301,11 +337,12 @@
 <script>
     const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
 
-    window.routes = {
-        'updateEstado': ESTADO_EXPEDIENTE,
-    }
+    window.routes = { 'updateEstado': ESTADO_EXPEDIENTE };
+    window.user = {{ Auth::user()->id }};
 </script>
 @endsection
+
+
 
 
 

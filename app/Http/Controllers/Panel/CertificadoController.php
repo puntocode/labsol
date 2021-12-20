@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ValorCertificado;
 use App\Http\Controllers\Controller;
 use App\Models\Patron;
+use App\Models\PatronIde;
 
 class CertificadoController extends Controller
 {
@@ -58,8 +59,10 @@ class CertificadoController extends Controller
     {
         $expediente = Expediente::relaciones()->findOrFail($id);
         $patrones = $expediente->getPatternsForCalibrationCertificate();
+        $valoresCertificado = ValorCertificado::ValorTable($expediente->calibracion->id)->get();
+        $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
         // dd($expediente->toArray());
-        return view('panel.calibracion.certificados.show', compact('expediente', 'patrones'));
+        return view('panel.calibracion.certificados.show', compact('expediente', 'patrones', 'valoresCertificado', 'ide'));
     }
 
     /**
@@ -104,22 +107,16 @@ class CertificadoController extends Controller
     public function print($expedienteId)
     {
         $expediente = Expediente::calibration()->findOrFail($expedienteId);
-
         $patrones = $expediente->getPatternsForCalibrationCertificate();
-
-        $tecnicoRealizador = User::where('id', $expediente->tecnicos[0]['id'])->first();
-
-        $valoresCertificado = ValorCertificado::query()
-            ->whereHas('valor', function ($query) use ($expediente) {
-                return $query->where('calibracion_id', $expediente->calibracion->id);
-            })
-            ->get();
+        $valoresCertificado = ValorCertificado::ValorTable($expediente->calibracion->id)->get();
+        $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
+        // $tecnicoRealizador = User::where('id', $expediente->tecnicos[0]['id'])->first();
 
         return view('panel.calibracion.certificados.print', compact(
             'expediente',
             'patrones',
-            'tecnicoRealizador',
-            'valoresCertificado'
+            'valoresCertificado',
+            'ide'
         ));
     }
 }
