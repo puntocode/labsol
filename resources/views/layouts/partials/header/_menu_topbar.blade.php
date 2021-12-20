@@ -29,7 +29,7 @@
                                 <a class="nav-link" data-toggle="tab" href="#topbar_patrones">Patrones</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#topbar_incertidumbre">Incertidumbre</a>
+                                <a class="nav-link" data-toggle="tab" href="#topbar_incertidumbre">Incertidumbres</a>
                             </li>
                             {{-- <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#topbar_clientes">Clientes</a>
@@ -254,7 +254,7 @@
                                     <!--begin::Text-->
                                     <div class="d-flex flex-column font-weight-bold">
                                         <a href="{{ route('panel.incertidumbre.index') }}"
-                                            class="text-dark text-hover-primary mb-1 font-size-lg">Ver todos los valores</a>
+                                            class="text-dark text-hover-primary mb-1 font-size-lg">Ver Incertidumbres</a>
                                     </div>
                                     <!--end::Text-->
                                 </div>
@@ -285,7 +285,7 @@
                                     <!--begin::Text-->
                                     <div class="d-flex flex-column font-weight-bold">
                                         <a href="{{ route('panel.incertidumbre.create') }}"
-                                            class="text-dark text-hover-success mb-1 font-size-lg">Crear nuevo valor</a>
+                                            class="text-dark text-hover-success mb-1 font-size-lg">Crear Incertidumbre</a>
                                     </div>
                                     <!--end::Text-->
                                 </div>
