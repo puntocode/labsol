@@ -19,7 +19,7 @@ class CreateIncertidumbresTable extends Migration
             $table->enum('tipo', ['A', 'B'])->default('A');
             $table->string('nombre');
             $table->string('distribucion', 50);
-            $table->string('formula', 50);
+            $table->string('formula', 50)->unique();
             $table->string('fuente', 50);
             $table->string('divisor', 50);
             $table->string('grados_libertad_for', 50);

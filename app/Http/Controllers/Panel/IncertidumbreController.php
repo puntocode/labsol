@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Models\Incertidumbre;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Panel\IncertidumbreRequest;
 
 class IncertidumbreController extends Controller
 {
@@ -19,8 +20,9 @@ class IncertidumbreController extends Controller
      */
     public function index()
     {
-        $incertidumbre = config('demo.incertidumbre');
-        return view('panel.incertidumbre.index', compact('incertidumbre'));
+        $incertidumbres = Incertidumbre::all();
+
+        return view('panel.incertidumbre.index', compact('incertidumbres'));
     }
 
     /**
@@ -30,58 +32,60 @@ class IncertidumbreController extends Controller
      */
     public function create()
     {
-      $incertidumbre = NULL;
-      return view('panel.incertidumbre.form', compact('incertidumbre'));
+        $incertidumbre = new Incertidumbre();
+
+        return view('panel.incertidumbre.form', compact('incertidumbre'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Panel\IncertidumbreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(IncertidumbreRequest $request)
     {
-        $incertidumbre = config('demo.incertidumbre');
-        return view('panel.incertidumbre.index', compact('incertidumbre'));
+        Incertidumbre::create($request->validated());
+
+        return redirect()->route('panel.incertidumbre.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Incertidumbre $incertidumbre
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Incertidumbre $incertidumbre)
     {
-      $view_mode = 'readonly';
-      $incertidumbre = config('demo.incertidumbre')[$id];
+        $view_mode = 'readonly';
 
-      return view('panel.incertidumbre.form', compact('incertidumbre', 'view_mode'));
+        return view('panel.incertidumbre.form', compact('incertidumbre', 'view_mode'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Incertidumbre $incertidumbre
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Incertidumbre $incertidumbre)
     {
-      $incertidumbre = config('demo.incertidumbre')[$id];
-      return view('panel.incertidumbre.form', compact('incertidumbre'));
+        return view('panel.incertidumbre.form', compact('incertidumbre'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Panel\IncertidumbreRequest $request
+     * @param  \App\Models\Incertidumbre $incertidumbre
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(IncertidumbreRequest $request, Incertidumbre $incertidumbre)
     {
-      return redirect(route('panel.incertidumbre.index'));
+        $incertidumbre->update($request->validated());
+
+        return redirect()->route('panel.incertidumbre.index');
     }
 
     /**

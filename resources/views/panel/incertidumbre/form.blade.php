@@ -7,7 +7,7 @@
 	<div class="container-fluid">
 		<h3 class="card-label mb-8">Incertidumbre
 			<small class="font-weight-lighter">
-				@if($incertidumbre != NULL)
+				@if($incertidumbre->exists)
 					| {{isset($view_mode) && $view_mode == 'readonly' ? 'Ver': 'Editar'}}: {{$incertidumbre->componente}} </strong>
 				@else
 				 	| Crear
@@ -39,7 +39,7 @@
 									</li>
 								@endif
 
-								@if($incertidumbre != NULL && in_array('eliminar', $role_actions))
+								@if($incertidumbre->exists && in_array('eliminar', $role_actions))
 									<li><hr></li>
 
 									<li>
@@ -64,149 +64,157 @@
 							<p class="text-muted font-size-sm"><span class="text-danger">*</span> Campos requeridos</p>
 						</div>
 
-						@if($incertidumbre != NULL)
-							<div class="card-toolbar">
-								@include('layouts.partials.extras.dropdown._export_list')
-							</div>
-						@endif
 					</div>
 					<div class="card-body">
 						@if(!isset($view_mode) || $view_mode != 'readonly')
-						<form class="mb-5" method="POST" action="{{ $incertidumbre != NULL ? route('panel.incertidumbre.update', ($incertidumbre->id -1)) : route('panel.incertidumbre.store')}}">
+							<form class="mb-5" method="POST" action="{{ $incertidumbre->exists ? route('panel.incertidumbre.update', ($incertidumbre)) : route('panel.incertidumbre.store')}}">
 							{{ csrf_field() }}
-							@if ($incertidumbre != NULL)
+							@if ($incertidumbre->exists)
 				              {{ method_field('PATCH') }}
 				            @endif
 				        @else
 				        	<div class="mb-5 form-readonly">
 				        @endif
-							<div class="row align-items-end">
+							<div class="row">
 
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Simbolo <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="simbolo" required value="{{$incertidumbre != NULL ? $incertidumbre->simbolo : old('simbolo')}}">
+										<label>Contribución <span class="text-danger">*</span></label>
+                    					<select class="form-control" name="contribucion" required>
+											<option value="">Seleccione una opción</option>
+											<option value="EBC" {{ old('contribucion', $incertidumbre->contribucion)=='EBC' ? 'selected' : '' }}>EBC</option>
+											<option value="PATRON" {{ old('contribucion', $incertidumbre->contribucion)=='PATRON' ? 'selected' : '' }}>PATRÓN</option>
+										</select>
+
+										@error('contribucion')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Componente <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="componente" required value="{{$incertidumbre != NULL ? $incertidumbre->componente : old('componente')}}">
+										<label>Tipo <span class="text-danger">*</span></label>
+                    					<select class="form-control" name="tipo" required>
+											<option value="">Seleccione una opción</option>
+											<option value="A" {{ old('tipo', $incertidumbre->tipo)=='A' ? 'selected' : '' }}>A</option>
+											<option value="B" {{ old('tipo', $incertidumbre->tipo)=='B' ? 'selected' : '' }}>B</option>
+										</select>
+
+										@error('tipo')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Valor = Estimativa (xi)	</h3>
-								</div>
-								<div class="col-12 col-lg-3">
+
+								<div class="col-12 col-lg-6">
 									<div class="form-group">
-										<label>Formula</label>
-                    <input type="text" class="form-control" name="valor_formula" value="">
+										<label>Nombre <span class="text-danger">*</span></label>
+                    					<input type="text" class="form-control" name="nombre" required
+											value="{{ old('nombre', $incertidumbre->nombre) }}">
+
+										@error('nombre')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
+
+							</div>
+
+							<div class="row">
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Calculado</label>
-                    <input type="text" class="form-control" name="valor_calculado" value="">
+										<label>Distribución <span class="text-danger">*</span></label>
+                    					<input type="text" class="form-control" name="distribucion" required
+											value="{{ old('distribucion', $incertidumbre->distribucion) }}">
+
+										@error('distribucion')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Unidad</h3>
-								</div>
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Unidad</label>
-										<input type="text" class="form-control" name="unidad" value="{{$incertidumbre != NULL ? $incertidumbre->unidad : old('unidad')}}">
+										<label>Fórmula <span class="text-danger">*</span></label>
+                    					<input type="text" class="form-control" name="formula" required
+											value="{{ old('formula', $incertidumbre->formula) }}">
+
+										@error('formula')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Probabilidad	</h3>
-								</div>
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Tipo</label>
-                    <input type="text" class="form-control" name="p_tipo" value="">
+										<label>Fuente <span class="text-danger">*</span></label>
+                    					<input type="text" class="form-control" name="fuente" required
+											value="{{ old('fuente', $incertidumbre->fuente) }}">
+
+										@error('fuente')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Distribucion</label>
-                    <input type="text" class="form-control" name="p_distribucion" value="">
+										<label>Divisor <span class="text-danger">*</span></label>
+                    					<input type="text" class="form-control" name="divisor" required
+											value="{{ old('divisor', $incertidumbre->divisor) }}">
+
+										@error('divisor')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Divisor o (k)	</h3>
-								</div>
+
+							</div>
+
+							<div class="row">
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Formula</label>
-                    <input type="text" class="form-control" name="k_formula" value="">
+										<label>Grados de libertad<span class="text-danger">*</span></label>
+                    					<input type="text" class="form-control" name="grados_libertad_for" required
+											value="{{ old('grados_libertad_for', $incertidumbre->grados_libertad_for) }}">
+
+										@error('grados_libertad_for')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Calculado</label>
-                    <input type="text" class="form-control" name="k_calculado" value="">
+										<label>Coeficiente<span class="text-danger">*</span></label>
+                    					<input type="number" class="form-control" name="coeficiente" required
+											value="{{ old('coeficiente', $incertidumbre->coeficiente) }}">
+
+										@error('coeficiente')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Coeficiente de sensibilidad	</h3>
-								</div>
+
 								<div class="col-12 col-lg-3">
 									<div class="form-group">
-										<label>Formula</label>
-                    <input type="text" class="form-control" name="s_formula" value="">
-									</div>
-								</div>
-								<div class="col-12 col-lg-3">
-									<div class="form-group">
-										<label>Calculado</label>
-                    <input type="text" class="form-control" name="s_calculado" value="">
-									</div>
-								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Contribución para incertidumbre patrón</h3>
-								</div>
-								<div class="col-12 col-lg-3">
-									<div class="form-group">
-										<label>Formula</label>
-                    <input type="text" class="form-control" name="p_formula" value="">
-									</div>
-								</div>
-								<div class="col-12 col-lg-3">
-									<div class="form-group">
-										<label>ui</label>
-                    <input type="text" class="form-control" name="ui" value="">
-									</div>
-								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Grados de libertad</h3>
-								</div>
-								<div class="col-12 col-lg-3">
-									<div class="form-group">
-										<label>Formula Vi</label>
-										<input type="text" class="form-control" name="l_formula_vi" value="">
-									</div>
-								</div>
-								<div class="col-12 col-lg-3">
-									<div class="form-group">
-										<label>Calculado</label>
-										<input type="text" class="form-control" name="l_calculado" value="">
-									</div>
-								</div>
-								<div class="col-12">
-									<h3 class="h4 border-bottom border-primary my-5 pb-3">Porcentual</h3>
-								</div>
-								<div class="col-12 col-lg-3">
-									<div class="form-group">
-										<label>Porcentual</label>
-										<input type="text" class="form-control" name="porcentual" value="{{$incertidumbre != NULL ? $incertidumbre->porcentual : old('porcentual')}}">
+										<label>Contribución<span class="text-danger">*</span></label>
+                    					<input type="number" class="form-control" name="contribucion_du" required
+											value="{{ old('contribucion_du', $incertidumbre->contribucion_du) }}">
+
+										@error('contribucion_du')
+											<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+										@enderror
 									</div>
 								</div>
 
 							</div>
 							<div class="row mt-5">
 								@if(!isset($view_mode) || $view_mode != 'readonly')
-									<button class="btn btn-primary mx-auto">{{$incertidumbre != NULL ? 'Guardar' : 'Crear valor'}}</button>
+									<button class="btn btn-primary mx-auto">{{ $incertidumbre->exists ? 'Guardar' : 'Crear Incertidumbre' }}</button>
 								@else
 									<a href="{{route('panel.incertidumbre.index')}}" class="btn btn-primary mx-auto" title="Volver a listado">Volver</a>
 								@endif

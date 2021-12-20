@@ -8,15 +8,16 @@
 
 @section('content')
     <div class="container-fluid">
-        <h3 class="card-label mb-8">Incertidumbre <small class="font-weight-lighter">| Listado</small></h3>
+        <div class="d-flex justify-content-between mb-8">
+            <h3 class="card-label">Incertidumbres <small class="font-weight-lighter">| Listado</small></h3>
+            <a href="{{ route('panel.incertidumbre.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Crear Incertidumbre</a>
+        </div>
 
         <div class="card card-custom">
             <div class="card-header border-0">
                 <div class="card-title">
                 </div>
                 <div class="card-toolbar pt-7">
-                    @include('layouts.partials.extras.dropdown._export_list')
-
                     @if (in_array('crear', $role_actions))
                         <!--begin::Button-->
                         <a href="{{ route('panel.incertidumbre.create') }}" class="btn btn-primary font-weight-bolder mb-5">
@@ -43,74 +44,43 @@
                     style="width:100%">
                     <thead>
                         <tr>
-                            <th rowspan="2">Símbolo</th>
-                            <th rowspan="2">Componente</th>
-                            <th colspan="2">Valor = Estimativa (xi)</th>
-                            <th rowspan="2">Unidad</th>
-                            <th colspan="2">Probabilidad</th>
-                            <th colspan="2">Divisor o (k) </th>
-                            <th colspan="2">Coeficiente de sensibilidad (ci) </th>
-                            <th colspan="2">Contribución para incertidumbre patrón </th>
-                            <th colspan="2">Grados de libertad </th>
-                            <th>Porcentual</th>
-                            <th rowspan="2">Acciones</th>
-                        </tr>
-                        <tr>
-                            <th>Formula</th>
-                            <th>Calculado</th>
+                            <th>Contribución</th>
                             <th>Tipo</th>
-                            <th>Distribucion</th>
-                            <th>Formula</th>
-                            <th>Calculado</th>
-                            <th>Formula</th>
-                            <th>Calculado</th>
-                            <th>Formula</th>
-                            <th>ui</th>
-                            <th>Formula vi</th>
-                            <th>Calculado</th>
-                            <th>[%]</th>
+                            <th>Nombre</th>
+                            <th>Distribución</th>
+                            <th>Fórmula</th>
+                            <th>Fuente</th>
+                            <th>Divisor</th>
+                            <th>Grados de libertad</th>
+                            <th>Coeficiente</th>
+                            <th>Contribución</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($incertidumbre as $i => $inc)
+                        @foreach ($incertidumbres as $incertidumbre)
                             <tr>
-                                <td>{{ $inc->simbolo }}</td>
-                                <td>{{ $inc->componente }}</td>
-                                @foreach ($inc->valor as $i => $val)
-                                    <td>{{ $val->formula }}</td>
-                                    <td>{{ $val->calculado }}</td>
-                                @endforeach
-                                <td>{{ $inc->unidad }}</td>
-                                @foreach ($inc->probabilidad as $i => $prob)
-                                    <td>{{ $prob->tipo }}</td>
-                                    <td>{{ $prob->distribucion }}</td>
-                                @endforeach
-                                @foreach ($inc->divisor as $i => $div)
-                                    <td>{{ $div->formula }}</td>
-                                    <td>{{ $div->distribucion }}</td>
-                                @endforeach
-                                @foreach ($inc->coeficiente_sensibilidad as $i => $cs)
-                                    <td>{{ $cs->formula }}</td>
-                                    <td>{{ $cs->calculado }}</td>
-                                @endforeach
-                                @foreach ($inc->contribucion_patron as $i => $cp)
-                                    <td>{{ $cp->formula }}</td>
-                                    <td>{{ $cp->ui }}</td>
-                                @endforeach
-                                @foreach ($inc->grados_libertad as $i => $gl)
-                                    <td>{{ $gl->formula_vi }}</td>
-                                    <td>{{ $gl->calculado }}</td>
-                                @endforeach
-                                <td>{{ $inc->porcentual }}</td>
+                                <td>{{ $incertidumbre->contribucion }}</td>
+                                <td>{{ $incertidumbre->tipo }}</td>
+                                <td>{{ $incertidumbre->nombre }}</td>
+                                <td>{{ $incertidumbre->distribucion }}</td>
+                                <td><img src="{{ asset("media/formulas/$incertidumbre->formula.jpg") }}" alt="{{ $incertidumbre->formula }}" width='64px'></td>
+                                <td>{{ $incertidumbre->fuente }}</td>
+                                <td>{{ $incertidumbre->divisor }}</td>
+                                <td>{{ $incertidumbre->grados_libertad_for }}</td>
+                                <td>{{ $incertidumbre->coeficiente }}</td>
+                                <td>{{ $incertidumbre->contribucion_du }}</td>
                                 <td nowrap="nowrap">
                                     @if (in_array('ver', $role_actions))
-                                        <a href="{{ route('panel.incertidumbre.show', $i) }}"
-                                            class="btn btn-sm btn-clean btn-icon" title="Ver valor">
+                                        <a href="{{ route('panel.incertidumbre.show', $incertidumbre) }}"
+                                            class="btn btn-sm btn-clean btn-icon" title="Ver Incertidumbre">
                                             <i class="fas fa-list text-primary"></i>
                                         </a>
-                                    @elseif(in_array('editar', $role_actions))
-                                        <a href="{{ route('panel.incertidumbre.edit', $i) }}"
-                                            class="btn btn-sm btn-clean btn-icon" title="Editar valor">
+                                    @endif
+
+                                    @if(in_array('editar', $role_actions))
+                                        <a href="{{ route('panel.incertidumbre.edit', $incertidumbre) }}"
+                                            class="btn btn-sm btn-clean btn-icon" title="Editar Incertidumbre">
                                             <i class="la la-edit"></i>
                                         </a>
                                     @endif
