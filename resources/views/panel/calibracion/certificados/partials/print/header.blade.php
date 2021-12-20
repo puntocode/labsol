@@ -1,4 +1,4 @@
-<div class="row d-flex justify-content-center align-items-center mb-4">
+<div class="row d-flex justify-content-center align-items-center mt-10 mb-5">
     <div class="col-4">
         <img src="{{ asset('media/logos/logo_color_large.png') }}" alt="logo-labsol" class="img-fluid">
     </div>
@@ -8,11 +8,11 @@
 </div>
 
 <div class="row d-flex justify-content-center align-items-center">
-    <div class="col-4 d-flex">
-        <span class="text-center py-2 bg-secondary text-dark font-bold px-4" style="width: 150px">Certificado N°:</span>
-        <span id="codigo" class="px-4 text-dark font-bold" style="font-size: 1.7rem">{{ $expediente->number }}</span>
+    <div class="col-5 d-flex">
+        <span class="text-center py-2 bg-secondary text-dark font-bold px-4" style="width: 155px">Certificado N°:</span>
+        <span id="codigo" class="px-3 text-dark font-bold" style="font-size: 1.7rem">{{ $expediente->number }}</span>
     </div>
-    <div class="col-8 d-flex justify-content-end">
+    <div class="col-7 d-flex justify-content-end">
 
         <img class="img-fluid" src="{{ asset('media/logos/servicio_acreditado.png') }}" alt="Servicio Acreditado" style="height: 100px">
 

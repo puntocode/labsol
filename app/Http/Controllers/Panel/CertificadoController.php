@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Models\User;
 use App\Models\Expediente;
 use Illuminate\Http\Request;
+use App\Models\ValorCertificado;
 use App\Http\Controllers\Controller;
 
 class CertificadoController extends Controller
@@ -104,10 +105,17 @@ class CertificadoController extends Controller
 
         $tecnicoRealizador = User::where('id', $expediente->tecnicos[0]['id'])->first();
 
+        $valoresCertificado = ValorCertificado::query()
+            ->whereHas('valor', function ($query) use ($expediente) {
+                return $query->where('calibracion_id', $expediente->calibracion->id);
+            })
+            ->get();
+
         return view('panel.calibracion.certificados.print', compact(
             'expediente',
             'patrones',
-            'tecnicoRealizador'
+            'tecnicoRealizador',
+            'valoresCertificado'
         ));
     }
 }

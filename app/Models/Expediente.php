@@ -87,20 +87,17 @@ class Expediente extends Model
     {
         $patrones = [];
 
+        if ($this->calibracion->ema) {
+            $patrones[] = Patron::where('code', $this->calibracion->ema)->first();
+        }
+
         foreach ($this->calibracion->patrones as $patronCalibracion) {
             foreach ($patronCalibracion['code'] as $code) {
-                if (count($patrones) == 4) {
-                    break;
-                }
-
                 $patron = Patron::where('code', $code)->first();
 
-                $patrones[] = (object) [
-                    'code'             => $code,
-                    'description'      => $patronCalibracion['name'],
-                    'certificate'      => $patron->certificate_no,
-                    'next_calibration' => $patron->next_calibration
-                ];
+                $patron->description = $patronCalibracion['name'];
+
+                $patrones[] = $patron;
             }
         }
 
