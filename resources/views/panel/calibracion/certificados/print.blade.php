@@ -256,7 +256,11 @@
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <b>Autorizado por:</b>
-                                    {{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}
+                                    @if (isset($expediente->autorizado_id))
+                                        {{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                                 <td colspan="5" rowspan="2" >
                                     La incertidumbre típica combinada fue determinada en conformidad con
@@ -267,7 +271,11 @@
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <b>Código:</b>
-                                    {{ $expediente->autorizado->uuid }}
+                                    @if (isset($expediente->autorizado_id))
+                                        {{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                             </tr>
                         </tbody>

@@ -302,7 +302,11 @@
                             <div class="form-group col-md-6">
                                 <label>Autorizado por</label>
                                 <div class="h-auto p-0 border-0 form-control">
-                                    <span class="font-weight-bold">{{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}</span>
+                                    <span class="font-weight-bold">
+                                        @if (isset($expediente->autorizado_id))
+                                            {{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
 
