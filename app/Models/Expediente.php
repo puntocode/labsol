@@ -103,4 +103,6 @@ class Expediente extends Model
 
         return $patrones;
     }
+
+
 }

@@ -59,6 +59,8 @@
 								<td>{{$expediente->instrumentos->name}}</td>
 								<td>{{$expediente->calibracion->fecha_fin}}</td>
 								<td class="text-center">
+                                    <a href="{{ route('panel.certificados.show', $expediente->id) }}"  title="Ver registro"><i class="fas fa-list text-primary"></i><a/>
+
 									<a href="{{ route('panel.calibracion.certificados.print', $expediente->id) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles">
 										<i class="fas fa-print text-primary"></i>
 									</a>

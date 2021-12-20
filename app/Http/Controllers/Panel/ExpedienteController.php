@@ -143,7 +143,9 @@ class ExpedienteController extends Controller
     public function cambiarEstadoExpediente(Request $request)
     {
         $exp = Expediente::findOrFail($request['expediente_id']);
-        $exp->update([ 'expediente_estado_id' => $request['expediente_estado_id'] ]);
+        $exp->expediente_estado_id = $request['expediente_estado_id'];
+        if($request->has('estado_comentario')) $exp->estado_comentario = $request['estado_comentario'];
+        $exp->save();
         return response()->json($exp);
     }
 
