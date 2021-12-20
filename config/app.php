@@ -232,7 +232,9 @@ return [
 
         // Metronic Aliases
         'Metronic' => App\Classes\Theme\Metronic::class,
-        'Menu' => App\Classes\Theme\Menu::class
+        'Menu' => App\Classes\Theme\Menu::class,
+
+        'Helper' => App\Support\Helper::class,
     ],
 
 ];
