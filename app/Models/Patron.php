@@ -11,10 +11,17 @@ class Patron extends Model
 
     protected $guarded = ['id'];
     protected $appends = [ 'title', 'periodo', 'idioma' ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
-        'rank' => 'array',
-        'error_max' => 'array',
-        'precision' => 'array',
+        'rank'             => 'array',
+        'error_max'        => 'array',
+        'precision'        => 'array',
+        'last_calibration' => 'date',
     ];
 
 
