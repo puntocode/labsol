@@ -92,7 +92,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $patrone->periodo }}</td>
-                                <td>{{ $patrone->last_calibration }}</td>
+                                <td>{{ $patrone->last_calibration?->toDateString() }}</td>
                                 <td>{{ $patrone->next_calibration }}</td>
                                 <td><span class="badge badge-primary">{{ $patrone->condition->name }}</span></td>
                                 <td><span class="badge badge-info">{{ $patrone->magnitude->name }}</span></td>

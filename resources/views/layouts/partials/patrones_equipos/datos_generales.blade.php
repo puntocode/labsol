@@ -122,7 +122,7 @@
     <div class="form-group col-md-4">
         <label>Última Calibración</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->last_calibration }}</span>
+            <span class="font-weight-bold">{{ $data->last_calibration?->toDateString() }}</span>
         </div>
     </div>
 
@@ -170,6 +170,3 @@
     </div>
 
 </div>
-
-
-

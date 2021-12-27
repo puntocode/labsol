@@ -149,7 +149,7 @@
                                                             <td>{{ $key+1 }}</td>
                                                             <td>{{ $history->certificate_no }}</td>
                                                             <td>{{ $history->done }}</td>
-                                                            <td>{{ $history->calibration }}</td>
+                                                            <td>{{ $history->calibration?->toDateString() }}</td>
                                                             <td>{{ $history->next_calibration }}</td>
                                                             <td>{{ $history->obs }}</td>
                                                             <td class="text-center">
