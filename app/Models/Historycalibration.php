@@ -28,4 +28,8 @@ class Historycalibration extends Model
         return asset("media/docs/historial-calibracion/". $this->certificate);
     }
 
+    public function getCalibrationAttribute(){
+        return date('Y-m-d', strtotime($this->attributes['calibration']));
+    }
+
 }

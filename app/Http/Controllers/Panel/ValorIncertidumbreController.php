@@ -85,4 +85,10 @@ class ValorIncertidumbreController extends Controller
     {
         //
     }
+
+    public function getValorIncertidumbre(Request $request){
+        $incertidumbre =  ValorIncertidumbre::where('valor_id', $request->id)->get();
+        return response()->json($incertidumbre);
+    }
+
 }

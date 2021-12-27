@@ -70,9 +70,18 @@
 @section('rutas')
 <script>
     const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
+    const RESULT_INCERTIDUMBRE = "{{ route('panel.incertidumbre.resultado') }}";
+    const VALOR_INCERTIDUMBRE = "{{ route('panel.incertidumbre.valor') }}";
 
-    window.routes = { 'updateEstado': ESTADO_EXPEDIENTE };
+
+    window.asset = "{{ URL::asset('')  }}";
     window.user = {{ Auth::user()->id }};
+    window.routes = {
+        'updateEstado': ESTADO_EXPEDIENTE,
+        'resultados': RESULT_INCERTIDUMBRE,
+        'incertidumbre': VALOR_INCERTIDUMBRE,
+    };
+
 </script>
 @endsection
 

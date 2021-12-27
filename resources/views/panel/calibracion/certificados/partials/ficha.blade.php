@@ -267,11 +267,9 @@
             </tbody>
         </table>
     </div>
-
-    <ficha-incertidumbre :valores="{{ $valores }}" :procedimiento_id="{{ $expediente->instrumentos->id }}"></ficha-incertidumbre>
-
-
 </div>
+
+<ficha-incertidumbre :valores="{{ $valores }}" :incertidumbres="{{ $procedimiento->incertidumbres }}"></ficha-incertidumbre>
 
 
 <div class="mt-6 row">

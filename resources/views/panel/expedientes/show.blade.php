@@ -81,11 +81,17 @@
 
 @section('rutas')
     <script>
-        const updateTecnicos = "{{ route('panel.expedientes.update_tecnicos') }}";
-        const tecnicos = "{{ route('panel.usuarios.tecnicos') }}";
+        const RESULT_INCERTIDUMBRE = "{{ route('panel.incertidumbre.resultado') }}";
+        const VALOR_INCERTIDUMBRE = "{{ route('panel.incertidumbre.valor') }}";
+        const UPDATE_TECNICOS = "{{ route('panel.expedientes.update_tecnicos') }}";
+        const TECNICOS = "{{ route('panel.usuarios.tecnicos') }}";
+
+        window.asset = "{{ URL::asset('')  }}";
         window.routes = {
-            'updateTecnicos': updateTecnicos,
-            'tecnicos': tecnicos,
+            'tecnicos': TECNICOS,
+            'resultados': RESULT_INCERTIDUMBRE,
+            'incertidumbre': VALOR_INCERTIDUMBRE,
+            'updateTecnicos': UPDATE_TECNICOS,
         }
     </script>
 @endsection

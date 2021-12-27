@@ -1,13 +1,16 @@
 <template>
-    <div class="row text-left">
-        <!-- <div class="col-12 mb-18" v-for="(incer, index) in incertidumbres" :key="index">
+    <div class="row">
+
+        <div class="col-12" v-if="patrons.length === 0">
+            <clip-loader :color="color"></clip-loader>
+        </div>
+
+        <div class="col-12 mb-18" v-for="(result, index) in resultados" :key="index" v-else>
             <h3 class="mb-5 pointer" data-toggle="collapse" :data-target="`#collapse-incertidumbre-${index}`">
                 <i class="fas fa-plus mr-3"></i> {{ index+1 }}. Punto de medición: {{ resultados[index].ip.toFixed(2) }} {{ resultados[index].unidad }}
             </h3>
-
             <div class="collapse" :id="`collapse-incertidumbre-${index}`">
                 <p class="mb-3 titulo text-primary">Contribuciones del equipo bajo calibración (EBC)</p>
-
                 <div class="table-responsive">
                     <table class="table table-separate table-bordered table-head-custom collapsed mb-5">
                         <thead class="thead-light">
@@ -43,10 +46,8 @@
                         </tbody>
                     </table>
                 </div>
-
-
                 <p class="titulo text-primary mt-10 mb-3">Contribuciones del patrón <strong>{{ resultados[index].patron }}</strong></p>
-                 <div class="table-responsive">
+                    <div class="table-responsive">
                     <table class="table table-separate table-bordered table-head-custom collapsed mb-5">
                         <thead class="thead-light">
                             <tr>
@@ -81,8 +82,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
                 <div class="row mt-10 px-4">
                     <div class="co-lg-6">
                         <table class="table table-bordered">
@@ -112,23 +111,29 @@
                     </div>
                 </div>
             </div>
-
-            <div class="w-100 border-bottom border-primary"></div>
-        </div> -->
+            <hr>
+        </div>
     </div>
+
 </template>
 
 <script>
+    import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
+
     export default {
-        // props:  ['incertidumbres', 'resultados'],
-        props:  ['procedimeinto_id', 'valores'],
+        props:  ['valores', 'incertidumbres'],
+        components: { ClipLoader },
+
         data() {
             return {
                 asset: window.asset,
+                arrayIncer: [],
+                color: '#009BDD',
                 ebcs: [],
                 patrons: [],
                 resultados: [],
-                incertidumbres: []
+                valorIncertidumbre: [],
+                rutas: window.routes,
             }
         },
 
@@ -138,9 +143,55 @@
 
         methods: {
             async fetch() {
-                let response = await axios.get(rutas.incertidumbres, {data: {id: this.procedimiento_id}})
-                this.incertidumbres = await response.data;
+                await this.getResultados();
+                await this.cargarIncer();
+                await this.cargarEbc();
+            },
+
+            async getResultados(){
+                try{
+                    for (let valor of this.valores){
+                        let data = { params: { id: valor.id } };
+
+                        let response = await axios.get(this.rutas.resultados, data);
+                        let result = await response.data;
+                        this.resultados.push(result);
+
+                        let resIncer = await axios.get(this.rutas.incertidumbre, data);
+                        let incertidumbre = await resIncer.data;
+                        this.valorIncertidumbre.push(incertidumbre)
+                    }
+
+                }catch(error){
+                    console.log(error);
+                }
+            },
+
+            cargarIncer(){
+                for(let i = 0; i < this.valorIncertidumbre.length; i++){
+                    let array = []
+
+                    for(let j = 0; j < this.incertidumbres.length; j++){
+                        let incertidumbre = {...this.incertidumbres[j], ...this.valorIncertidumbre[i][j]}
+                        array.push(incertidumbre);
+                    }
+
+                    this.arrayIncer.push(array);
+                }
+            },
+
+            cargarEbc(){
+                for (let array of this.arrayIncer){
+                    let ebc = array.filter(ebc => ebc.contribucion === 'EBC');
+                    let patron = array.filter(patron => patron.contribucion === 'PATRON');
+                    this.ebcs.push(ebc);
+                    this.patrons.push(patron);
+                }
             }
+
+
+
+
         },
     }
 </script>

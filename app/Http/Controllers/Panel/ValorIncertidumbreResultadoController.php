@@ -49,7 +49,6 @@ class ValorIncertidumbreResultadoController extends Controller
      */
     public function show(ValorIncertidumbreResultado $valorIncertidumbreResultado)
     {
-        //
     }
 
     /**
@@ -84,6 +83,12 @@ class ValorIncertidumbreResultadoController extends Controller
     public function destroy(ValorIncertidumbreResultado $valorIncertidumbreResultado)
     {
         //
+    }
+
+
+    public function getResultado(Request $request){
+        $resultado =  ValorIncertidumbreResultado::where('valor_id', $request->id)->first();
+        return response()->json($resultado);
     }
 
 

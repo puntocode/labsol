@@ -8,9 +8,11 @@ use App\Models\ExpedienteEstado;
 use App\Http\Controllers\Controller;
 use App\Models\ExpedienteHistorial;
 use App\Models\PatronIde;
+use App\Models\Procedimiento;
 use App\Models\Valor;
 use App\Models\ValorCertificado;
 use App\Models\ValorResultado;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -66,10 +68,12 @@ class ExpedienteController extends Controller
     {
         $expediente = Expediente::relaciones()->findOrFail($id);
         $calibracionId = $expediente->calibracion->id;
+        $instrumentoId = $expediente->instrumentos->id;
 
         $ide = null;
-        $patrones = null;
         $valores = null;
+        $patrones = null;
+        $procedimiento = null;
         $valorResultados = null;
         $valoresCertificado = null;
 
@@ -78,12 +82,15 @@ class ExpedienteController extends Controller
             'historial'  => ExpedienteHistorial::where('expediente_id', $id)->get(),
         ];
 
+
         if($expediente->expediente_estado_id > 2 && $expediente->expediente_estado_id != 11){
             $patrones = $expediente->getPatternsForCalibrationCertificate();
             $valores = Valor::where('calibracion_id', $calibracionId)->get();
             $valorResultados = ValorResultado::getValorResults($valores);
             $valoresCertificado = ValorCertificado::ValorTable($expediente->calibracion->id)->get();
             $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
+            $instrumentoProcedimiento = DB::table('instrumento_procedimiento')->where('instrumento_id', $instrumentoId)->first();
+            $procedimiento = Procedimiento::whereId($instrumentoProcedimiento->procedimiento_id)->with('incertidumbres')->first();
         }
 
         return view('panel.expedientes.show', compact(
@@ -93,7 +100,8 @@ class ExpedienteController extends Controller
             'valores',
             'valorResultados',
             'valoresCertificado',
-            'ide'
+            'ide',
+            'procedimiento'
         ));
     }
 
