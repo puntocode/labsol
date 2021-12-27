@@ -105,5 +105,10 @@ class Patron extends Model
         return $data;
     }
 
+    public function getLastCalibrationAttribute(){
+        if(isset($this->attributes['last_calibration']))return date('Y-m-d', strtotime($this->attributes['last_calibration']));
+        else return '-';
+    }
+
 
 }

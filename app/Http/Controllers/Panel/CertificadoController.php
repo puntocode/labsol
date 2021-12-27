@@ -69,7 +69,7 @@ class CertificadoController extends Controller
         $valoresCertificado = ValorCertificado::ValorTable($calibracionId)->get();
         $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
 
-        dd($expediente->toArray());
+        // dd($expediente->toArray());
         return view('panel.calibracion.certificados.show', compact(
             'expediente',
             'patrones',

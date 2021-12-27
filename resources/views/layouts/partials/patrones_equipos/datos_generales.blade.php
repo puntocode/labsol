@@ -122,7 +122,7 @@
     <div class="form-group col-md-4">
         <label>Última Calibración</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="font-weight-bold">{{ $data->last_calibration?->toDateString() }}</span>
+            <span class="font-weight-bold">{{ $data->last_calibration }}</span>
         </div>
     </div>
 
@@ -138,9 +138,11 @@
     <div class="form-group col-md-4">
         <label>Rango</label>
         <div class="form-control p-0 border-0 h-auto">
-            @foreach ($data->rank as $rank)
-                <span class="font-weight-bold">{{ $rank  }}</span> <br>
-            @endforeach
+            @isset($data->rank)
+                @foreach ($data->rank as $rank)
+                    <span class="font-weight-bold">{{ $rank  }}</span> <br>
+                @endforeach
+            @endisset
         </div>
     </div>
 
