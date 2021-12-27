@@ -9,6 +9,8 @@ use App\Models\ValorCertificado;
 use App\Http\Controllers\Controller;
 use App\Models\Patron;
 use App\Models\PatronIde;
+use App\Models\Valor;
+use App\Models\ValorResultado;
 
 class CertificadoController extends Controller
 {
@@ -59,10 +61,23 @@ class CertificadoController extends Controller
     {
         $expediente = Expediente::relaciones()->findOrFail($id);
         $patrones = $expediente->getPatternsForCalibrationCertificate();
-        $valoresCertificado = ValorCertificado::ValorTable($expediente->calibracion->id)->get();
+
+        $calibracionId = $expediente->calibracion->id;
+
+        $valores = Valor::where('calibracion_id', $calibracionId)->get();
+        $valorResultados = ValorResultado::getValorResults($valores);
+        $valoresCertificado = ValorCertificado::ValorTable($calibracionId)->get();
         $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
-        // dd($expediente->toArray());
-        return view('panel.calibracion.certificados.show', compact('expediente', 'patrones', 'valoresCertificado', 'ide'));
+
+        dd($expediente->toArray());
+        return view('panel.calibracion.certificados.show', compact(
+            'expediente',
+            'patrones',
+            'valores',
+            'valorResultados',
+            'valoresCertificado',
+            'ide'
+        ));
     }
 
     /**

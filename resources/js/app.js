@@ -19,9 +19,10 @@ import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 
 
-Vue.component('expediente-tecnicos', require('./components/expedientes/ExpedienteTecnicos.vue').default);
 Vue.component('asignar-tecnico',     require('./components/expedientes/AsignarTecnico.vue').default);
 Vue.component('expediente-form',     require('./components/expedientes/ExpedienteForm.vue').default);
+Vue.component('expediente-tecnicos', require('./components/expedientes/ExpedienteTecnicos.vue').default);
+Vue.component('ficha-incertidumbre', require('./components/expedientes/FichaIncertidumbre.vue').default);
 
 Vue.component('calibracion-form',    require('./components/calibracion/CalibracionForm.vue').default);
 Vue.component('estado-calibracion',  require('./components/calibracion/EstadoCalibracion.vue').default);

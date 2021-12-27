@@ -40,7 +40,7 @@
 
                                 <div class="mb-6 mr-5 mb-lg-0 flex-fill">
                                     <label>Estado</label>
-                                    <select class="form-control datatable-input" data-col-index="3">
+                                    <select class="form-control datatable-input" data-col-index="4">
                                         <option value="">Todas</option>
                                         @foreach ($estados as $estado)
                                             <option value="{{ $estado->name }}">{{$estado->name}}</option>
