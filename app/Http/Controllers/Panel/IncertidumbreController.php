@@ -45,7 +45,9 @@ class IncertidumbreController extends Controller
      */
     public function store(IncertidumbreRequest $request)
     {
-        Incertidumbre::create($request->validated());
+        $incertidumbre = Incertidumbre::create($request->validated());
+
+        $request->formula_img->move(public_path('media/formulas'), "$incertidumbre->formula.jpg");
 
         return redirect()->route('panel.incertidumbre.index');
     }
@@ -58,9 +60,7 @@ class IncertidumbreController extends Controller
      */
     public function show(Incertidumbre $incertidumbre)
     {
-        $view_mode = 'readonly';
-
-        return view('panel.incertidumbre.form', compact('incertidumbre', 'view_mode'));
+        return view('panel.incertidumbre.show', compact('incertidumbre'));
     }
 
     /**
@@ -83,7 +83,16 @@ class IncertidumbreController extends Controller
      */
     public function update(IncertidumbreRequest $request, Incertidumbre $incertidumbre)
     {
+        $oldFormula = $incertidumbre->formula;
+
         $incertidumbre->update($request->validated());
+
+        if ($request->formula_img) {
+            unlink(public_path("media/formulas/$oldFormula.jpg"));
+            $request->formula_img->move(public_path('media/formulas'), "$incertidumbre->formula.jpg");
+        } else {
+            rename(public_path("media/formulas/$oldFormula.jpg"), public_path("media/formulas/$incertidumbre->formula.jpg"));
+        }
 
         return redirect()->route('panel.incertidumbre.index');
     }
