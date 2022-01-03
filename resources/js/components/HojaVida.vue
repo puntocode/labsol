@@ -119,7 +119,9 @@
                             <span>Magnitud de medición</span>
                         </div>
                         <div class="col-9 bg-light py-2">
-                            <span class="text-uppercase">{{ array.data.magnitude.name }}</span>
+                            <span class="text-uppercase mr-2" v-for="magnitud in array.data.magnitude" :key="magnitud.id">
+                                {{ magnitud.name }}
+                            </span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -215,11 +217,11 @@
                             <table class="table table-separate table-head-custom collapsed" id="tableFacturas" style="width:100%">
                                 <thead>
                                     <tr class="table-active">
-                                        <th>#</th>
-                                        <th>N° de Certificado</th>
-                                        <th>Elaborado Por</th>
-                                        <th>F. de Calibración</th>
-                                        <th>Prox. Calibración</th>
+                                        <th>N°</th>
+                                        <th>N° Certificado</th>
+                                        <th>Fecha de calibración</th>
+                                        <th>Próxima calibración*</th>
+                                        <th>Realizado por</th>
                                         <th>Observaciones*</th>
                                     </tr>
                                 </thead>
@@ -227,9 +229,9 @@
                                         <tr v-for="(calibracion, index) in array.calibracion" :key="'C'+index">
                                             <td>{{ index+1 }}</td>
                                             <td>{{ calibracion.certificate_no }}</td>
-                                            <td>{{ calibracion.done }}</td>
                                             <td>{{ calibracion.calibration }}</td>
                                             <td>{{ calibracion.next_calibration }}</td>
+                                            <td>{{ calibracion.done }}</td>
                                             <td>{{ calibracion.obs }}</td>
                                         </tr>
                                 </tbody>
@@ -247,11 +249,11 @@
                             <table class="table table-separate table-head-custom collapsed" id="tableFacturas" style="width:100%">
                                 <thead>
                                     <tr class="table-active">
-                                        <th>#</th>
-                                        <th>Descripción / Verificación</th>
+                                        <th>N°</th>
+                                        <th>Descripción del mantenimiento/verificación</th>
                                         <th>Motivo</th>
-                                        <th>F. de Realización</th>
-                                        <th>Realizado Por</th>
+                                        <th>Fecha de realización</th>
+                                        <th>Realizado por</th>
                                         <th>Observaciones*</th>
                                     </tr>
                                 </thead>
@@ -296,10 +298,10 @@
                 return this.array.data.calibration === 'N/A' ? 'NO' : 'SI';
             },
             externa(){
-                return this.array.data.calibration === 'EXTERNA' || 'INT/EXT' ? 'X' : '-';
+                return this.array.data.calibration === 'EXTERNA' || this.array.data.calibration === 'INT/EXT' ? 'X' : '-';
             },
             interna(){
-                return this.array.data.calibration === 'INTERNA' || 'INT/EXT' ? 'X' : '-';
+                return this.array.data.calibration === 'INTERNA' || this.array.data.calibration === 'INT/EXT' ? 'X' : '-';
             },
             procedimiento(){
                 return this.array.data.procedimientos === null ? '-' : this.array.data.procedimientos.code;

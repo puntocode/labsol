@@ -5,7 +5,9 @@
             <div class="px-3 row">
                 <div class="px-0 col-12 d-flex justify-content-between">
                     <h4>Patron: <span class="text-black-50">{{ data.code }}</span></h4>
-                    <span>Magnitud <span class="ml-2 badge badge-info font-weight-bold">{{ data.magnitude.name }}</span></span>
+                    <span>Magnitud
+                        <span v-for="magnitud in data.magnitude" :key="magnitud.id" class="ml-2 badge badge-info font-weight-bold">{{ magnitud.name }}</span>
+                    </span>
                 </div>
                 <div class="py-2 mt-8 text-center col-12 bg-secondary position-relative">
                     <h4 class="font-bold w-100">Magnitudes</h4>
@@ -126,7 +128,13 @@
 
         methods: {
             async fetch(){
-                this.unidades = await this.data.magnitude.unit_measurement;
+                this.data.magnitude.forEach(magnitud => {
+                    for(let i = 0; i < magnitud.unit_measurement.length; i++){
+                        this.unidades.push(magnitud.unit_measurement[i]);
+                    }
+                })
+
+                //this.unidades = await this.data.magnitude.unit_measurement;
                 let datos = await axios.get(this.rutas.unidades_ide);
                 this.unidades_ide = await datos.data;
             },

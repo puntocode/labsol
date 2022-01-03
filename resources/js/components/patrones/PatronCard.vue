@@ -38,7 +38,8 @@
                     tolerance: '',
                     uncertainty: '',
                     ubication: 'Laboratorio',
-                    magnitude_id: 0,
+                    magnitude: [],
+                    // magnitude_id: 0,
                     condition_id: 0,
                     alert_calibration_id: 0,
                     procedimiento_id: 0,
@@ -65,6 +66,7 @@
                 if(this.id > 0){
                     this.action = 'update'
                     await axios.get(this.rutas.getPatron).then(response => this.form = response.data)
+                    this.form.magnitude = this.form.magnitude.map( magnitud => magnitud.id )
                 }
 
                 const procedimientos = await axios.get(this.rutas.procedimientos).then( response => response.data );

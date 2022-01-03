@@ -30,7 +30,7 @@ class Patron extends Model
     }
 
     public function magnitude(){
-        return $this->belongsTo(Magnitude::class);
+        return $this->belongsToMany(Magnitude::class, 'patron_magnitude');
     }
 
     public function alertCalibration(){

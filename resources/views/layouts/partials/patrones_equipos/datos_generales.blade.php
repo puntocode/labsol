@@ -97,7 +97,9 @@
     <div class="form-group col-md-4">
         <label>Magnitud</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="badge badge-info font-weight-bold">{{ $data->magnitude->name }}</span>
+            @foreach ($data->magnitude as $magnitud)
+                <span class="badge badge-info font-weight-bold">{{ $magnitud->name }}</span>
+            @endforeach
         </div>
     </div>
 

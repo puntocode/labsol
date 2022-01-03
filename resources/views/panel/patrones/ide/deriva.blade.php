@@ -42,7 +42,12 @@
                         <div class="px-4 row">
                             <div class="px-0 col-12 d-flex justify-content-between">
                                 <h4>Patron: <span class="text-black-50">{{ $deriva->patronIde->patron->code }}</span></h4>
-                                <span>Magnitud <span class="ml-2 badge badge-primary font-weight-bold">{{ $deriva->patronIde->patron->magnitude->name }}</span></span>
+                                {{-- <span>Magnitud <span class="ml-2 badge badge-primary font-weight-bold">{{ $deriva->patronIde->patron->magnitude->name }}</span></span> --}}
+                                <span>Magnitud
+                                    @foreach ($deriva->patronIde->patron->magnitude as $magnitud)
+                                        <span class="ml-2 badge badge-primary font-weight-bold">{{ $magnitud->name }}</span>
+                                    @endforeach
+                                </span>
                             </div>
                             <div class="py-2 mt-8 text-center col-12 bg-secondary position-relative">
                                 <h4 class="font-bold w-100">Detalle Rango / Resolución</h4>

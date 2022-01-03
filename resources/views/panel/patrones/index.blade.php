@@ -95,7 +95,11 @@
                                 <td>{{ $patrone->last_calibration }}</td>
                                 <td>{{ $patrone->next_calibration }}</td>
                                 <td><span class="badge badge-primary">{{ $patrone->condition->name }}</span></td>
-                                <td><span class="badge badge-info">{{ $patrone->magnitude->name }}</span></td>
+                                <td>
+                                    @foreach ($patrone->magnitude as $magnitud)
+                                        <span class="badge badge-info">{{ $magnitud->name }}</span>
+                                    @endforeach
+                                </td>
                                 <td><span class="badge badge-danger">{{ $patrone->alertaCalibracion() }}</span></td>
                                 <td>
                                     @can('panel.database')

@@ -42,7 +42,7 @@ class HistorycalibrationObserver
 
             $lastCalibration = $patron->historycalibrations()->latest('calibration')->first();
 
-            if ($patron->last_calibration != $lastCalibration->calibration) {
+            if ($patron->last_calibration != $lastCalibration->calibration && isset($patron->last_calibration)) {
 
                 $patron->update([
                     'last_calibration' => $lastCalibration->calibration,
