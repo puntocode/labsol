@@ -3,11 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Expediente;
+use App\Models\Historycalibration;
 use App\Observers\ExpedienteObserver;
 use Illuminate\Auth\Events\Registered;
+use App\Observers\HistorycalibrationObserver;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,5 +31,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Expediente::observe(ExpedienteObserver::class);
+        Historycalibration::observe(HistorycalibrationObserver::class);
     }
 }

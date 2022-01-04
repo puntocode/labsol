@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label>Tipo</label>
-                        <select class="form-control" v-model="form.type">
+                        <label>Tipo <span class="text-danger">*</span></label>
+                        <select class="form-control" v-model.trim="$v.form.type.$model">
                             <option value="DIGITAL">DIGITAL</option>
                             <option value="ANALOGICO">ANALOGICO</option>
                         </select>
@@ -116,8 +116,10 @@
                     </div>
 
                     <div class="col-lg-4">
-                        <select-form label="Magnitud" :value="form.magnitude_id" v-model="$v.form.magnitude_id.$model"
-                            :url="this.rutas.magnitud" texto="-- Selecciona una magnitud --"></select-form>
+                        <label>Magnitud <span class="text-danger">*</span></label>
+                        <select-multiple v-model="$v.form.magnitude.$model" :options="selectMagnitudes" />
+                        <!-- <select-form label="Magnitud" :value="form.magnitude_id" v-model="$v.form.magnitude_id.$model"
+                            :url="this.rutas.magnitud" texto="-- Selecciona una magnitud --"></select-form> -->
                     </div>
 
                     <div class="col-lg-4">
@@ -145,7 +147,7 @@
                     <div class="col-lg-4">
                         <label>Próxima calibración</label>
                         <div class="input-group">
-                            <date-picker v-model="form.next_calibration" :config="options"></date-picker>
+                            <date-picker :config="options" v-model="form.next_calibration" disabled></date-picker>
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                             </div>
@@ -267,14 +269,18 @@
 </template>
 
 <script>
-    import {required, minValue} from "vuelidate/lib/validators";
-    import datePicker from 'vue-bootstrap-datetimepicker';
-    import SuccessAnimation from '../SuccessAnimation';
+    import moment from 'moment';
     import SelectForm from '../SelectForm';
     import Select2 from 'v-select2-component';
+    import SuccessAnimation from '../SuccessAnimation';
+    import datePicker from 'vue-bootstrap-datetimepicker';
+    import {required, minValue} from "vuelidate/lib/validators";
+    import SelectMultiple from 'v-select2-multiple-component';
+
+
 
     export default {
-        components: { datePicker, SuccessAnimation, SelectForm, Select2 },
+        components: { datePicker, SuccessAnimation, SelectForm, Select2, SelectMultiple },
         props: ['form', 'action', 'rutas', 'selectProcedimientos'],
         data() {
             return {
@@ -282,18 +288,31 @@
                 progress: 25,
                 rankIndex: 0,
                 options: { format: 'yyyy/MM/DD'},
-                selectCalibration: [ 'INTERNA', 'EXTERNA', 'INT/EXT', 'N/A']
+                selectCalibration: [ 'INTERNA', 'EXTERNA', 'INT/EXT', 'N/A'],
+                selectMagnitudes: []
             }
         },
+
+        created () {
+            this.cargarSelect();
+        },
+
         validations:{
             form:{
                 code: {required},
+                condition_id: {required},
                 description: {required},
-                condition_id: {required, minValue: 1},
-                magnitude_id: {required, minValue: 1},
+                magnitude: {required},
+                type: {required},
             }
         },
+
         methods: {
+            async cargarSelect(){
+                let res = await axios.get(this.rutas.magnitud)
+                let magnitudes = await res.data;
+                this.selectMagnitudes = magnitudes.map( magnitud => { return {id: magnitud.id, text: magnitud.name} });
+            },
             next(){
                 this.progress = this.progress + 25;
                 this.steps++
@@ -355,29 +374,48 @@
             },
             actualizar(){
                 axios.put(this.rutas.update, this.form)
-                    .then(response => {
-                        if(response.status == 200) this.next();
-                    })
+                    .then(response => { if(response.status == 200) this.next(); })
                     .catch(error => console.log(error))
+            },
+            cargaFecha(){
+                if(this.form.last_calibration !== null && this.form.calibration_period.length && this.form.last_calibration.length){
+                    let fecha = moment(this.form.last_calibration, 'YYYY/MM/DD');
+                    fecha.add(parseInt(this.form.calibration_period), 'years');
+                    this.form.next_calibration = fecha;
+                }
+                else this.form.next_calibration = '';
             }
 
 
         },
+
+
         computed: {
             disable() {
-                return  this.form.code.trim() === '' || this.form.description.trim() === ''
+                return this.$v.form.$invalid
                     || this.form.precision[0].title.trim() === ''
                     || this.form.condition_id === 0
-                    ||  this.form.magnitude_id === 0
-                    ||  this.form.alert_calibration_id === 0  ? true : false;
+                    || this.form.magnitude.length === 0
+                    || this.form.alert_calibration_id === 0  ? true : false;
             },
             btnTitle(){
                 return this.disable ? 'Completa todos los campos obligatorios*' : 'Guarda los datos';
             },
             textoBtn(){
                 return this.action === 'create' ? 'Crear' : 'Actualizar';
-            }
+            },
         },
+
+
+        watch: {
+            'form.last_calibration': function(){
+                this.cargaFecha();
+            },
+
+            'form.calibration_period': function(){
+                this.cargaFecha();
+            },
+        }
     };
 </script>
 

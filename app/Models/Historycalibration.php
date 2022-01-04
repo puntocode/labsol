@@ -11,12 +11,25 @@ class Historycalibration extends Model
 
     protected $fillable = ['certificate', 'certificate_no', 'next_calibration', 'calibration', 'done', 'obs'];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'calibration' => 'date',
+    ];
+
     public function historycalibration(){
         return $this->morphTo();
     }
 
     public function getUrlCertificate(){
         return asset("media/docs/historial-calibracion/". $this->certificate);
+    }
+
+    public function getCalibrationAttribute(){
+        return date('Y-m-d', strtotime($this->attributes['calibration']));
     }
 
 }

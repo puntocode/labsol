@@ -11,10 +11,17 @@ class Patron extends Model
 
     protected $guarded = ['id'];
     protected $appends = [ 'title', 'periodo', 'idioma' ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
-        'rank' => 'array',
-        'error_max' => 'array',
-        'precision' => 'array',
+        'rank'             => 'array',
+        'error_max'        => 'array',
+        'precision'        => 'array',
+        'last_calibration' => 'date',
     ];
 
 
@@ -23,7 +30,7 @@ class Patron extends Model
     }
 
     public function magnitude(){
-        return $this->belongsTo(Magnitude::class);
+        return $this->belongsToMany(Magnitude::class, 'patron_magnitude');
     }
 
     public function alertCalibration(){
@@ -96,6 +103,11 @@ class Patron extends Model
         ];
 
         return $data;
+    }
+
+    public function getLastCalibrationAttribute(){
+        if(isset($this->attributes['last_calibration']))return date('Y-m-d', strtotime($this->attributes['last_calibration']));
+        else return '-';
     }
 
 

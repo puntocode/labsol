@@ -95,7 +95,11 @@
                                 <td>{{ $patrone->last_calibration }}</td>
                                 <td>{{ $patrone->next_calibration }}</td>
                                 <td><span class="badge badge-primary">{{ $patrone->condition->name }}</span></td>
-                                <td><span class="badge badge-info">{{ $patrone->magnitude->name }}</span></td>
+                                <td>
+                                    @foreach ($patrone->magnitude as $magnitud)
+                                        <span class="badge badge-info">{{ $magnitud->name }}</span>
+                                    @endforeach
+                                </td>
                                 <td><span class="badge badge-danger">{{ $patrone->alertaCalibracion() }}</span></td>
                                 <td>
                                     @can('panel.database')
@@ -103,19 +107,6 @@
                                             <i class="fas fa-list text-primary"></i>
                                         </a>
                                     @endcan
-                                    {{-- @elseif(in_array('editar', $role_actions))
-                                        <a href="{{ route('panel.patrones.edit', $i) }}"
-                                            class="btn btn-sm btn-clean btn-icon" title="Editar patrón">
-                                            <i class="la la-edit"></i>
-                                        </a>
-                                    @endif
-
-                                    @if (in_array('eliminar', $role_actions))
-                                        <a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon"
-                                            title="Eliminar patrón">
-                                            <i class="la la-trash"></i>
-                                        </a>
-                                    @endif --}}
                                 </td>
                             </tr>
                         @endforeach

@@ -71,7 +71,7 @@
             return {
                 form: this.data,
                 rutas: window.routes,
-                unidades: this.patron.magnitude.unit_measurement,
+                unidades: [],
                 unidades_ide: [],
                 selectUnidades: []
             }
@@ -108,6 +108,12 @@
         //------------------------------------------------------------------------------------
         methods: {
             async fetch(){
+                this.patron.magnitude.forEach(magnitud => {
+                    for(let i = 0; i < magnitud.unit_measurement.length; i++){
+                        this.unidades.push(magnitud.unit_measurement[i]);
+                    }
+                })
+
                 let datos = await axios.get(this.rutas.unidades_ide);
                 this.unidades_ide = await datos.data;
                 this.cargarSelectUnidades();

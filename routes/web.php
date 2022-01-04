@@ -79,6 +79,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/valor-certificados', 'ValorCertificadoController')->middleware('can:panel.database');
     Route::resource('/incertidumbre-resultados', 'ValorIncertidumbreResultadoController')->middleware('can:panel.database');
 
+    Route::get('/incertidumbre-valor', 'ValorIncertidumbreController@getValorIncertidumbre')->name('incertidumbre.valor')->middleware('can:panel.database');
+    Route::get('/resultado-valor-id', 'ValorIncertidumbreResultadoController@getResultado')->name('incertidumbre.resultado')->middleware('can:panel.database');
+
 
     Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration')->name('alert.calibration');
     Route::get('/condition', [PanelController::class, 'getCondition'])->name('condition.all');

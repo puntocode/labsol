@@ -40651,9 +40651,9 @@ code {
   .dropdown-menu.dropdown-menu-md {
     width: 250px; } }
 
-@media (min-width: 382px) {
+@media (min-width: 400px) {
   .dropdown-menu.dropdown-menu-lg {
-    width: 382px; } }
+    width: 388px; } }
 
 @media (min-width: 430px) {
   .dropdown-menu.dropdown-menu-xl {

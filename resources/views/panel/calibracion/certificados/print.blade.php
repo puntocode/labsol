@@ -272,7 +272,7 @@
                                 <td colspan="4" class="text-center">
                                     <b>Código:</b>
                                     @if (isset($expediente->autorizado_id))
-                                        {{ $expediente->autorizado->name }} {{ $expediente->autorizado->last_name }}
+                                        {{ $expediente->autorizado->uuid }}
                                     @else
                                         -
                                     @endif

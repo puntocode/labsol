@@ -53,8 +53,10 @@ class PatronController extends Controller
      */
     public function store(Request $request)
     {
+
         $patron = Patron::create($this->validateData());
-        return response()->json($patron);
+        $patron->magnitude()->attach($request['magnitude']);
+        return response()->json($request->all());
     }
 
     /**
@@ -95,6 +97,7 @@ class PatronController extends Controller
     {
         $pattern = Patron::findOrFail($request->id);
         $pattern->update($this->validateData());
+        $pattern->magnitude()->sync($request['magnitude']);
         return response()->json(Response::HTTP_OK);
     }
 
@@ -123,7 +126,6 @@ class PatronController extends Controller
             'description'          => 'required',
             'error_max'            => 'nullable',
             'last_calibration'     => 'nullable',
-            'magnitude_id'         => 'required',
             'model'                => 'nullable',
             'next_calibration'     => 'nullable',
             'precision'            => 'nullable',
@@ -150,7 +152,7 @@ class PatronController extends Controller
 
 
     public function getPatronForId($id){
-        return response()->json(Patron::find($id));
+        return response()->json(Patron::with('magnitude')->find($id));
     }
 
 

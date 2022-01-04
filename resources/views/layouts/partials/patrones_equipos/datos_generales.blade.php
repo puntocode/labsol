@@ -97,7 +97,9 @@
     <div class="form-group col-md-4">
         <label>Magnitud</label>
         <div class="form-control p-0 border-0 h-auto">
-            <span class="badge badge-info font-weight-bold">{{ $data->magnitude->name }}</span>
+            @foreach ($data->magnitude as $magnitud)
+                <span class="badge badge-info font-weight-bold">{{ $magnitud->name }}</span>
+            @endforeach
         </div>
     </div>
 
@@ -138,21 +140,25 @@
     <div class="form-group col-md-4">
         <label>Rango</label>
         <div class="form-control p-0 border-0 h-auto">
-            @foreach ($data->rank as $rank)
-                <span class="font-weight-bold">{{ $rank  }}</span> <br>
-            @endforeach
+            @isset($data->rank)
+                @foreach ($data->rank as $rank)
+                    <span class="font-weight-bold">{{ $rank  }}</span> <br>
+                @endforeach
+            @endisset
         </div>
     </div>
 
     <div class="form-group col-md-4">
         <label>Precisión</label>
         <div class="form-control p-0 border-0 h-auto">
-            @foreach ($data->precision as $precision)
-                <span class="font-weight-bold">{{ $precision['title'] == 'precision' ? '' : $precision['title']  }}</span><br>
-                @foreach ($precision['value'] as $value)
-                    {{ $value }} <br>
+            @isset($data->precision)
+                @foreach ($data->precision as $precision)
+                    <span class="font-weight-bold">{{ $precision['title'] == 'precision' ? '' : $precision['title']  }}</span><br>
+                    @foreach ($precision['value'] as $value)
+                        {{ $value }} <br>
+                    @endforeach
                 @endforeach
-            @endforeach
+            @endisset
         </div>
     </div>
 
@@ -160,16 +166,17 @@
     <div class="form-group col-md-4">
         <label>Error Máximo</label>
         <div class="form-control p-0 border-0 h-auto">
-            @foreach ($data->error_max as $error)
-                <span class="font-weight-bold">{{ $error['title'] == 'error' ? '' : $error['title']  }}</span><br>
-                @foreach ($error['value'] as $value)
-                    {{ $value }} <br>
+
+            @isset($data->error_max)
+                @foreach ($data->error_max as $error)
+                    <span class="font-weight-bold">{{ $error['title'] == 'error' ? '' : $error['title']  }}</span><br>
+                    @foreach ($error['value'] as $value)
+                        {{ $value }} <br>
+                    @endforeach
                 @endforeach
-            @endforeach
+            @endisset
+
         </div>
     </div>
 
 </div>
-
-
-
