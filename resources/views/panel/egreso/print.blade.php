@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Entrada de Instrumentos</title>
+    <title>Salida de Instrumentos</title>
 
     <link href="{{asset('plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
 	<link href="{{asset('css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
@@ -86,8 +86,8 @@
         <div class="page-header">
             <section class="row noPrint">
                 <div class="col text-center my-10">
-                    <a href="{{ route('panel.entrada-instrumentos.show', $entradaInstrumento) }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Ir al Detalle</a>
-                    <a href="{{ route('panel.entrada-instrumentos.index') }}" class="btn btn-info mx-4"><i class="fas fa-list"></i> Ir a la Lista</a>
+                    <a href="{{ route('panel.egreso.show', $entradaInstrumento) }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Ir al Detalle</a>
+                    <a href="{{ route('panel.egreso.index') }}" class="btn btn-info mx-4"><i class="fas fa-list"></i> Ir a la Lista</a>
                     <button type="button" class="btn btn-primary" onclick="imprimir()"><i class="fas fa-print"></i> Imprimir</button>
                 </div>
             </section>
@@ -212,6 +212,57 @@
 
                 <tr><td colspan="24" style="background: white !important; height: 100px;"></td></tr>
 
+                @foreach ($egresoInstrumentos as $egresoInstrumento)
+                    <tr>
+                        <th colspan="24" class="text-center">CONTROL DE EGRESO DE INSTRUMENTOS</th>
+                    </tr>
+
+                    <tr>
+                        <th colspan="5">TIPO DE RETIRO</th>
+                        <td colspan="19" class="text-uppercase">{{ $egresoInstrumento->tipo_retiro }}</td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="5">FECHA DE RETIRO</th>
+                        <td colspan="19" class="text-uppercase">{{ $egresoInstrumento->fecha->format('d/m/Y H:i:s') }}</td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="3" class="text-center">CANTIDAD</th>
+                        <th colspan="7" class="text-center">INSTRUMENTO</th>
+                        <th colspan="14" class="text-center">N° DE EXPEDIENTE</th>
+                    </tr>
+
+                    @foreach ($egresoInstrumento->expedientesEgresados as $expediente)
+                        <tr>
+                            <td colspan="3" class="text-center">{{  $expediente->cantidad }}</td>
+                            <td colspan="7" class="text-center">{{  $expediente->instrumentos->name }}</td>
+                            <td colspan="14" class="text-center">{{ $expediente->abrebiarNumerosConsecutivos() }}</td>
+                        </tr>
+                    @endforeach
+
+                    <tr>
+                        <th colspan="5" class="align-middle">ENTREGADO POR</th>
+                        <td colspan="9" class="text-center align-middle">{{ $egresoInstrumento->entregadoPor->fullname }}</td>
+                        <td colspan="10" class="h-75px"></td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="5" rowspan="2" class="align-middle">RECIBÍ CONFORME</th>
+                        <td colspan="3" class="text-center">Nombre</td>
+                        <td colspan="6" class="text-center">{{ $egresoInstrumento->recibido_por }}</td>
+                        <td colspan="10" rowspan="2"></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" class="text-center">C.I:</td>
+                        <td colspan="6" class="text-center">{{ $egresoInstrumento->identificacion }}</td>
+                    </tr>
+
+                    <tr><td colspan="24" style="background: white !important; border: 3px solid rgba(0, 0, 0, 0) !important"></td></tr>
+
+                @endforeach
+
             </tbody>
 
             <tfoot>
@@ -228,9 +279,6 @@
             <br>
             Tel/Fax +595 21 202 846
         </div>
-
-
-
     </div>
 
 

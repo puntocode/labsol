@@ -45,23 +45,20 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/entrada-instrumentos-print/{entradaInstrumento}', 'EntradaInstrumentoController@print')->name('entrada-instrumentos.print')->middleware('can:panel.admin');
     Route::get('/instrumentos-all', [InstrumentoController::class, 'getInstrumentos'])->name('instrumentos.all')->middleware('can:panel.database');
 
-    Route::resource('/egreso-instrumentos', 'EgresoController')->names([
-        'index' => 'egreso.index',
-        'create' => 'egreso.create',
-        'edit'  => 'egreso.edit',
-        'update' => 'egreso.update',
-        'store' => 'egreso.store',
-        'show'  => 'egreso.show',
-        'destroy' => 'egreso.destroy'
-    ])->middleware('can:panel.database');
+    Route::resource('egreso-instrumentos', 'EgresoController')
+        ->parameter('egreso-instrumentos', 'entradaInstrumento')
+        ->names('egreso')
+        ->middleware('can:panel.database');
+
+    Route::get('/egreso-instrumentos-print/{entradaInstrumento}', 'EgresoController@print')->name('egreso.print')->middleware('can:panel.admin');
 
     Route::resource('/facturacion', 'FacturacionController')->names([
-        'index' => 'facturacion.index',
-        'create' => 'facturacion.create',
-        'edit'  => 'facturacion.edit',
-        'update' => 'facturacion.update',
-        'store' => 'facturacion.store',
-        'show'  => 'facturacion.show',
+        'index'   => 'facturacion.index',
+        'create'  => 'facturacion.create',
+        'edit'    => 'facturacion.edit',
+        'update'  => 'facturacion.update',
+        'store'   => 'facturacion.store',
+        'show'    => 'facturacion.show',
         'destroy' => 'facturacion.destroy'
     ])->middleware('can:panel.admin');
 

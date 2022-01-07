@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EntradaInstrumento extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
+
     protected $casts   = [ 'contact' => 'array' ];
 
     public function user(){
@@ -27,5 +29,13 @@ class EntradaInstrumento extends Model
         return date('d-m-Y', strtotime($this->attributes['created_at']));
     }
 
-
+    /**
+     * Obtiene los egresos de la entrada de instrumentos.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function egresoInstrumentos()
+    {
+        return $this->hasMany(EgresoInstrumento::class);
+    }
 }
