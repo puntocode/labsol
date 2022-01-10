@@ -2,7 +2,7 @@
     <div class="row text-left">
         <div class="col-12 mb-18" v-for="(incer, index) in incertidumbres" :key="index">
             <h3 class="mb-5 pointer" data-toggle="collapse" :data-target="`#collapse-incertidumbre-${index}`">
-                <i class="fas fa-plus mr-3"></i> {{ index+1 }}. Punto de medición: {{ resultados[index].ip.toFixed(2) }} {{ resultados[index].unidad }}
+                <i class="fas fa-plus mr-3"></i> {{ index+1 }}. Punto de medición: {{ resultados[index].ip !== undefined ? resultados[index].ip.toFixed(2) : '' }} {{ resultados[index].unidad }}
             </h3>
 
             <div class="collapse" :id="`collapse-incertidumbre-${index}`">

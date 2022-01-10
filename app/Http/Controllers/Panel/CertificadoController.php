@@ -7,6 +7,7 @@ use App\Models\Expediente;
 use Illuminate\Http\Request;
 use App\Models\ValorCertificado;
 use App\Http\Controllers\Controller;
+use App\Models\CalibracionHistorial;
 use App\Models\Patron;
 use App\Models\PatronIde;
 use App\Models\Procedimiento;
@@ -74,6 +75,8 @@ class CertificadoController extends Controller
         $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
         $instrumentoProcedimiento = DB::table('instrumento_procedimiento')->where('instrumento_id', $instrumentoId)->first();
         $procedimiento = Procedimiento::whereId($instrumentoProcedimiento->procedimiento_id)->with('incertidumbres')->first();
+        $historialCalibracion = CalibracionHistorial::where('calibracion_id', $calibracionId)->get();
+
 
         return view('panel.calibracion.certificados.show', compact(
             'expediente',
@@ -82,7 +85,8 @@ class CertificadoController extends Controller
             'valorResultados',
             'valoresCertificado',
             'ide',
-            'procedimiento'
+            'procedimiento',
+            'historialCalibracion'
         ));
     }
 

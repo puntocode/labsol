@@ -84,19 +84,19 @@
                 </div>
             </div>
 
-            <div class="pb-0 mb-0 form-group col-md-4 d-flex align-items-center">
+            <!-- <div class="pb-0 mb-0 form-group col-md-4 d-flex align-items-center">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-tecnico"><i class="fas fa-user"></i>{{ textoBtn }}</button>
-            </div>
+            </div> -->
         </div>
 
-        <HistorialTable :historial="historial" v-if="historial != null && historial.length > 1" />
+        <!-- <HistorialTable :historial="historial" v-if="historial != null && historial.length > 1" /> -->
 
 
-        <div class="modal fade" id="modal-tecnico" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <!-- <div class="modal fade" id="modal-tecnico" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <AsignarTecnico data="show" :numeros.sync="numeros" :expedientes.sync="expediente" />
             </div>
-        </div>
+        </div> -->
 
     </div>
 </template>
@@ -106,20 +106,20 @@
     import AsignarTecnico from './AsignarTecnico';
 
     export default {
-        props: ['data'],
+        props: ['expediente'],
         components: { HistorialTable, AsignarTecnico },
         data() {
             return {
-                numeros: [this.data.expediente.number],
-                expediente: this.data.expediente,
-                historial: this.data.historial,
+                // numeros: [this.data.expediente.number],
+                // expediente: this.data.expediente,
+                // historial: this.data.historial,
             }
         },
-        computed: {
-            textoBtn() {
-                return this.expediente.tecnicos == null ? 'Asignar Técnico' : 'Reasignar Técnico';
-            }
-        },
+        // computed: {
+        //     textoBtn() {
+        //         return this.expediente.tecnicos == null ? 'Asignar Técnico' : 'Reasignar Técnico';
+        //     }
+        // },
     }
 </script>
 

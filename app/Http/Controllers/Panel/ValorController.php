@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Panel;
 use App\Models\Valor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ValorController extends Controller
 {
@@ -83,7 +84,8 @@ class ValorController extends Controller
      */
     public function destroy(Valor $valor)
     {
-        //
+        $valor->delete();
+        return response()->json(Response::HTTP_OK);
     }
 
 

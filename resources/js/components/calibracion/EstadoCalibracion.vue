@@ -6,17 +6,20 @@
                 <label class="for-checkbox-tools" for="accept">
                     <span class="icon-success-icon"></span>
                 </label>
+
+                <input class="checkbox-tools corregir" type="radio" value="8" id="correct" v-model="form.expediente_estado_id">
+                <label class="for-checkbox-tools" for="correct" title="Se postergó la calibración para una revisión">
+                    <span class="icon-correct-icon"></span>
+                </label>
+
                 <input class="checkbox-tools rechazar" type="radio" value="9" id="decline" v-model="form.expediente_estado_id">
-                <label class="for-checkbox-tools" for="decline">
+                <label class="for-checkbox-tools" for="decline" title="Se devuelve a laboratorio para una nueva calibración">
                     <span class="icon-cancel-icon"></span>
                 </label>
+
                 <input class="checkbox-tools anular" type="radio" value="6" id="cancel" v-model="form.expediente_estado_id">
-                <label class="for-checkbox-tools" for="cancel">
+                <label class="for-checkbox-tools" for="cancel" title="No se realizará/terminará la calibración">
                     <span class="icon-null-icon"></span>
-                </label>
-                <input class="checkbox-tools corregir" type="radio" value="8" id="correct" v-model="form.expediente_estado_id">
-                <label class="for-checkbox-tools" for="correct">
-                    <span class="icon-correct-icon"></span>
                 </label>
             </div>
 

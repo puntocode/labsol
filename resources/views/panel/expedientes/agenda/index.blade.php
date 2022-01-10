@@ -22,7 +22,7 @@
                     <div class="pt-0 pb-5 card-body">
 						<div class="card-content">
 							<div class="flex-grow-1">
-                                @foreach($estadosSum as $status)
+                                @foreach($estadosFiltro as $status)
                                     <div class="mb-10 d-flex align-items-center justify-content-between">
                                         <div class="mr-2 d-flex align-items-center">
                                             <div class="symbol symbol-40 symbol-light-{{$status->estados->color}} mr-3 flex-shrink-0">
@@ -130,11 +130,13 @@
                                                     {{$expediente->estados->name}}
                                                 </span>
                                             </td>
+
                                             <td id="text-{{ $expediente->number }}">
                                                 @foreach ($expediente['tecnicos'] as $tecnicos)
                                                     <span><i class="mr-2 fas fa-user"></i>{{ $tecnicos['nombre'] }}</span><br>
                                                 @endforeach
                                             </td>
+
                                             <td id="date-{{ $expediente->number }}">{{ $expediente->delivery_date }}</td>
                                             {{-- <td>{{$expediente->obs}}</td> --}}
                                             <td><a href="{{ route('panel.calibrar.expediente', $expediente->id) }}" class="btn btn-primary">Calibrar</a></td>

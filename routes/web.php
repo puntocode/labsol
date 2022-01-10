@@ -41,9 +41,12 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
 
     # -- Instrumentos --
+    Route::resource('/instrumentos', 'InstrumentoController')->middleware('can:panel.database');
     Route::resource('/entrada-instrumentos', 'EntradaInstrumentoController')->middleware('can:panel.admin');
     Route::get('/entrada-instrumentos-print/{entradaInstrumento}', 'EntradaInstrumentoController@print')->name('entrada-instrumentos.print')->middleware('can:panel.admin');
     Route::get('/instrumentos-all', [InstrumentoController::class, 'getInstrumentos'])->name('instrumentos.all')->middleware('can:panel.database');
+    Route::get('/instrument/active/{id}', 'InstrumentoController@active')->name('instrumento.active')->middleware('can:panel.database');
+
 
     Route::resource('/egreso-instrumentos', 'EgresoController')->names([
         'index' => 'egreso.index',
@@ -73,6 +76,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Calibración  --
     Route::resource('/calibracion', 'CalibracionController')->middleware('can:panel.database');
     Route::get('/calibraciones/expediente/{expediente_id}', 'CalibracionController@calibrarExpediente')->name('calibrar.expediente')->middleware('can:panel.database');
+    Route::put('/update-calibracion', 'CalibracionController@actualizarHistorico')->name('calibrar.actualizar.historico')->middleware('can:panel.database');
+
+
     Route::resource('/valors', 'ValorController')->middleware('can:panel.database');
     Route::resource('/valor-resultado', 'ValorResultadoController')->middleware('can:panel.database');
     Route::resource('/valor-incertidumbre', 'ValorIncertidumbreController')->middleware('can:panel.database');
@@ -86,6 +92,11 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration')->name('alert.calibration');
     Route::get('/condition', [PanelController::class, 'getCondition'])->name('condition.all');
     Route::get('/magnitud', [PanelController::class, 'getMagnitudes'])->name('magnitud.all');
+
+
+
+    # -- Calibración Historial  --
+    Route::resource('/calibracion-historial', 'CalibracionHistorialController')->middleware('can:panel.database');
 
 
     # -- Patrones --

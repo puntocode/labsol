@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
-use App\Models\AlertCalibration;
-use App\Models\Calibracion;
 use App\Models\Expediente;
+use App\Models\Calibracion;
 use Illuminate\Http\Request;
+use App\Models\AlertCalibration;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Models\CalibracionHistorial;
 
 class CalibracionController extends Controller
 {
@@ -87,10 +88,8 @@ class CalibracionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $calibracion = Calibracion::find($request['id'])->fill($request->all());
-        if($calibracion->isDirty()){
-            $calibracion->update($request->all());
-        }
+        $calibracion = Calibracion::find($request['id']);
+        $calibracion->update($request->all());
         return response()->json($calibracion);
     }
 
@@ -114,6 +113,7 @@ class CalibracionController extends Controller
     public function calibrarExpediente($expediente_id)
     {
         $userId = Auth::id();
+        $userName = Auth::user()->name . ' ' . Auth::user()->last_name;
         $calibracion = Calibracion::where('expediente_id', $expediente_id)->first();
 
         if($calibracion == null){
@@ -124,9 +124,48 @@ class CalibracionController extends Controller
 
         $expediente->update([
             'expediente_estado_id' => 11,
+            'tecnicos' => [[ 'id' => $userId, 'nombre' => $userName ]]
         ]);
 
         return view('panel.calibracion.form', compact('expediente'));
     }
+
+    public function actualizarHistorico(Request $request)
+    {
+        $calibracion = Calibracion::find($request['id'])->fill($request->all());
+        $anterior = [];
+        $nuevo = [];
+
+        if($calibracion->isDirty())
+        {
+            $temporal = Calibracion::whereId($request['id'])->get();
+
+            //actualizamos
+            $calibracion->update($request->all());
+
+            //detectamos los cambios
+            $cambios = $calibracion->getChanges();
+
+            //guardamos los campos modificados
+            foreach($cambios as $key => $cambio){
+                if($key !== "updated_at"){
+                    $anterior[$key] = $temporal[0][$key];
+                    $nuevo[$key] = $request[$key];
+                }
+            }
+
+            $data = [
+                'anteriores' => $anterior,
+                'nuevos' => $nuevo,
+                'calibracion_id' => $calibracion->id,
+                'user_id' => Auth::user()->id,
+            ];
+
+            CalibracionHistorial::create($data);
+
+        }
+        return response()->json($calibracion);
+    }
+
 
 }

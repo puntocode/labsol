@@ -7,7 +7,7 @@
 @section('content')
 	<!--begin::Container-->
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Expediente {{ $data['expediente']->number }}
+		<h3 class="card-label mb-8">Expediente {{ $expediente->number }}
 			<small class="font-weight-lighter"> | Ficha</small>
 		</h3>
 
@@ -31,8 +31,8 @@
 			</div>
 
 			<div class="col-lg-9 col-xl-10">
-				<!--begin::Card-->
-				<div class="card card-custom">
+                <!--begin::Card-->
+                <div class="card card-custom">
                     <div class="card-body">
                         <div class="card-toolbar position-relative">
                             <ul class="nav nav-tabs nav-bold nav-tabs-line">
@@ -56,7 +56,7 @@
 
                             <div class="tab-pane fade show active" id="tab_datos" role="tabpanel" aria-labelledby="tab_datos">
                                 <div class="shadow-none card card-custom gutter-b card-stretch">
-                                    <expediente-form :data="{{ json_encode($data) }}"></expediente-form>
+                                    <expediente-form :expediente="{{ $expediente }}"></expediente-form>
 				                </div>
 				            </div>
 
@@ -68,12 +68,32 @@
                                         </div>
                                     </div>
                                 </div>
-
                             @endif
+
 				        </div>
 				    </div>
 				</div>
 				<!--end::Card-->
+
+
+                {{-- <div class="card card-custom px-5">
+                    <div class="card-header border-0">
+                        <div class="card-title pt-8 d-flex justify-content-between w-100">
+                            <h3 class="card-title font-weight-bolder">Expediente {{ $expediente->number }}</h3>
+                            <span class="badge badge-{{$expediente->estados->color}}">{{ $expediente->estados->name }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-body pt-0">
+                        @include('panel.calibracion.certificados.partials.expediente')
+
+                        @if ($expediente->expediente_estado_id > 2 && $expediente->expediente_estado_id !== 11)
+                            @include('panel.calibracion.certificados.partials.ficha')
+                        @endif
+                    </div>
+                </div> --}}
+
+
 			</div>
 		</div>
 	</div>
@@ -93,13 +113,6 @@
             'incertidumbre': VALOR_INCERTIDUMBRE,
             'updateTecnicos': UPDATE_TECNICOS,
         }
-    </script>
-@endsection
-
-@section('scripts')
-    <script>
-        const number = $('#expediente-number').text();
-        $('#nro-expediente').html(number);
     </script>
 @endsection
 

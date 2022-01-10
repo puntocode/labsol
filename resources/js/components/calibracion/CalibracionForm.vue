@@ -116,6 +116,7 @@
                 this.datos.tipo = this.data.type;
                 this.datos.expediente_id = this.data.id;
                 this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
+                if(this.data.calibracion.instrumento == null) this.form.instrumento = this.data.instrumentos.name;
             },
 
             next(){

@@ -10,6 +10,7 @@ class Instrumento extends Model
     use HasFactory;
 
     protected $appends = [ 'code' ];
+    protected $casts = [ 'status' => 'boolean'];
 
     public function procedimiento(){
         return $this->belongsToMany(Procedimiento::class);
@@ -17,5 +18,9 @@ class Instrumento extends Model
 
     public function getCodeAttribute(){
         return $this->name;
+    }
+
+    public function getStatusAttribute(){
+        return $this->attributes['status'] ? 'ACTIVO' : 'INACTIVO';
     }
 }

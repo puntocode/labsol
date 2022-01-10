@@ -59,7 +59,7 @@ class Expediente extends Model
     }
 
     public function scopeAsignar($query){
-        $query->where('expediente_estado_id', 1)->where('tecnicos', null);
+        $query->where('expediente_estado_id', 1)->orWhere('expediente_estado_id', 9)->where('tecnicos', null);
     }
 
     public function scopeRelaciones($query){
@@ -71,7 +71,7 @@ class Expediente extends Model
     }
 
     public function scopeAgenda($query){
-        $query->where('expediente_estado_id', 2)->orWhere('expediente_estado_id', 11)->whereNotNull('delivery_date');
+        $query->where('expediente_estado_id', 2)->orWhere('expediente_estado_id', 11)->orWhere('expediente_estado_id', 8)->whereNotNull('delivery_date');
     }
 
     public function scopeCantidad($query, $entrada_id)

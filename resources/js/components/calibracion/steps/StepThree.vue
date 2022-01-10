@@ -98,8 +98,8 @@
 
         methods: {
             fetch(){
-                if(this.formulario.fecha_inicio === null) this.formulario.fecha_inicio = new Date().toISOString().substr(0, 10);
-                if(this.formulario.lugar === null) this.formulario.lugar = this.datos.tipo == 'LS' ? 'Labsol' : '';
+                if(!this.formulario.fecha_inicio) this.formulario.fecha_inicio = new Date().toISOString().substr(0, 10);
+                if(!this.formulario.lugar) this.formulario.lugar = this.datos.tipo == 'LS' ? 'Labsol' : '';
             },
 
             async siguiente() {
@@ -110,7 +110,11 @@
 
             async submit(){
                 try{
-                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+                    let res = null;
+
+                    if(this.form.fecha_inicio) res = await axios.put(this.rutas.updateHistorico, this.formulario);
+                    else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+
                     this.formulario = await res.data;
                 }catch(error){
                     this.$swal.fire('Error', 'Error al actualizar', 'error');

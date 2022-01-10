@@ -33,7 +33,7 @@
     <div class="form-group col-md-6">
         <label>Instrumento</label>
         <div class="h-auto p-0 border-0 form-control">
-            <span class="font-weight-bold">{{ $expediente->instrumentos->name }}</span>
+            <span class="font-weight-bold">{{" {$expediente->calibracion->instrumento} - ({$expediente->instrumentos->name}) "}}</span>
         </div>
     </div>
 
@@ -93,6 +93,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="mt-6 row">
     <div class="col-12 border-bottom border-primary mb-6">
@@ -346,5 +347,15 @@
         </div>
     </div>
 </div>
+
+@if (count($historialCalibracion))
+    <div class="mt-6 row">
+        <div class="col-12 border-bottom border-primary mb-6">
+            <h3>8. Hitorial Cambios</h3>
+        </div>
+
+        <historial-calibracion :historial="{{ $historialCalibracion }}"></historial-calibracion>
+    </div>
+@endif
 
 

@@ -35,7 +35,7 @@
                                     <td>{{ expedient.instrumentos.name }}</td>
                                     <td>{{ expedient.service }}</td>
                                     <td>
-                                        <span class="badge badge-warning">{{ expedient.estados.name}}</span>
+                                        <span class="badge" :class="`badge-${expedient.estados.color}`">{{ expedient.estados.name}}</span>
                                     </td>
                                     <td>
                                         <span class="badge" :class="`badge-${expedient.prioridad.color}`">

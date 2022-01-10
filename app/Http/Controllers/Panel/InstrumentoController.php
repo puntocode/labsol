@@ -18,7 +18,7 @@ class InstrumentoController extends Controller
     {
         $instrumentos = Instrumento::all();
         if(request()->wantsJson()) return response()->json($instrumentos);
-        //return view('panel.instrumentos.index', compact('entrada_instrumentos'));
+        return view('panel.instrumentos.index', compact('instrumentos'));
     }
 
     /**
@@ -28,14 +28,8 @@ class InstrumentoController extends Controller
      */
     public function create()
     {
-
-      $entrada_instrumento = NULL;
-      $tecnicos = config('demo.tecnicos');
-      $clientes = config('demo.clientesContacto');
-      $usuarios = config('demo.usuarios');
-      $estados = config('demo.estados_calibraciones');
-
-      return view('panel.instrumentos.form', compact('entrada_instrumento', 'tecnicos', 'clientes', 'usuarios', 'estados'));
+      $instrumento = NULL;
+      return view('panel.instrumentos.form', compact('instrumento'));
     }
 
     /**
@@ -75,11 +69,8 @@ class InstrumentoController extends Controller
     public function edit($id)
     {
 
-      $entrada_instrumento = config('demo.entrada_instrumentos')[$id];
-      $tecnicos = config('demo.tecnicos');
-      $usuarios = config('demo.usuarios');
-
-      return view('panel.instrumentos.form', compact('entrada_instrumento', 'tecnicos', 'usuarios'));
+      $instrumento = Instrumento::find($id);
+      return view('panel.instrumentos.form', compact('instrumento'));
     }
 
     /**
@@ -105,8 +96,12 @@ class InstrumentoController extends Controller
     {
     }
 
-    public function historial(){
-
+    public function active($id)
+    {
+        $instrumento = Instrumento::find($id);
+        $instrumento->status = $instrumento->status === 'ACTIVO' ? 0 : 1;
+        $instrumento->save();
+        return response()->json($instrumento->status);
     }
 
 

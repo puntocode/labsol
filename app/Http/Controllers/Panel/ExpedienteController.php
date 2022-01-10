@@ -6,6 +6,7 @@ use App\Models\Expediente;
 use Illuminate\Http\Request;
 use App\Models\ExpedienteEstado;
 use App\Http\Controllers\Controller;
+use App\Models\CalibracionHistorial;
 use App\Models\ExpedienteHistorial;
 use App\Models\PatronIde;
 use App\Models\Procedimiento;
@@ -69,39 +70,32 @@ class ExpedienteController extends Controller
         $expediente = Expediente::relaciones()->findOrFail($id);
         $calibracionId = $expediente->calibracion->id;
         $instrumentoId = $expediente->instrumentos->id;
+        // dd($expediente->toArray());
 
-        $ide = null;
-        $valores = null;
         $patrones = null;
-        $procedimiento = null;
-        $valorResultados = null;
-        $valoresCertificado = null;
-
-        $data = [
-            'expediente' => $expediente,
-            'historial'  => ExpedienteHistorial::where('expediente_id', $id)->get(),
-        ];
-
+        $ide = null;
+        $valores = Valor::where('calibracion_id', $calibracionId)->get();
+        $valorResultados = ValorResultado::getValorResults($valores);
+        $valoresCertificado = ValorCertificado::ValorTable($expediente->calibracion->id)->get();
+        $instrumentoProcedimiento = DB::table('instrumento_procedimiento')->where('instrumento_id', $instrumentoId)->first();
+        $procedimiento = Procedimiento::whereId($instrumentoProcedimiento->procedimiento_id)->with('incertidumbres')->first();
+        $historialCalibracion = CalibracionHistorial::where('calibracion_id', $calibracionId)->get();
 
         if($expediente->expediente_estado_id > 2 && $expediente->expediente_estado_id != 11){
             $patrones = $expediente->getPatternsForCalibrationCertificate();
-            $valores = Valor::where('calibracion_id', $calibracionId)->get();
-            $valorResultados = ValorResultado::getValorResults($valores);
-            $valoresCertificado = ValorCertificado::ValorTable($expediente->calibracion->id)->get();
             $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
-            $instrumentoProcedimiento = DB::table('instrumento_procedimiento')->where('instrumento_id', $instrumentoId)->first();
-            $procedimiento = Procedimiento::whereId($instrumentoProcedimiento->procedimiento_id)->with('incertidumbres')->first();
         }
 
+
         return view('panel.expedientes.show', compact(
-            'data',
             'expediente',
             'patrones',
             'valores',
             'valorResultados',
             'valoresCertificado',
             'ide',
-            'procedimiento'
+            'procedimiento',
+            'historialCalibracion'
         ));
     }
 
@@ -155,18 +149,23 @@ class ExpedienteController extends Controller
     }
 
     public function agenda(Request $request){
-        $estados = ExpedienteEstado::activo()->get();
+        $estados = ExpedienteEstado::agenda()->get();
         $expedientes = Expediente::agenda()->get();
         $estadosSum = Expediente::suma()->get();
-        return view('panel.expedientes.agenda.index', compact('estados','expedientes', 'estadosSum'));
+
+        $estadosFiltro = $estadosSum->filter(function ($value, $key) {
+            return $value->expediente_estado_id == '2' || $value->expediente_estado_id == '11' || $value->expediente_estado_id == '8';
+        });
+        return view('panel.expedientes.agenda.index', compact('estados','expedientes', 'estadosFiltro'));
     }
 
 
     public function asignarTecnicoIndex()
     {
-        $estados = ExpedienteEstado::where('status', true)->get();
-        $expedientes = Expediente::relaciones()->get();
-        return view('panel.expedientes.asignar', compact('expedientes', 'estados'));
+        // $estados = ExpedienteEstado::where('status', true)->get();
+        // $expedientes = Expediente::relaciones()->get();
+        //  dd($expedientes->toArray());
+        return view('panel.expedientes.asignar');
     }
 
 
@@ -185,6 +184,11 @@ class ExpedienteController extends Controller
 
         if($request->has('estado_comentario')) $exp->estado_comentario = $request['estado_comentario'];
         if($request->has('autorizado_id')) $exp->autorizado_id = $request['autorizado_id'];
+
+        if($request['expediente_estado_id'] == 9){
+            $exp->tecnicos = null;
+            $exp->delivery_date = null;
+        }
 
         $exp->save();
         return response()->json($exp);

@@ -48,14 +48,22 @@
 
             <div class="row mt-4" v-for="(valor, indice) in formulario.valores" :key="indice">
                 <div class="col-md-2">
-                    <select class="form-control" v-model="valor.patron" :disabled="formulario.resultados.length != indice" :id="`patron-${indice}`">
+                    <select
+                        class="form-control"
+                        v-model="valor.patron"
+                        :disabled="formulario.resultados.length != indice || valor.id > 0"
+                        :id="`patron-${indice}`">
                         <option v-for="(patron, i) in selectPatrones" :key="i">{{ patron }}</option>
                     </select>
                 </div>
 
                 <div class="col-md-5 d-flex">
-                    <select class="form-control mr-3" v-model="valor.ip_medida" @change="changeUMValor($event, indice, 'ip')"
-                    :id="`ip-medida-${indice}`" :disabled="formulario.resultados.length != indice">
+                    <select
+                        class="form-control mr-3"
+                        v-model="valor.ip_medida"
+                        @change="changeUMValor($event, indice, 'ip')"
+                        :id="`ip-medida-${indice}`"
+                        :disabled="formulario.resultados.length != indice || valor.id > 0">
                         <option v-for="(ip, i) in selectIP" :key="i">{{ ip }}</option>
                     </select>
 
@@ -66,7 +74,7 @@
                         :id="`ip-valor-0-${indice}`"
                         v-model="valor.ip_valor[0]"
                         @blur="bloquear(`#ip-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'ip-valor'})"
-                        :disabled="valor.patron.trim() === '' || valor.ip_medida.trim() === '' || formulario.resultados.length != indice">
+                        :disabled="valor.patron.trim() === '' || valor.ip_medida.trim() === '' || formulario.resultados.length != indice || valor.id > 0">
 
                     <input
                         type="number"
@@ -75,7 +83,7 @@
                         :id="`ip-valor-1-${indice}`"
                         @blur="bloquear(`#ip-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'ip-valor'})"
                         v-model="valor.ip_valor[1]"
-                        :disabled="valor.ip_valor[0] === '' || valor.iec_valor[0] === ''">
+                        :disabled="valor.ip_valor[0] === '' || valor.iec_valor[0] === '' || valor.id > 0">
 
                     <input
                         type="number"
@@ -84,12 +92,16 @@
                         :id="`ip-valor-2-${indice}`"
                         @blur="bloquear(`#ip-valor-2-${indice}`, {fila:indice, columna: 2, valor: 'ip-valor'})"
                         v-model="valor.ip_valor[2]"
-                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[1] === ''">
+                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[1] === '' || valor.id > 0">
                 </div>
 
                 <div class="col-md-5 d-flex">
-                    <select class="form-control mr-3" v-model="valor.iec_medida" :id="`iec-medida-${indice}`"
-                    :disabled="formulario.resultados.length != indice" @change="changeUMValor($event, indice, 'iec')" >
+                    <select
+                        class="form-control mr-3"
+                        v-model="valor.iec_medida"
+                        :id="`iec-medida-${indice}`"
+                        :disabled="formulario.resultados.length != indice || valor.id > 0"
+                        @change="changeUMValor($event, indice, 'iec')" >
                         <option v-for="(iec, i) in selectIEC" :key="i">{{ iec }}</option>
                     </select>
 
@@ -100,7 +112,7 @@
                         :id="`iec-valor-0-${indice}`"
                         @blur="bloquear(`#iec-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'iec-valor'})"
                         v-model="valor.iec_valor[0]"
-                        :disabled="valor.ip_valor[0] === '' || valor.iec_medida === ''">
+                        :disabled="valor.ip_valor[0] === '' || valor.iec_medida === '' || valor.id > 0">
 
                     <input
                         type="number"
@@ -108,7 +120,7 @@
                         :id="`iec-valor-1-${indice}`"
                         @blur="bloquear(`#iec-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'iec-valor'})"
                         v-model="valor.iec_valor[1]"
-                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[0] === ''">
+                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[0] === '' || valor.id > 0">
 
                     <input
                         type="number"
@@ -117,24 +129,12 @@
                         :id="`iec-valor-2-${indice}`"
                         @blur="calcularIP(indice)"
                         v-model="valor.iec_valor[2]"
-                        :disabled="valor.ip_valor[2] === '' || valor.iec_valor[1] === ''">
+                        :disabled="valor.ip_valor[2] === '' || valor.iec_valor[1] === '' || valor.id > 0">
                 </div>
             </div>
 
 
-            <div class="col-12 text center mt-6">
-                <button type="button" @click="editar" class="btn btn-primary" v-if="Object.keys(registroEdit).length != 0">Editar Último</button>
-                <hr>
-            </div>
-
             <CertificadoTable :certificados="certificados" :redondeo="redondeo"  />
-
-            <ResultadoTable :resultados="formulario.resultados" :redondeo="redondeo"  />
-
-            <PresupuestoIncertidumbre
-                :incertidumbres="formulario.incertidumbre"
-                :resultados="formulario.incertidumbre_result"
-            />
 
             <button type="button"
                 :disabled="disable"
@@ -151,16 +151,14 @@ import encontrark from "../../../functions/encontrar-k.js";
 import interpolar from "../../../functions/interpolar.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
 import convertirBase from "../../../functions/convertir-base.js";
-import ResultadoTable from "../ResultadoTable";
 import calcularFormula from "../../../functions/formulas.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
 import CertificadoTable from "../CertificadoTable";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
-import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
     export default {
-        components: { PresupuestoIncertidumbre, CertificadoTable, ResultadoTable },
+        components: { CertificadoTable },
         props: ['form', 'medida', 'datos', 'incertidumbres'],
         data() {
             return {
@@ -170,11 +168,11 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 formulario: {
                     valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
                     valores: [
-                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
-                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', '']},
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
                     ],
                     resultados: [],
                     incertidumbre: [],
@@ -190,6 +188,7 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                 selectPatrones: [],
                 subMultiplos: [],
                 unidadMedidas: [],
+                valorTemp: {valorId:0, index: undefined}
             }
         },
         //------------------------------------------------------------------------------------
@@ -233,100 +232,112 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
                     this.selectIEC.push(unidad);
                 });
 
+                if(this.form.valores.length) this.cargarValoresDeBD();
             },
 
             async calcularIP(indice)
             {
-                if( this.formulario.valores[indice].iec_valor[2] === '' ){
-                    this.alertaError('No puedes dejar un campo vacío!!');
-                    return;
+                try{
+                    if( this.formulario.valores[indice].iec_valor[2] === '' ){
+                        this.alertaError('No puedes dejar un campo vacío!!');
+                        return;
+                    }
+
+                    // Buscamos la unidad de medida en el IDE
+                    const PATRON = this.formulario.valores[indice].patron;
+                    const ide = await this.ide(PATRON);
+
+                    if(ide.length === 0){
+                        this.alertaError('Por favor carga el IDE del patron seleccionado!')
+                        this.formulario.valores[indice].iec_valor[2] = '';
+                        return;
+                    }
+
+                    this.alertaCalculando();
+
+                    //Unidades de medida
+                    const unidadIde = ide[0].unit_measurement;
+                    const rangosDeriva = ide[0].rangos[0].rango_derivas;
+                    const unidadIPgeneral = this.formulario.valores_medidas.ip_medida_general;
+                    const unidadMedidaIP = this.formulario.valores[indice].ip_medida;
+
+                    //Array de valores convertidos a unidad Base
+                    const arrayValores = await this.convertirUnidadBase(this.formulario.valores[indice].ip_valor, unidadMedidaIP, unidadIPgeneral);
+                    const arrayEnIde = await this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
+
+                    //Calculo IP
+                    const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
+                    const desviacion = calcularDes(arrayEnIde);
+                    let errorIp = null;
+
+                    //array con la columna deriva para encontrar Error Patron
+                    const arrayDeriva = rangosDeriva.map( numero => numero.ip.valor);
+                    const cercanos = encontrarCercanos(arrayDeriva, promedio);
+
+                    if(cercanos[0] === undefined || cercanos[1] === undefined){
+                        this.errorLimpiar(indice, 'No se encuentra el rango en el IDE');
+                        return
+                    }else{
+                        errorIp = this.calcularInterpolacion(promedio, cercanos, rangosDeriva);
+                    }
+
+                    //Calculo IP corregido
+                    let ipCorregido = promedio;
+                    if(errorIp !== null) ipCorregido += parseFloat(errorIp);
+
+
+                    //Calculo IEC
+                    const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
+                    const unidadMedidaIEC = this.formulario.valores[indice].iec_medida;
+                    const arrayValoresIEC = this.convertirUnidadBase(this.formulario.valores[indice].iec_valor, unidadMedidaIEC, unidadIECgeneral);
+                    const arrayEnIdeIEC = this.convertirUnidadIde(arrayValoresIEC, unidadIECgeneral, unidadIde)
+                    const promedioIEC = (arrayEnIdeIEC.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
+                    const desviacionIEC = calcularDes(arrayEnIdeIEC);
+                    const errorIec = promedioIEC - ipCorregido;
+
+                    let uk = 0
+                    if(cercanos[0] !== undefined && cercanos[1] !== undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
+
+
+                    //Guarda Valores en la BD
+                    const VALOR_ID = await this.guardarValores(indice);
+                    this.valorTemp = {valorId: VALOR_ID, index: indice};
+
+                    let result = {
+                        valor_id: VALOR_ID,
+                        desv_ip: desviacion,
+                        desv_iec: desviacionIEC,
+                        error_iec: errorIec,
+                        error_ip: errorIp,
+                        patron: PATRON,
+                        iec: promedioIEC,
+                        ip: promedio,
+                        ip_corregido: ipCorregido,
+                        unidad: unidadIde,
+                        uk: parseFloat(uk),
+                    }
+                    let resultados = await this.guardarValoresResultados(result);
+                    this.formulario.resultados.push(resultados);
+
+                    //Guarda las Incertidumbres en la BD
+                    let incertidumbres = await this.calcularIncertidumbre(result);
+                    this.formulario.incertidumbre.push(incertidumbres);
+
+                    let incertidumbre_result = await this.incertidumbreResultado(incertidumbres, indice);
+                    this.formulario.incertidumbre_result.push(incertidumbre_result);
+
+                    let certificado = await this.calcularCertificado(indice);
+                    this.certificados.push(certificado);
+
+                    $(`#iec-valor-2-${indice}`).attr('disabled', true);
+                    this.$swal.close();
+
+                }catch(error){
+                    console.warn(error)
+                    if(this.valorTemp.valorId > 0 ) axios.delete(`${this.rutas.valorIndex}/${this.valorTemp.valorId}`)
+                    if(this.valorTemp.index !== undefined ) this.errorInsertar();
+                    this.errorLimpiar(indice)
                 }
-
-                this.registroEdit = {fila: indice, columna: 2, valor: 'iec-valor'};
-
-                // Buscamos la unidad de medida en el IDE
-                const PATRON = this.formulario.valores[indice].patron;
-                const ide = await this.ide(PATRON);
-
-                if(ide.length === 0){
-                    this.alertaError('Por favor carga el IDE del patron seleccionado!')
-                    this.formulario.valores[indice].iec_valor[2] = '';
-                    return;
-                }
-
-                this.alertaCalculando();
-
-                //Unidades de medida
-                const unidadIde = ide[0].unit_measurement;
-                const rangosDeriva = ide[0].rangos[0].rango_derivas;
-                const unidadIPgeneral = this.formulario.valores_medidas.ip_medida_general;
-                const unidadMedidaIP = this.formulario.valores[indice].ip_medida;
-
-                //Array de valores convertidos a unidad Base
-                const arrayValores = await this.convertirUnidadBase(this.formulario.valores[indice].ip_valor, unidadMedidaIP, unidadIPgeneral);
-                const arrayEnIde = await this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
-
-                //Calculo IP
-                const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
-                const desviacion = calcularDes(arrayEnIde);
-                let errorIp = null;
-
-                //array con la columna deriva para encontrar Error Patron
-                const arrayDeriva = rangosDeriva.map( numero => numero.ip.valor);
-                const cercanos = encontrarCercanos(arrayDeriva, promedio);
-
-                if(cercanos[0] === undefined || cercanos[1] === undefined) errorIp = 'Error';
-                else errorIp = this.calcularInterpolacion(promedio, cercanos, rangosDeriva);
-
-                //Calculo IP corregido
-                let ipCorregido = promedio;
-                if(errorIp !== 'Error') ipCorregido += parseFloat(errorIp);
-
-
-                //Calculo IEC
-                const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
-                const unidadMedidaIEC = this.formulario.valores[indice].iec_medida;
-                const arrayValoresIEC = this.convertirUnidadBase(this.formulario.valores[indice].iec_valor, unidadMedidaIEC, unidadIECgeneral);
-                const arrayEnIdeIEC = this.convertirUnidadIde(arrayValoresIEC, unidadIECgeneral, unidadIde)
-                const promedioIEC = (arrayEnIdeIEC.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
-                const desviacionIEC = calcularDes(arrayEnIdeIEC);
-                const errorIec = promedioIEC - ipCorregido;
-
-                let uk = 0
-                if(cercanos[0] !== undefined && cercanos[1] !== undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
-
-
-                //Guarda Valores en la BD
-                const VALOR_ID = await this.guardarValores(indice);
-
-                let result = {
-                    valor_id: VALOR_ID,
-                    desv_ip: desviacion,
-                    desv_iec: desviacionIEC,
-                    error_iec: errorIec,
-                    error_ip: errorIp,
-                    patron: PATRON,
-                    iec: promedioIEC,
-                    ip: promedio,
-                    ip_corregido: ipCorregido,
-                    unidad: unidadIde,
-                    uk: parseFloat(uk),
-                }
-                let resultados = await this.guardarValoresResultados(result);
-                this.formulario.resultados.push(resultados);
-
-                //Guarda las Incertidumbres en la BD
-                let incertidumbres = await this.calcularIncertidumbre(result);
-                this.formulario.incertidumbre.push(incertidumbres);
-
-                let incertidumbre_result = await this.incertidumbreResultado(incertidumbres, indice);
-                this.formulario.incertidumbre_result.push(incertidumbre_result);
-
-                let certificado = await this.calcularCertificado(indice);
-                this.certificados.push(certificado);
-
-                $(`#iec-valor-2-${indice}`).attr('disabled', true);
-                this.$swal.close();
             },
 
             calcularCertificado(indice){
@@ -607,9 +618,52 @@ import PresupuestoIncertidumbre from "../PresupuestoIncertidumbre";
 
             guardarValoresResultados(resultado){
                 return axios.post(this.rutas.valorResultadoStore, resultado)
-                    .then(response => response.data);
+                    .then(response => response.data)
             },
 
+            cargarValoresDeBD(){
+                let indice = this.form.valores.length;
+                for(let i = 0; i < this.form.valores.length; i++){
+                    this.formulario.valores[i] = this.form.valores[i];
+                    this.formulario.resultados.push(this.form.valores[i].resultados);
+                    this.certificados.push(this.form.valores[i].certificados);
+                    this.formulario.incertidumbre_result.push(['uno'])
+                    this.formulario.incertidumbre.push(['incertidumbre'])
+                }
+
+                document.getElementById(`ip-valor-0-${indice}`).disabled = false;
+                document.getElementById(`patron-${indice}`).disabled = false;
+                document.getElementById(`ip-medida-${indice}`).disabled = false;
+                document.getElementById(`iec-medida-${indice}`).disabled = false;
+            },
+
+            errorInsertar()
+            {
+                if(this.formulario.resultados.length){
+                    let resultado = this.formulario.resultados.some(result => result.valor_id == this.valorTemp.valorId);
+                    if(resultado) this.formulario.resultados.pop();
+                }
+
+                if(this.formulario.incertidumbre.length == (this.valorTemp.index+1) ){
+                    let incertidumbre = this.formulario.incertidumbre[this.valorTemp.index].some(result => result.valor_id == this.valorTemp.valorId);
+                    if(incertidumbre) this.formulario.incertidumbre.pop();
+                }
+
+                if(this.formulario.incertidumbre_result.length == (this.valorTemp.index+1) ){
+                    let incerResult = this.formulario.incertidumbre_result.some(result => result.valor_id == this.valorTemp.valorId);
+                    if(incerResult) this.formulario.incertidumbre.pop();
+                }
+            },
+
+            errorLimpiar(indice, mensaje = 'Ocurrió un error. Por favor verifica los datos!')
+            {
+                this.formulario.valores[indice].iec_valor = ['', '', ''];
+                this.formulario.valores[indice].ip_valor = ['', '', ''];
+
+                $(`#ip-valor-0-${indice}`).attr('disabled', false);
+                this.alertaError(mensaje);
+                this.valorTemp = {valorId: 0, index: undefined}
+            }
 
         }
 

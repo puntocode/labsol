@@ -20,7 +20,7 @@
                 <div class="form-group row text-left">
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Instrumento <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" :value="datos.instrumento" disabled />
+                        <input type="text" class="form-control" v-model="$v.formulario.instrumento.$model" />
                     </div>
 
                     <div class="col-md-6 d-flex">
@@ -138,6 +138,7 @@
         validations:{
             formulario: {
                 resolucion: {required},
+                instrumento: {required},
                 unidad_medida: {required},
                 identificacion: {required},
                 intervalo_desde: {required},
@@ -182,9 +183,14 @@
 
             async submit(){
                 try{
-                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+                    let res = null;
+
+                    if(this.form.unidad_medida) res = await axios.put(this.rutas.updateHistorico, this.formulario);
+                    else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+
                     this.formulario = await res.data;
                 }catch(error){
+                    console.error(error)
                     this.$swal.fire('Error', 'Error al actualizar', 'error');
                 }
             },

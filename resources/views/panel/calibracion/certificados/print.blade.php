@@ -118,7 +118,7 @@
                             </tr>
                             <tr>
                                 <th>Instrumento:</th>
-                                <td colspan="3">{{ $expediente->instrumentos->name }}</td>
+                                <td colspan="3">{{ $expediente->calibracion->instrumento }}</td>
                                 <th>N° de Serie:</th>
                                 <td colspan="4">{{ $expediente->calibracion->nro_serie }}</td>
                             </tr>
