@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Panel;
 
 use App\Models\User;
 use App\Models\Cliente;
+use App\Models\Expediente;
 use App\Models\Instrumento;
 use Illuminate\Http\Request;
-use App\Models\Procedimiento;
 use App\Models\EntradaInstrumento;
 use App\Http\Controllers\Controller;
-use App\Models\EntradaInstrumentoService;
-use App\Models\Expediente;
 
 class EntradaInstrumentoController extends Controller
 {
@@ -133,8 +131,9 @@ class EntradaInstrumentoController extends Controller
      */
     public function print(EntradaInstrumento $entradaInstrumento)
     {
-        $expedientesCantidad = Expediente::cantidad($entradaInstrumento->id)->get();
-        return view('panel.instrumentos.entradas.print', compact('entradaInstrumento', 'expedientesCantidad'));
+        $expedientesIngresados = Expediente::cantidad($entradaInstrumento->id)->get();
+
+        return view('panel.instrumentos.entradas.print', compact('entradaInstrumento', 'expedientesIngresados'));
     }
 
 

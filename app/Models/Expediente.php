@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Expediente extends Model
 {
@@ -77,9 +76,24 @@ class Expediente extends Model
     public function scopeCantidad($query, $entrada_id)
     {
         $query->with('instrumentos')
-        ->where('entrada_instrumento_id', $entrada_id)
-        ->groupBy('instrumento_id')
-        ->selectRaw('instrumento_id, count(id) cantidad');
+            ->where('entrada_instrumento_id', $entrada_id)
+            ->groupBy('instrumento_id')
+            ->selectRaw('instrumento_id, COUNT(id) cantidad, GROUP_CONCAT(number) numeros_expedientes');
+    }
+
+    /**
+     * Filtra la consulta para solo incluir expedientes aptos para egresar
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePorEgresar($query)
+    {
+        $query->where('expedientes.type', 'LS')
+            ->where('egresado', false)
+            ->whereHas('estados', function ($estadosQuery) {
+                $estadosQuery->whereIn('name', ['ANULADA', 'APROBADA', 'COMPLETADA']);
+            });
     }
 
     /**
@@ -108,5 +122,50 @@ class Expediente extends Model
         return $patrones;
     }
 
+    /**
+     * Retorna la agrupación de números de expedientes consecutivos.
+     * Ej: LS-1 al LS-3, LS-5, LS-8 al LS-9....
+     *
+     * @return string
+     */
+    public function abrebiarNumerosConsecutivos()
+    {
+        $numeros = collect(explode(',', $this->numeros_expedientes))
+            ->map(function ($numero) {
+                return (object) [
+                    'str' => $numero,
+                    'int' => (int) preg_replace('/\D/', '', $numero),
+                ];
+            })
+            ->sortBy('int');
 
+        $expedientes = collect();
+        $consecutivos = collect();
+
+        $anterior = null;
+
+        foreach ($numeros as $numero) {
+            if ($numero->int == $anterior + 1) {
+                $consecutivos->add($numero);
+            } else {
+                $expedientes->add($consecutivos);
+                $consecutivos = collect([$numero]);
+            }
+
+            $anterior = $numero->int;
+        }
+
+        $expedientesStr =  $expedientes->add($consecutivos)
+            ->map(function ($consecutivo) {
+                if ($consecutivo->count() > 1) {
+                    return "{$consecutivo->first()->str} al {$consecutivo->last()->str}";
+                } else {
+                    return $consecutivo->first()->str ?? '';
+                }
+            })
+            ->filter()
+            ->join(', ');
+
+        return $expedientesStr;
+    }
 }

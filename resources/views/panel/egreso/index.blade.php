@@ -15,8 +15,6 @@
 					<div class="card-title">
 					</div>
 					<div class="card-toolbar pt-7">
-						@include('layouts.partials.extras.dropdown._export_list')
-
 						@if(in_array('crear', $role_actions))
 							<!--begin::Button-->
 							<a href="{{route('panel.egreso.create')}}" class="btn btn-primary font-weight-bolder mb-5">
@@ -42,38 +40,37 @@
 					<table class="table table-separate table-head-custom collapsed" id="tableInstrumentos" style="width:100%">
 						<thead>
 							<tr>
-								<th>N° Exp</th>
-								<th>Equipo</th>
-								<th>Servicio</th>
-								<th>Retirado por</th>
-								<th>Observación</th>
+								<th>Cliente</th>
+								<th>Contacto</th>
+								<th>Email</th>
+								<th>Dirección</th>
+								<th>Teléfono</th>
+								<th>F. de Creación</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($salida_instrumentos as $i => $salida)
+							@foreach ($entradasInstrumentos as $entradaInstrumento)
 								<tr>
-									<td>{{$salida->nro_expediente}}</td>
-									<td>{{$salida->equipo}}</td>
-									<td>{{$salida->servicio}}</td>
-									<td>{{$salida->retirado_por}}</td>
+									<td>{{ $entradaInstrumento->cliente->name }}</td>
+									<td>{{ $entradaInstrumento->contact['nombre'] }}</td>
+									<td>{{ $entradaInstrumento->contact['email'] }}</td>
+									<td>{{ $entradaInstrumento->contact['direccion'] }}</td>
+									<td>{{ $entradaInstrumento->contact['telefono'] }}</td>
+									<td>{{ $entradaInstrumento->created_at }}</td>
+									<td>
+										@if(in_array('ver', $role_actions))
+											<a href="{{ route('panel.egreso.show', $entradaInstrumento) }}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">
+												<i class="fas fa-list text-primary"></i>
+											</a>
+										@endif
 
-									<td>{{$salida->observaciones}}</td>
-								<td>
-									@if(in_array('ver', $role_actions))
-										<a href="{{route('panel.egreso.show', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Ver registro">
-											<i class="fas fa-list text-primary"></i>
-										</a>
-									@elseif(in_array('editar', $role_actions))
-										<a href="{{route('panel.egreso.edit', $i)}}" class="btn btn-sm btn-clean btn-icon" title="Editar registro">
-											<i class="la la-edit"></i>
-										</a>
-									@endif
-									@if(in_array('imprimir', $role_actions))
-										<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Imprimir registro">
-											<i class="la la-print"></i>
-										</a>
-									@endif
+										@if(in_array('imprimir', $role_actions))
+											<a href="{{ route('panel.egreso.print', $entradaInstrumento) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir registro">
+												<i class="la la-print"></i>
+											</a>
+										@endif
+
 										@if(in_array('eliminar', $role_actions))
 											<a href="javascript:void(0);" class="btn btn-sm btn-clean btn-icon" title="Eliminar registro">
 												<i class="la la-trash"></i>

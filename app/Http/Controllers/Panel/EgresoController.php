@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Expediente;
 use Illuminate\Http\Request;
+use App\Models\EgresoInstrumento;
+use App\Models\EntradaInstrumento;
+use App\Http\Controllers\Controller;
+use App\Models\DetalleEgresoInstrumento;
+use App\Http\Requests\Panel\EgresoInstrumentoRequest;
 
 class EgresoController extends Controller
 {
@@ -19,8 +25,11 @@ class EgresoController extends Controller
      */
     public function index()
     {
-        $salida_instrumentos = config('demo.salida_instrumentos');
-        return view('panel.egreso.index', compact('salida_instrumentos'));
+        $entradasInstrumentos = EntradaInstrumento::query()
+            ->whereHas('egresoInstrumentos')
+            ->get();
+
+        return view('panel.egreso.index', compact('entradasInstrumentos'));
     }
 
     /**
@@ -30,39 +39,87 @@ class EgresoController extends Controller
      */
     public function create()
     {
+        if ($entradaInstrumentoId = request()->entrada_instrumento_id) {
+            $entradaInstrumento = EntradaInstrumento::findOrFail($entradaInstrumentoId);
 
-      $salida_instrumento = NULL;
-      $tecnicos = config('demo.tecnicos');
-      $expedientes = config('demo.expedientes');
+            $expedientes = $entradaInstrumento
+                ->expedientes()
+                ->porEgresar()
+                ->get();
 
-      return view('panel.egreso.form', compact('salida_instrumento', 'tecnicos', 'expedientes'));
+            $usuarios = User::all();
+
+            return view('panel.egreso.form', compact('entradaInstrumento', 'expedientes', 'usuarios'));
+        }
+
+        $entradasInstrumentos = EntradaInstrumento::query()
+            ->whereHas('expedientes', function ($query) {
+                $query->porEgresar();
+            })
+            ->get();
+
+        return view('panel.egreso.form_entry_list', compact('entradasInstrumentos'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Panel\EgresoInstrumentoRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EgresoInstrumentoRequest $request)
     {
-        $salida_instrumentos = config('demo.salida_instrumentos');
-        return view('panel.egreso.index', compact('salida_instrumentos'));
+        Expediente::whereIn('id', $request->expedientes)->update(['egresado' => true]);
+
+        $expedientes = Expediente::whereIn('id', $request->expedientes)
+            ->with('entradaInstrumentos')
+            ->get();
+
+        foreach ($expedientes->pluck('entradaInstrumentos')->unique() as $entradaInstrumento) {
+            $tipoRetiro = $entradaInstrumento->expedientes()->porEgresar()->count()
+                ? 'parcial #' . $entradaInstrumento->egresoInstrumentos->count() + 1
+                : 'total';
+
+            $egresoInstrumento = EgresoInstrumento::create(array_merge(
+                $request->validated(),
+                [
+                    'entrada_instrumento_id' => $entradaInstrumento->id,
+                    'tipo_retiro'            => $tipoRetiro,
+                ]
+            ));
+
+            foreach ($expedientes->where('entrada_instrumento_id', $entradaInstrumento->id) as $expediente) {
+                DetalleEgresoInstrumento::create([
+                    'expediente_id'         => $expediente->id,
+                    'egreso_instrumento_id' => $egresoInstrumento->id
+                ]);
+            }
+        }
+
+        return redirect()->route('panel.egreso.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\EntradaInstrumento  $entradaInstrumento
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(EntradaInstrumento $entradaInstrumento)
     {
-      $view_mode = 'readonly';
-      $salida_instrumento = config('demo.salida_instrumentos')[$id];
-      $tecnicos = config('demo.tecnicos');
+        $expedientesIngresados = $entradaInstrumento->expedientes()
+            ->with(['instrumentos', 'estados'])
+            ->get();
 
-      return view('panel.egreso.form', compact('salida_instrumento', 'view_mode', 'tecnicos'));
+        $entradaInstrumento->load(
+            'egresoInstrumentos.entregadoPor',
+            'egresoInstrumentos.detalleEgresoInstrumentos.expediente'
+        );
+
+        return view('panel.egreso.show', compact(
+            'entradaInstrumento',
+            'expedientesIngresados'
+        ));
     }
 
     /**
@@ -73,9 +130,7 @@ class EgresoController extends Controller
      */
     public function edit($id)
     {
-      $salida_instrumento = config('demo.salida_instrumentos')[$id];
-      $tecnicos = config('demo.tecnicos');
-      return view('panel.egreso.form', compact('salida_instrumento', 'tecnicos'));
+        //
     }
 
     /**
@@ -87,7 +142,7 @@ class EgresoController extends Controller
      */
     public function update(Request $request, $id)
     {
-      return redirect(route('panel.egreso.index'));
+        //
     }
 
     /**
@@ -98,6 +153,32 @@ class EgresoController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    /**
+     * Imprime el detalle de los egreso de instrumentos de la entrada
+     *
+     * @param  \App\Models\EntradaInstrumento  $entradaInstrumento
+     * @return \Illuminate\Http\Response
+     */
+    public function print(EntradaInstrumento  $entradaInstrumento)
+    {
+        $expedientesIngresados = Expediente::cantidad($entradaInstrumento->id)->get();
+
+        $egresoInstrumentos = $entradaInstrumento->egresoInstrumentos
+            ->map(function ($egresoInstrumento) use ($entradaInstrumento) {
+                $egresoInstrumento->expedientesEgresados = Expediente::cantidad($entradaInstrumento->id)
+                    ->whereIn('id', $egresoInstrumento->detalleEgresoInstrumentos->pluck('expediente_id'))
+                    ->get();
+
+                return $egresoInstrumento;
+            });
+
+        return view('panel.egreso.print', compact(
+            'entradaInstrumento',
+            'expedientesIngresados',
+            'egresoInstrumentos'
+        ));
     }
 
     public function historial(){
