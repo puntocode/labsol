@@ -77,7 +77,7 @@ class EgresoController extends Controller
 
         foreach ($expedientes->pluck('entradaInstrumentos')->unique() as $entradaInstrumento) {
             $tipoRetiro = $entradaInstrumento->expedientes()->porEgresar()->count()
-                ? 'parcial #' . $entradaInstrumento->egresoInstrumentos->count() + 1
+                ? 'parcial #' . ($entradaInstrumento->egresoInstrumentos->count() + 1)
                 : 'total';
 
             $egresoInstrumento = EgresoInstrumento::create(array_merge(
