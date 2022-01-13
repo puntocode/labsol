@@ -29,13 +29,13 @@ class AgendamientoController extends Controller
      */
     public function create()
     {
-        $agendamiento = NULL;
-        $instrumentos = config('demo.instrumentos');
-        $tipos_actividades = config('demo.tipos_actividades');
-        $clientes = config('demo.clientesContacto');
-        $tecnicos = config('demo.tecnicos');
+        // $agendamiento = NULL;
+        // $instrumentos = config('demo.instrumentos');
+        // $tipos_actividades = config('demo.tipos_actividades');
+        // $clientes = config('demo.clientesContacto');
+        // $tecnicos = config('demo.tecnicos');
 
-        return view('panel.agenda.agendamientos.form', compact('agendamiento', 'instrumentos', 'tipos_actividades', 'clientes', 'tecnicos'));
+        // return view('panel.agenda.agendamientos.form', compact('agendamiento', 'instrumentos', 'tipos_actividades', 'clientes', 'tecnicos'));
     }
 
     /**
@@ -57,14 +57,14 @@ class AgendamientoController extends Controller
      */
     public function show($id)
     {
-        $agendamiento = config('demo.agendamientos')[$i];
-        $instrumentos = config('demo.instrumentos');
-        $tipos_actividades = config('demo.tipos_actividades');
-        $clientes = config('demo.clientes');
-        $tecnicos = config('demo.tecnicos');
-        $view_mode = 'readonly';
+        // $agendamiento = config('demo.agendamientos')[$i];
+        // $instrumentos = config('demo.instrumentos');
+        // $tipos_actividades = config('demo.tipos_actividades');
+        // $clientes = config('demo.clientes');
+        // $tecnicos = config('demo.tecnicos');
+        // $view_mode = 'readonly';
 
-        return view('panel.agenda.agendamientos.form', compact('agendamiento', 'instrumentos', 'tipos_actividades', 'clientes', 'tecnicos', 'view_mode'));
+        // return view('panel.agenda.agendamientos.form', compact('agendamiento', 'instrumentos', 'tipos_actividades', 'clientes', 'tecnicos', 'view_mode'));
     }
 
     /**
@@ -76,13 +76,13 @@ class AgendamientoController extends Controller
     public function edit($id)
     {
 
-        $agendamiento = config('demo.agendamientos')[$i];
-        $instrumentos = config('demo.instrumentos');
-        $tipos_actividades = config('demo.tipos_actividades');
-        $clientes = config('demo.clientes');
-        $tecnicos = config('demo.tecnicos');
+        // $agendamiento = config('demo.agendamientos')[$i];
+        // $instrumentos = config('demo.instrumentos');
+        // $tipos_actividades = config('demo.tipos_actividades');
+        // $clientes = config('demo.clientes');
+        // $tecnicos = config('demo.tecnicos');
 
-        return view('panel.agenda.agendamientos.form', compact('agendamiento', 'instrumentos', 'tipos_actividades', 'clientes', 'tecnicos'));
+        // return view('panel.agenda.agendamientos.form', compact('agendamiento', 'instrumentos', 'tipos_actividades', 'clientes', 'tecnicos'));
     }
 
     /**

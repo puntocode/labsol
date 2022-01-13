@@ -14,14 +14,14 @@
 
 @section('rutas')
     <script>
-        const updateTecnicos = "{{ route('panel.expedientes.update_tecnicos') }}";
-        const tecnicos = "{{ route('panel.usuarios.tecnicos') }}";
-        const expedienteEspera = "{{ route('panel.expedientes.espera') }}";
+        const TECNICOS = "{{ route('panel.usuarios.tecnicos') }}";
+        const UPDATE_TECNICOS = "{{ route('panel.expedientes.update_tecnicos') }}";
+        const EXPEDIENTE_ESPERA = "{{ route('panel.expedientes.espera') }}";
 
         window.routes = {
-            'updateTecnicos': updateTecnicos,
-            'tecnicos': tecnicos,
-            'expedientes': expedienteEspera
+            'tecnicos': TECNICOS,
+            'expedientes': EXPEDIENTE_ESPERA,
+            'updateTecnicos': UPDATE_TECNICOS,
         }
     </script>
 @endsection

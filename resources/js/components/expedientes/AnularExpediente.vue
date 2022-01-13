@@ -1,0 +1,133 @@
+<template>
+    <div>
+        <button type="button" class="btn btn-danger mr-2" data-toggle="modal" data-target="#modal-anular"><i class="far fa-times-circle"></i> Anular</button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-suspender"><i class="far fa-pause-circle"></i> Suspender</button>
+
+
+        <!-------------------------------- MODAL ANULAR ------------------------------------------------------------------------------------------------>
+        <div class="modal fade" id="modal-anular" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger rounded-0">
+                        <h5 class="text-white modal-title" id="modal-label">Anular Expediente</h5>
+                    </div>
+                    <form class="mb-5" autocomplete="off" @submit.prevent="anularSubmit">
+                        <div class="modal-body">
+                            <div class="mb-6 row">
+                                <div class="mx-auto col-10">
+                                    <h4>Por qué quieres anular la calibración?</h4>
+                                    <input type="text" class="form-control" v-model="anular">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-0 modal-footer justify-content-center">
+                            <button type="button" class="btn btn-light-secondary text-secondary font-weight-bold" data-dismiss="modal" id="btn-cancelar">Cancelar</button>
+                            <button type="submit" class="btn btn-danger font-weight-bold" :disabled="anular == ''">Anular</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-------------------------------- MODAL SUSPENDER ------------------------------------------------------------------------------------------------>
+        <div class="modal fade" id="modal-suspender" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning rounded-0">
+                        <h5 class="text-white modal-title" id="modal-label">Suspender Expediente</h5>
+                    </div>
+                    <form class="mb-5" autocomplete="off" @submit.prevent="suspenderSubmit">
+                        <div class="modal-body">
+                            <div class="mb-6 row">
+                                <div class="mx-auto col-10">
+                                    <h4 class="mb-5">Por qué quieres suspender la calibración?</h4>
+
+                                    <div class="form-check form-check-inline w-100">
+                                        <input type="radio" class="form-check-input" value="falta de planilla" v-model="suspender">
+                                        <label for="check"  class="form-check-label">Falta de Planilla</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline w-100">
+                                        <input type="radio" class="form-check-input" value="falta de patron" v-model="suspender">
+                                        <label for="check" class="form-check-label">Falta de Patrón</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline w-100">
+                                        <input type="radio" class="form-check-input" value="instrumento defectuoso" v-model="suspender">
+                                        <label for="check" class="form-check-label">Instrumento defectuoso</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline w-100">
+                                        <input type="radio" class="form-check-input" value="otro" v-model="suspender">
+                                        <label for="check" class="form-check-label">Otro</label>
+                                    </div>
+
+                                    <input type="text" class="form-control mt-5" v-model="otro" v-if="suspender == 'otro'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-0 modal-footer justify-content-center">
+                            <button type="button" class="btn btn-light-secondary text-secondary font-weight-bold" data-dismiss="modal" id="btn-cancelar">Cancelar</button>
+                            <button type="submit" class="btn btn-warning font-weight-bold" :disabled="suspender == ''">Suspender</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</template>
+
+<script>
+    export default {
+        props: ['expediente_id'],
+        data() {
+            return {
+                form: {expediente_id: this.expediente_id, expediente_estado_id: 0, estado_comentario: ''},
+                anular: '',
+                suspender: '',
+                otro: '',
+                rutas: window.routes,
+            }
+        },
+        methods: {
+            anularSubmit() {
+                this.form.expediente_estado_id = 6;
+                this.form.estado_comentario = this.anular;
+
+                this.submit('Anulada');
+            },
+
+            suspenderSubmit() {
+                if(this.suspender === 'otro' && this.otro === ''){
+                    this.$swal('Error!', 'El campo otro no puede estar vacío!','error');
+                    return;
+                }
+
+                this.form.expediente_estado_id = 7;
+                this.form.estado_comentario = this.suspender === 'otro' ? `Otro: ${this.otro}` : this.suspender;
+
+                this.submit('Suspendida');
+            },
+
+            async submit(mensaje){
+                try{
+                    let res = await axios.put(this.rutas.estadoExpediente, this.form);
+                    let data = await res.data;
+
+                    this.$swal('Ok!', `La calibracion ha sido ${mensaje}!`,'success')
+                        .then(response => window.location.replace(`${this.rutas.indexExpediente}/${this.expediente_id}`));
+
+                }catch(error){
+                    console.error(error)
+                    this.$swal('Error!', 'Error al actualizar!','error');
+                }
+            }
+        },
+
+    }
+</script>
+
+

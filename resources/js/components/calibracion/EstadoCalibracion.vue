@@ -48,7 +48,6 @@
                     expediente_id: this.expediente_id,
                     expediente_estado_id: 0,
                     estado_comentario: '',
-                    autorizado_id: window.user
                 },
                 rutas: window.routes,
             }
@@ -60,6 +59,8 @@
                     this.$swal.fire('Error', 'Por favor completa el campo obligatorio', 'error');
                     return
                 }
+
+                if(this.form.expediente_estado_id == 4) this.form.estado_comentario = 'Se ha aprobado el certificado de Calibración';
 
                 axios.put(this.rutas.updateEstado, this.form)
                     .then(response =>{
@@ -77,6 +78,8 @@
             comentario() {
                 return this.form.expediente_estado_id != 4 && this.form.expediente_estado_id != 0;
             },
+
+
 
         },
     }

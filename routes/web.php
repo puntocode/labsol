@@ -1,15 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\PanelController;
-use App\Http\Controllers\Panel\ExpedienteController;
+use App\Http\Controllers\Ajax\AuthController;
+use App\Http\Controllers\Panel\PerfilController;
 use App\Http\Controllers\Panel\ClienteController;
 use App\Http\Controllers\Panel\InstrumentoController;
 use App\Http\Controllers\Panel\CertificadoController;
-use App\Http\Controllers\Panel\PerfilController;
-use App\Http\Controllers\Ajax\AuthController;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -193,8 +192,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::put('/expediente/update-estado', 'ExpedienteController@cambiarEstadoExpediente')->name('expedientes.update_estado')->middleware('can:panel.admin');
     Route::get('/expediente/agenda', 'ExpedienteController@agenda')->name('expedientes.agenda')->middleware('can:panel.admin');
     Route::get('/expediente/asignar-tecnico', 'ExpedienteController@asignarTecnicoIndex')->name('expedientes.asignar')->middleware('can:panel.admin');
-    Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:panel.admin');
-
+    Route::get('/expediente/historial', 'ExpedienteController@getHistorial')->name('expedientes.historial')->middleware('can:panel.admin');
+    // Route::resource('/expedientes/agendamientos', 'AgendamientoController')->middleware('can:panel.admin');
 
     # -- Certificados --
     Route::get('/calibracion/certificados/print/{expedienteId}', [CertificadoController::class, 'print'])->name('calibracion.certificados.print')->middleware('can:panel.admin');
