@@ -9,8 +9,9 @@ class Instrumento extends Model
 {
     use HasFactory;
 
-    protected $appends = [ 'code' ];
-    protected $casts = [ 'status' => 'boolean'];
+    protected $appends  = [ 'code' ];
+    protected $fillable = [ 'name' ];
+    protected $casts    = [ 'status' => 'boolean'];
 
     public function procedimiento(){
         return $this->belongsToMany(Procedimiento::class);

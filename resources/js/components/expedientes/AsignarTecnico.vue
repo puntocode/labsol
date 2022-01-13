@@ -64,6 +64,7 @@
                 axios.get(this.rutas.tecnicos)
                     .then(response => this.tecnicos = Object.values(response.data))
             },
+
             asignar(){
                 this.formData.asignados.forEach(tecnico => this.formData.personales.push({id: tecnico.id, nombre: tecnico.fullname}) );
 
@@ -74,12 +75,19 @@
 
                 this.alerta();
             },
+
             async actualizar(){
-                const res = await axios.put(this.rutas.updateTecnicos, this.formData)
-                const datos = await res.data;
-                const index = await this.expedientes.findIndex( exp => exp.id === datos.id);
-                await this.expedientes.splice(index, 1, datos);
+                try{
+                    const res = await axios.put(this.rutas.updateTecnicos, this.formData)
+                    const datos = await res.data;
+                    const index = await this.expedientes.findIndex( exp => exp.id === datos.id);
+                    await this.expedientes.splice(index, 1, datos);
+                }catch(error){
+                    console.error(error);
+                    this.$swal('Error!', 'Error al actualizar!','error')
+                }
             },
+
             cancelar(){
                 this.formData.number = [];
                 this.tecnicos = this.tecnicos.concat(this.formData.asignados);
@@ -89,9 +97,11 @@
                 this.$emit('update:numeros', []);
                 $('#btn-cancelar').click();
             },
+
             alerta(){
                 this.$swal('Técnicos Asignado!', 'El expedientes se han acutalizado con éxito!','success')
                     .then( result => this.cancelar());
+
                 if(this.data !== null) location.reload();
             },
         },

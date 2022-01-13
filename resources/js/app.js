@@ -21,6 +21,7 @@ Vue.use(Vuelidate)
 
 Vue.component('asignar-tecnico',       require('./components/expedientes/AsignarTecnico.vue').default);
 Vue.component('expediente-form',       require('./components/expedientes/ExpedienteForm.vue').default);
+Vue.component('anular-expediente',     require('./components/expedientes/AnularExpediente.vue').default);
 Vue.component('expediente-tecnicos',   require('./components/expedientes/ExpedienteTecnicos.vue').default);
 Vue.component('ficha-incertidumbre',   require('./components/expedientes/FichaIncertidumbre.vue').default);
 Vue.component('historial-calibracion', require('./components/expedientes/HistorialCalibracion.vue').default);

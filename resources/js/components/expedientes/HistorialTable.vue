@@ -1,27 +1,32 @@
 <template>
-    <div class="mt-5">
+    <div class="mt-8">
         <div class="row">
             <div class="col-12">
-                <h3 class="text-primary">Historial de Asignaciones</h3>
+                <h3>Historial de Estados</h3>
                 <hr>
-            </div>
-             <div class="col-4">
-                <label>Fecha de entrega</label>
-            </div>
-            <div class="col-8">
-                <label>Tecnicos</label>
-            </div>
-        </div>
 
-        <div v-for="(item, index) in newHistorial" :key="index" class="row py-2">
-            <div class="col-4" v-if="index !== newHistorial.length-1">
-                <span class="font-weight-bold">{{ item.delivery_date }}</span>
-            </div>
-            <div class="col-8" v-if="index !== newHistorial.length-1">
-                <div class="form-control p-0 border-0 h-auto">
-                    <span class="font-weight-bold"><i class="fas fa-user mr-2"></i></span>
-                    <span v-for="(tecnicos, index) in item.tecnicos" :key="index"><span v-if="index > 0">,</span> {{tecnicos.nombre }}</span>
-                </div>
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Realizado por</th>
+                        <th scope="col" class="text-center">Estado</th>
+                        <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(hist, index) in historial" :key="index">
+                            <th scope="row">{{ index+1 }}</th>
+                            <th>{{ hist.created_at }}</th>
+                            <td>{{ hist.user.fullname }}</td>
+                            <td class="text-center">
+                                <span class="badge" :class="`badge-${hist.estado_nuevo.color}`">{{ hist.estado_nuevo.name }}</span>
+                            </td>
+                            <td>{{ hist.estado_comentario }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -31,13 +36,5 @@
 
     export default {
         props: ['historial'],
-        data() {
-            return {
-                newHistorial: []
-            }
-        },
-        mounted () {
-            this.newHistorial = this.historial;
-        },
     }
 </script>

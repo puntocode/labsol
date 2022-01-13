@@ -40,8 +40,8 @@ class InstrumentoController extends Controller
      */
     public function store(Request $request)
     {
-        $entrada_instrumentos = config('demo.entrada_instrumentos');
-        // return view('panel.instrumentos.index', compact('entrada_instrumentos'));
+        $instrumento = Instrumento::create($this->validateData());
+        return response()->json($instrumento);
     }
 
     /**
@@ -82,8 +82,8 @@ class InstrumentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-    //   return redirect(route('panel.instrumentos.index'));
+        $instrumento = Instrumento::whereId($id)->update($this->validateData());
+        return response()->json($instrumento);
     }
 
     /**
@@ -108,6 +108,14 @@ class InstrumentoController extends Controller
     public function getInstrumentos(){
         $instrumentos = Instrumento::all();
         return response()->json($instrumentos);
+    }
+
+
+    public function validateData()
+    {
+        return request()->validate([
+            'name' => 'required',
+        ]);
     }
 
 

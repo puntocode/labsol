@@ -105,23 +105,26 @@ class CalibracionController extends Controller
     }
 
 
-    public function getAlertCalibration(){
-        return response()->json(AlertCalibration::all());
-    }
-
-
     public function calibrarExpediente($expediente_id)
     {
         $userId = Auth::id();
         $userName = Auth::user()->name . ' ' . Auth::user()->last_name;
         $calibracion = Calibracion::where('expediente_id', $expediente_id)->first();
 
-        if($calibracion == null){
-            $calibracion = Calibracion::create(['expediente_id' => $expediente_id, 'user_id' => $userId]);
-        }
+        if($calibracion == null) $calibracion = Calibracion::create(['expediente_id' => $expediente_id, 'user_id' => $userId]);
 
         $expediente = Expediente::calibration()->findOrFail($expediente_id);
 
+
+        //Guarda el historial de estados ---------------------------------
+        $expediente->historial()->create([
+            'estado_anterior' => $expediente->expediente_estado_id,
+            'estado_nuevo' => 11,
+            'estado_comentario' => 'Inicia el proceso de calibración',
+            'user_id' => Auth::id(),
+        ]);
+
+        //Actualiza al tecnico que está logueado ---------------------------------
         $expediente->update([
             'expediente_estado_id' => 11,
             'tecnicos' => [[ 'id' => $userId, 'nombre' => $userName ]]
@@ -129,6 +132,18 @@ class CalibracionController extends Controller
 
         return view('panel.calibracion.form', compact('expediente'));
     }
+
+
+    /**
+     * Retorna la alerta de calibracion
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAlertCalibration(){
+        return response()->json(AlertCalibration::all());
+    }
+
+
 
     public function actualizarHistorico(Request $request)
     {

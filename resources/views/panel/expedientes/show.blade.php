@@ -104,11 +104,13 @@
         const RESULT_INCERTIDUMBRE = "{{ route('panel.incertidumbre.resultado') }}";
         const VALOR_INCERTIDUMBRE = "{{ route('panel.incertidumbre.valor') }}";
         const UPDATE_TECNICOS = "{{ route('panel.expedientes.update_tecnicos') }}";
+        const HISTORIAL = "{{ route('panel.expedientes.historial') }}";
         const TECNICOS = "{{ route('panel.usuarios.tecnicos') }}";
 
         window.asset = "{{ URL::asset('')  }}";
         window.routes = {
             'tecnicos': TECNICOS,
+            'historial': HISTORIAL,
             'resultados': RESULT_INCERTIDUMBRE,
             'incertidumbre': VALOR_INCERTIDUMBRE,
             'updateTecnicos': UPDATE_TECNICOS,

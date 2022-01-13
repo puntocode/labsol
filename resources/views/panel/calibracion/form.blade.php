@@ -4,8 +4,10 @@
 @section('content')
 
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Calibración <small class="font-weight-lighter">| Crear</small>
-		</h3>
+		<div class="d-flex justify-content-between mb-8">
+            <h3 class="card-label">Calibración <small class="font-weight-lighter">| Crear</small></h3>
+            <anular-expediente :expediente_id="{{ $expediente->id }}"></anular-expediente>
+        </div>
 
         <div class="row">
 			<div class="col-lg-12 col-xl-12">
@@ -32,6 +34,7 @@
         const CERTIFICADOS = "{{ route('panel.certificados.index') }}";
         const SUBMULTIPLOS = "{{ route('panel.patrones.unidades_medidas') }}";
         const PATRON_UM_IDE = "{{ route('panel.patron.ide.um') }}";
+        const INDEX_EXPEDIENTE = "{{ route('panel.expedientes.index') }}";
         const UPDATE_HISTORICO = "{{ route('panel.calibrar.actualizar.historico') }}";
         const STORE_CALIBRACION = "{{ route('panel.calibracion.store') }}";
         const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
@@ -49,6 +52,7 @@
             'patronUmIde': PATRON_UM_IDE,
             'certificados': CERTIFICADOS,
             'submultiplos': SUBMULTIPLOS,
+            'indexExpediente': INDEX_EXPEDIENTE,
             'updateHistorico': UPDATE_HISTORICO,
             'estadoExpediente': ESTADO_EXPEDIENTE,
             'valorResultadoStore': VALOR_RESULTADO_STORE,

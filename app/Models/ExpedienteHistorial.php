@@ -8,15 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class ExpedienteHistorial extends Model
 {
     use HasFactory;
-    protected $casts = [ 'tecnicos' => 'array' ];
-    protected $fillable = ['expediente_id', 'tecnicos', 'delivery_date'];
+    protected $guarded = ['id'];
 
     public function expediente(){
         return $this->belongsTo(Expediente::class);
     }
 
-    public function getDeliveryDateAttribute(){
-        return date('d/m/Y', strtotime($this->attributes['delivery_date']));
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function estadoNuevo(){
+        return $this->belongsTo(ExpedienteEstado::class, 'estado_nuevo');
+    }
+
+    public function getCreatedAtAttribute(){
+        return date('d-m-y / H:m', strtotime($this->attributes['created_at']));
     }
 
 }
