@@ -148,7 +148,7 @@
 					<!--end::Menu-->
 				</div>
 				<!--begin::Tab Pane  -->
-				<div class="tab-pane py-5 p-lg-0 @if (Request::is('panel/egreso-instrumentos*') || Request::is('panel/facturacion*')) show active @endif" id="kt_header_tab_6">
+				<div class="tab-pane py-5 p-lg-0 @if (Request::is('panel/egreso-instrumentos*')) show active @endif" id="kt_header_tab_6">
 					<!--begin::Menu-->
 					<div class="header-menu header-menu-mobile header-menu-layout-default">
 						<!--begin::Nav-->
@@ -168,9 +168,9 @@
 							@endcan
 
 							@can('panel.admin')
-								<li class="menu-item @if (Route::currentRouteName() == 'panel.facturacion.index') menu-item-active @endif" aria-haspopup="true">
-									<a href="{{route('panel.facturacion.index')}}" class="menu-link" title="Facturación">
-										<span class="menu-text">Facturación</span>
+								<li class="menu-item @if (Route::currentRouteName() == 'panel.egreso.enviar-certificados.index') menu-item-active @endif" aria-haspopup="true">
+									<a href="{{route('panel.egreso.enviar-certificados.index')}}" class="menu-link" title="Crear Certificado">
+										<span class="menu-text">Crear Certificado</span>
 									</a>
 								</li>
 							@endcan

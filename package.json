@@ -33,6 +33,7 @@
         "jspdf": "^2.3.1",
         "lottie-player-vue": "^0.0.16",
         "moment": "^2.29.1",
+        "plotly": "^1.0.6",
         "sweetalert2": "^11.0.19",
         "v-select2-component": "^0.4.7",
         "v-select2-multiple-component": "^0.1.1",

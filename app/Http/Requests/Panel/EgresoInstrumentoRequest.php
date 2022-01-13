@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Panel;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EgresoInstrumentoRequest extends FormRequest
@@ -19,7 +20,13 @@ class EgresoInstrumentoRequest extends FormRequest
             'identificacion' => 'required|int',
             'observaciones'  => 'nullable|string',
             'expedientes'    => 'required|array',
-            'expedientes.*'  => 'int|exists:expedientes,id,egresado,0',
+            'expedientes.*'  => [
+                'int',
+                Rule::exists('expedientes')
+                    ->where('type', 'LS')
+                    ->where('egresado', false)
+                    ->whereIn('expediente_estado_id', [3, 4, 6])
+            ]
         ];
     }
 }
