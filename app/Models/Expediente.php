@@ -9,6 +9,10 @@ class Expediente extends Model
 {
     use HasFactory;
 
+    const STATUS_ENVIO_CERTIFICADO_NO_ENVIADO = 0;
+    const STATUS_ENVIO_CERTIFICADO_ENVIADO    = 1;
+    const STATUS_ENVIO_CERTIFICADO_EN_PROCESO = 2;
+
     protected $guarded = ['id'];
     protected $casts   = ['tecnicos' => 'array'];
     protected $appends = ['prioridad'];
