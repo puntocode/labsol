@@ -34,6 +34,8 @@
         <div v-else class="alert" :class="`alert-${estado.color}`" role="alert">
             <i class="mr-2 text-white fas" :class="estado.icon"></i>
             La calibracion ha sido <span class="text-capitalize" v-text="estado.name"></span>
+
+            <button type="button" class="btn btn-primary" @click="limpiarCalibracion()">Rechazar</button>
         </div>
 
     </div>
@@ -64,10 +66,24 @@
 
                 axios.put(this.rutas.updateEstado, this.form)
                     .then(response =>{
-                        if(response.status == 200) this.alertSuccess();
+                        if(response.status == 200){
+                            if(this.form.expediente_id == 9) this.limpiarCalibracion();
+
+                            this.alertSuccess();
+                        };
                     })
                     .catch(error => this.$swal.fire('Error', 'Error al guardar', 'error'));
             },
+
+            async limpiarCalibracion(){
+                try{
+                    let data = { calibracion_id }
+                    let res = await axios.post(this.rutas.limpiarCalibracion, )
+                }catch(error){
+                    console.error(error);
+                }
+            },
+
             alertSuccess(){
                 this.$swal.fire('Actualizado', 'El expediente ha sido actualizado', 'success')
                     .then(response => location.reload())

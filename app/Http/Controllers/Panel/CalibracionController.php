@@ -17,17 +17,10 @@ class CalibracionController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function limpiarValores(Request $request)
     {
-      $expedientes = config('demo.expedientes');
-      $calibraciones = config('demo.calibraciones');
-      $estados = config('demo.estados_calibraciones');
-      return view('panel.calibracion.index', compact('expedientes', 'estados', 'calibraciones'));
+        $calibracion = Calibracion::whereId($request['calibracion_id'])->get();
+        dd($calibracion->toArray());
     }
 
     /**
@@ -37,12 +30,7 @@ class CalibracionController extends Controller
      */
     public function create()
     {
-        $calibracion = NULL;
-        $expedientes = config('demo.expedientes');
-        $clientes = config('demo.clientesContacto');
-        $instrumentos = config('demo.instrumentos');
-        $patrones = config('demo.patrones');
-        return view('panel.calibracion.form', compact('calibracion', 'expedientes', 'clientes', 'instrumentos', 'patrones'));
+
     }
     /**
      * Store a newly created resource in storage.
@@ -75,8 +63,7 @@ class CalibracionController extends Controller
      */
     public function edit($id)
     {
-        $calibracion = config('demo.calibraciones')[$id];
-        return view('panel.clientes.form', compact('calibracion'));
+
     }
 
     /**

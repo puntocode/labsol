@@ -83,12 +83,13 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/calibracion', 'CalibracionController')->middleware('can:panel.database');
     Route::get('/calibraciones/expediente/{expediente_id}', 'CalibracionController@calibrarExpediente')->name('calibrar.expediente')->middleware('can:panel.database');
     Route::put('/update-calibracion', 'CalibracionController@actualizarHistorico')->name('calibrar.actualizar.historico')->middleware('can:panel.database');
+    Route::post('/calibraciones-limpiar', 'CalibracionController@limpiarValores')->middleware('can:panel.database');
 
 
     Route::resource('/valors', 'ValorController')->middleware('can:panel.database');
     Route::resource('/valor-resultado', 'ValorResultadoController')->middleware('can:panel.database');
-    Route::resource('/valor-incertidumbre', 'ValorIncertidumbreController')->middleware('can:panel.database');
     Route::resource('/valor-certificados', 'ValorCertificadoController')->middleware('can:panel.database');
+    Route::resource('/valor-incertidumbre', 'ValorIncertidumbreController')->middleware('can:panel.database');
     Route::resource('/incertidumbre-resultados', 'ValorIncertidumbreResultadoController')->middleware('can:panel.database');
 
     Route::get('/incertidumbre-valor', 'ValorIncertidumbreController@getValorIncertidumbre')->name('incertidumbre.valor')->middleware('can:panel.database');
