@@ -8,7 +8,7 @@ use App\Models\Expediente;
 use Illuminate\Bus\Queueable;
 use App\Models\ValorCertificado;
 use Barryvdh\DomPDF\Facade as PDF;
-use App\Mail\CertificadoEgresoMail;
+use App\Mail\CertificadoCalibracionMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +16,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class EnviarCertificadosEgresoJob implements ShouldQueue
+class EnviarCertificadosCalibracionJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -49,7 +49,7 @@ class EnviarCertificadosEgresoJob implements ShouldQueue
 
         foreach ($emails as $email => $data) {
             try {
-                Mail::to($email)->send(new CertificadoEgresoMail($data['contacto'], $data['documentos']));
+                Mail::to($email)->send(new CertificadoCalibracionMail($data['contacto'], $data['documentos']));
 
                 Expediente::whereIn('id', $this->expedientes->pluck('id'))
                     ->update(['enviado' => Expediente::STATUS_ENVIO_CERTIFICADO_ENVIADO]);
@@ -88,7 +88,7 @@ class EnviarCertificadosEgresoJob implements ShouldQueue
                     'srcGrafica'
                 );
 
-                $view = view('panel.egreso.enviar_certificados.print', $data);
+                $view = view('panel.egreso.enviar_certificados_calibracion.print', $data);
 
                 $pdf = PDF::loadHtml($view)->setPaper('a3');
 

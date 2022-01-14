@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class CertificadoEgresoMail extends Mailable
+class CertificadoCalibracionMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -42,13 +42,13 @@ class CertificadoEgresoMail extends Mailable
      */
     public function build()
     {
-        $this->view('emails.egreso.certfificado')
-            ->subject('Certificado(s) de Egreso');
+        $this->view('emails.calibracion.certfificado')
+            ->subject('Certificado(s) de Calibración');
 
         foreach ($this->documentos as $index => $documento) {
             $this->attachData(
                 $documento['pdf'],
-                "Certificado {$documento['number']}.pdf",
+                "Certificado de Calibración {$documento['number']}.pdf",
                 ['mime' => 'application/pdf']
             );
         }

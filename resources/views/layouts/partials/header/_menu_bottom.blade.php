@@ -168,8 +168,8 @@
 							@endcan
 
 							@can('panel.admin')
-								<li class="menu-item @if (Route::currentRouteName() == 'panel.egreso.enviar-certificados.index') menu-item-active @endif" aria-haspopup="true">
-									<a href="{{route('panel.egreso.enviar-certificados.index')}}" class="menu-link" title="Crear Certificado">
+								<li class="menu-item @if (Route::currentRouteName() == 'panel.egreso.enviar-certificados-calibracion.index') menu-item-active @endif" aria-haspopup="true">
+									<a href="{{route('panel.egreso.enviar-certificados-calibracion.index')}}" class="menu-link" title="Crear Certificado de Calibración">
 										<span class="menu-text">Crear Certificado</span>
 									</a>
 								</li>

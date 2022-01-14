@@ -33,7 +33,7 @@
 				</form>
 				<!--end: Search form-->
 
-                <form action="{{ route('panel.egreso.enviar-certificados.send') }}" method="POST">
+                <form action="{{ route('panel.egreso.enviar-certificados-calibracion.send') }}" method="POST">
                     @csrf
                     <!--begin: Datatable-->
                     <table class="table table-separate table-head-custom collapsed" id="tableExpedientes" style="width:100%">

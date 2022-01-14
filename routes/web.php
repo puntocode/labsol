@@ -48,12 +48,12 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/instrument/active/{id}', 'InstrumentoController@active')->name('instrumento.active')->middleware('can:panel.database');
 
 
-    Route::get('egreso-instrumentos/enviar-certificados', 'EnviarCertificadoEgresoController@index')
-        ->name('egreso.enviar-certificados.index')
+    Route::get('egreso-instrumentos/enviar-certificados-calibracion', 'EnviarCertificadoCalibracionController@index')
+        ->name('egreso.enviar-certificados-calibracion.index')
         ->middleware('can:panel.admin');
 
-    Route::post('egreso-instrumentos/enviar-certificados', 'EnviarCertificadoEgresoController@send')
-        ->name('egreso.enviar-certificados.send')
+    Route::post('egreso-instrumentos/enviar-certificados-calibracion', 'EnviarCertificadoCalibracionController@send')
+        ->name('egreso.enviar-certificados-calibracion.send')
         ->middleware('can:panel.admin');
 
     Route::resource('egreso-instrumentos', 'EgresoController')
