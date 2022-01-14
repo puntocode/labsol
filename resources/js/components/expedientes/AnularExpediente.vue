@@ -44,18 +44,33 @@
                                     <h4 class="mb-5">Por qué quieres suspender la calibración?</h4>
 
                                     <div class="form-check form-check-inline w-100">
-                                        <input type="radio" class="form-check-input" value="falta de planilla" v-model="suspender">
-                                        <label for="check"  class="form-check-label">Falta de Planilla</label>
+                                        <input type="radio" class="form-check-input" value="Instrumento cliente averiado" v-model="suspender">
+                                        <label for="check"  class="form-check-label">Instrumento cliente averiado</label>
                                     </div>
 
                                     <div class="form-check form-check-inline w-100">
-                                        <input type="radio" class="form-check-input" value="falta de patron" v-model="suspender">
-                                        <label for="check" class="form-check-label">Falta de Patrón</label>
+                                        <input type="radio" class="form-check-input" value="Patrón no disponible" v-model="suspender">
+                                        <label for="check" class="form-check-label">Patrón no disponible</label>
                                     </div>
 
                                     <div class="form-check form-check-inline w-100">
-                                        <input type="radio" class="form-check-input" value="instrumento defectuoso" v-model="suspender">
-                                        <label for="check" class="form-check-label">Instrumento defectuoso</label>
+                                        <input type="radio" class="form-check-input" value="Patrón averiado" v-model="suspender">
+                                        <label for="check" class="form-check-label">Patrón averiado</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline w-100">
+                                        <input type="radio" class="form-check-input" value="Decisión del cliente" v-model="suspender">
+                                        <label for="check" class="form-check-label">Decisión del cliente</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline w-100">
+                                        <input type="radio" class="form-check-input" value="Falta de herramientas" v-model="suspender">
+                                        <label for="check" class="form-check-label">Falta de herramientas</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline w-100">
+                                        <input type="radio" class="form-check-input" value="Desconocimiento del uso del equipos" v-model="suspender">
+                                        <label for="check" class="form-check-label">Desconocimiento del uso del equipos</label>
                                     </div>
 
                                     <div class="form-check form-check-inline w-100">

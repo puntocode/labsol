@@ -83,7 +83,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/calibracion', 'CalibracionController')->middleware('can:panel.database');
     Route::get('/calibraciones/expediente/{expediente_id}', 'CalibracionController@calibrarExpediente')->name('calibrar.expediente')->middleware('can:panel.database');
     Route::put('/update-calibracion', 'CalibracionController@actualizarHistorico')->name('calibrar.actualizar.historico')->middleware('can:panel.database');
-    Route::post('/calibraciones-limpiar', 'CalibracionController@limpiarValores')->middleware('can:panel.database');
+    Route::post('/calibraciones-limpiar', 'CalibracionController@limpiarValores')->name('calibrar.limpiar')->middleware('can:panel.database');
 
 
     Route::resource('/valors', 'ValorController')->middleware('can:panel.database');

@@ -69,17 +69,21 @@
 
 @section('rutas')
 <script>
+    const INDEX_EXPEDIENTE = "{{ route('panel.expedientes.index') }}";
     const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
-    const RESULT_INCERTIDUMBRE = "{{ route('panel.incertidumbre.resultado') }}";
     const VALOR_INCERTIDUMBRE = "{{ route('panel.incertidumbre.valor') }}";
+    const CALIBRACION_LIMPIAR = "{{ route('panel.calibrar.limpiar') }}";
+    const RESULT_INCERTIDUMBRE = "{{ route('panel.incertidumbre.resultado') }}";
 
 
     window.asset = "{{ URL::asset('')  }}";
     window.user = {{ Auth::user()->id }};
     window.routes = {
-        'updateEstado': ESTADO_EXPEDIENTE,
         'resultados': RESULT_INCERTIDUMBRE,
+        'updateEstado': ESTADO_EXPEDIENTE,
         'incertidumbre': VALOR_INCERTIDUMBRE,
+        'indexExpediente': INDEX_EXPEDIENTE,
+        'limpiarCalibracion': CALIBRACION_LIMPIAR,
     };
 
 </script>

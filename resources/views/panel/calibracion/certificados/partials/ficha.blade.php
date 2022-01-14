@@ -196,126 +196,130 @@
     </div>
 </div>
 
-<div class="mt-6 row">
-    <div class="col-12 border-bottom border-primary mb-6">
-        <h3>5. Registro de Medición</h3>
-    </div>
+@if(count($valores))
+    <div class="mt-6 row">
+        <div class="col-12 border-bottom border-primary mb-6">
+            <h3>5. Registro de Medición</h3>
+        </div>
 
-    <div class="col-10 mx-auto">
-        <table class="table table-bordered table-sm mb-14">
-            <thead class="thead-light">
-                <tr>
-                    <th class="bg-white"></th>
-                    <th scope="col" colspan="4" class="text-center">Indicación del Patrón (IP)</th>
-                    <th scope="col" colspan="4" class="text-center">Indicación del Equipo Calibrado (IEC)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="table-active">
-                    <td class="bg-white"></td>
-                    <td colspan="4" class="text-center">{{ $expediente->calibracion->ip_medida }}</td>
-                    <td colspan="4" class="text-center">{{ $expediente->calibracion->unidad_medida }}</td>
-                </tr>
-
-                @foreach ($valores as $valor)
+        <div class="col-10 mx-auto">
+            <table class="table table-bordered table-sm mb-14">
+                <thead class="thead-light">
                     <tr>
-                        <td class="text-center font-bold">{{$valor->patron}}</td>
-                        <td class="text-center font-bold">{{ $valor->ip_medida }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->ip_valor[0]) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->ip_valor[1]) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->ip_valor[2]) }}</td>
-                        <td class="text-center font-bold">{{ $valor->iec_medida }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->iec_valor[0]) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->iec_valor[1]) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->iec_valor[2]) }}</td>
+                        <th class="bg-white"></th>
+                        <th scope="col" colspan="4" class="text-center">Indicación del Patrón (IP)</th>
+                        <th scope="col" colspan="4" class="text-center">Indicación del Equipo Calibrado (IEC)</th>
                     </tr>
-                @endforeach
+                </thead>
+                <tbody>
+                    <tr class="table-active">
+                        <td class="bg-white"></td>
+                        <td colspan="4" class="text-center">{{ $expediente->calibracion->ip_medida }}</td>
+                        <td colspan="4" class="text-center">{{ $expediente->calibracion->unidad_medida }}</td>
+                    </tr>
 
-            </tbody>
-        </table>
+                    @foreach ($valores as $valor)
+                        <tr>
+                            <td class="text-center font-bold">{{$valor->patron}}</td>
+                            <td class="text-center font-bold">{{ $valor->ip_medida }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->ip_valor[0]) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->ip_valor[1]) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->ip_valor[2]) }}</td>
+                            <td class="text-center font-bold">{{ $valor->iec_medida }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->iec_valor[0]) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->iec_valor[1]) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->iec_valor[2]) }}</td>
+                        </tr>
+                    @endforeach
 
-        <table class="table table-bordered table-sm mb-16">
-            <thead class="thead-light">
-                <tr>
-                <th scope="col" class="text-center">IP</th>
-                <th scope="col" class="text-center">Des. estandar <br>IP</th>
-                <th scope="col" class="text-center">Error Patrón</th>
-                <th scope="col" class="text-center">IP Corregido</th>
-                <th scope="col" class="text-center">IEC</th>
-                <th scope="col" class="text-center">Des. estandar <br>IEC</th>
-                <th scope="col" class="text-center">Error</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($valorResultados as $resultado)
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm mb-16">
+                <thead class="thead-light">
                     <tr>
-                        <td>{{ Helper::numberFormat($resultado->ip) }} {{ $resultado->unidad }}</td>
-                        <td>{{ Helper::numberFormat($resultado->desv_ip) }} {{ $resultado->unidad }}</td>
-                        <td>
-                            @if ($resultado->error_ip == 'Error')
-                                Error
-                            @else
-                                {{ Helper::numberFormat($resultado->error_ip) }} {{ $resultado->unidad }}
-                            @endif
-                        </td>
-                        <td>{{ Helper::numberFormat($resultado->ip_corregido) }} {{ $resultado->unidad }}</td>
-                        <td>{{ Helper::numberFormat($resultado->iec)  }} {{ $resultado->unidad }}</td>
-                        <td>{{ Helper::numberFormat($resultado->desv_iec)  }} {{ $resultado->unidad }}</td>
-                        <td>{{ Helper::numberFormat($resultado->error_iec)  }} {{ $resultado->unidad }}</td>
+                    <th scope="col" class="text-center">IP</th>
+                    <th scope="col" class="text-center">Des. estandar <br>IP</th>
+                    <th scope="col" class="text-center">Error Patrón</th>
+                    <th scope="col" class="text-center">IP Corregido</th>
+                    <th scope="col" class="text-center">IEC</th>
+                    <th scope="col" class="text-center">Des. estandar <br>IEC</th>
+                    <th scope="col" class="text-center">Error</th>
                     </tr>
-                @endforeach
+                </thead>
+                <tbody>
+                    @foreach ($valorResultados as $resultado)
+                        <tr>
+                            <td>{{ Helper::numberFormat($resultado->ip) }} {{ $resultado->unidad }}</td>
+                            <td>{{ Helper::numberFormat($resultado->desv_ip) }} {{ $resultado->unidad }}</td>
+                            <td>
+                                @if ($resultado->error_ip == 'Error')
+                                    Error
+                                @else
+                                    {{ Helper::numberFormat($resultado->error_ip) }} {{ $resultado->unidad }}
+                                @endif
+                            </td>
+                            <td>{{ Helper::numberFormat($resultado->ip_corregido) }} {{ $resultado->unidad }}</td>
+                            <td>{{ Helper::numberFormat($resultado->iec)  }} {{ $resultado->unidad }}</td>
+                            <td>{{ Helper::numberFormat($resultado->desv_iec)  }} {{ $resultado->unidad }}</td>
+                            <td>{{ Helper::numberFormat($resultado->error_iec)  }} {{ $resultado->unidad }}</td>
+                        </tr>
+                    @endforeach
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<ficha-incertidumbre :valores="{{ $valores }}" :incertidumbres="{{ $procedimiento->incertidumbres }}"></ficha-incertidumbre>
+    <ficha-incertidumbre :valores="{{ $valores }}" :incertidumbres="{{ $procedimiento->incertidumbres }}"></ficha-incertidumbre>
 
 
-<div class="mt-6 row">
-    <div class="col-12 border-bottom border-primary mb-6">
-        <h3>6. Resultados</h3>
-    </div>
+    <div class="mt-6 row">
+        <div class="col-12 border-bottom border-primary mb-6">
+            <h3>6. Resultados</h3>
+        </div>
 
-    <div class="col-md-8 mx-auto">
-        <h4></h4>
-        <table class="table table-bordered table-sm">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col" colspan="5" class="text-center">{{ $ide->magnitude }} ({{ $valoresCertificado->first()->unidad }})</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="table-active">
-                    <td class="text-center font-bold">IP ({{ $valoresCertificado->first()->unidad }})</td>
-                    <td class="text-center font-bold">IEC ({{ $valoresCertificado->first()->unidad }})</td>
-                    <td class="text-center font-bold">E ({{ $valoresCertificado->first()->unidad }})</td>
-                    <td class="text-center font-bold">U ({{ $valoresCertificado->first()->unidad }})</td>
-                    <td class="text-center font-bold">k</td>
-                </tr>
-
-                @foreach ($valoresCertificado as $valor)
+        <div class="col-md-8 mx-auto">
+            <h4></h4>
+            <table class="table table-bordered table-sm">
+                <thead class="thead-light">
                     <tr>
-                        <td class="text-center">{{ Helper::numberFormat($valor->ip) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->iec) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->e) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->u) }}</td>
-                        <td class="text-center">{{ Helper::numberFormat($valor->k) }}</td>
+                        <th scope="col" colspan="5" class="text-center">{{ $ide->magnitude }} ({{ $valoresCertificado->first()->unidad }})</th>
                     </tr>
-                @endforeach
+                </thead>
+                <tbody>
+                    <tr class="table-active">
+                        <td class="text-center font-bold">IP ({{ $valoresCertificado->first()->unidad }})</td>
+                        <td class="text-center font-bold">IEC ({{ $valoresCertificado->first()->unidad }})</td>
+                        <td class="text-center font-bold">E ({{ $valoresCertificado->first()->unidad }})</td>
+                        <td class="text-center font-bold">U ({{ $valoresCertificado->first()->unidad }})</td>
+                        <td class="text-center font-bold">k</td>
+                    </tr>
 
-            </tbody>
-        </table>
+                    @foreach ($valoresCertificado as $valor)
+                        <tr>
+                            <td class="text-center">{{ Helper::numberFormat($valor->ip) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->iec) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->e) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->u) }}</td>
+                            <td class="text-center">{{ Helper::numberFormat($valor->k) }}</td>
+                        </tr>
+                    @endforeach
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-8 mx-auto">
+            <calibracion-grafico
+                :valores="{{ $valoresCertificado }}"
+                magnitud="{{ $ide->magnitude }}">
+            </calibracion-grafico>
+        </div>
     </div>
 
-    <div class="col-md-8 mx-auto">
-        <calibracion-grafico
-            :valores="{{ $valoresCertificado }}"
-            magnitud="{{ $ide->magnitude }}">
-        </calibracion-grafico>
-    </div>
-</div>
+@endif
+
 
 <div class="mt-6 row">
     <div class="col-12 border-bottom border-primary mb-6">

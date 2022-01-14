@@ -49,5 +49,9 @@ class Calibracion extends Model
         return $this->hasMany(Valor::class);
     }
 
+    public function valorHistorial(){
+        return $this->hasMany(ValorHistorial::class);
+    }
+
 
 }

@@ -20,7 +20,7 @@ class CreateValorHistorialsTable extends Migration
             $table->string('ip_medida', 10)->nullable();
             $table->json('ip_valor')->nullable();
             $table->string('patron', 25)->nullable();
-            $table->foreignId('valor_id')->constrained();
+            $table->foreignId('calibracion_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

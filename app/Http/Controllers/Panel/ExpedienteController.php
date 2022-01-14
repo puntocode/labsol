@@ -90,7 +90,8 @@ class ExpedienteController extends Controller
         }
 
 
-        if($expediente->expediente_estado_id > 2 && $expediente->expediente_estado_id != 11){
+        // if($expediente->expediente_estado_id > 2 && $expediente->expediente_estado_id != 11 ){
+        if(isset($expediente->calibracion->patrones) ){
             $patrones = $expediente->getPatternsForCalibrationCertificate();
             $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
         }

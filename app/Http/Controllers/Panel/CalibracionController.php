@@ -9,6 +9,7 @@ use App\Models\AlertCalibration;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\CalibracionHistorial;
+use App\Models\ValorHistorial;
 
 class CalibracionController extends Controller
 {
@@ -19,8 +20,21 @@ class CalibracionController extends Controller
 
     public function limpiarValores(Request $request)
     {
-        $calibracion = Calibracion::whereId($request['calibracion_id'])->get();
-        dd($calibracion->toArray());
+        $calibracion = Calibracion::with('valorHistorial')->where('expediente_id', $request['expediente_id'])->first();
+
+        foreach($calibracion->valores as $valor){
+            $historial = new ValorHistorial;
+            $historial->patron = $valor->patron;
+            $historial->ip_valor = $valor->ip_valor;
+            $historial->iec_valor = $valor->iec_valor;
+            $historial->ip_medida = $valor->ip_medida;
+            $historial->iec_medida = $valor->iec_medida;
+            $historial->calibracion_id = $calibracion->id;
+            $historial->save();
+        }
+
+        $calibracion->valores()->delete();
+        return response()->json($calibracion);
     }
 
     /**
