@@ -368,5 +368,13 @@
     </div>
 
     @include('panel.egreso.enviar_certificados_calibracion.partials.footer')
+
+    <script type="text/php">
+        if ( isset($pdf) ) {
+            $y = $pdf->get_height() - 153;
+            $x = $pdf->get_width() - 100;
+            $pdf->page_text($x, $y, "Página {PAGE_NUM} de {PAGE_COUNT}", 'Lato', 9, array(0,0,0));
+        }
+    </script>
 </body>
 </html>

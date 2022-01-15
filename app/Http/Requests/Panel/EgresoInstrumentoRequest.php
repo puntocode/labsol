@@ -22,7 +22,7 @@ class EgresoInstrumentoRequest extends FormRequest
             'expedientes'    => 'required|array',
             'expedientes.*'  => [
                 'int',
-                Rule::exists('expedientes')
+                Rule::exists('expedientes', 'id')
                     ->where('type', 'LS')
                     ->where('egresado', false)
                     ->whereIn('expediente_estado_id', [3, 4, 6])

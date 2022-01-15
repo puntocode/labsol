@@ -10,6 +10,7 @@ use App\Models\Instrumento;
 use Illuminate\Http\Request;
 use App\Models\EntradaInstrumento;
 use App\Http\Controllers\Controller;
+use App\Jobs\EnviarReciboEntradaEgresoJob;
 
 class EntradaInstrumentoController extends Controller
 {
@@ -62,6 +63,8 @@ class EntradaInstrumentoController extends Controller
                 $expediente->save();
             }
         }
+
+        dispatch(new EnviarReciboEntradaEgresoJob($entradaInstrumento));
 
         return response()->json(['data' => $entradaInstrumento], 201);
     }
