@@ -151,7 +151,7 @@
                     <td colspan="8">{{ $entradaInstrumento->contact['email'] }}</td>
                 </tr>
 
-                <tr><td colspan="24" style="background: white !important"></td></tr>
+                <tr><td colspan="24" style="background: white !important">&nbsp;</td></tr>
 
                 <tr>
                     <th colspan="5">FECHA DE RECEPCIÓN</th>
@@ -176,7 +176,7 @@
                     <td colspan="6" class="text-center">{{ $entradaInstrumento->identification }}</td>
                 </tr>
 
-                <tr><td colspan="24" style="background: white !important"></td></tr>
+                <tr><td colspan="24" style="background: white !important">&nbsp;</td></tr>
 
                 <tr>
                     <th colspan="24" class="text-center">CONTROL DE INGRESO DE INSTRUMENTOS</th>
@@ -196,7 +196,7 @@
                     </tr>
                 @endforeach
 
-                <tr><td colspan="24" style="background: white !important"></td></tr>
+                <tr><td colspan="24" style="background: white !important">&nbsp;</td></tr>
 
                 <tr>
                     <th colspan="24" >OBSERVACIÓN:</th>
@@ -228,8 +228,6 @@
             <br>
             Tel/Fax +595 21 202 846
         </div>
-
-
 
     </div>
 

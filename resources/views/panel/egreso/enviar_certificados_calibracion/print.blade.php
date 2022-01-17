@@ -92,7 +92,7 @@
     </style>
 </head>
 <body>
-    @include('panel.egreso.enviar_certificados.partials.header')
+    @include('panel.egreso.enviar_certificados_calibracion.partials.header')
 
     <div class="page-content" style="">
         <table class="table my-0 table-condensed">
@@ -283,14 +283,14 @@
             </tfoot>
         </table>
 
-        @include('panel.egreso.enviar_certificados.partials.watermarks')
+        @include('panel.egreso.enviar_certificados_calibracion.partials.watermarks')
     </div>
 
-    @include('panel.egreso.enviar_certificados.partials.footer')
+    @include('panel.egreso.enviar_certificados_calibracion.partials.footer')
 
     <div style="page-break-after: always; margin-bottom: 2.5rem"></div>
 
-    @include('panel.egreso.enviar_certificados.partials.header')
+    @include('panel.egreso.enviar_certificados_calibracion.partials.header')
 
     <div class="page-content">
 
@@ -364,9 +364,17 @@
 
         </table>
 
-        @include('panel.egreso.enviar_certificados.partials.watermarks')
+        @include('panel.egreso.enviar_certificados_calibracion.partials.watermarks')
     </div>
 
-    @include('panel.egreso.enviar_certificados.partials.footer')
+    @include('panel.egreso.enviar_certificados_calibracion.partials.footer')
+
+    <script type="text/php">
+        if ( isset($pdf) ) {
+            $y = $pdf->get_height() - 153;
+            $x = $pdf->get_width() - 100;
+            $pdf->page_text($x, $y, "Página {PAGE_NUM} de {PAGE_COUNT}", 'Lato', 9, array(0,0,0));
+        }
+    </script>
 </body>
 </html>

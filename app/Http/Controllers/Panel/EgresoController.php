@@ -9,6 +9,7 @@ use App\Models\EgresoInstrumento;
 use App\Models\EntradaInstrumento;
 use App\Http\Controllers\Controller;
 use App\Models\DetalleEgresoInstrumento;
+use App\Jobs\EnviarReciboEntradaEgresoJob;
 use App\Http\Requests\Panel\EgresoInstrumentoRequest;
 
 class EgresoController extends Controller
@@ -75,7 +76,9 @@ class EgresoController extends Controller
             ->with('entradaInstrumentos')
             ->get();
 
-        foreach ($expedientes->pluck('entradaInstrumentos')->unique() as $entradaInstrumento) {
+        $entradasInstrumentos = $expedientes->pluck('entradaInstrumentos')->unique();
+
+        foreach ($entradasInstrumentos as $entradaInstrumento) {
             $tipoRetiro = $entradaInstrumento->expedientes()->porEgresar()->count()
                 ? 'parcial #' . ($entradaInstrumento->egresoInstrumentos->count() + 1)
                 : 'total';
@@ -94,6 +97,10 @@ class EgresoController extends Controller
                     'egreso_instrumento_id' => $egresoInstrumento->id
                 ]);
             }
+        }
+
+        foreach ($entradasInstrumentos as $entradaInstrumento) {
+            dispatch(new EnviarReciboEntradaEgresoJob($entradaInstrumento, false));
         }
 
         return redirect()->route('panel.egreso.index');

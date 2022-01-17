@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Panel;
 
 use App\Models\Expediente;
 use App\Http\Controllers\Controller;
-use App\Jobs\EnviarCertificadosEgresoJob;
-use App\Http\Requests\Panel\EnviarCertificadoEgresoRequest;
+use App\Jobs\EnviarCertificadosCalibracionJob;
+use App\Http\Requests\Panel\EnviarCertificadoCalibracionRequest;
 
-class EnviarCertificadoEgresoController extends Controller
+class EnviarCertificadoCalibracionController extends Controller
 {
     public function __construct()
     {
@@ -28,16 +28,16 @@ class EnviarCertificadoEgresoController extends Controller
             ->relaciones()
             ->get();
 
-        return view('panel.egreso.enviar_certificados.index', compact('expedientes'));
+        return view('panel.egreso.enviar_certificados_calibracion.index', compact('expedientes'));
     }
 
     /**
      * Send certificates
      *
-     * @param EnviarCertificadoEgresoRequest $request
+     * @param EnviarCertificadoCalibracionRequest $request
      * @return void
      */
-    public function send(EnviarCertificadoEgresoRequest $request)
+    public function send(EnviarCertificadoCalibracionRequest $request)
     {
         $expedientes = Expediente::whereIn('id', $request->expedientes)
             ->relaciones()
@@ -46,8 +46,8 @@ class EnviarCertificadoEgresoController extends Controller
         Expediente::whereIn('id', $request->expedientes)
             ->update(['enviado' => Expediente::STATUS_ENVIO_CERTIFICADO_EN_PROCESO]);
 
-        dispatch(new EnviarCertificadosEgresoJob($expedientes));
+        dispatch(new EnviarCertificadosCalibracionJob($expedientes));
 
-        return redirect()->route('panel.egreso.enviar-certificados.index');
+        return redirect()->route('panel.egreso.enviar-certificados-calibracion.index');
     }
 }

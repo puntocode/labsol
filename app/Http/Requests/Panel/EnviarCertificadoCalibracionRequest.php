@@ -5,7 +5,7 @@ namespace App\Http\Requests\Panel;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EnviarCertificadoEgresoRequest extends FormRequest
+class EnviarCertificadoCalibracionRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

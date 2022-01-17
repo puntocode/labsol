@@ -151,7 +151,8 @@
                     <td colspan="8">{{ $entradaInstrumento->contact['email'] }}</td>
                 </tr>
 
-                <tr><td colspan="24" style="background: white !important"></td></tr>
+                <tr><td colspan="24" style="background: white !important">&nbsp;</td></tr>
+
 
                 <tr>
                     <th colspan="5">FECHA DE RECEPCIÓN</th>
@@ -176,7 +177,7 @@
                     <td colspan="6" class="text-center">{{ $entradaInstrumento->identification }}</td>
                 </tr>
 
-                <tr><td colspan="24" style="background: white !important"></td></tr>
+                <tr><td colspan="24" style="background: white !important">&nbsp;</td></tr>
 
                 <tr>
                     <th colspan="24" class="text-center">CONTROL DE INGRESO DE INSTRUMENTOS</th>
@@ -196,7 +197,7 @@
                     </tr>
                 @endforeach
 
-                <tr><td colspan="24" style="background: white !important"></td></tr>
+                <tr><td colspan="24" style="background: white !important;">&nbsp;</td></tr>
 
                 <tr>
                     <th colspan="24" >OBSERVACIÓN:</th>
@@ -210,9 +211,10 @@
                     <th colspan="24" class="text-center">PRESENTAR ESTE DOCUMENTO PARA RETIRAR LOS INSTRUMENTOS.</th>
                 </tr>
 
-                <tr><td colspan="24" style="background: white !important; height: 100px;"></td></tr>
-
                 @foreach ($egresoInstrumentos as $egresoInstrumento)
+                    <tr><td colspan="24" style="background: white !important;">&nbsp;</td></tr>
+                    <tr><td colspan="24" style="background: white !important;">&nbsp;</td></tr>
+
                     <tr>
                         <th colspan="24" class="text-center">CONTROL DE EGRESO DE INSTRUMENTOS</th>
                     </tr>
@@ -258,9 +260,6 @@
                         <td colspan="3" class="text-center">C.I:</td>
                         <td colspan="6" class="text-center">{{ $egresoInstrumento->identificacion }}</td>
                     </tr>
-
-                    <tr><td colspan="24" style="background: white !important; border: 3px solid rgba(0, 0, 0, 0) !important"></td></tr>
-
                 @endforeach
 
             </tbody>
