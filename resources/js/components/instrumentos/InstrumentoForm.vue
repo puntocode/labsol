@@ -4,16 +4,22 @@
 
             <div class="row align-items-end">
                 <div class="col-12">
+
                     <div class="form-group">
                         <label>Instrumento <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" v-model="form.name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Costo <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" v-model="form.costo">
                     </div>
                 </div>
             </div>
 
             <div class="d-flex justify-content-center mt-5 row">
                 <a :href="rutas.index" class="btn btn-secondary mr-2" title="Volver a listado">Volver</a>
-                <button type="submit" class="btn btn-primary" :disabled="form.name.trim() === ''" title="Completa los campos obligatorios">{{ textoBtn }}</button>
+                <button type="submit" class="btn btn-primary" :disabled="disable" title="Completa los campos obligatorios">{{ textoBtn }}</button>
             </div>
 
         </form>
@@ -27,7 +33,7 @@
         data() {
             return {
                 rutas: window.routes,
-                form: {id: 0, name: ''}
+                form: {id: 0, name: '', costo: ''}
             }
         },
 
@@ -38,6 +44,10 @@
         computed: {
             textoBtn() {
                 return this.form.id === 0 ? 'Crear' : 'Actualizar';
+            },
+
+            disable(){
+                return this.form.name.trim() === '' || this.form.costo == ''
             }
         },
 
@@ -50,7 +60,8 @@
 
                     let mensaje = this.form.id === 0 ? 'Creado' : 'Actualizado';
 
-                    this.$swal('Ok', `El instrumento se ha ${mensaje}`, 'success');
+                    this.$swal('Ok', `El instrumento se ha ${mensaje}`, 'success')
+                        .then( response => location.href = this.rutas.index);
 
                 }catch(error){
                     this.$swal.fire('Error', 'Ocurrio un error inesperado', 'error');

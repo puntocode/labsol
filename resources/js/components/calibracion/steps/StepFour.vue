@@ -133,6 +133,7 @@
                 </div>
             </div>
 
+            <HistorialValores :calibracion_id="form.id" />
 
             <CertificadoTable :certificados="certificados" :redondeo="redondeo"  />
 
@@ -154,11 +155,12 @@ import convertirBase from "../../../functions/convertir-base.js";
 import calcularFormula from "../../../functions/formulas.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
 import CertificadoTable from "../CertificadoTable";
+import HistorialValores from "../HistorialValores";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
     export default {
-        components: { CertificadoTable },
+        components: { CertificadoTable, HistorialValores },
         props: ['form', 'medida', 'datos', 'incertidumbres'],
         data() {
             return {

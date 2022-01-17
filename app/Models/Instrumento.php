@@ -10,7 +10,7 @@ class Instrumento extends Model
     use HasFactory;
 
     protected $appends  = [ 'code' ];
-    protected $fillable = [ 'name' ];
+    protected $fillable = [ 'name', 'costo' ];
     protected $casts    = [ 'status' => 'boolean'];
 
     public function procedimiento(){

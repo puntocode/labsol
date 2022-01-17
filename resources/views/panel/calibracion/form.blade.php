@@ -38,6 +38,7 @@
         const UPDATE_HISTORICO = "{{ route('panel.calibrar.actualizar.historico') }}";
         const STORE_CALIBRACION = "{{ route('panel.calibracion.store') }}";
         const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
+        const VALOR_HISTORIAL_GET = "{{ route('panel.valor-historial.get') }}";
         const VALOR_RESULTADO_STORE = "{{ route('panel.valor-resultado.store') }}";
         const VALOR_CERTIFICADO_STORE = "{{ route('panel.valor-certificados.store') }}";
         const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor-incertidumbre.store') }}";
@@ -55,6 +56,7 @@
             'indexExpediente': INDEX_EXPEDIENTE,
             'updateHistorico': UPDATE_HISTORICO,
             'estadoExpediente': ESTADO_EXPEDIENTE,
+            'valorHistorialGet': VALOR_HISTORIAL_GET,
             'valorResultadoStore': VALOR_RESULTADO_STORE,
             'valorCertificadoStore': VALOR_CERTIFICADO_STORE,
             'valorIncertidumbreStore': VALOR_INCERTIDUMBRE_STORE,
