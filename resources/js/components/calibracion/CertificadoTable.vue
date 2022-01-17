@@ -1,5 +1,9 @@
 <template>
-    <div class="row my-18">
+    <div class="row my-18" v-if="certificados.length">
+        <div class="col-12">
+            <h3 class="border-bottom border-primary mb-8">Resultados Obtenidos</h3>
+        </div>
+
         <div class="col-lg-6">
             <table class="table table-bordered table-sm">
                 <thead class="thead-light">

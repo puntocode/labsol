@@ -52,12 +52,7 @@ class InstrumentoController extends Controller
      */
     public function show($id)
     {
-      $view_mode = 'readonly';
-      $entrada_instrumento = config('demo.entrada_instrumentos')[$id];
-      $tecnicos = config('demo.tecnicos');
-        $usuarios = config('demo.usuarios');
 
-      return view('panel.instrumentos.form', compact('entrada_instrumento', 'view_mode', 'tecnicos', 'usuarios'));
     }
 
     /**
@@ -68,7 +63,6 @@ class InstrumentoController extends Controller
      */
     public function edit($id)
     {
-
       $instrumento = Instrumento::find($id);
       return view('panel.instrumentos.form', compact('instrumento'));
     }
@@ -115,6 +109,7 @@ class InstrumentoController extends Controller
     {
         return request()->validate([
             'name' => 'required',
+            'costo' => 'required',
         ]);
     }
 
