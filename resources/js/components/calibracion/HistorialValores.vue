@@ -38,7 +38,7 @@
 
 <script>
     export default {
-        props: ['calibracion_id'],
+        props: ['calibracion_id', 'tableHistorial'],
 
         data() {
             return {
@@ -61,6 +61,12 @@
                 }
             }
         },
+
+        watch:{
+            tableHistorial(){
+                this.historials = this.tableHistorial;
+            }
+        }
     }
 </script>
 

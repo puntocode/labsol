@@ -101,6 +101,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/magnitud', [PanelController::class, 'getMagnitudes'])->name('magnitud.all');
 
     Route::get('/valores-historial', 'ValorHistorialController@getValoresForCalibracion')->name('valor-historial.get')->middleware('can:panel.admin');
+    Route::post('/valores-historial', 'ValorHistorialController@store')->name('valor-historial.store')->middleware('can:panel.admin');
 
     # -- Calibración Historial  --
     Route::resource('/calibracion-historial', 'CalibracionHistorialController')->middleware('can:panel.database');

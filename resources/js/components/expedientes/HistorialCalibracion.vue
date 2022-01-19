@@ -49,3 +49,9 @@
         props: ['historial'],
     }
 </script>
+
+<style lang="scss" scoped>
+    ul{margin-top:0;
+        li{padding:0 0 5px 0}
+    }
+</style>

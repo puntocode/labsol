@@ -5,6 +5,16 @@
                 <slot></slot>
             </div>
 
+            <ModalValor
+                :valores="valorEdit"
+                :last-value="valorLastEdit"
+                :valores-medidas="formulario.valores_medidas"
+                :form-valores.sync="formulario.valores"
+                :table-hist.sync="tableHistorial"
+            />
+
+
+            <!-------------------------------- Documentos ------------------------------------------------------------------------------------------------>
             <div class="form-group row text-left">
                 <label class="col-md-2 col-form-label">Documentos</label>
                 <div class="col-md-10">
@@ -46,6 +56,7 @@
                 </div>
             </div>
 
+            <!-------------------------------- Formulario ------------------------------------------------------------------------------------------------>
             <div class="row mt-4" v-for="(valor, indice) in formulario.valores" :key="indice">
                 <div class="col-md-2">
                     <select
@@ -57,6 +68,7 @@
                     </select>
                 </div>
 
+                <!-------------------------------- Input IP --------------------------------------------------->
                 <div class="col-md-5 d-flex">
                     <select
                         class="form-control mr-3"
@@ -67,34 +79,68 @@
                         <option v-for="(ip, i) in selectIP" :key="i">{{ ip }}</option>
                     </select>
 
-                    <input
-                        type="number"
-                        step="0.01"
-                        class="form-control mr-3"
-                        :id="`ip-valor-0-${indice}`"
-                        v-model="valor.ip_valor[0]"
-                        @blur="bloquear(`#ip-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'ip-valor'})"
-                        :disabled="valor.patron.trim() === '' || valor.ip_medida.trim() === '' || formulario.resultados.length != indice || valor.id > 0">
+                    <div class="input-icons">
+                        <EditValor
+                            v-if="valor.ip_valor[0].trim() !== '' && valor.id != 0"
+                            :valor="valor"
+                            :index="0"
+                            :global="indice"
+                            :valor-edit.sync="valorEdit"
+                            :last-edit.sync="valorLastEdit"
+                            tipo="ip_valor"
+                        />
+                        <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            :id="`ip-valor-0-${indice}`"
+                            v-model="valor.ip_valor[0]"
+                            @blur="bloquear(`#ip-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'ip-valor'})"
+                            :disabled="valor.patron.trim() === '' || valor.ip_medida.trim() === '' || formulario.resultados.length != indice || valor.id > 0">
+                    </div>
 
-                    <input
-                        type="number"
-                        step="0.01"
-                        class="form-control mr-3"
-                        :id="`ip-valor-1-${indice}`"
-                        @blur="bloquear(`#ip-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'ip-valor'})"
-                        v-model="valor.ip_valor[1]"
-                        :disabled="valor.ip_valor[0] === '' || valor.iec_valor[0] === '' || valor.id > 0">
+                    <div class="input-icons">
+                       <EditValor
+                            v-if="valor.ip_valor[1].trim() !== '' && valor.id != 0"
+                            :valor="valor"
+                            :index="1"
+                            :global="indice"
+                            :valor-edit.sync="valorEdit"
+                            :last-edit.sync="valorLastEdit"
+                            tipo="ip_valor"
+                        />
+                        <input
+                            type="number"
+                            step="0.01"
+                            class="form-control mr-3"
+                            :id="`ip-valor-1-${indice}`"
+                            @blur="bloquear(`#ip-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'ip-valor'})"
+                            v-model="valor.ip_valor[1]"
+                            :disabled="valor.ip_valor[0] === '' || valor.iec_valor[0] === '' || valor.id > 0">
+                    </div>
 
-                    <input
-                        type="number"
-                        step="0.01"
-                        class="form-control"
-                        :id="`ip-valor-2-${indice}`"
-                        @blur="bloquear(`#ip-valor-2-${indice}`, {fila:indice, columna: 2, valor: 'ip-valor'})"
-                        v-model="valor.ip_valor[2]"
-                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[1] === '' || valor.id > 0">
+                    <div class="input-icons">
+                        <EditValor
+                            v-if="valor.ip_valor[2].trim() !== '' && valor.id != 0"
+                            :valor="valor"
+                            :index="2"
+                            :global="indice"
+                            :valor-edit.sync="valorEdit"
+                            :last-edit.sync="valorLastEdit"
+                            tipo="ip_valor"
+                        />
+                        <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            :id="`ip-valor-2-${indice}`"
+                            @blur="bloquear(`#ip-valor-2-${indice}`, {fila:indice, columna: 2, valor: 'ip-valor'})"
+                            v-model="valor.ip_valor[2]"
+                            :disabled="valor.ip_valor[1] === '' || valor.iec_valor[1] === '' || valor.id > 0">
+                    </div>
                 </div>
 
+                <!-------------------------------- Input IEC -------------------------------------------------->
                 <div class="col-md-5 d-flex">
                     <select
                         class="form-control mr-3"
@@ -105,35 +151,68 @@
                         <option v-for="(iec, i) in selectIEC" :key="i">{{ iec }}</option>
                     </select>
 
-                    <input
-                        type="number"
-                        step="0.01"
-                        class="form-control mr-3"
-                        :id="`iec-valor-0-${indice}`"
-                        @blur="bloquear(`#iec-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'iec-valor'})"
-                        v-model="valor.iec_valor[0]"
-                        :disabled="valor.ip_valor[0] === '' || valor.iec_medida === '' || valor.id > 0">
+                    <div class="input-icons">
+                        <EditValor
+                            v-if="valor.iec_valor[0].trim() !== '' && valor.id != 0"
+                            :valor="valor"
+                            :index="0"
+                            :global="indice"
+                            :valor-edit.sync="valorEdit"
+                            :last-edit.sync="valorLastEdit"
+                            tipo="iec_valor"
+                        />
+                        <input
+                            type="number"
+                            step="0.01"
+                            class="form-control mr-3"
+                            :id="`iec-valor-0-${indice}`"
+                            @blur="bloquear(`#iec-valor-0-${indice}`, {fila:indice, columna: 0, valor: 'iec-valor'})"
+                            v-model="valor.iec_valor[0]"
+                            :disabled="valor.ip_valor[0] === '' || valor.iec_medida === '' || valor.id > 0">
+                    </div>
 
-                    <input
-                        type="number"
-                        step="0.01" class="form-control mr-3"
-                        :id="`iec-valor-1-${indice}`"
-                        @blur="bloquear(`#iec-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'iec-valor'})"
-                        v-model="valor.iec_valor[1]"
-                        :disabled="valor.ip_valor[1] === '' || valor.iec_valor[0] === '' || valor.id > 0">
+                    <div class="input-icons">
+                        <EditValor
+                            v-if="valor.iec_valor[1].trim() !== '' && valor.id != 0"
+                            :valor="valor"
+                            :index="1"
+                            :global="indice"
+                            :valor-edit.sync="valorEdit"
+                            :last-edit.sync="valorLastEdit"
+                            tipo="iec_valor"
+                        />
+                        <input
+                            type="number"
+                            step="0.01" class="form-control mr-3"
+                            :id="`iec-valor-1-${indice}`"
+                            @blur="bloquear(`#iec-valor-1-${indice}`, {fila:indice, columna: 1, valor: 'iec-valor'})"
+                            v-model="valor.iec_valor[1]"
+                            :disabled="valor.ip_valor[1] === '' || valor.iec_valor[0] === '' || valor.id > 0">
+                    </div>
 
-                    <input
-                        type="number"
-                        step="0.01"
-                        class="form-control"
-                        :id="`iec-valor-2-${indice}`"
-                        @blur="calcularIP(indice)"
-                        v-model="valor.iec_valor[2]"
-                        :disabled="valor.ip_valor[2] === '' || valor.iec_valor[1] === '' || valor.id > 0">
+                    <div class="input-icons">
+                        <EditValor
+                            v-if="valor.iec_valor[2].trim() !== '' && valor.id != 0"
+                            :valor="valor"
+                            :index="2"
+                            :global="indice"
+                            :valor-edit.sync="valorEdit"
+                            :last-edit.sync="valorLastEdit"
+                            tipo="iec_valor"
+                        />
+                        <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            :id="`iec-valor-2-${indice}`"
+                            @blur="calcularIP(indice)"
+                            v-model="valor.iec_valor[2]"
+                            :disabled="valor.ip_valor[2] === '' || valor.iec_valor[1] === '' || valor.id > 0">
+                    </div>
                 </div>
             </div>
 
-            <HistorialValores :calibracion_id="form.id" />
+            <HistorialValores :calibracion_id="form.id" :table-historial="tableHistorial" />
 
             <CertificadoTable :certificados="certificados" :redondeo="redondeo"  />
 
@@ -144,10 +223,13 @@
                 @click="siguiente">Siguiente
             </button>
         </div>
+
     </fieldset>
 </template>
 
 <script>
+import EditValor from "./EditValor";
+import ModalValor from "./ModalValor";
 import encontrark from "../../../functions/encontrar-k.js";
 import interpolar from "../../../functions/interpolar.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
@@ -160,7 +242,7 @@ import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
     export default {
-        components: { CertificadoTable, HistorialValores },
+        components: { CertificadoTable, HistorialValores, EditValor, ModalValor },
         props: ['form', 'medida', 'datos', 'incertidumbres'],
         data() {
             return {
@@ -190,7 +272,10 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 selectPatrones: [],
                 subMultiplos: [],
                 unidadMedidas: [],
-                valorTemp: {valorId:0, index: undefined}
+                valorTemp: {valorId:0, index: undefined},
+                valorEdit: { anterior: '', indice: '', tipo: '', global: 0 },
+                valorLastEdit: [],
+                tableHistorial: [],
             }
         },
         //------------------------------------------------------------------------------------
@@ -599,12 +684,28 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 this.$emit('click-next')
             },
 
-            submit(){
-                if(this.form.ip_medida !== this.formulario.valores_medidas.ip_medida_general){
+            async submit(){
+                try{
                     let formulario = {...this.form};
                     formulario.ip_medida = this.formulario.valores_medidas.ip_medida_general;
-                    axios.put(`${this.rutas.index}/${formulario.id}`, formulario)
-                        .then(response => { if(response.status === 200) this.$emit('update:form', formulario); });
+
+                    //entra la primera vez
+                    if(!this.form.ip_medida && this.formulario.valores_medidas.ip_medida_general !== ''){
+                        console.log('Entra primera vez');
+                        let res = await axios.put(`${this.rutas.index}/${formulario.id}`, formulario);
+                        let datos = await res.data;
+                        return;
+                    }
+
+                    //si se cambia de valores
+                    if(this.form.ip_medida !== this.formulario.valores_medidas.ip_medida_general){
+                        console.log('Se cambia de valores');
+                        let res = await axios.put(this.rutas.updateHistorico, formulario);
+                        let datos = await res.data;
+                    }
+
+                }catch(error){
+                    console.error(error);
                 }
             },
 
@@ -615,7 +716,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
             guardarValores(indice){
                 return axios.post(this.rutas.valorStore, this.formulario.valores[indice])
-                    .then(response => response.data.id);
+                    .then(response => this.formulario.valores[indice].id = response.data.id);
             },
 
             guardarValoresResultados(resultado){
@@ -671,3 +772,10 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
     }
 </script>
+
+
+<style lang="scss" scoped>
+    .input-icons { width: 100%; margin-right: 6px;
+        i { position: absolute; }
+    }
+</style>

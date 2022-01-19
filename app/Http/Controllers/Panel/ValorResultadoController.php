@@ -72,7 +72,8 @@ class ValorResultadoController extends Controller
      */
     public function update(Request $request, ValorResultado $valorResultado)
     {
-        //
+        $valorResultado->update($this->validateData());
+        return response()->json($valorResultado);
     }
 
     /**

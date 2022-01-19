@@ -28,6 +28,7 @@ Vue.component('historial-calibracion', require('./components/expedientes/Histori
 
 Vue.component('calibracion-form',      require('./components/calibracion/CalibracionForm.vue').default);
 Vue.component('estado-calibracion',    require('./components/calibracion/EstadoCalibracion.vue').default);
+Vue.component('anular-calibracion',    require('./components/calibracion/AnularCalibracion.vue').default);
 Vue.component('calibracion-grafico',   require('./components/calibracion/CalibracionGrafico.vue').default);
 
 Vue.component('patron-maintenance',    require('./components/patrones/PatronMaintenance.vue').default);

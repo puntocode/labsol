@@ -210,6 +210,7 @@ class ExpedienteController extends Controller
 
         if($request->has('estado_comentario')) $comentario = $request['estado_comentario'];
 
+        //Limpia el tecnico para volver a agendar ---------------------------------
         if($request['expediente_estado_id'] == 9){
             $exp->tecnicos = null;
             $exp->delivery_date = null;

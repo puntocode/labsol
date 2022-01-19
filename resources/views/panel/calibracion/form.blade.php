@@ -39,7 +39,9 @@
         const STORE_CALIBRACION = "{{ route('panel.calibracion.store') }}";
         const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
         const VALOR_HISTORIAL_GET = "{{ route('panel.valor-historial.get') }}";
+        const VALOR_RESULTADO_INDEX = "{{ route('panel.valor-resultado.index') }}";
         const VALOR_RESULTADO_STORE = "{{ route('panel.valor-resultado.store') }}";
+        const VALOR_HISTORIAL_STORE = "{{ route('panel.valor-historial.store') }}";
         const VALOR_CERTIFICADO_STORE = "{{ route('panel.valor-certificados.store') }}";
         const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor-incertidumbre.store') }}";
         const VALOR_INCERTIDUMBRE_RESULTADO_STORE = "{{ route('panel.incertidumbre-resultados.store') }}";
@@ -61,7 +63,15 @@
             'valorCertificadoStore': VALOR_CERTIFICADO_STORE,
             'valorIncertidumbreStore': VALOR_INCERTIDUMBRE_STORE,
             'valorIncertidumbreResultadoStore': VALOR_INCERTIDUMBRE_RESULTADO_STORE,
-        }
+        };
+
+        window.routesEdit = {
+            'valorIndex': VALOR_INDEX,
+            'patronUmIde': PATRON_UM_IDE,
+            'guardarHistorico': VALOR_HISTORIAL_STORE,
+            'valoresHistorial': VALOR_HISTORIAL_GET,
+            'valorResultadoIndex': VALOR_RESULTADO_INDEX
+        };
     </script>
 @endsection
 

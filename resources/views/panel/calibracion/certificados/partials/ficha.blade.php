@@ -184,7 +184,7 @@
     <div class="form-group col-md-6">
         <label>Temperatura Relativa Final</label>
         <div class="h-auto p-0 border-0 form-control">
-            <span class="font-weight-bold">{{ $expediente->calibracion->temperatura_final }} %</span>
+            <span class="font-weight-bold">{{ $expediente->calibracion->humedad_final }} %</span>
         </div>
     </div>
 

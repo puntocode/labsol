@@ -7,9 +7,16 @@
 @section('content')
 	<!--begin::Container-->
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Expediente {{ $expediente->number }}
-			<small class="font-weight-lighter"> | Ficha</small>
-		</h3>
+
+        <div class="row mb-6">
+            <div class="col-12 d-flex justify-content-between">
+                <h3 class="card-label mb-8">Expediente {{ $expediente->number }}<small class="font-weight-lighter"> | Ficha</small></h3>
+
+                @if ($expediente->expediente_estado_id !== 6)
+                    <anular-calibracion :expediente_id="{{ $expediente->id }}" ></anular-calibracion>
+                @endif
+            </div>
+        </div>
 
 		<div class="row">
 			<div class="col-lg-3 col-xl-2">
@@ -103,9 +110,11 @@
     <script>
         const RESULT_INCERTIDUMBRE = "{{ route('panel.incertidumbre.resultado') }}";
         const VALOR_INCERTIDUMBRE = "{{ route('panel.incertidumbre.valor') }}";
+        const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
         const UPDATE_TECNICOS = "{{ route('panel.expedientes.update_tecnicos') }}";
         const HISTORIAL = "{{ route('panel.expedientes.historial') }}";
         const TECNICOS = "{{ route('panel.usuarios.tecnicos') }}";
+
 
         window.asset = "{{ URL::asset('')  }}";
         window.routes = {
@@ -114,6 +123,7 @@
             'resultados': RESULT_INCERTIDUMBRE,
             'incertidumbre': VALOR_INCERTIDUMBRE,
             'updateTecnicos': UPDATE_TECNICOS,
+            'estadoExpediente': ESTADO_EXPEDIENTE,
         }
     </script>
 @endsection

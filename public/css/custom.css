@@ -243,9 +243,9 @@ a.text-hover-primary:hover i,
     padding: 0 !important;
 }
 
-.modal-content{
+/* .modal-content{
     border-radius: 0;
-}
+} */
 
 .dropzone.dropzone-default.dropzone-primary{
     border-color: var(--brand_cyan);

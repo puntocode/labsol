@@ -9,6 +9,7 @@ class ValorHistorial extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
     protected $casts = [
         'ip_valor' => 'array',
         'iec_valor' => 'array',

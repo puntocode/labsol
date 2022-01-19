@@ -73,7 +73,9 @@ class ValorController extends Controller
      */
     public function update(Request $request, Valor $valor)
     {
-        //
+        $valor = Valor::whereId($request->valor_id)->first();
+        $valor->update($this->validateData());
+        return response()->json($valor);
     }
 
     /**
