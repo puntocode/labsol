@@ -91,4 +91,9 @@ class ValorIncertidumbreController extends Controller
         return response()->json($incertidumbre);
     }
 
+    public function eliminarIncertidumbres(Request $request){
+        $valor = ValorIncertidumbre::where('valor_id', $request->valor_id)->delete();
+        return response()->json($valor, 200);
+    }
+
 }

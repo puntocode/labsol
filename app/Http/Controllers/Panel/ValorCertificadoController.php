@@ -9,25 +9,6 @@ use App\Http\Controllers\Controller;
 
 class ValorCertificadoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -41,49 +22,18 @@ class ValorCertificadoController extends Controller
         return response()->json($valores);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ValorCertificado  $valorCertificado
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ValorCertificado $valorCertificado)
-    {
-        //
+
+
+    public function getValoresForValorId(Request $request){
+        $valores = ValorCertificado::where('valor_id', $request->valor_id)->first();
+        return response()->json($valores);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ValorCertificado  $valorCertificado
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ValorCertificado $valorCertificado)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ValorCertificado  $valorCertificado
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ValorCertificado $valorCertificado)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ValorCertificado  $valorCertificado
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ValorCertificado $valorCertificado)
-    {
-        //
+    public function updateValorCertificado(Request $request){
+        $valorCertificado = ValorCertificado::where('valor_id', $request->valor_id)->first();
+        $valorCertificado->update($this->validateData());
+        return response()->json($valorCertificado);
     }
 
     public function validateData()

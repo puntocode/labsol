@@ -39,12 +39,16 @@
         const STORE_CALIBRACION = "{{ route('panel.calibracion.store') }}";
         const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
         const VALOR_HISTORIAL_GET = "{{ route('panel.valor-historial.get') }}";
-        const VALOR_RESULTADO_INDEX = "{{ route('panel.valor-resultado.index') }}";
         const VALOR_RESULTADO_STORE = "{{ route('panel.valor-resultado.store') }}";
         const VALOR_HISTORIAL_STORE = "{{ route('panel.valor-historial.store') }}";
+        const VALOR_RESULTADO_UPDATE = "{{ route('panel.valor.resultados.update') }}";
+        const VALOR_CERTIFICADO_GET = "{{ route('panel.valor-certificados.get') }}";
         const VALOR_CERTIFICADO_STORE = "{{ route('panel.valor-certificados.store') }}";
+        const VALOR_CERTIFICADO_UPDATE = "{{ route('panel.valor.certificados.update') }}";
         const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor-incertidumbre.store') }}";
+        const VALOR_INCERTIDUMBRE_DELETE = "{{ route('panel.valor.incertidumbre.delete') }}";
         const VALOR_INCERTIDUMBRE_RESULTADO_STORE = "{{ route('panel.incertidumbre-resultados.store') }}";
+        const VALOR_INCERTIDUMBRE_RESULTADO_UPDATE = "{{ route('panel.incertidumbre.resultados.update') }}";
 
         window.routes = {
             'index': INDEX,
@@ -70,7 +74,12 @@
             'patronUmIde': PATRON_UM_IDE,
             'guardarHistorico': VALOR_HISTORIAL_STORE,
             'valoresHistorial': VALOR_HISTORIAL_GET,
-            'valorResultadoIndex': VALOR_RESULTADO_INDEX
+            'valoresCertificado': VALOR_CERTIFICADO_GET,
+            'valorResultadoUpdate': VALOR_RESULTADO_UPDATE,
+            'valorCertificadoUpdate': VALOR_CERTIFICADO_UPDATE,
+            'valorIncertidumbreStore': VALOR_INCERTIDUMBRE_STORE,
+            'valorIncertidumbreDelete': VALOR_INCERTIDUMBRE_DELETE,
+            'valorIncertidumbreResultadoUpdate': VALOR_INCERTIDUMBRE_RESULTADO_UPDATE,
         };
     </script>
 @endsection
