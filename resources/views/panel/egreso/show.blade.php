@@ -135,7 +135,7 @@
                                             <th>N°. Exped</th>
                                             <th>Certificado</th>
                                             <th>RUC</th>
-                                            <th>Direccion</th>
+                                            <th>Dirección</th>
                                             <th>Equipo</th>
                                             <th>Servicio</th>
                                             {{-- <th>Estado</th> --}}
@@ -228,7 +228,7 @@
                                                 <th>N°. Exped</th>
                                                 <th>Certificado</th>
                                                 <th>RUC</th>
-                                                <th>Direccion</th>
+                                                <th>Dirección</th>
                                                 <th>Equipo</th>
                                                 <th>Servicio</th>
                                                 {{-- <th>Estado</th> --}}

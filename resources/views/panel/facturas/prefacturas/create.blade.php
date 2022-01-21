@@ -1,6 +1,6 @@
 @extends('layouts.panel')
 
-@section('title')Salida de Instrumento |@endsection
+@section('title')Facturación |@endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/partials/partials.css') }}">
 @endsection
@@ -9,7 +9,7 @@
 @section('content')
     <!--begin::Container-->
     <div class="container-fluid">
-        <h3 class="mb-8 card-label">Salida de Instrumento <small class="font-weight-lighter">| Crear</small></h3>
+        <h3 class="mb-8 card-label">Planilla de Liquidación</h3>
         <div class="row">
             <div class="col-lg-3 col-xl-2">
                 <div class="card card-custom card-fixed gutter-b">
@@ -17,7 +17,7 @@
                         <div class="flex-grow-1">
                             <ul class="px-0 list-unstyled">
                                 <li class="mb-5">
-                                    <a href="{{ route('panel.egreso.create') }}" class="as-text text-hover-primary" title="Ir a listado">
+                                    <a href="{{ route('panel.facturas.prefacturas.create') }}" class="as-text text-hover-primary" title="Ir a listado de clientes">
                                         <i class="fas fa-arrow-left text-hover-primary"></i> Ir a listado
                                     </a>
                                 </li>
@@ -31,54 +31,54 @@
                 <div class="card card-custom px-5">
                     <div class="card-header border-0">
                         <div class="card-title pt-8 d-block">
-                            <h3 class="card-title font-weight-bolder">Salida de Instrumento</h3>
+                            <h3 class="card-title font-weight-bolder">Cliente</h3>
                         </div>
                     </div>
 
                     <div class="card-body">
                         <div class="row">
 							<div class="form-group col-md-7">
-								<label>Cliente</label>
+								<label>Nombre</label>
 								<div class="h-auto p-0 border-0 form-control">
-									<span class="font-weight-bold">{{ $entradaInstrumento->cliente->name }}</span>
+									<span class="font-weight-bold">{{ $cliente->name }}</span>
 								</div>
 							</div>
 							<div class="form-group col-md-5">
 								<label>RUC</label>
 								<div class="h-auto p-0 border-0 form-control">
-									<span class="font-weight-bold">{{ $entradaInstrumento->cliente->ruc }}</span>
+									<span class="font-weight-bold">{{ $cliente->ruc }}</span>
 								</div>
 							</div>
 
 							<div class="form-group col-md-7">
 								<label>Contacto</label>
 								<div class="h-auto p-0 border-0 form-control">
-									<span class="font-weight-bold">{{ $entradaInstrumento->cliente->contact[0]['nombre'] }}</span>
+									<span class="font-weight-bold">{{ $cliente->contact[0]['nombre'] }}</span>
 								</div>
 							</div>
 							<div class="form-group col-md-5">
 								<label>Teléfono</label>
 								<div class="h-auto p-0 border-0 form-control">
-									<span class="font-weight-bold">{{ $entradaInstrumento->cliente->contact[0]['telefono'] }}</span>
+									<span class="font-weight-bold">{{ $cliente->contact[0]['telefono'] }}</span>
 								</div>
 							</div>
 							<div class="form-group col-md-7">
 								<label>Dirección</label>
 								<div class="h-auto p-0 border-0 form-control">
-									<span class="font-weight-bold">{{ $entradaInstrumento->cliente->contact[0]['direccion'] }}</span>
+									<span class="font-weight-bold">{{ $cliente->contact[0]['direccion'] }}</span>
 								</div>
 							</div>
 
 							<div class="form-group col-md-5">
 								<label>Email</label>
 								<div class="h-auto p-0 border-0 form-control">
-									<span class="font-weight-bold">{{ $entradaInstrumento->cliente->contact[0]['email'] }}</span>
+									<span class="font-weight-bold">{{ $cliente->contact[0]['email'] }}</span>
 								</div>
 							</div>
 						</div>
 
-						<form class="mb-5" autocomplete="off" method="POST" action="{{ route('panel.egreso.store') }}">
-							{{ csrf_field() }}
+						<form class="mb-5" id="form-agregar" method="POST" action="{{ route('panel.facturas.prefacturas.store', ['cliente_id' => $cliente->id]) }}">
+							@csrf
 
 							<div class="mt-8 row">
 								<div class="col-12 table-responsive">
@@ -128,7 +128,12 @@
 							<div class="text-right col-12">
 								<hr>
 								<button type="button" class="btn btn-secondary" id="uncheck-all">Limpiar</button>
-								<button type="button" class="btn btn-primary" id="dar-salida">Dar Salida</button>
+                                <button type="button" class="btn btn-primary font-weight-bold" id="agregar">Agregar Expedientes</button>
+
+								@error('expedientes.*')
+									<br>
+									<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
+								@enderror
 
 								@error('expedientes')
 									<br>
@@ -136,85 +141,6 @@
 								@enderror
 							</div>
 
-							<div class="modal fade" id="modal-salida" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-								<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-									<div class="modal-content">
-										<div class="modal-header bg-primary rounded-0">
-											<h5 class="text-white modal-title" id="modal-label">Salida de Instrumento</h5>
-										</div>
-
-										<div class="modal-body">
-											<div class="row">
-
-												<div class="col-12">
-													<div class="form-group">
-														<label>Fecha:</label>
-														<input class="form-control" value="{{ now()->format('d-m-Y') }}" disabled/>
-													</div>
-												</div>
-
-												<div class="col-12">
-													<div class="form-group">
-														<label>Entregado por: <span class="text-danger">*</span></label>
-														<select class="form-control" name="entregado_por" required>
-															<option value="">Seleccione una opción</option>
-															@foreach ($usuarios as $usuario)
-																<option value="{{ $usuario->id }}"
-																	{{ old('entregado_por')==$usuario->id ? 'selected' : '' }}>
-																	{{ $usuario->fullname }}
-																</option>
-															@endforeach
-														</select>
-
-														@error('entregado_por')
-															<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
-														@enderror
-													</div>
-												</div>
-
-												<div class="col-12">
-													<div class="form-group">
-														<label>Recibido por: <span class="text-danger">*</span></label>
-														<input class="form-control" name="recibido_por" value="{{ old('recibido_por') }}" required/>
-													</div>
-												</div>
-												<div class="col-12">
-													<div class="form-group">
-														<label>C.I: <span class="text-danger">*</span></label>
-														<input type="number" class="form-control" name="identificacion" value="{{ old('identificacion') }}" required/>
-													</div>
-												</div>
-
-
-
-												<div class="col-12">
-													<div class="form-group">
-														<label>Observaciones</label>
-														<textarea class="form-control" name="observaciones"></textarea>
-
-														@error('observaciones')
-															<span class="error invalid-feedback" style="display:inline">{{ $message }}</span>
-														@enderror
-													</div>
-												</div>
-
-
-											</div>
-										</div>
-
-										<div class="border-0 modal-footer justify-content-center">
-											<button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal" id="btn-cancelar">
-												Cancelar
-											</button>
-
-											<button class="btn btn-primary font-weight-bold">
-												Guardar
-											</button>
-										</div>
-
-									</div>
-								</div>
-							</div>
 						</form>
 
                     </div>
@@ -236,10 +162,10 @@
 			$('[name="expedientes[]"]').prop('checked', false)
 		})
 
-		$('#dar-salida').click(function () {
+		$('#agregar').click(function () {
 
 			if ($('[name="expedientes[]"]:checked').length > 0) {
-				$('#modal-salida').modal()
+				$('#form-agregar').submit()
 			} else {
 				Swal.fire('Error', 'Debe seleccionar al menos un Expediente', 'error')
 			}

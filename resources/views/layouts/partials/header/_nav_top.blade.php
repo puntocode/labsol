@@ -40,6 +40,13 @@
         </a>
     </li>
 
+    <li class="mr-2 nav-item">
+        <a href="#" class="nav-link py-4 px-4 @if (Request::is('panel/facturas*')) active @endif" data-toggle="tab"
+            data-target="#kt_header_tab_7" role="tab">
+            Facturación
+        </a>
+    </li>
+
     <!--begin::Item-->
     {{-- <li class="mr-3 nav-item">
         <a href="#" class="nav-link py-4 px-6 @if (Route::currentRouteName() != 'panel.perfil.index' && (Request::is('panel/perfil/actividades*') || Request::is('panel/expedientes*'))) active @endif" data-toggle="tab"

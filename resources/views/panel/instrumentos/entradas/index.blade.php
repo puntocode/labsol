@@ -46,7 +46,7 @@
 								<th>Cliente</th>
 								<th>Contacto</th>
 								<th>Email</th>
-								<th>Direccion</th>
+								<th>Dirección</th>
 								<th>Teléfono</th>
 								<th>F. de Creación</th>
 								<th class="text-center">Detalle</th>

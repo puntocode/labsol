@@ -1,17 +1,13 @@
 @extends('layouts.panel')
 
-@section('title')Salida de instrumento |@endsection
+@section('title')Facturación |@endsection
   @section('styles')
   	<link rel="stylesheet" href="{{asset('plugins/custom/kanban/kanban.bundle.css')}}">
   @endsection
 @section('content')
 	<!--begin::Container-->
 	<div class="container-fluid">
-		<h3 class="card-label mb-8">Salida de instrumento
-			<small class="font-weight-lighter">
-				Crear
-			</small>
-		</h3>
+		<h3 class="card-label mb-8">Planilla de Liquidación</h3>
 
 		<div class="row">
 			<div class="col-lg-3 col-xl-2">
@@ -20,7 +16,7 @@
 						<div class="flex-grow-1">
 							<ul class="list-unstyled px-0">
 								<li class="mb-5">
-									<a href="{{route('panel.egreso.index')}}" class="as-text text-hover-primary" title="Ir a listado de instrumentos">
+									<a href="{{route('panel.facturas.prefacturas.index')}}" class="as-text text-hover-primary" title="Ir a listado de Liquidaciones">
 										<i class="fas fa-arrow-left text-hover-primary"></i>
 										Ir a listado
 									</a>
@@ -36,7 +32,7 @@
 				<div class="card card-custom mb-5">
 					<div class="card-header border-0">
 						<div class="card-title pt-8 d-block">
-							<h3 class="card-title font-weight-bolder text-dark">Entradas de Instrumentos</h3>
+							<h3 class="card-title font-weight-bolder text-dark">Clientes</h3>
 						</div>
 					</div>
 					<div class="card-body">
@@ -52,7 +48,7 @@
 						<!--end: Search form-->
 
 						<!--begin: Datatable-->
-						<table class="table table-separate table-head-custom collapsed" id="tableInstrumentos" style="width:100%">
+						<table class="table table-separate table-head-custom collapsed" id="tableClientes" style="width:100%">
 							<thead>
 								<tr>
 									<th>Cliente</th>
@@ -60,24 +56,33 @@
 									<th>Email</th>
 									<th>Dirección</th>
 									<th>Teléfono</th>
-									<th>F. de Creación</th>
-									<th class="text-center">Detalle</th>
+                                    <th>F. de Creación</th>
+									<th class="text-center">Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($entradasInstrumentos as $entradaInstrumento)
+								@foreach ($clientes as $cliente)
 									<tr>
-										<td>{{ $entradaInstrumento->cliente->name }}</td>
-										<td>{{ $entradaInstrumento->cliente->contact[0]['nombre'] }}</td>
-										<td>{{ $entradaInstrumento->cliente->contact[0]['email'] }}</td>
-										<td>{{ $entradaInstrumento->cliente->contact[0]['direccion'] }}</td>
-										<td>{{ $entradaInstrumento->cliente->contact[0]['telefono'] }}</td>
-										<td>{{ $entradaInstrumento->cliente->created_at->format('d-m-Y') }}</td>
+										<td>{{ $cliente->name }}</td>
+										<td>{{ $cliente->contact[0]['nombre'] }}</td>
+										<td>{{ $cliente->contact[0]['email'] }}</td>
+										<td>{{ $cliente->contact[0]['direccion'] }}</td>
+										<td>{{ $cliente->contact[0]['telefono'] }}</td>
+										<td>{{ $cliente->created_at->format('d-m-Y') }}</td>
 										<td class="text-center">
-											<a href="{{ route('panel.egreso.create', ['entrada_instrumento_id' => $entradaInstrumento]) }}"
-												class="btn btn-sm btn-clean btn-icon" title="Ver detalle">
-												<i class="fas fa-list text-primary"></i>
-											</a>
+                                            @if ($cliente->expedientes->count())
+                                                <a href="{{ route('panel.facturas.prefacturas.create', ['cliente_id' => $cliente]) }}"
+    												class="btn btn-sm btn-clean btn-icon" title="Agregar Expedientes">
+		    										<i class="fas fa-plus-square text-success"></i>
+			    								</a>
+                                            @endif
+
+                                            @if ($cliente->prefacturas->count())
+                                                <a href="{{ route('panel.facturas.prefacturas.edit', $cliente->prefacturas->first()) }}"
+                                                    class="btn btn-sm btn-clean btn-icon" title="Editar Planilla">
+                                                    <i class="fas fa-edit text-primary"></i>
+                                                </a>
+                                            @endif
 										</td>
 									</tr>
 								@endforeach
@@ -97,7 +102,7 @@
 
 	<script>
 		$(function() {
-			oTable = $('#tableInstrumentos').DataTable({
+			oTable = $('#tableClientes').DataTable({
 				responsive: true,
 				"bLengthChange": false
 			});

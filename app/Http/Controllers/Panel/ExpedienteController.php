@@ -210,22 +210,8 @@ class ExpedienteController extends Controller
 
         if($request->has('estado_comentario')) $comentario = $request['estado_comentario'];
 
-        //Limpia el tecnico para volver a agendar ---------------------------------
-        if($request['expediente_estado_id'] == 9){
-            $exp->tecnicos = null;
-            $exp->delivery_date = null;
-        }
+        $exp->cambiarEstado($statusNew, $comentario);
 
-        //Guarda el historial de estados ---------------------------------
-        $exp->historial()->create([
-            'estado_anterior' => $exp->expediente_estado_id,
-            'estado_nuevo' => $statusNew,
-            'estado_comentario' => $comentario,
-            'user_id' => Auth::id(),
-        ]);
-
-        $exp->expediente_estado_id = $statusNew;
-        $exp->save();
         return response()->json($exp);
     }
 

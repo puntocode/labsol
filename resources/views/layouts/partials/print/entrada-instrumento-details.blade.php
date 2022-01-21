@@ -14,7 +14,7 @@
             </div>
 
             <div class="col-2 bg-secondary py-2 border-white">
-                <span class="font-bold">DIRECCION</span>
+                <span class="font-bold">DIRECCIÓN</span>
             </div>
             <div class="col-10 bg-light py-2 border-white">
                 <span>{{  $entradaInstrumento->contact['direccion'] }}</span>
