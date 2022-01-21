@@ -62,7 +62,9 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     Route::get('/egreso-instrumentos-print/{entradaInstrumento}', 'EgresoController@print')->name('egreso.print')->middleware('can:panel.admin');
 
-
+    Route::prefix('facturas')->name('facturas.')->middleware('can:panel.admin')->group(function () {
+        Route::resource('prefacturas', 'PrefacturaController');
+    });
 
     Route::resource('/facturacion', 'FacturacionController')->names([
         'index'   => 'facturacion.index',

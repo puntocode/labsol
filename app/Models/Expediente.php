@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -14,8 +15,17 @@ class Expediente extends Model
     const STATUS_ENVIO_CERTIFICADO_EN_PROCESO = 2;
 
     protected $guarded = ['id'];
-    protected $casts   = ['tecnicos' => 'array'];
     protected $appends = ['prioridad'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'tecnicos'                => 'array',
+        'fecha_envio_certificado' => 'datetime',
+    ];
 
     public function instrumentos(){
         return $this->belongsTo(Instrumento::class, 'instrumento_id');
@@ -171,5 +181,34 @@ class Expediente extends Model
             ->join(', ');
 
         return $expedientesStr;
+    }
+
+    /**
+     * Cambiar el estado del expediente y lo guarda en el historial
+     *
+     * @param int $estadoId
+     * @param string $comentario
+     * @return $this
+     */
+    public function cambiarEstado($estadoId, $comentario = null)
+    {
+        //Limpia el tecnico para volver a agendar ---------------------------------
+        if($estadoId == 9){
+            $this->tecnicos      = null;
+            $this->delivery_date = null;
+        }
+
+        //Guarda el historial de estados ---------------------------------
+        $this->historial()->create([
+            'estado_anterior'   => $this->expediente_estado_id,
+            'estado_nuevo'      => $estadoId,
+            'estado_comentario' => $comentario,
+            'user_id'           => Auth::id(),
+        ]);
+
+        $this->expediente_estado_id = $estadoId;
+        $this->save();
+
+        return $this;
     }
 }

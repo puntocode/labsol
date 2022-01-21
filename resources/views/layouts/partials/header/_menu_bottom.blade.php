@@ -179,6 +179,31 @@
 					</div>
 					<!--end::Menu-->
 				</div>
+				<!--begin::Tab Pane Facturación -->
+				<div class="tab-pane py-5 p-lg-0 @if (Request::is('panel/facturas*')) show active @endif" id="kt_header_tab_7">
+					<!--begin::Menu-->
+					<div class="header-menu header-menu-mobile header-menu-layout-default">
+						<!--begin::Nav-->
+						<ul class="menu-nav">
+							<li class="menu-item @if (Route::currentRouteName() == 'panel.facturas.prefacturas.index') menu-item-active @endif" aria-haspopup="true">
+								<a href="{{route('panel.facturas.prefacturas.index')}}" class="menu-link" title="Ir al listado de liquidaciones">
+									<span class="menu-text">Liquidaciones</span>
+								</a>
+							</li>
+
+							@can('panel.admin')
+								<li class="menu-item @if (Route::currentRouteName() == 'panel.facturas.prefacturas.create') menu-item-active @endif" aria-haspopup="true">
+									<a href="{{route('panel.facturas.prefacturas.create')}}" class="menu-link" title="Prefacturación">
+										<span class="menu-text">Prefacturación</span>
+									</a>
+								</li>
+							@endcan
+
+						</ul>
+						<!--end::Nav-->
+					</div>
+					<!--end::Menu-->
+				</div>
 
 			</div>
 			<!--end::Tab Content-->

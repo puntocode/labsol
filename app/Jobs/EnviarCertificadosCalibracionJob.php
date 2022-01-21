@@ -52,7 +52,10 @@ class EnviarCertificadosCalibracionJob implements ShouldQueue
                 Mail::to($email)->send(new CertificadoCalibracionMail($data['contacto'], $data['documentos']));
 
                 Expediente::whereIn('id', $this->expedientes->pluck('id'))
-                    ->update(['enviado' => Expediente::STATUS_ENVIO_CERTIFICADO_ENVIADO]);
+                    ->update([
+                        'enviado'                 => Expediente::STATUS_ENVIO_CERTIFICADO_ENVIADO,
+                        'fecha_envio_certificado' => now(),
+                    ]);
             } catch (Exception $e) {
                 $ids = collect($data['documentos'])->pluck('id');
 

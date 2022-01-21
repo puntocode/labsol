@@ -31,4 +31,14 @@ class Cliente extends Model
     {
         return $this->hasManyThrough(Expediente::class, EntradaInstrumento::class);
     }
+
+    /**
+     * Obtiene las prefacturas del cliente.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function prefacturas()
+    {
+        return $this->hasMany(Prefactura::class);
+    }
 }
