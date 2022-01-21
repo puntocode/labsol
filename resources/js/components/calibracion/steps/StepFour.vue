@@ -9,8 +9,10 @@
                 :valores="valorEdit"
                 :last-value="valorLastEdit"
                 :valores-medidas="formulario.valores_medidas"
+                :incertidumbre="{resolucion: this.resol, medida_global: this.medidaGlobal, resolucion_medida: this.form.resolucion_medida, modelo: incertidumbres}"
                 :form-valores.sync="formulario.valores"
                 :table-hist.sync="tableHistorial"
+                :table-cert.sync="certificados"
             />
 
 

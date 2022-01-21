@@ -35,7 +35,8 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Instrumento</th>
-                            <th scope="col">Costo</th>
+                            <th scope="col">Costo Referencial</th>
+                            <th scope="col">Observación</th>
                             <th scope="col">Estado</th>
                             <th scope="col" class="text-center">Editar</th>
                         </tr>
@@ -45,7 +46,8 @@
                             <tr>
                                 <td scope="row">{{ $instrumento->id }}</td>
                                 <td>{{ $instrumento->name }}</td>
-                                <td>{{ number_format($instrumento->costo, 0, '.', '.') }}</td>
+                                <td>{{ number_format($instrumento->costo, 0, '.', '.') }} Gs.</td>
+                                <td>{{ $instrumento->obs }}</td>
                                 <td>
                                     <active estado="{{ $instrumento->status }}" url="{{ route('panel.instrumento.active', $instrumento) }}"></active>
                                 </td>

@@ -43,15 +43,19 @@
 </template>
 
 <script>
+import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
+import calcularFormula from "../../../functions/formulas.js";
 import convertirBase from "../../../functions/convertir-base.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
 import interpolar from "../../../functions/interpolar.js";
+import encontrark from "../../../functions/encontrar-k.js";
+
 
 
     export default {
-        props: ['valores', 'lastValue', 'formValores', 'valoresMedidas',],
+        props: ['valores', 'lastValue', 'formValores', 'valoresMedidas', 'incertidumbre', 'tableCert'],
         data() {
             return {
                 spin: false,
@@ -81,9 +85,34 @@ import interpolar from "../../../functions/interpolar.js";
                     .then(res =>{ if(res.status == 200) return res.data });
             },
 
+            obtenerDatosCertificados(){
+                return axios.get(this.rutas.valoresCertificado, {params: {valor_id: this.lastValue.id}})
+                    .then(res =>{ if(res.status == 200) return res.data });
+            },
+
             actualizarValorResultados(resultado){
-                return axios.put(`${this.rutas.valorResultadoIndex}/${this.lastValue.resultados.id}`, resultado)
+                return axios.put(this.rutas.valorResultadoUpdate, resultado)
                     .then(response => response.data)
+            },
+
+            eliminarIncertidumbres(valor_id){
+                return axios.delete(this.rutas.valorIncertidumbreDelete, { data: {valor_id}} )
+                    .then(res => res.data);
+            },
+
+            guardarIncertidumbres(incertidumbres){
+                axios.post(this.rutas.valorIncertidumbreStore, incertidumbres)
+                    .then(response => response.data);
+            },
+
+            actualizarIncerResult(incerResultado){
+                axios.put(this.rutas.valorIncertidumbreResultadoUpdate, incerResultado)
+                    .then(response => response.data)
+            },
+
+            actualizarCertificado(certificado){
+                return axios.put(this.rutas.valorCertificadoUpdate, certificado)
+                    .then(response => response.data);
             },
 
             //async -------------------------------------------------------------------------
@@ -175,24 +204,61 @@ import interpolar from "../../../functions/interpolar.js";
                     }
 
                     let resultados = await this.actualizarValorResultados(result);
-                    console.log(resultados);
 
-                    //Guarda Valores en la BD
-                    // const VALOR_ID = await this.guardarValores(indice);
-                    // this.valorTemp = {valorId: VALOR_ID, index: indice};
+                    let incertidumbres = await this.calcularIncertidumbre(resultados);
+                    this.guardarIncertidumbres(incertidumbres);
+
+                    let incertidumbreResult = await this.incertidumbreResultado(incertidumbres, resultados);
+                    this.actualizarIncerResult(incertidumbreResult);
+
+                    let certificado = await this.calcularCertificado(result, this.lastValue, incertidumbreResult);
+                    let certificadoActualizado = this.actualizarCertificado(certificado);
+
+                    if(certificado){
+
+                    }
 
 
                 }catch(error){
+                    console.error(error);
+                }
+            },
 
+            async calcularIncertidumbre(resultado)
+            {
+                const resolucion = await this.convertirResolucion(resultado.unidad);
+
+                const valores = {
+                    ip: resultado.ip,
+                    sIEC: resultado.desv_iec,
+                    sIP: resultado.desv_ip,
+                    n: 3,
+                    uk: resultado.uk,
+                    patron: this.formValores[this.valores.global].patron,
+                    r: resolucion,
+                    unidad: resultado.unidad,
+                    valor_id: resultado.valor_id
+                };
+
+                //elimina las incertidumbres viejas
+                let eliminados = await this.eliminarIncertidumbres(resultado.valor_id);
+                let incertidumbres = [];
+
+                if(eliminados){
+                    let modelo = this.incertidumbre.modelo.map(objeto => ({...objeto}));
+                    incertidumbres = this.cargarIncertidumbre(modelo, valores);
                 }
 
-
+                return incertidumbres;
             },
 
             async finalizar()
             {
                 let tableHistorial = await this.obtenerDatosHistorial();
                 this.$emit('update:table-hist', tableHistorial);
+                let valorCertificado = await this.obtenerDatosCertificados();
+                this.tableCert.splice(this.valores.global, 1, valorCertificado);
+                this.$emit('update:table-cert', this.tableCert);
                 this.spin = false;
                 document.getElementById("btn-cancel").click();
             },
@@ -249,6 +315,87 @@ import interpolar from "../../../functions/interpolar.js";
 
                 const interpolacion = interpolar(x, x0, x1, y0, y1);
                 return interpolacion;
+            },
+
+            convertirResolucion(unidad){
+                let resolucion = this.incertidumbre.resolucion;
+
+                if(this.incertidumbre.medida_global !== this.incertidumbre.resolucion_medida){
+                    resolucion = convertirBase(this.incertidumbre.resolucion_medida, parseFloat(resolucion));
+                }
+
+                if(unidad !== this.incertidumbre.medida_global){
+                    resolucion = convertirUnidad(unidad, this.incertidumbre.medida_global, resolucion);
+                }
+
+                return resolucion;
+            },
+
+            cargarIncertidumbre(incertidumbres, valores){
+                let incer = [];
+
+                for (let incertidumbre of incertidumbres){
+                    let u = calcularFormula(incertidumbre.formula, valores);
+                    let u_du = u * incertidumbre.contribucion_du;
+                    let g_libertad = incertidumbre.tipo == 'A' ? valores.n -1 : '∞';
+                    let potencia = incertidumbre.tipo == 'A' ? Math.pow(u_du, 4) / g_libertad : 0;
+                    let incertidumbre_id = incertidumbre.id;
+                    let valor_id = valores.valor_id;
+
+                    let data = {u, u_du, g_libertad, potencia, incertidumbre_id, valor_id};
+                    incer.push(data);
+                }
+
+                return incer;
+            },
+
+            calcularCertificado(resultado, valores, incerResult){
+                let medidaG = this.incertidumbre.medida_global;
+                let unidadAconvertir = valores.iec_medida;
+                let unidad = resultado.unidad;
+                let k = incerResult.k;
+
+                let ip = resultado.ip_corregido;
+                let iec = resultado.iec;
+                let e = resultado.error_iec;
+                let valor_id = resultado.valor_id;
+                let u = incerResult.incertidumbre_expandida;
+
+                if(unidad !== medidaG){
+                    ip = convertirUnidad(medidaG, unidad, ip);
+                    iec = convertirUnidad(medidaG, unidad, iec);
+                    e = convertirUnidad(medidaG, unidad, e);
+                    u = convertirUnidad(medidaG, unidad, u);
+                }
+
+                if(unidadAconvertir !== medidaG){
+                    const arrSub = unidadAconvertir.split('');
+                    const diferencia = arrSub[0];
+
+                    ip = convertirBaseInverso(diferencia, ip);
+                    iec = convertirBaseInverso(diferencia, iec);
+                    e = convertirBaseInverso(diferencia, e);
+                    u = convertirBaseInverso(diferencia, u);
+                }
+
+                let data = {ip, iec, e, u, k, valor_id, unidad: unidadAconvertir};
+                return data;
+            },
+
+            incertidumbreResultado(incertidumbres, resultados){
+                let uDu = incertidumbres.reduce((total, incer) => { return total + (incer.u_du ** 2) }, 0);
+                let incertidumbre_combinada = Math.sqrt(uDu);
+                let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
+                let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
+                let k = encontrark(g_libertad_efectivos);
+                let incertidumbre_expandida = incertidumbre_combinada * k;
+                let ip = resultados.ip;
+                let unidad = resultados.unidad;
+                let patron = this.lastValue.patron;
+                let valor_id = resultados.valor_id;
+
+                let data = {incertidumbre_combinada, potencia, g_libertad_efectivos, k, incertidumbre_expandida, ip, unidad, patron, valor_id};
+                return data;
             },
 
             cancelar(){

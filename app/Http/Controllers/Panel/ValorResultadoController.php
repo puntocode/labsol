@@ -87,6 +87,12 @@ class ValorResultadoController extends Controller
         //
     }
 
+    public function updateValorResultado(Request $request){
+        $valorResultado = ValorResultado::where('valor_id', $request->valor_id)->first();
+        $valorResultado->update($this->validateData());
+        return response()->json($valorResultado);
+    }
+
 
     public function validateData()
     {
