@@ -24,7 +24,7 @@
                 </select>
             </div>
 
-            <Documentos :url="rutas.storeDoc" :data="documento" />
+            <Documentos :url="rutas.storeDoc" :data="documento" :idioma.sync="this.documento.idioma" />
         </div>
     </div>
 </template>

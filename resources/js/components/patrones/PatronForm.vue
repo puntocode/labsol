@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                    <div class="col-md-6">
                         <label>Incertidumbre</label>
                         <input class="form-control" v-model="form.uncertainty" />
@@ -76,7 +76,7 @@
                         <label>Tolerancia</label>
                         <input class="form-control" v-model="form.tolerance" />
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <button type="button" class="next action-button btn btn-primary float-right" @click="next">Siguiente</button>
@@ -359,6 +359,8 @@
 
 
             submit(){
+                if(this.form.last_calibration == '-') this.form.last_calibration = null
+
                 if(this.action === 'create') this.crear();
                 else this.actualizar();
             },

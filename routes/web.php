@@ -238,6 +238,11 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::resource('/formularios', 'FormularioController')->middleware('can:panel.database');
 
 
+    # -- Magnitudes --
+    Route::resource('/magnitudes', 'MagnitudeController')->middleware('can:panel.database');
+    Route::get('/magnitud/active/{id}', 'MagnitudeController@active')->name('magnitud.active')->middleware('can:panel.database');
+
+
     # -- Usuarios --
     Route::resource('/usuarios', 'UsuarioController')->middleware('can:panel.database');
     Route::get('/usuario/active/{id}', 'UsuarioController@active')->name('usuarios.active')->middleware('can:panel.database');

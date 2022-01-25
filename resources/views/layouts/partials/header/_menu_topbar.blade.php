@@ -189,24 +189,25 @@
                                     <!--end::Text-->
                                 </div>
                                 <!--end::Item-->
+
                                 <!--begin::Item-->
-                                {{--<div class="d-flex align-items-center mb-6">
+                                <div class="d-flex align-items-center mb-6">
                                     <!--begin::Symbol-->
-                                    <div class="symbol symbol-40 symbol-light-success mr-5">
+                                    <div class="symbol symbol-40 symbol-light-warning mr-5">
                                         <span class="symbol-label">
-                                            <span class="svg-icon svg-icon-success svg-icon-2x">
-                                                <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo7/dist/../src/media/svg/icons/Home/Clock.svg--><svg
+                                            <span class="svg-icon svg-icon-warning svg-icon-2x">
+                                                <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo7/dist/../src/media/svg/icons/Text/Bullet-list.svg--><svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
                                                     viewBox="0 0 24 24" version="1.1">
                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                         <rect x="0" y="0" width="24" height="24" />
                                                         <path
-                                                            d="M12,22 C7.02943725,22 3,17.9705627 3,13 C3,8.02943725 7.02943725,4 12,4 C16.9705627,4 21,8.02943725 21,13 C21,17.9705627 16.9705627,22 12,22 Z"
-                                                            fill="#000000" opacity="0.3" />
-                                                        <path
-                                                            d="M11.9630156,7.5 L12.0475062,7.5 C12.3043819,7.5 12.5194647,7.69464724 12.5450248,7.95024814 L13,12.5 L16.2480695,14.3560397 C16.403857,14.4450611 16.5,14.6107328 16.5,14.7901613 L16.5,15 C16.5,15.2109164 16.3290185,15.3818979 16.1181021,15.3818979 C16.0841582,15.3818979 16.0503659,15.3773725 16.0176181,15.3684413 L11.3986612,14.1087258 C11.1672824,14.0456225 11.0132986,13.8271186 11.0316926,13.5879956 L11.4644883,7.96165175 C11.4845267,7.70115317 11.7017474,7.5 11.9630156,7.5 Z"
+                                                            d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z"
                                                             fill="#000000" />
+                                                        <path
+                                                            d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z"
+                                                            fill="#000000" opacity="0.3" />
                                                     </g>
                                                 </svg>
                                                 <!--end::Svg Icon-->
@@ -216,10 +217,10 @@
                                     <!--end::Symbol-->
                                     <!--begin::Text-->
                                      <div class="d-flex flex-column font-weight-bold">
-                                        <a href="{{ route('panel.historial.index') }}" class="text-dark text-hover-success mb-1 font-size-lg">Historial de cambios</a>
+                                        <a href="{{ route('panel.magnitudes.index') }}" class="text-dark text-hover-warning mb-1 font-size-lg">Magnitudes</a>
                                     </div>
                                     <!--end::Text-->
-                                </div>--}}
+                                </div>
                                 <!--end::Item-->
                             </div>
                             <!--end::Nav-->
@@ -404,77 +405,6 @@
                             </div>
                             <!--end::Nav-->
                         </div>
-                        <!--end::Tabpane-->
-
-                        <!--begin::Tabpane-->
-                        {{-- <div class="tab-pane p-8" id="topbar_clientes" role="tabpanel">
-                            <!--begin::Nav-->
-                            <div class="navi navi-hover scroll my-4" data-scroll="true" data-height="300" data-mobile-height="200">
-                                <!--begin:Item-->
-                                <div class="d-flex align-items-center mb-6">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40 symbol-light-primary mr-5">
-                                        <span class="symbol-label">
-                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
-                                                <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo7/dist/../src/media/svg/icons/Text/Bullet-list.svg--><svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                    viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                        <rect x="0" y="0" width="24" height="24" />
-                                                        <path
-                                                            d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z"
-                                                            fill="#000000" />
-                                                        <path
-                                                            d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z"
-                                                            fill="#000000" opacity="0.3" />
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column font-weight-bold">
-                                        <a href="{{ route('panel.clientes.index') }}" class="text-dark text-hover-primary mb-1 font-size-lg">Ver Clientes</a>
-                                    </div>
-                                    <!--end::Text-->
-                                </div>
-                                <!--end::Item-->
-
-                                <!--begin::Item-->
-                                <div class="d-flex align-items-center mb-6">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40 symbol-light-success mr-5">
-                                        <span class="symbol-label">
-                                            <span class="svg-icon svg-icon-success svg-icon-2x">
-                                                <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo7/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                    viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                        <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
-                                                        <rect fill="#000000" opacity="0.3"
-                                                            transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
-                                                            x="4" y="11" width="16" height="2" rx="1" />
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column font-weight-bold">
-                                        <a href="{{ route('panel.clientes.create') }}" class="text-dark text-hover-success mb-1 font-size-lg">Crear nuevo cliente</a>
-                                    </div>
-                                    <!--end::Text-->
-                                </div>
-                                <!--end::Item-->
-                            </div>
-                            <!--end::Nav-->
-                        </div> --}}
                         <!--end::Tabpane-->
 
                     </div>
