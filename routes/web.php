@@ -160,6 +160,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::post('/derivas', 'IdeRangoController@insertDeriva')->name('rango_deriva.insert')->middleware('can:panel.database');
     Route::put('/derivas/{id}', 'IdeRangoController@updateDeriva')->name('rango_deriva.update')->middleware('can:panel.database');
     Route::delete('/derivas/{id}', 'IdeRangoController@destroyDeriva')->name('rango_deriva.destroy')->middleware('can:panel.database');
+    Route::post('/derivas-ocultar', 'IdeRangoController@ocultar')->name('rango_deriva.ocultar')->middleware('can:panel.database');
 
 
     # -- Equipos --

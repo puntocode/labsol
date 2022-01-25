@@ -38,7 +38,7 @@
                             <h3 class="font-weight-bolder text-dark">Datos de la magnitud <small class="text-danger pl-2"> *Campos requeridos</small></h3>
                         </div>
                     </div>
-                    <magnitud-form :magnitud="{{ json_encode($magnitud) }}"></magnitud-form>
+                    <magnitud-abm :magnitud="{{ json_encode($magnitud) }}"></magnitud-abm>
                 </div>
             </div>
 		</div>

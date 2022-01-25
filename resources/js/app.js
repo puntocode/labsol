@@ -57,7 +57,7 @@ Vue.component('entrada-form',          require('./components/entrada-instrumento
 Vue.component('entrada-edit',          require('./components/entrada-instrumentos/EntradaEdit.vue').default);
 
 Vue.component('instrumento-form',      require('./components/instrumentos/InstrumentoForm.vue').default);
-Vue.component('magnitud-form',         require('./components/magnitudes/MagnitudForm.vue').default);
+Vue.component('magnitud-abm',         require('./components/magnitudes/MagnitudAbm.vue').default);
 
 Vue.component('procedimiento-card',    require('./components/procedimientos/ProcedimientoCard.vue').default);
 Vue.component('editar-acreditado',     require('./components/procedimientos/EditarAcreditado.vue').default);

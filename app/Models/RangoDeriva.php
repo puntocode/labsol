@@ -16,6 +16,7 @@ class RangoDeriva extends Model
         'deriva' => 'array',
         'e_actual' => 'array',
         'e_anterior' => 'array',
+        'oculto' => 'boolean',
     ];
 
     public function ideRango(){
