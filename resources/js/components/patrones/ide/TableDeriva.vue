@@ -15,7 +15,7 @@
                         E (anterior)
                     </th>
                     <th scope="col">Deriva</th>
-                    <th scope="col" class="text-center">Oculto</th>
+                    <th scope="col" class="text-center" v-if="rutas !== undefined">Oculto</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,9 +35,10 @@
                             <span v-text="anteriorValue(anterior.valor, anterior.medida)"></span>
                     </td>
                     <td>{{ deriva.deriva.valor }} {{ deriva.deriva.medida }}</td>
-                    <td class="text-center">
-                        <!-- <span class="pointer" v-if="deriva.oculto" @click="ocultar(0, index)"><i class="fas fa-eye text-success"></i></span>
-                        <span class="pointer" v-else @click="ocultar(1, index)"><i class="fas fa-eye"></i></span> -->
+                    <td v-if="rutas !== undefined" class="text-center">
+                        <span class="pointer" @click="ocultar(index)">
+                            <i class="fas fa-eye" :class="deriva.oculto ? 'text-success' : ''"></i>
+                        </span>
                     </td>
                 </tr>
             </tbody>
@@ -83,12 +84,10 @@
                 });
             },
 
-            ocultar(value, index){
-                let data = {id: this.derivas[index].id, oculto: value}
+            ocultar(index){
+                let data = { id: this.derivas[index].id }
                 axios.post(this.rutas.ocultar, data)
-                    .then(response =>{
-                        if(response.status == 200) this.derivas[index].oculto = response.data.oculto
-                    })
+                    .then(response =>{ if(response.status == 200) this.derivas[index].oculto = response.data.oculto })
                     .catch(err => console.error(err))
             }
         },

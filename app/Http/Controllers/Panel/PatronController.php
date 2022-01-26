@@ -11,6 +11,7 @@ use App\Models\Historymaintenance;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PatronEnsayo;
+use App\Models\RangoDeriva;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -70,7 +71,7 @@ class PatronController extends Controller
         $documentos = $patrone->getDocuments();
         $historyCalibration = Historycalibration::where('historycalibration_id', $patrone->id)->where('historycalibration_type', 'App\Models\Patron')->get();
         $historyMaintenance = Historymaintenance::where('historymaintenance_id', $patrone->id)->where('historymaintenance_type', 'App\Models\Patron')->get();
-        $ide = PatronIde::with('rangos')->where('patron_id',$patrone->id)->get();
+        $ide = PatronIde::with('rangos.ocultos')->where('patron_id',$patrone->id)->get();
         $ensayos = PatronEnsayo::where('patron_id', $patrone->id)->get();
         return view('panel.patrones.show', compact('patrone', 'documentos', 'historyCalibration', 'historyMaintenance', 'ide', 'ensayos'));
     }

@@ -187,7 +187,7 @@
                             <h3>Precisión</h3>
                             <div>
                                 <button type="button" class="btn btn-outline-primary" @click="addPrecision"><i class="fas fa-plus"></i>Agregar</button>
-                                <button type="button" @click="delPrecision()" class="btn btn-outline-danger" v-if="form.precision.length > 1"><i class="fas fa-trash"></i> Eliminar</button>
+                                <button type="button" @click="delPrecision()" class="btn btn-outline-danger" v-if="form.precision.length"><i class="fas fa-trash"></i> Eliminar</button>
                             </div>
 
                         </div>
@@ -217,7 +217,7 @@
                             <h3>Error Máximo</h3>
                             <div>
                                 <button type="button" class="btn btn-outline-primary" @click="addError"><i class="fas fa-plus"></i>Agregar</button>
-                                <button type="button" @click="delError()" class="btn btn-outline-danger" v-if="form.error_max.length > 1"><i class="fas fa-trash"></i> Eliminar</button>
+                                <button type="button" @click="delError()" class="btn btn-outline-danger" v-if="form.error_max.length"><i class="fas fa-trash"></i> Eliminar</button>
                             </div>
                         </div>
                     </div>
@@ -312,6 +312,8 @@
                 let res = await axios.get(this.rutas.magnitud)
                 let magnitudes = await res.data;
                 this.selectMagnitudes = magnitudes.map( magnitud => { return {id: magnitud.id, text: magnitud.name} });
+                if(this.form.precision == null) this.form.precision = [{title: 'precision', value: ['']}];
+                if(this.form.error_max == null) this.form.error_max = [{title: 'error', value: ['']}];
             },
             next(){
                 this.progress = this.progress + 25;

@@ -132,7 +132,8 @@
                     deriva: { valor: '', medida: ''},
                     e_actual: {valor: '', medida: ''},
                     e_anterior: [{valor: '', medida: ''}],
-                    ide_rango_id: this.data.id
+                    ide_rango_id: this.data.id,
+                    oculto: 0
                 },
                 guardando: false,
                 table: {},

@@ -17,4 +17,10 @@ class IdeRango extends Model
         return $this->hasMany(RangoDeriva::class);
     }
 
+    // results in a "problem", se examples below
+    public function ocultos() {
+        return $this->rangoDerivas()->where('oculto', 0);
+    }
+
+
 }
