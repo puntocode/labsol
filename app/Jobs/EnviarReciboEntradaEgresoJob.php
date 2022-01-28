@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Expediente;
+use App\Models\Formulario;
 use Illuminate\Bus\Queueable;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Mail;
@@ -78,7 +79,9 @@ class EnviarReciboEntradaEgresoJob implements ShouldQueue
                 return $egresoInstrumento;
             });
 
-        $data = compact('entradaInstrumento', 'expedientesIngresados', 'egresoInstrumentos');
+        $formulario = Formulario::firstWhere('codigo', 'LS-FOR-047');
+
+        $data = compact('entradaInstrumento', 'expedientesIngresados', 'egresoInstrumentos', 'formulario');
 
         $view =  view('panel.instrumentos.registro_entradas_egresos.print', $data);
 

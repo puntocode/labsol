@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Models\User;
 use App\Models\Expediente;
+use App\Models\Formulario;
 use Illuminate\Http\Request;
 use App\Models\EgresoInstrumento;
 use App\Models\EntradaInstrumento;
@@ -181,10 +182,13 @@ class EgresoController extends Controller
                 return $egresoInstrumento;
             });
 
+        $formulario = Formulario::firstWhere('codigo', 'LS-FOR-047');
+
         return view('panel.egreso.print', compact(
             'entradaInstrumento',
             'expedientesIngresados',
-            'egresoInstrumentos'
+            'egresoInstrumentos',
+            'formulario'
         ));
     }
 

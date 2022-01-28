@@ -27,7 +27,7 @@
 
     <style>
         @page {
-            margin-top: 200px;
+            margin-top: 225px;
             margin-bottom: 60px;
             margin-left: 55px;
             margin-right: 55px;
@@ -78,7 +78,7 @@
         header {
             position: fixed;
             left: 0px;
-            top: -160px;
+            top: -185px;
             right: 0px;
             height: 150px;
             text-align: center;
@@ -113,20 +113,22 @@
                         <span style="font-size: 20px; font-weight: bold">RECEPCIÓN Y RETIRO DE ÍTEMS DE CALIBRACIÓN</span>
                     </td>
                     <td class="text-center" style="width: 20px">Código</td>
-                    <td>LS-FOR-047</td>
+                    <td>{{ $formulario->codigo ?? 'LS-FOR-047' }}</td>
                 </tr>
                 <tr>
                     <td class="text-center">Revisón</td>
-                    <td>04</td>
+                    <td>{{ $formulario->revision ?? '' }}</td>
                 </tr>
                 <tr>
                     <td class="text-center">Vigencia</td>
-                    <td>{{ now()->toDateString() }}</td>
+                    <td>{{ $formulario->vigencia ?? '' }}</td>
                 </tr>
                 <tr>
                     <td class="text-center">Página</td>
                     <td>&nbsp;</td>
                 </tr>
+
+                <tr><td colspan="8" class="bg-white" style="padding: 0">&nbsp;</td></tr>
             </tbody>
         </table>
     </header>
@@ -143,8 +145,6 @@
 
     <table class="table table-condensed">
         <tbody>
-            <tr><td colspan="24" class="bg-white">&nbsp;</td></tr>
-
             <tr>
                 <th colspan="24" class="text-center">INFORMACIÓN DEL CLIENTE</th>
             </tr>
