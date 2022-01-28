@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Panel;
 use App\Models\User;
 use App\Models\Cliente;
 use App\Models\Expediente;
+use App\Models\Formulario;
 use App\Models\Instrumento;
 use Illuminate\Http\Request;
 use App\Models\EntradaInstrumento;
@@ -136,7 +137,9 @@ class EntradaInstrumentoController extends Controller
     {
         $expedientesIngresados = Expediente::cantidad($entradaInstrumento->id)->get();
 
-        return view('panel.instrumentos.entradas.print', compact('entradaInstrumento', 'expedientesIngresados'));
+        $formulario = Formulario::firstWhere('codigo', 'LS-FOR-047');
+
+        return view('panel.instrumentos.entradas.print', compact('entradaInstrumento', 'expedientesIngresados', 'formulario'));
     }
 
 

@@ -118,7 +118,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Patrones --
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
     Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
-    Route::get('/patron-hoja-vida/{id}', 'PatronController@hojaVida')->name('patron.hojaVida')->middleware('can:panel.database');
+    Route::get('/patron-hoja-vida/{patron}/print', 'PatronController@hojaVidaPrint')->name('patron.hojaVida.print')->middleware('can:panel.database');
 
     # -- Patrones Documentos--
     Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');

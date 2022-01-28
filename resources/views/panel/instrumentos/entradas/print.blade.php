@@ -108,9 +108,9 @@
                 </div>
 
                 <div class="col-md-2 px-0 mx-1 d-flex flex-column justify-content-center align-items-center">
-                    <span class="py-2 px-4 bg-light w-100">LS-FOR-047</span>
-                    <span class="py-2 px-4 my-2 bg-light w-100">04</span>
-                    <span class="py-2 px-4 bg-light w-100">{{ now()->toDateString() }}</span>
+                    <span class="py-2 px-4 bg-light w-100">{{ $formulario->codigo ?? 'LS-FOR-047' }}</span>
+                    <span class="py-2 px-4 my-2 bg-light w-100">{{ $formulario->revision ?? '' }}</span>
+                    <span class="py-2 px-4 bg-light w-100">{{ $formulario->vigencia ?? '' }}</span>
                 </div>
             </section>
         </div>

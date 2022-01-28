@@ -5,15 +5,14 @@ namespace App\Http\Controllers\Panel;
 use App\Models\Patron;
 use App\Models\PatronIde;
 use Illuminate\Support\Str;
+use App\Models\PatronEnsayo;
 use Illuminate\Http\Request;
 use App\Models\Historycalibration;
 use App\Models\Historymaintenance;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\PatronEnsayo;
-use App\Models\RangoDeriva;
 use Symfony\Component\HttpFoundation\Response;
-
 
 class PatronController extends Controller
 {
@@ -149,6 +148,29 @@ class PatronController extends Controller
             'mantenimiento' => Historymaintenance::where('historymaintenance_id', $id)->where('historymaintenance_type', 'App\Models\Patron')->get()
         ];
         return view('panel.patrones.hoja-vida', compact('data'));
+    }
+
+    /**
+     * Imprime la hoja de vida del Patrón
+     *
+     * @param \App\Models\Patron $id
+     * @return \Illuminate\Http\Response
+     */
+    public function hojaVidaPrint(Patron $patron)
+    {
+        $patron->load([
+            'magnitude',
+            'procedimientos',
+            'formulario',
+            'historycalibrations',
+            'historymaintenances',
+        ]);
+
+        $view = view('panel.patrones.hoja_vida.print', compact('patron'));
+
+        $pdf = PDF::loadHtml($view)->setPaper('a3');
+
+        return $pdf->stream("Hoja de Vida del Patrón #$patron->id.pdf");
     }
 
 

@@ -23,7 +23,7 @@
 
                                 <li class="mb-5">
                                     <hr>
-                                    <a href="{{ route('panel.patron.hojaVida', $patrone->id) }}" class="as-text text-hover-primary" title="Ver Hoja de Vida">
+                                    <a href="{{ route('panel.patron.hojaVida.print', $patrone->id) }}" target="_blank" class="as-text text-hover-primary" title="Ver Hoja de Vida">
                                         <i class="mr-2 far fa-file-alt text-hover-primary"></i> Ver Hoja de Vida
                                     </a>
                                 </li>
