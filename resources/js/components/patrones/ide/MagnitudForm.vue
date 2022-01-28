@@ -163,7 +163,7 @@
                     title: 'Magintud Actualizada',
                     text: 'Magnitudes actualizadas correctamente!',
                     icon: 'success',
-                    confirmButtonText: 'Editar Detalles',
+                    confirmButtonText: 'Continuar Editando',
                     cancelButtonText: 'Volver',
                     showCancelButton: true,
                 }

@@ -63,6 +63,7 @@ Vue.component('procedimiento-card',    require('./components/procedimientos/Proc
 Vue.component('editar-acreditado',     require('./components/procedimientos/EditarAcreditado.vue').default);
 Vue.component('editar-ema',            require('./components/procedimientos/EditarEma.vue').default);
 
+Vue.component('cmc-form',              require('./components/cmc/CmcForm.vue').default);
 Vue.component('documentos',            require('./components/documentos/Documentos.vue').default);
 Vue.component('cliente-card',          require('./components/clientes/ClienteCard.vue').default);
 

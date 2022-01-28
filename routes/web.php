@@ -237,6 +237,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     # -- Formularios --
     Route::resource('/formularios', 'FormularioController')->middleware('can:panel.database');
+    Route::resource('/cmc', 'CmcController')->middleware('can:panel.database');
 
 
     # -- Magnitudes --
