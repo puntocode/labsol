@@ -70,6 +70,14 @@ class IdeRangoController extends Controller
         return response()->json(Response::HTTP_OK);
     }
 
+
+    public function ocultar(Request $request){
+        $deriva = RangoDeriva::findOrFail($request->id);
+        $deriva->oculto = $deriva->oculto ? 0 : 1;
+        $deriva->save();
+        return response()->json($deriva);
+    }
+
     public function validateDeriva()
     {
         return request()->validate([
@@ -81,6 +89,7 @@ class IdeRangoController extends Controller
             'e_anterior'   => 'nullable',
             'deriva'       => 'required',
             'ide_rango_id' => 'required',
+            'oculto'       => 'nullable'
         ]);
     }
 

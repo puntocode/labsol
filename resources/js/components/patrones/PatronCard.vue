@@ -44,12 +44,8 @@
                     alert_calibration_id: 0,
                     procedimiento_id: 0,
                     rank: [''],
-                    precision: [
-                        {title: 'precision', value: ['']}
-                    ],
-                    error_max: [
-                        {title: 'error', value: ['']}
-                    ]
+                    precision: [ {title: 'precision', value: ['']} ],
+                    error_max: [ {title: 'error', value: ['']} ]
                 },
                 loading: true,
                 action: 'create',

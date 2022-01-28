@@ -33,11 +33,11 @@
                                 <td>{{ $rango->resolucion }} {{ $rango->resolucion_medida }}</td>
                                 <td><a href="{{ route('panel.ide_rango.edit', $rango->id) }}"><i class="fas fa-edit text-primary"></i></a></td>
                             </tr>
-                            @if (count($rango->rangoDerivas))
+                            @if (count($rango->ocultos))
                                 <tr>
                                     <td colspan="12" class="hiddenRow">
                                         <div class="accordian-body collapse" id="table-{{ $rango->id }}">
-                                            <table-deriva :derivas="{{ $rango->rangoDerivas }}"></table-deriva>
+                                            <table-deriva :derivas="{{ $rango->ocultos }}"></table-deriva>
                                         </div>
                                     </td>
                                 </tr>

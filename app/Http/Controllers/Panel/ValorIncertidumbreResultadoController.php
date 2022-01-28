@@ -86,6 +86,13 @@ class ValorIncertidumbreResultadoController extends Controller
     }
 
 
+    public function updateIncertidumbreResultado(Request $request){
+        $incerResult = ValorIncertidumbreResultado::where('valor_id', $request->valor_id)->first();
+        $incerResult->update($this->validateData());
+        return response()->json($incerResult);
+    }
+
+
     public function getResultado(Request $request){
         $resultado =  ValorIncertidumbreResultado::where('valor_id', $request->id)->first();
         return response()->json($resultado);

@@ -110,6 +110,7 @@ class InstrumentoController extends Controller
         return request()->validate([
             'name' => 'required',
             'costo' => 'required',
+            'obs' => 'nullable'
         ]);
     }
 

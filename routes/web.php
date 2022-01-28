@@ -90,13 +90,19 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     Route::resource('/valors', 'ValorController')->middleware('can:panel.database');
     Route::resource('/valor-resultado', 'ValorResultadoController')->middleware('can:panel.database');
-    Route::resource('/valor-certificados', 'ValorCertificadoController')->middleware('can:panel.database');
     Route::resource('/valor-incertidumbre', 'ValorIncertidumbreController')->middleware('can:panel.database');
     Route::resource('/incertidumbre-resultados', 'ValorIncertidumbreResultadoController')->middleware('can:panel.database');
 
+    Route::delete('/valor-incertidumbre-delete', 'ValorIncertidumbreController@eliminarIncertidumbres')->name('valor.incertidumbre.delete')->middleware('can:panel.database');
+    Route::put('/valor-resultados/update', 'ValorResultadoController@updateValorResultado')->name('valor.resultados.update')->middleware('can:panel.database');
+    Route::put('/valor-incertidumbre-result/update', 'ValorIncertidumbreResultadoController@updateIncertidumbreResultado')->name('incertidumbre.resultados.update')->middleware('can:panel.database');
+
+    Route::get('/valor-certificados', 'ValorCertificadoController@getValoresForValorId')->name('valor-certificados.get')->middleware('can:panel.admin');
+    Route::post('/valor-certificados', 'ValorCertificadoController@store')->name('valor-certificados.store')->middleware('can:panel.database');
+    Route::put('/valor-certificado/update', 'ValorCertificadoController@updateValorCertificado')->name('valor.certificados.update')->middleware('can:panel.database');
+
     Route::get('/incertidumbre-valor', 'ValorIncertidumbreController@getValorIncertidumbre')->name('incertidumbre.valor')->middleware('can:panel.database');
     Route::get('/resultado-valor-id', 'ValorIncertidumbreResultadoController@getResultado')->name('incertidumbre.resultado')->middleware('can:panel.database');
-
 
     Route::get('/alert_calibration', 'CalibracionController@getAlertCalibration')->name('alert.calibration');
     Route::get('/condition', [PanelController::class, 'getCondition'])->name('condition.all');
@@ -154,6 +160,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::post('/derivas', 'IdeRangoController@insertDeriva')->name('rango_deriva.insert')->middleware('can:panel.database');
     Route::put('/derivas/{id}', 'IdeRangoController@updateDeriva')->name('rango_deriva.update')->middleware('can:panel.database');
     Route::delete('/derivas/{id}', 'IdeRangoController@destroyDeriva')->name('rango_deriva.destroy')->middleware('can:panel.database');
+    Route::post('/derivas-ocultar', 'IdeRangoController@ocultar')->name('rango_deriva.ocultar')->middleware('can:panel.database');
 
 
     # -- Equipos --
@@ -230,6 +237,11 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     # -- Formularios --
     Route::resource('/formularios', 'FormularioController')->middleware('can:panel.database');
+
+
+    # -- Magnitudes --
+    Route::resource('/magnitudes', 'MagnitudeController')->middleware('can:panel.database');
+    Route::get('/magnitud/active/{id}', 'MagnitudeController@active')->name('magnitud.active')->middleware('can:panel.database');
 
 
     # -- Usuarios --

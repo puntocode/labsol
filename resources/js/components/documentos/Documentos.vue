@@ -7,7 +7,7 @@
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
     export default {
         components: { vueDropzone: vue2Dropzone },
-        props: ['url', 'data'],
+        props: ['url', 'data', 'idioma'],
         data() {
             return {
                 dropzoneOptions: {
@@ -28,10 +28,13 @@
         },
         watch:{
             data(){
-                this.dropzoneOptions.headers.idioma = this.data.idioma;
                 this.dropzoneOptions.headers.folder = this.data.folder;
                 this.dropzoneOptions.headers.category = this.data.category;
                 $(".dz-preview").remove();
+            },
+
+            idioma(){
+                this.dropzoneOptions.headers.idioma = this.idioma;
             }
         }
     }

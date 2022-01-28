@@ -11,8 +11,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Costo <span class="text-danger">*</span></label>
+                        <label>Costo Referencial <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" v-model="form.costo">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Observación</label>
+                        <input class="form-control" v-model="form.obs">
                     </div>
                 </div>
             </div>
@@ -33,7 +38,7 @@
         data() {
             return {
                 rutas: window.routes,
-                form: {id: 0, name: '', costo: ''}
+                form: {id: 0, name: '', costo: '', obs: ''}
             }
         },
 

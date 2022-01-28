@@ -66,10 +66,12 @@
     <script>
         const unidadesIde = "{{ route('panel.patrones.unidades_medidas') }}";
         const insertDeriva = "{{ route('panel.rango_deriva.insert') }}";
+        const OCULTAR = "{{ route('panel.rango_deriva.ocultar') }}"
 
         window.routes = {
             'ruta_deriva': insertDeriva,
-            'unidades_ide': unidadesIde
+            'unidades_ide': unidadesIde,
+            'ocultar': OCULTAR
         }
     </script>
 @endsection

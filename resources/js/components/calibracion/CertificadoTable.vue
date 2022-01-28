@@ -66,6 +66,12 @@
         },
 
         methods: {
+            limpiarGrafico(){
+                this.data[0].x = [];
+                this.data[0].y = [];
+                this.data[0].error_y.array = [];
+            },
+
             cargarTabla() {
                 for(let i = 0; i < this.certificados.length; i++){
                     this.data[0].x.push(this.certificados[i].ip);
@@ -77,9 +83,17 @@
 
         watch: {
             certificados() {
+                //cuando se inicializa
                 if(this.key === 0 && this.certificados.length){
                     this.cargarTabla();
                     this.key = this.certificados.length;
+                    return;
+                }
+
+                //si se actualiza
+                if(this.key !== 0 && this.key === this.certificados.length){
+                    this.limpiarGrafico();
+                    this.cargarTabla();
                     return;
                 }
 
