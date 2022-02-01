@@ -16,8 +16,8 @@ class FormularioSeeder extends Seeder
     {
         Formulario::create([
             'codigo' => 'LS-FOR-041',
-            'revision' => '04',
-            'vigencia' => '2019-01-17'
+            'revision' => '05',
+            'vigencia' => '2022-01-14'
         ]);
 
         Formulario::create([

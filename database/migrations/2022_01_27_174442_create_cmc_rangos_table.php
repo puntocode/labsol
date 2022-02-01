@@ -15,9 +15,10 @@ class CreateCmcRangosTable extends Migration
     {
         Schema::create('cmc_rangos', function (Blueprint $table) {
             $table->id();
-            $table->json('rango_de');
-            $table->json('rango_a');
-            $table->json('cmc');
+            $table->float('rango_de');
+            $table->float('rango_a');
+            $table->float('cmc');
+            $table->string('unidad_medida', 10);
             $table->foreignId('cmc_id')->constrained('cmcs')->onDelete('cascade');
             $table->timestamps();
         });

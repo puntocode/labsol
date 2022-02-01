@@ -160,8 +160,8 @@
                 <div class="col-12 col-lg-5">
                     <div class="form-group">
                         <label>Recibido por: <span class="text-danger">*</span></label>
-                        <input class="form-control" :value="user.fullname" disabled v-if="readOnly">
-                        <Select2 id="select-user" v-model="form.user_id" :options="selectUsuarios" v-else />
+                        <input class="form-control" :value="data.usuario.fullname" disabled>
+                        <!-- <Select2 id="select-user" v-model="form.user_id" :options="selectUsuarios" v-else /> -->
                     </div>
                 </div>
 
@@ -243,12 +243,12 @@
                         service: 'calibración',
                     }],
                     type: 'LS',
-                    user_id: 0,
+                    user_id: this.data.usuario.id,
                 },
                 formulario: true,
                 selectClientes: [],
                 selectContacto: [],
-                selectUsuarios: [],
+                // selectUsuarios: [],
                 selectInstumentos: [],
                 servicio: {},
                 rutas: window.routes,
@@ -306,8 +306,8 @@
             },
 
             cargarSelect(){
+                // this.data.usuarios.forEach( usuario => this.selectUsuarios.push({id: usuario.id, text: usuario.fullname}) );
                 this.data.clientes.forEach( cliente => this.selectClientes.push({id: cliente.id, text: cliente.name}) );
-                this.data.usuarios.forEach( usuario => this.selectUsuarios.push({id: usuario.id, text: usuario.fullname}) );
                 this.data.instrumentos.forEach( instrumento => this.selectInstumentos.push({id: instrumento.id, text: instrumento.name}) );
             },
 
@@ -342,9 +342,9 @@
 
             async datosModificar(){
                 this.form = await this.data.entradaInstrumento;
-                this.user = this.data.usuarios.find( user => user.id === this.form.user_id );
                 this.cliente = this.data.clientes.find( cliente => cliente.id === this.form.cliente_id );
                 this.instrumento = this.data.instrumentos.find( instrumento => instrumento.id === this.form.instrumento_id );
+                // this.user = this.data.usuarios.find( user => user.id === this.form.user_id );
             },
 
             selectContacChange(event){

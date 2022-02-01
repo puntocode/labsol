@@ -42,7 +42,7 @@
 					<table class="table table-separate table-head-custom collapsed" id="tableInstrumentos" style="width:100%">
 						<thead>
 							<tr>
-								{{-- <th>N° Exp</th> --}}
+								<th scope="col">#</th>
 								<th>Cliente</th>
 								<th>Contacto</th>
 								<th>Email</th>
@@ -55,7 +55,7 @@
 						<tbody>
 							@foreach ($entradaInstrumento as $i => $entrada)
 								<tr>
-									{{-- <td>{{$entrada->type}}-{{$entrada->id}}</td> --}}
+                                    <th scope="row">{{ $i+1 }}</th>
 									<td>{{$entrada->cliente->name}}</td>
 									<td>{{$entrada->contact['nombre']}}</td>
 									<td>{{$entrada->contact['email']}}</td>

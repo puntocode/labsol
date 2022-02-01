@@ -4,13 +4,13 @@
             <ul class="nav nav-tabs nav-bold nav-tabs-line">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#tab_documentos">
-                        <span class="nav-text" @click="docTab">Documentos</span>
+                        <span class="nav-text" @click="docTab">Documentos de Calidad</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#tab_manual">
-                        <span class="nav-text" @click="manualTab">Manual</span>
+                        <span class="nav-text" @click="manualTab">Documentos técnicos</span>
                     </a>
                 </li>
             </ul>

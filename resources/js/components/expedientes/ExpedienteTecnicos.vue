@@ -3,9 +3,12 @@
         <div class="mb-6 row">
             <div class="col-12 d-flex justify-content-between align-items-start">
                 <h3 class="mb-8 card-label">Expedientes <small class="font-weight-lighter">| Asignar técnicos</small></h3>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-tecnico" :disabled="expediente_ids.length <= 1">
-                    <i class="pr-2 fas fa-users"></i>Asignar Técnicos
-                </button>
+                <div class="d-flex">
+                    <button class="btn btn-primary mr-3" data-toggle="modal" data-target="#modal-tecnico" :disabled="expediente_ids.length <= 1">
+                        <i class="pr-2 fas fa-users"></i>Asignar Técnicos
+                    </button>
+                    <ModalInstrumento :expedientes="expediente_ids" />
+                </div>
             </div>
         </div>
 
@@ -31,7 +34,7 @@
                                 <tr v-for="(expedient, index) in expedientes" :key="index">
                                     <td><input v-show="expedient.tecnicos === null" type="checkbox" :value="expedient.number" v-model="expediente_ids"></td>
                                     <td>{{ expedient.number }}</td>
-                                    <td>{{ expedient.certificate }}</td>
+                                    <td>{{ expedient.entrada_instrumentos.cliente.name }}</td>
                                     <td>{{ expedient.instrumentos.name }}</td>
                                     <td>{{ expedient.service }}</td>
                                     <td>
@@ -69,9 +72,10 @@
 
 <script>
     import AsignarTecnico from './AsignarTecnico';
+    import ModalInstrumento from './ModalInstrumento';
 
     export default {
-        components: { AsignarTecnico},
+        components: { AsignarTecnico, ModalInstrumento },
         data() {
             return {
                 expedientes: [],

@@ -155,7 +155,7 @@
 
                 <tr>
                     <th colspan="5">FECHA DE RECEPCIÓN</th>
-                    <td colspan="19">{{ date('d/m/Y H:i:s', strtotime($entradaInstrumento->getRawOriginal('created_at'))) }}</td>
+                    <td colspan="19">{{ date('d/m/Y - H:i', strtotime($entradaInstrumento->getRawOriginal('created_at'))) }}</td>
                 </tr>
 
                 <tr>
@@ -203,7 +203,7 @@
                 </tr>
 
                 <tr>
-                    <td colspan="24" class="h-100px">{{ $entradaInstrumento->obs_general ?? 'Ninguna' }}</td>
+                    <td colspan="24" class="h-100px">{!! $entradaInstrumento->obs_general ?? 'Ninguna' !!}</td>
                 </tr>
 
                 <tr>

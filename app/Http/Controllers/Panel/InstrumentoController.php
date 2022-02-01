@@ -16,7 +16,7 @@ class InstrumentoController extends Controller
      */
     public function index()
     {
-        $instrumentos = Instrumento::all();
+        $instrumentos = Instrumento::orderBy('name')->get();
         if(request()->wantsJson()) return response()->json($instrumentos);
         return view('panel.instrumentos.index', compact('instrumentos'));
     }
@@ -100,7 +100,7 @@ class InstrumentoController extends Controller
 
 
     public function getInstrumentos(){
-        $instrumentos = Instrumento::all();
+        $instrumentos = Instrumento::orderBy('name')->get();
         return response()->json($instrumentos);
     }
 

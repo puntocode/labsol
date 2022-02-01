@@ -76,7 +76,7 @@ class Expediente extends Model
     }
 
     public function scopeRelaciones($query){
-        $query->with('instrumentos', 'estados', 'entradaInstrumentos', 'calibracion');
+        $query->with('instrumentos', 'estados', 'entradaInstrumentos.cliente', 'calibracion');
     }
 
     public function scopeCalibration($query){

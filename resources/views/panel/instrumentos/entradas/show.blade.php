@@ -68,7 +68,7 @@
                             <div class="form-group col-md-9">
                                 <label>Obs General</label>
                                 <div class="h-auto p-0 border-0 form-control">
-                                    <span class="font-weight-bold">{{ $entradaInstrumento->obs_general == null ? '-' : $entradaInstrumento->obs_general }}</span>
+                                    <span class="font-weight-bold">{!! $entradaInstrumento->obs_general == null ? '-' : $entradaInstrumento->obs_general !!}</span>
                                 </div>
                             </div>
 

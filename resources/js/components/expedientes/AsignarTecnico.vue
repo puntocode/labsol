@@ -7,9 +7,9 @@
             <div class="modal-body">
                 <div class="mb-6 row">
                     <div class="mx-auto col-10">
-                        <h4>Expediente N°:
-                            <span v-for="numero in numeros" :key="numero" id="nro-expediente" class="font-weight-bold"> {{ numero }} |</span>
-                        </h4>
+                        <h5>Expediente N°:
+                            <span v-for="numero in numeros" :key="numero" id="nro-expediente" class="badge badge-primary mx-1">{{ numero }}</span>
+                        </h5>
                     </div>
                 </div>
                 <div class="mb-6 row">

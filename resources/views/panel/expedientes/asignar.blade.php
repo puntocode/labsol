@@ -15,13 +15,20 @@
 @section('rutas')
     <script>
         const TECNICOS = "{{ route('panel.usuarios.tecnicos') }}";
+        const INSTRUMENTOS = "{{ route('panel.instrumentos.all') }}";
         const UPDATE_TECNICOS = "{{ route('panel.expedientes.update_tecnicos') }}";
         const EXPEDIENTE_ESPERA = "{{ route('panel.expedientes.espera') }}";
+        const EDITAR_INSTRUMENTOS = "{{ route('panel.expedientes.edit-instrumento') }}";
 
         window.routes = {
             'tecnicos': TECNICOS,
             'expedientes': EXPEDIENTE_ESPERA,
             'updateTecnicos': UPDATE_TECNICOS,
+        }
+
+        window.routesEdit = {
+            'editar': EDITAR_INSTRUMENTOS,
+            'instrumentos': INSTRUMENTOS
         }
     </script>
 @endsection

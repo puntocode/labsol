@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\EntradaInstrumento;
 use App\Http\Controllers\Controller;
 use App\Jobs\EnviarReciboEntradaEgresoJob;
+use Illuminate\Support\Facades\Auth;
 
 class EntradaInstrumentoController extends Controller
 {
@@ -33,7 +34,7 @@ class EntradaInstrumentoController extends Controller
      */
     public function create()
     {
-       $data = $this->returnData(null);
+        $data = $this->returnData(null);
         return view('panel.instrumentos.entradas.form', compact('data'));
     }
 
@@ -152,13 +153,14 @@ class EntradaInstrumentoController extends Controller
             'identification' => 'nullable',
             'type'           => 'required|in:LS,LSI',
             'user_id'        => 'nullable',
+            'obs_general'    => 'nullable'
         ]);
     }
 
 
     public function returnData($entradaInstrumento){
         $data = [
-            'usuarios'           => User::all(),
+            'usuario'            => Auth::user(),
             'clientes'           => Cliente::all(),
             'instrumentos'       => Instrumento::all(),
             'entradaInstrumento' => $entradaInstrumento === null ? null : $entradaInstrumento,

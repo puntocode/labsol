@@ -231,5 +231,20 @@ class ExpedienteController extends Controller
     }
 
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function editInstrumento(Request $request)
+    {
+        $array = $request->all();
+        foreach($array as $exp){
+            $expediente = Expediente::where('number', $exp['number'])->first();
+            $expediente->update(['instrumento_id' => $exp['instrumento_id']]);
+        }
+        return response()->json(Response::HTTP_OK);
+    }
+
 
 }
