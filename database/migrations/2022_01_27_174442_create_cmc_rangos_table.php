@@ -18,7 +18,6 @@ class CreateCmcRangosTable extends Migration
             $table->float('rango_de');
             $table->float('rango_a');
             $table->float('cmc');
-            $table->string('unidad_medida', 10);
             $table->foreignId('cmc_id')->constrained('cmcs')->onDelete('cascade');
             $table->timestamps();
         });

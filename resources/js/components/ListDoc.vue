@@ -6,7 +6,7 @@
 
     <div class="row" v-for="(docs, index) in documents" :key="index" v-else>
         <div class="col-12" :class="index == 'documentos' ? 'mt-8' : ''">
-            <h5 class="text-capitalize text-black-50">{{ index }}</h5>
+            <h5 class="text-capitalize text-black-50">{{ index == 'manual' ? 'Documentos técnicos' : 'Documentos de calidad' }}</h5>
             <hr>
         </div>
 

@@ -177,6 +177,10 @@
                             @endif
                         </div>
 
+                        <div class="row mt-6">
+                            <x-procedimiento-cmc :data=$procedimiento></x-procedimiento-cmc>
+                        </div>
+
                         <div class="mt-6 row">
                             <div class="text-right col-md-12">
                                 <hr>

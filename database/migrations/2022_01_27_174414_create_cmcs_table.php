@@ -15,6 +15,7 @@ class CreateCmcsTable extends Migration
     {
         Schema::create('cmcs', function (Blueprint $table) {
             $table->id();
+            $table->string('unidad_medida', 10);
             $table->foreignId('procedimiento_id')->constrained('procedimientos')->onDelete('cascade');
             $table->foreignId('patron_id')->constrained('patrons')->onDelete('cascade');
             $table->timestamps();

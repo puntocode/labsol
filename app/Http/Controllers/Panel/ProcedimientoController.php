@@ -68,7 +68,8 @@ class ProcedimientoController extends Controller
      */
     public function show($id)
     {
-        $procedimiento = Procedimiento::with('patrones', 'ambiental', 'instrumentos', 'magnitud')->findOrFail($id);
+        $procedimiento = Procedimiento::relaciones()->findOrFail($id);
+        dd($procedimiento->toArray());
         return view('panel.procedimientos.show', compact('procedimiento'));
     }
 
@@ -106,17 +107,6 @@ class ProcedimientoController extends Controller
         }
 
         return response()->json($procedimiento);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Procedimiento  $procedimiento
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Procedimiento $procedimiento)
-    {
-        //
     }
 
 
@@ -186,6 +176,46 @@ class ProcedimientoController extends Controller
         $url = 'media/docs';
         $request->documento->move(public_path($url), 'alcance-acreditado.pdf');
         return response()->json(Response::HTTP_OK);
+    }
+
+
+    #CMC ------------------------------------------------------------------------------
+
+    public function cargarCmc($id){
+        $procedimiento = Procedimiento::relaciones()->find($id);
+        return view('panel.cmc.form', compact('procedimiento'));
+    }
+
+    public function insertCmc(Request $request){
+        $procedimiento = Procedimiento::find($request->procedimiento_id);
+        $procedimiento->cmcs()->sync($request->patrones_ids);
+        return response()->json(Response::HTTP_OK);
+    }
+
+    public function updateCMC(Request $request){
+        $array = $request->all();
+        var_dump($array);
+
+
+        if(count($array)){
+            $procedimiento = Procedimiento::find($array[0]['procedimiento_id']);
+            $procedimiento->cmcs()->sync($array);
+
+            for ($i = 0; $i < count($array); $i++) {
+
+                foreach($array[$i]->cmc_rangos as $rangos){
+                    var_dump($rangos);
+                }
+
+                // $cmcRangos = $cmc->cmc_rangos->id == 0 ? new PatronProcedimiento : PatronProcedimiento::findOrFail($patron['id']);
+                // $cmcRangos->patron = $patron['patron'];
+                // $cmcRangos->code = $patron['code'];
+                // $cmcRangos->procedimiento_id = $procedimiento->id;
+                // $cmcRangos->save();
+            }
+        }
+
+        return response()->json($array);
     }
 
 

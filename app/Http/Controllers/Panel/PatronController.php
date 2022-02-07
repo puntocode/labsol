@@ -178,6 +178,12 @@ class PatronController extends Controller
         return response()->json(Patron::with('magnitude')->find($id));
     }
 
+    public function getPatronForCode(Request $request){
+        return response()->json(Patron::with('magnitude')->where('code', $request->code)->firstOrFail());
+    }
+
+
+
 
     #Documentos ----------------------------------------------------------------------------------------------------------------------------
     public function documents(Patron $patron)
