@@ -35,6 +35,13 @@ class Procedimiento extends Model
         return $this->belongsTo(Magnitude::class, 'magnitud_id');
     }
 
+    public function cmcs(){
+        return $this->belongsToMany(Patron::class, 'cmcs')->withPivot('id', 'unidad_medida');
+    }
+
+
+    #--------- MUTADORES ----------------------------------------------------------
+
     public function setValveAttribute($value){
         $this->attributes['valve'] = strtoupper($value);
     }
@@ -43,13 +50,16 @@ class Procedimiento extends Model
         return asset('media/docs/procedimientos/'.$this->pdf);
     }
 
-
     public function getAlcanceColor(){
         return $this->accredited_scope ? 'success' : 'danger';
     }
 
     public function accreditedScope(){
         return $this->accredited_scope ? 'SI' : 'NO';
+    }
+
+    public function scopeRelaciones(){
+        return $this->with('patrones', 'ambiental', 'instrumentos', 'magnitud', 'cmcs');
     }
 
     public function getFullnameAttribute(){
