@@ -10,9 +10,10 @@ use App\Models\Formulario;
 use App\Models\Instrumento;
 use Illuminate\Http\Request;
 use App\Models\EntradaInstrumento;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
-use App\Jobs\EnviarReciboEntradaEgresoJob;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\EnviarReciboEntradaEgresoJob;
 
 class EntradaInstrumentoController extends Controller
 {
@@ -138,9 +139,24 @@ class EntradaInstrumentoController extends Controller
     {
         $expedientesIngresados = Expediente::cantidad($entradaInstrumento->id)->get();
 
+        $egresoInstrumentos = $entradaInstrumento->egresoInstrumentos
+            ->map(function ($egresoInstrumento) use ($entradaInstrumento) {
+                $egresoInstrumento->expedientesEgresados = Expediente::cantidad($entradaInstrumento->id)
+                    ->whereIn('id', $egresoInstrumento->detalleEgresoInstrumentos->pluck('expediente_id'))
+                    ->get();
+
+                return $egresoInstrumento;
+            });
+
         $formulario = Formulario::firstWhere('codigo', 'LS-FOR-047');
 
-        return view('panel.instrumentos.entradas.print', compact('entradaInstrumento', 'expedientesIngresados', 'formulario'));
+        $data = compact('entradaInstrumento', 'expedientesIngresados', 'egresoInstrumentos', 'formulario');
+
+        $view =  view('panel.instrumentos.registro_entradas_egresos.print', $data);
+
+        $pdf = PDF::loadHtml($view)->setPaper('a3');
+
+        return $pdf->stream("LS-FOR-047 #$entradaInstrumento->id.pdf");
     }
 
 

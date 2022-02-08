@@ -66,7 +66,7 @@
                                         <a href="{{ route('panel.entrada-instrumentos.show', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Ver Entrada Instrumento">
                                             <i class="fas fa-list text-primary"></i>
                                         </a>
-                                        <a href="{{ route('panel.entrada-instrumentos.print', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles">
+                                        <a href="{{ route('panel.entrada-instrumentos.print', $entrada) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir detalles" target="_blank">
                                             <i class="fas fa-print text-primary"></i>
                                         </a>
                                     </td>

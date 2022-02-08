@@ -8,6 +8,7 @@ use App\Models\Formulario;
 use Illuminate\Http\Request;
 use App\Models\EgresoInstrumento;
 use App\Models\EntradaInstrumento;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
 use App\Models\DetalleEgresoInstrumento;
 use App\Jobs\EnviarReciboEntradaEgresoJob;
@@ -169,7 +170,7 @@ class EgresoController extends Controller
      * @param  \App\Models\EntradaInstrumento  $entradaInstrumento
      * @return \Illuminate\Http\Response
      */
-    public function print(EntradaInstrumento  $entradaInstrumento)
+    public function print(EntradaInstrumento $entradaInstrumento)
     {
         $expedientesIngresados = Expediente::cantidad($entradaInstrumento->id)->get();
 
@@ -184,12 +185,13 @@ class EgresoController extends Controller
 
         $formulario = Formulario::firstWhere('codigo', 'LS-FOR-047');
 
-        return view('panel.egreso.print', compact(
-            'entradaInstrumento',
-            'expedientesIngresados',
-            'egresoInstrumentos',
-            'formulario'
-        ));
+        $data = compact('entradaInstrumento', 'expedientesIngresados', 'egresoInstrumentos', 'formulario');
+
+        $view =  view('panel.instrumentos.registro_entradas_egresos.print', $data);
+
+        $pdf = PDF::loadHtml($view)->setPaper('a3');
+
+        return $pdf->stream("LS-FOR-047 #$entradaInstrumento->id.pdf");
     }
 
     public function historial(){
