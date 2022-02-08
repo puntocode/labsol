@@ -66,8 +66,8 @@
 										@endif
 
 										@if(in_array('imprimir', $role_actions))
-											<a href="{{ route('panel.egreso.print', $entradaInstrumento) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir registro">
-												<i class="la la-print"></i>
+											<a href="{{ route('panel.egreso.print', $entradaInstrumento) }}" class="btn btn-sm btn-clean btn-icon" title="Imprimir registro" target="_blank">
+												<i class="fas fa-print text-primary"></i>
 											</a>
 										@endif
 

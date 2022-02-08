@@ -260,7 +260,12 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="24" class="text-center">----------------</td>
+                    <td class="text-center align-middle">-----</td>
+                    <td colspan="5" class="text-center align-middle">-----</td>
+                    <td colspan="4" class="text-center align-middle">-----</td>
+                    <td colspan="4" class="text-center align-middle">-----</td>
+                    <td colspan="5" class="text-center align-middle">-----</td>
+                    <td colspan="5" class="text-center align-middle">-----</td>
                 </tr>
             @endforelse
 
@@ -294,7 +299,12 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="24" class="text-center">----------------</td>
+                    <td class="text-center align-middle">-----</td>
+                    <td colspan="5" class="text-center align-middle">-----</td>
+                    <td colspan="4" class="text-center align-middle">-----</td>
+                    <td colspan="4" class="text-center align-middle">-----</td>
+                    <td colspan="5" class="text-center align-middle">-----</td>
+                    <td colspan="5" class="text-center align-middle">-----</td>
                 </tr>
             @endforelse
 
