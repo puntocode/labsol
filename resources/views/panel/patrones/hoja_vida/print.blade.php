@@ -260,7 +260,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="24" class="text-center">No hay registros en esta tabla.</td>
+                    <td colspan="24" class="text-center">----------------</td>
                 </tr>
             @endforelse
 
@@ -294,7 +294,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="24" class="text-center">No hay registros en esta tabla.</td>
+                    <td colspan="24" class="text-center">----------------</td>
                 </tr>
             @endforelse
 
