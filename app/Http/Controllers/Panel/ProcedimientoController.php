@@ -69,7 +69,7 @@ class ProcedimientoController extends Controller
     public function show($id)
     {
         $procedimiento = Procedimiento::relaciones()->findOrFail($id);
-        dd($procedimiento->toArray());
+        // dd($procedimiento->toArray());
         return view('panel.procedimientos.show', compact('procedimiento'));
     }
 
