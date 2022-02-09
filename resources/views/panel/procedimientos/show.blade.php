@@ -118,6 +118,7 @@
                         </div>
 
 
+                        {{-- Procedimientos Patrones -------------------------------------------------}}
                         <div class="mt-6 row">
                             <div class="mb-6 form-group col-md-12">
                                 <h3>Patrones</h3>
@@ -158,6 +159,8 @@
                             <editar-ema :data="{{ $procedimiento->ambiental }}"></editar-ema>
                         </div>
 
+
+                        {{-- Procedimientos DOC -------------------------------------------------}}
                         <div class="row mt-6">
                             <div class="col-12">
                                 <h3>Documento</h3>
@@ -177,9 +180,8 @@
                             @endif
                         </div>
 
-                        <div class="row mt-6">
-                            <x-procedimiento-cmc :data=$procedimiento></x-procedimiento-cmc>
-                        </div>
+                        {{-- Procedimientos CMC -------------------------------------------------}}
+                        <x-procedimiento-cmc :data=$procedimiento></x-procedimiento-cmc>
 
                         <div class="mt-6 row">
                             <div class="text-right col-md-12">

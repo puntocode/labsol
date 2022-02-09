@@ -5,7 +5,7 @@
 @section('content')
 	<!--begin::Container-->
 	<div class="container-fluid">
-        <h3 class="card-label mb-8">CMC <small class="font-weight-lighter">| {{$procedimiento->code}}</small> </h3>
+        <h3 class="card-label mb-8">CMC <small class="font-weight-lighter"></small> </h3>
 
 		<div class="row">
 			<div class="col-lg-3 col-xl-2">
@@ -22,13 +22,13 @@
 
 			<div class="col-lg-9 col-xl-10">
                 <div class="card">
-                    <div class="card-header border-0 pb-0">
-                        <div class="card-title w-100 border-bottom mb-0">
-                            <h3 class="font-weight-bolder">CMC</h3>
+                    <div class="card-header border-0">
+                        <div class="card-title w-100 border-bottom mb-0 text-center">
+                            <h3 class="font-weight-bolder">CMC - {{$procedimiento->code}}</h3>
                         </div>
                     </div>
 
-                    <cmc-form :procedimiento="{{ $procedimiento }}"></cmc-form>
+                    <cmc-card :procedimiento="{{ $procedimiento }}"></cmc-card>
                 </div>
 			</div>
 		</div>
@@ -37,14 +37,16 @@
 
 @section('rutas')
     <script>
-        const GET_PATRON  = "{{ route('panel.patron.code.get') }}";
-        const INSERT_CMC  = "{{ route('panel.cmc.insert') }}";
-        const UPDATE_CMC  = "{{ route('panel.cmc.update') }}";
+        const GET_CMCS = "{{ route('panel.cmc.get') }}";
+        const INSERT_CMC = "{{ route('panel.cmc.insert') }}";
+        const UPDATE_CMC = "{{ route('panel.cmc.update') }}";
+        const GET_SUBMULTIPLOS = "{{ route('panel.patrones.unidades_medidas') }}";
 
         window.routes = {
-            'getPatron': GET_PATRON,
-            'insertCmc': INSERT_CMC,
-            'updateCmc': UPDATE_CMC,
+            'getCmcs': GET_CMCS,
+            'insertar': INSERT_CMC,
+            'actualizar': UPDATE_CMC,
+            'getSubMultiplos': GET_SUBMULTIPLOS
         }
     </script>
 @endsection

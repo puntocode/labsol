@@ -35,8 +35,8 @@ class Procedimiento extends Model
         return $this->belongsTo(Magnitude::class, 'magnitud_id');
     }
 
-    public function cmcs(){
-        return $this->belongsToMany(Patron::class, 'cmcs')->withPivot('id', 'unidad_medida');
+    public function cmcRangos(){
+        return $this->hasMany(CmcRango::class, 'procedimiento_id');
     }
 
 
@@ -59,7 +59,7 @@ class Procedimiento extends Model
     }
 
     public function scopeRelaciones(){
-        return $this->with('patrones', 'ambiental', 'instrumentos', 'magnitud', 'cmcs');
+        return $this->with('patrones', 'ambiental', 'instrumentos', 'magnitud', 'cmcRangos');
     }
 
     public function getFullnameAttribute(){

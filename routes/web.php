@@ -118,8 +118,8 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     # -- Patrones --
     Route::resource('/patrones', 'PatronController')->middleware('can:panel.database');
     Route::get('/patron/{id}', 'PatronController@getPatronForId')->name('patron.get')->middleware('can:panel.database');
-    Route::get('/patrons-for-code', 'PatronController@getPatronForCode')->name('patron.code.get')->middleware('can:panel.database');
     Route::get('/patron-hoja-vida/{patron}/print', 'PatronController@hojaVidaPrint')->name('patron.hojaVida.print')->middleware('can:panel.database');
+    // Route::get('/patrons-for-code', 'PatronController@getPatronForCode')->name('patron.code.get')->middleware('can:panel.database');
 
     # -- Patrones Documentos--
     Route::get('/patron-doc/{patron}', 'PatronController@documents')->name('patrones.doc')->middleware('can:panel.database');
@@ -207,8 +207,11 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::put('/procedimiento/update-ema', 'ProcedimientoController@updateEma')->name('procedimientos.update.ema')->middleware('can:panel.database');
     Route::post('/procedimiento/update-acreditado', 'ProcedimientoController@updateAcreditado')->name('procedimientos.update.acreditado')->middleware('can:panel.database');
     Route::get('/procedimiento-cmc/{id}/edit', 'ProcedimientoController@cargarCmc')->name('cmc.edit')->middleware('can:panel.database');
-    Route::post('/cmc-insert', 'ProcedimientoController@insertCmc')->name('cmc.insert')->middleware('can:panel.database');
-    Route::put('/cmc-update', 'ProcedimientoController@updateCMC')->name('cmc.update')->middleware('can:panel.database');
+
+
+    Route::get('/cmc-get', 'CmcRangoController@getCmcs')->name('cmc.get')->middleware('can:panel.database');
+    Route::post('/cmc-insert', 'CmcRangoController@store')->name('cmc.insert')->middleware('can:panel.database');
+    Route::put('/cmc-update', 'CmcRangoController@update')->name('cmc.update')->middleware('can:panel.database');
 
     # -- Expedientes --
     Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');

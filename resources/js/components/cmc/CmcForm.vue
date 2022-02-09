@@ -1,144 +1,100 @@
 <template>
-    <div class="card-body pt-0">
-        <div class="row" v-if="loading">
-            <div class="col-12 d-flex justify-content-center">
-                <grid-loader :loading="loading" color="#009BDD" :size="'25px'"></grid-loader>
+    <div class="row mx-2">
+
+        <form @submit.prevent="submit">
+            <div class="col-12 d-flex align-items-center py-4">
+                <span class="title mr-3">Rango</span>
+                <div class="d-flex align-items-center">
+                    <span class="mr-3">de</span>
+                    <input type="number" step="0.000001" class="form-control" v-model="form.rango_de">
+                    <input class="form-control ml-3" :value="form.rango_unidad" disabled>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="mx-3">a</span>
+                    <input type="number" step="0.000001" class="form-control" v-model="form.rango_a">
+                    <select class="form-control ml-3" v-model="form.rango_unidad">
+                        <option v-for="(unidad, i) in selectUnidades" :key="i">{{ unidad }}</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="mx-3 title">cmc</span>
+                    <input type="number" step="0.000001" class="form-control" v-model="form.cmc">
+                    <select class="form-control ml-3" v-model="form.cmc_unidad">
+                        <option v-for="(unidad, i) in selectUnidades" :key="i">{{ unidad }}</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success ml-4" :disabled="$v.form.$invalid">
+                    <i v-if="loading" class="fas fa-spinner fa-spin px-0"></i>
+                    <i v-else class="fas fa-check px-0"></i>
+                </button>
             </div>
-        </div>
+        </form>
 
-
-        <div class="row" v-else>
-            <form @submit.prevent="submit">
-
-                <!----------------------------- Patron ------------------------->
-
-                <div v-for="(rangos, index) in form" :key="index" class="my-12 px-6 row">
-                    <div class="p-2 mb-8 text-center col-12 bg-secondary position-relative">
-                        <h4 class="font-bold w-100">Rangos</h4>
-                        <div class="position-absolute" style="top: 11px; right: 14px">
-                            <span class="mr-3 hover-btn" @click="addRango(index)"><i class="fas fa-plus text-primary"></i></span>
-                            <span class="hover-btn" @click="addRango(index, false)" v-show="rangos.cmc_rangos.length > 1">
-                                <i class="fas fa-minus text-danger"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-12 d-flex mb-8 align-items-center">
-                        <span class="title mr-10">Patron</span>
-                        <input class="form-control" :value="rangos.code" disabled>
-                        <span class="mx-4">Unidad Medida</span>
-                        <select class="form-control" v-model="rangos.unidad_medida">
-                            <option v-for="(magnitud, i) in magnitudes" :key="i">{{ magnitud }}</option>
-                        </select>
-                    </div>
-
-
-                    <!----------------------------- Rangos------------------------->
-
-                    <div
-                        class="col-12 d-flex align-items-center py-4"
-                        v-for="(rango, k) in rangos.cmc_rangos"
-                        :key="k">
-
-                        <span class="title mr-3">Rango</span>
-                        <div class="d-flex align-items-center">
-                            <span class="mr-3">de</span>
-                            <input type="number" step="0.000001" class="form-control" v-model="rango.rango_de">
-                            <input class="form-control ml-3" :value="rangos.unidad_medida" disabled>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="mx-3">a</span>
-                            <input type="number" step="0.000001" class="form-control" v-model="rango.rango_a">
-                            <input class="form-control ml-3" :value="rangos.unidad_medida" disabled>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <span class="mx-3 title">cmc</span>
-                            <input type="number" step="0.000001" class="form-control" v-model="rango.cmc">
-                            <input class="form-control ml-3" :value="rangos.unidad_medida" disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary" :disabled="$v.form.$invalid">Guardar</button>
-                </div>
-            </form>
+        <div class="col-12 my-8">
+            <CmcTable :cmc-table="cmcRangos" :show="true" v-if="cmcRangos.length" />
         </div>
     </div>
 </template>
 
 <script>
-    import GridLoader from 'vue-spinner/src/GridLoader.vue'
     import {required} from "vuelidate/lib/validators";
+    import CmcTable from './CmcTable';
 
 
     export default {
-        components: {GridLoader},
-        props: ['procedimiento'],
-
+        components: {CmcTable},
+        props: ['patron', 'medida', 'procedimiento_id'],
 
         data() {
             return {
-                loading: true,
-                form: [],
-                magnitudes: this.procedimiento.magnitud.unit_measurement,
+                cmcRangos: [],
+                form: {
+                    id: 0,
+                    patron_code: this.patron,
+                    patron_medida: '',
+                    cmc: '',
+                    cmc_unidad: '',
+                    rango_a: '',
+                    rango_de: '',
+                    rango_unidad: '',
+                    cmc_id: 0,
+                    procedimiento_id: this.procedimiento_id
+                },
+                loading: false,
+                subMultiplos: [],
+                selectUnidades: [],
                 rutas: window.routes
             }
         },
 
-
         created () {
-            if(!this.procedimiento.cmcs.length) this.iniciar();
-            else this.cargados();
+            this.fetch();
         },
 
 
         validations:{
             form:{
-                $each:{
-                    id: {required},
-                    unidad_medida: {required},
-                    cmc_rangos: {
-                        $each:{
-                            rango_de: {required},
-                            rango_a: {required},
-                            cmc: {required},
-                        }
-                    }
-                }
+                id: {required},
+                rango_de: {required},
+                rango_a: {required},
+                cmc: {required},
+                cmc_unidad: {required},
+                cmc_id: {required},
+                rango_unidad: {required},
+                patron_medida: {required},
             }
         },
 
-
-
         methods: {
-            async iniciar() {
+            async fetch(){
                 try{
-                    const patrones = this.obtenerPatrones();
-                    const patrones_ids = await this.obtenerIdsPatrones(patrones);
+                    const res = await axios.get(this.rutas.getSubMultiplos);
+                    const data = await res.data;
+                    this.subMultiplos = data.map(multiplo => multiplo.simbolo);
 
-                    //cargamos la tabla cmcs por primera vez
-                    let form = { procedimiento_id: this.procedimiento.id, patrones_ids}
-                    const resp = await axios.post(this.rutas.insertCmc, form);
-                    if(resp.data === 200) location.reload();
-                }catch(err){
-                    console.error(err);
-                }
-            },
-
-
-            async obtenerIdsPatrones(patronesCodigo){
-                try{
-                    let patronesIds = [];
-
-                    for(let i = 0; i < patronesCodigo.length; i++){
-                        let res = await axios.get(this.rutas.getPatron, {params: {code: patronesCodigo[i]} });
-                        let data = await res.data;
-                        patronesIds.push({patron_id: data.id, unidad_medida: this.procedimiento.magnitud.unit_measurement[0]});
-                    }
-
-                    return patronesIds;
+                    let params = {params: {procedimiento_id: this.procedimiento_id, patron_code: this.patron}};
+                    const response = await axios.get(this.rutas.getCmcs, params);
+                    this.cmcRangos = await response.data;
                 }catch(err){
                     console.error(err);
                 }
@@ -146,40 +102,53 @@
 
             async submit(){
                 try{
-                    const res = await axios.put(this.rutas.updateCmc, this.form);
-                    const data = await res.data;
-                    console.log(data);
+                    this.loading = true;
+                    let result;
 
+                    if(this.form.id === 0) result = await this.insertar();
+                    else  result = await this.actualizar();
+
+                    let title = this.form.id === 0 ? 'Insertado' : 'Actualizado';
+                    this.limpiar('success', title);
+
+                    this.cmcRangos.push(result.cmc);
                 }catch(err){
-                    console.error(err);
+                    this.limpiar('error');
+                    throw new Error('Error al insertar');
                 }
             },
 
+            insertar(){
+                return axios.post(this.rutas.insertar, this.form)
+                    .then(res =>{ if(res.status == 201) return res.data });
+            },
 
-            cargados(){
-                this.form = this.procedimiento.cmcs.map(cmc => ({
-                    id: cmc.pivot.id,
-                    code: cmc.code,
-                    unidad_medida: cmc.pivot.unidad_medida,
-                    procedimiento_id: this.procedimiento.id,
-                    cmc_rangos: [ {id: 0, rango_de: '', rango_a: '', cmc: '',} ]
-                }));
+            actualizar(){
+                return axios.put(this.rutas.actualizar, this.form)
+                    .then(res =>{ if(res.status == 200) return res.data });
+            },
+
+            limpiar(tipo, title = 'Insertado'){
+                if(tipo == 'success') this.$swal.fire(title, `CMC ${title} Correctamente!!`, 'success');
+                else this.$swal.fire('Error', 'Error en los datos', 'error');
+
+                this.form.cmc = '';
+                this.form.rango_a = '';
+                this.form.rango_de = '';
                 this.loading = false;
-            },
-
-            obtenerPatrones(){
-                let patrones = [];
-                this.procedimiento.patrones.forEach(patron => {
-                    patron.code.forEach(codigo => patrones.push(codigo) );
-                });
-                return patrones;
-            },
-
-            addRango(index, add = true){
-                if(add) this.form[index].cmc_rangos.push({id: 0, rango_de: '', rango_a: '', cmc: '',});
-                else this.form[index].cmc_rangos.pop();
-            },
+            }
         },
+
+        watch: {
+            medida(){
+                this.selectUnidades = this.subMultiplos.map( multiplo => {
+                    return multiplo === '-' ? this.medida : multiplo + this.medida;
+                });
+
+                this.form.rango_unidad = '';
+                this.form.patron_medida = this.medida;
+            }
+        }
     }
 </script>
 

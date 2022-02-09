@@ -4,83 +4,42 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\CmcRango;
+use App\Models\Patron;
 use Illuminate\Http\Request;
 
 class CmcRangoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function getCmcs(Request $request)
     {
-        //
+        $cmcs = CmcRango::where('procedimiento_id', $request->procedimiento_id)->where('patron_code', $request->patron_code)->get();
+        return response()->json($cmcs);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $patron = Patron::where('code', $request->patron_code)->firstOrFail();
+        $request->request->add(['patron_id' => $patron->id]);
+        $cmc = CmcRango::create($this->validateData());
+        return response()->json(['cmc' => $cmc], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request){
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CmcRango  $cmcRango
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CmcRango $cmcRango)
+    public function validateData()
     {
-        //
+        return request()->validate([
+            'cmc' => 'required',
+            'rango_a' => 'required',
+            'rango_de' => 'required',
+            'patron_id' => 'required',
+            'cmc_unidad' => 'required',
+            'patron_code' => 'required',
+            'rango_unidad' => 'required',
+            'patron_medida' => 'required',
+            'procedimiento_id' => 'required',
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CmcRango  $cmcRango
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CmcRango $cmcRango)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CmcRango  $cmcRango
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CmcRango $cmcRango)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CmcRango  $cmcRango
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CmcRango $cmcRango)
-    {
-        //
-    }
 }
