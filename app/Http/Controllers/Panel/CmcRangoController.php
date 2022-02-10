@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\CmcRango;
 use App\Models\Patron;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class CmcRangoController extends Controller
 {
@@ -24,7 +26,15 @@ class CmcRangoController extends Controller
     }
 
     public function update(Request $request){
+        $cmc = CmcRango::find($request->id);
+        $cmc->update($this->validateData());
+        return response()->json(['cmc' => $cmc], 200);
+    }
 
+    public function delete(Request $request){
+        $cmc = CmcRango::find($request->id);
+        $cmc->delete();
+        return response()->json(Response::HTTP_OK);
     }
 
     public function validateData()

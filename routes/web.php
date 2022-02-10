@@ -212,6 +212,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
     Route::get('/cmc-get', 'CmcRangoController@getCmcs')->name('cmc.get')->middleware('can:panel.database');
     Route::post('/cmc-insert', 'CmcRangoController@store')->name('cmc.insert')->middleware('can:panel.database');
     Route::put('/cmc-update', 'CmcRangoController@update')->name('cmc.update')->middleware('can:panel.database');
+    Route::delete('/cmc-delete', 'CmcRangoController@delete')->name('cmc.delete')->middleware('can:panel.database');
 
     # -- Expedientes --
     Route::resource('/expedientes', 'ExpedienteController')->middleware('can:panel.admin');

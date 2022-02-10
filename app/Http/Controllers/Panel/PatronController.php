@@ -53,7 +53,6 @@ class PatronController extends Controller
      */
     public function store(Request $request)
     {
-
         $patron = Patron::create($this->validateData());
         $patron->magnitude()->attach($request['magnitude']);
         return response()->json($request->all());

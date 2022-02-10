@@ -49,11 +49,18 @@
             {{-- Tabla --}}
 			<div class="col-lg-9">
 				<div class="card card-custom">
-					<div class="flex-wrap pt-6 pb-0 border-0 card-header">
+					<div class="flex-wrap pt-6 pb-0 border-0 card-header d-flex justify-content-between align-items-end">
 						<h3 class="card-title align-items-start flex-column">
 							<span class="card-label font-weight-bolder text-dark">Actividades planificadas</span>
 							<p class="mt-3 text-muted font-size-sm">{{ count($expedientes) }} Actividades planeadas</p>
 						</h3>
+
+                        <form>
+                            <div class="input-icon float-left">
+                                <input type="text" class="form-control" placeholder="Buscar..." id="tableInpuntSearch">
+                                <span><i class="flaticon2-search-1 icon-md"></i></span>
+                            </div>
+                        </form>
 					</div>
 
 					<div class="pt-5 card-body">
@@ -106,7 +113,7 @@
                                     <tr>
                                         <th>N° Exp</th>
                                         <th>Instrumento</th>
-                                        <th>Servicio</th>
+                                        <th>Cliente</th>
                                         <th>Prioridad</th>
                                         <th>Estado</th>
                                         <th>Técnico asignado</th>
@@ -119,7 +126,7 @@
                                         <tr>
                                             <td>{{$expediente->number}}</td>
                                             <td>{{$expediente->instrumentos->name}}</td>
-                                            <td>{{$expediente->service}}</td>
+                                            <td>{{$expediente->entradaInstrumentos->cliente->name}}</td>
                                             <td>
                                                 <span class="badge badge-{{ $expediente->prioridad['color'] }} ml-5 ml-md-0 mt-2 mt-md-0">
                                                     {{ $expediente->prioridad['priority'] }}

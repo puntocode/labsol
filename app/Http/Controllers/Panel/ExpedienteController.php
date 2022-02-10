@@ -163,11 +163,14 @@ class ExpedienteController extends Controller
 
     public function agenda(Request $request){
         $estados = ExpedienteEstado::agenda()->get();
-        $expedientes = Expediente::agenda()->get();
+        $expedientes = Expediente::relaciones()->agenda()->get();
         $estadosSum = Expediente::suma()->get();
 
         $estadosFiltro = $estadosSum->filter(function ($value, $key) {
-            return $value->expediente_estado_id == '2' || $value->expediente_estado_id == '11' || $value->expediente_estado_id == '8';
+            return $value->expediente_estado_id == '2'
+                || $value->expediente_estado_id == '11'
+                || $value->expediente_estado_id == '8'
+                || $value->expediente_estado_id == '7';
         });
         return view('panel.expedientes.agenda.index', compact('estados','expedientes', 'estadosFiltro'));
     }

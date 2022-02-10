@@ -84,7 +84,11 @@ class Expediente extends Model
     }
 
     public function scopeAgenda($query){
-        $query->where('expediente_estado_id', 2)->orWhere('expediente_estado_id', 11)->orWhere('expediente_estado_id', 8)->whereNotNull('delivery_date');
+        $query->where('expediente_estado_id', 2)
+            ->orWhere('expediente_estado_id', 7)
+            ->orWhere('expediente_estado_id', 8)
+            ->orWhere('expediente_estado_id', 11)
+            ->whereNotNull('delivery_date');
     }
 
     public function scopeCantidad($query, $entrada_id)

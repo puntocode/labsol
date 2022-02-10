@@ -14,7 +14,12 @@
 
         <div class="card card-custom">
             <div class="pt-12 card-body">
-                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-3 mb-10">
+                        <input type="text" class="form-control" placeholder="Buscar..." v-model="filterField">
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-12">
                         <table class="table table-separate table-head-custom collapsed">
@@ -24,19 +29,18 @@
                                     <th>N° Exp</th>
                                     <th>Cliente</th>
                                     <th>Instrumento</th>
-                                    <th>Servicio</th>
                                     <th>Estado</th>
                                     <th>Prioridad</th>
                                     <th>Asignar Tecnico</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(expedient, index) in expedientes" :key="index">
+                                <tr v-for="(expedient, index) in expedienteFiltrados" :key="index">
                                     <td><input v-show="expedient.tecnicos === null" type="checkbox" :value="expedient.number" v-model="expediente_ids"></td>
                                     <td>{{ expedient.number }}</td>
-                                    <td>{{ expedient.entrada_instrumentos.cliente.name }}</td>
-                                    <td>{{ expedient.instrumentos.name }}</td>
-                                    <td>{{ expedient.service }}</td>
+                                    <!-- <td>{{ expedient.entrada_instrumentos.cliente.name }}</td> -->
+                                    <td v-html="highlightMatches(expedient.entrada_instrumentos.cliente.name)"></td>
+                                    <td v-html="highlightMatches(expedient.instrumentos.name)"></td>
                                     <td>
                                         <span class="badge" :class="`badge-${expedient.estados.color}`">{{ expedient.estados.name}}</span>
                                     </td>
@@ -80,6 +84,7 @@
             return {
                 expedientes: [],
                 expediente_ids: [],
+                filterField: '',
                 rutas: window.routes
             }
         },
@@ -93,6 +98,32 @@
             cargarNumber(number){
                 this.expediente_ids = [];
                 this.expediente_ids.push(number)
+            },
+
+            highlightMatches(text) {
+                const matchExists = text.toLowerCase().includes(this.filterField.toLowerCase());
+                if (!matchExists) return text;
+
+                const re = new RegExp(this.filterField, 'ig');
+                return text.replace(re, matchedText => `<strong>${matchedText}</strong>`);
+            }
+
+        },
+
+        computed: {
+            expedienteFiltrados() {
+                return this.expedientes.filter(row => {
+                    const cliente = row.entrada_instrumentos.cliente.name.toLowerCase();
+                    const instrumento = row.instrumentos.name.toLowerCase();
+                    const estado = row.estados.name.toLowerCase();
+                    const proridad = row.prioridad.priority.toLowerCase();
+                    const searchTerm = this.filterField.toLowerCase();
+
+                    return cliente.includes(searchTerm)
+                        || instrumento.includes(searchTerm)
+                        || estado.includes(searchTerm)
+                        || proridad.includes(searchTerm);
+                });
             }
         },
     }

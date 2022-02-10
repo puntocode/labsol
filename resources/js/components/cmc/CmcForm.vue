@@ -31,7 +31,11 @@
         </form>
 
         <div class="col-12 my-8">
-            <CmcTable :cmc-table="cmcRangos" :show="true" v-if="cmcRangos.length" />
+            <CmcTable
+                @editarCmc="editCmc"
+                :cmc-table="cmcRangos"
+                :show="true"
+                v-if="cmcRangos.length" />
         </div>
     </div>
 </template>
@@ -57,7 +61,6 @@
                     rango_a: '',
                     rango_de: '',
                     rango_unidad: '',
-                    cmc_id: 0,
                     procedimiento_id: this.procedimiento_id
                 },
                 loading: false,
@@ -79,7 +82,6 @@
                 rango_a: {required},
                 cmc: {required},
                 cmc_unidad: {required},
-                cmc_id: {required},
                 rango_unidad: {required},
                 patron_medida: {required},
             }
@@ -109,9 +111,7 @@
                     else  result = await this.actualizar();
 
                     let title = this.form.id === 0 ? 'Insertado' : 'Actualizado';
-                    this.limpiar('success', title);
-
-                    this.cmcRangos.push(result.cmc);
+                    this.limpiar('success', title, result.cmc);
                 }catch(err){
                     this.limpiar('error');
                     throw new Error('Error al insertar');
@@ -128,10 +128,19 @@
                     .then(res =>{ if(res.status == 200) return res.data });
             },
 
-            limpiar(tipo, title = 'Insertado'){
+            editCmc(cmcObj){
+                this.$emit('update:medida', cmcObj.patron_medida)
+                this.form = cmcObj;
+            },
+
+            limpiar(tipo, title = 'Insertado', datos){
                 if(tipo == 'success') this.$swal.fire(title, `CMC ${title} Correctamente!!`, 'success');
                 else this.$swal.fire('Error', 'Error en los datos', 'error');
 
+                if(title == 'Insertado')this.cmcRangos.push(datos);
+                else this.cmcRangos.splice(this.form.index, 1, datos);
+
+                this.form.id = 0;
                 this.form.cmc = '';
                 this.form.rango_a = '';
                 this.form.rango_de = '';

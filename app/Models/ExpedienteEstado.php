@@ -15,7 +15,7 @@ class ExpedienteEstado extends Model
     }
 
     public function scopeAgenda($query){
-        $query->where('id', 2)->orWhere('id', 11)->orWhere('id', 8);
+        $query->where('id', 2)->orWhere('id', 11)->orWhere('id', 8)->orWhere('id', 7);
     }
 
 }

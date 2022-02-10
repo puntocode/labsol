@@ -40,11 +40,13 @@
         const GET_CMCS = "{{ route('panel.cmc.get') }}";
         const INSERT_CMC = "{{ route('panel.cmc.insert') }}";
         const UPDATE_CMC = "{{ route('panel.cmc.update') }}";
+        const ELIMINAR_CMC = "{{ route('panel.cmc.delete') }}";
         const GET_SUBMULTIPLOS = "{{ route('panel.patrones.unidades_medidas') }}";
 
         window.routes = {
             'getCmcs': GET_CMCS,
             'insertar': INSERT_CMC,
+            'eliminar': ELIMINAR_CMC,
             'actualizar': UPDATE_CMC,
             'getSubMultiplos': GET_SUBMULTIPLOS
         }
