@@ -90,12 +90,15 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     Route::resource('/valors', 'ValorController')->middleware('can:panel.database');
     Route::resource('/valor-resultado', 'ValorResultadoController')->middleware('can:panel.database');
-    Route::resource('/valor-incertidumbre', 'ValorIncertidumbreController')->middleware('can:panel.database');
-    Route::resource('/incertidumbre-resultados', 'ValorIncertidumbreResultadoController')->middleware('can:panel.database');
 
-    Route::delete('/valor-incertidumbre-delete', 'ValorIncertidumbreController@eliminarIncertidumbres')->name('valor.incertidumbre.delete')->middleware('can:panel.database');
+    Route::post('/valor-resultados/store', 'ValorResultadoController@store')->name('valor.resultados.store')->middleware('can:panel.database');
     Route::put('/valor-resultados/update', 'ValorResultadoController@updateValorResultado')->name('valor.resultados.update')->middleware('can:panel.database');
-    Route::put('/valor-incertidumbre-result/update', 'ValorIncertidumbreResultadoController@updateIncertidumbreResultado')->name('incertidumbre.resultados.update')->middleware('can:panel.database');
+
+    Route::post('/valor-incertidumbre/store', 'ValorIncertidumbreController@store')->name('valor.incertidumbre.store')->middleware('can:panel.database');
+    Route::delete('/valor-incertidumbre/delete', 'ValorIncertidumbreController@eliminarIncertidumbres')->name('valor.incertidumbre.delete')->middleware('can:panel.database');
+
+    Route::post('/valor-incertidumbre-resultados/store', 'ValorIncertidumbreResultadoController@store')->name('incertidumbre.resultados.store')->middleware('can:panel.database');
+    Route::put('/valor-incertidumbre-resultados/update', 'ValorIncertidumbreResultadoController@updateIncertidumbreResultado')->name('incertidumbre.resultados.update')->middleware('can:panel.database');
 
     Route::get('/valor-certificados', 'ValorCertificadoController@getValoresForValorId')->name('valor-certificados.get')->middleware('can:panel.admin');
     Route::post('/valor-certificados', 'ValorCertificadoController@store')->name('valor-certificados.store')->middleware('can:panel.database');
@@ -210,6 +213,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
 
     Route::get('/cmc-get', 'CmcRangoController@getCmcs')->name('cmc.get')->middleware('can:panel.database');
+    Route::get('/cmc-show', 'CmcRangoController@show')->name('cmc.show')->middleware('can:panel.database');
     Route::post('/cmc-insert', 'CmcRangoController@store')->name('cmc.insert')->middleware('can:panel.database');
     Route::put('/cmc-update', 'CmcRangoController@update')->name('cmc.update')->middleware('can:panel.database');
     Route::delete('/cmc-delete', 'CmcRangoController@delete')->name('cmc.delete')->middleware('can:panel.database');

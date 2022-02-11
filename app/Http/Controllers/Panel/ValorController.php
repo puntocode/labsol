@@ -50,7 +50,7 @@ class ValorController extends Controller
      */
     public function show(Valor $valor)
     {
-        //
+        return $valor->incertidumbreResultados;
     }
 
     /**

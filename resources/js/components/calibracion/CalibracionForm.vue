@@ -25,6 +25,7 @@
         <step-two
             :form.sync="form"
             :datos="datos"
+            @click-back="back"
             @click-next="next"
             v-if="this.steps == 2">
             <h2 class="font-weight-bold">Patrones utilizados:</h2>
@@ -36,6 +37,7 @@
             :form.sync="form"
             :datos="datos"
             @click-next="next"
+            @click-back="back"
             v-if="this.steps == 3">
             <h2 class="font-weight-bold">Datos iniciales de Calibración:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
@@ -48,6 +50,7 @@
             :incertidumbres="data.instrumentos.procedimiento[0].incertidumbres"
             :datos="datos"
             @click-next="next"
+            @click-back="back"
             v-if="this.steps == 4">
             <h2 class="font-weight-bold">Valores Obtenidos:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
@@ -58,6 +61,7 @@
             :form.sync="form"
             :datos="datos"
             @click-next="next"
+            @click-back="back"
             v-if="this.steps == 5">
             <h2 class="font-weight-bold">Datos finales de Calibración:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
@@ -91,11 +95,12 @@
 
         data() {
             return {
-                steps: 1,
-                form: {},
                 datos: {},
+                form: {},
+                incertidumbres: {},
                 magnitud: [],
-                incertidumbres: {}
+                steps: 1,
+                rutas: window.routes
             }
         },
         //------------------------------------------------------------------------------------
@@ -108,6 +113,8 @@
         methods: {
             async fetch() {
                 this.form = {...this.data.calibracion};
+                this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
+
                 this.datos.number = this.data.number;
                 this.datos.cliente_name = this.data.entrada_instrumentos.cliente.name;
                 this.datos.instrumento = this.data.instrumentos.name;
@@ -115,12 +122,19 @@
                 this.datos.procedimiento = this.data.instrumentos.procedimiento[0];
                 this.datos.tipo = this.data.type;
                 this.datos.expediente_id = this.data.id;
-                this.magnitud = this.data.instrumentos.procedimiento[0].magnitud;
+
+                const res = await axios.get(this.rutas.cmcShow, {params: {procedimiento_id: this.datos.procedimiento.id}});
+                const data = await res.data;
+                this.datos.cms = data;
+
                 if(this.data.calibracion.instrumento == null) this.form.instrumento = this.data.instrumentos.name;
             },
 
             next(){
                 this.steps++;
+            },
+            back(){
+                this.steps--;
             }
         },
         //------------------------------------------------------------------------------------

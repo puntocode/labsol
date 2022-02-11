@@ -218,12 +218,20 @@
 
             <CertificadoTable :certificados="certificados" :redondeo="redondeo"  />
 
-            <button type="button"
-                :disabled="disable"
-                class="float-right next action-button btn btn-primary mt-12"
-                title="Por favor completa todos los campos para continuar"
-                @click="siguiente">Siguiente
-            </button>
+            <div class="d-flex justify-content-between mt-12">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="atras">Atrás
+                </button>
+
+                <button type="button"
+                    :disabled="disable"
+                    class="btn btn-primary"
+                    title="Por favor completa todos los campos para continuar"
+                    @click="siguiente">Siguiente
+                </button>
+            </div>
         </div>
 
     </fieldset>
@@ -254,7 +262,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 formulario: {
                     valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
                     valores: [
-                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
+                        {calibracion_id: this.form.id, patron: 'Pa', ip_medida: '', ip_valor: ['-1595', '-1596', '-1595'], iec_medida: 'mBar', iec_valor: ['-15.95', '-15.93', ''], id:0 },
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
@@ -296,7 +304,8 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
 
         methods: {
-            async fetch(){
+            async fetch()
+            {
                 this.selectPatrones = this.form.patrones[0].code;
                 this.unidadMedidas = this.medida.unit_measurement;
 
@@ -324,25 +333,55 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 if(this.form.valores.length) this.cargarValoresDeBD();
             },
 
+            async getDocumentos(patrones){
+                try{
+                    for (let patron of patrones){
+                        const RES = await axios.get(this.rutas.manuales, {params: {'patron': patron}})
+                        let documents = await RES.data.documents;
+
+                        if(documents){
+                            documents.forEach(documento => {
+                                if(documento.category == 'MANUAL') this.documentos.push({paton: patron, url: documento.url, nombre: documento.name})
+                            })
+                        }
+                    }
+                }catch(error){
+                    console.log(error);
+                }
+            },
+
+            cargarValoresDeBD(){
+                let indice = this.form.valores.length;
+                for(let i = 0; i < this.form.valores.length; i++){
+                    this.formulario.valores[i] = this.form.valores[i];
+                    this.formulario.resultados.push(this.form.valores[i].resultados);
+                    this.certificados.push(this.form.valores[i].certificados);
+                    this.formulario.incertidumbre_result.push(['uno'])
+                    this.formulario.incertidumbre.push(['incertidumbre'])
+                }
+
+                document.getElementById(`ip-valor-0-${indice}`).disabled = false;
+                document.getElementById(`patron-${indice}`).disabled = false;
+                document.getElementById(`ip-medida-${indice}`).disabled = false;
+                document.getElementById(`iec-medida-${indice}`).disabled = false;
+            },
+
+
+            //Calculos para la BD -----------------------------------------------------------------
             async calcularIP(indice)
             {
                 try{
-                    if( this.formulario.valores[indice].iec_valor[2] === '' ){
-                        this.alertaError('No puedes dejar un campo vacío!!');
-                        return;
-                    }
+                    if( this.formulario.valores[indice].iec_valor[2] === '' ) throw new Error('No puedes dejar campos vacíos');
 
                     // Buscamos la unidad de medida en el IDE
                     const PATRON = this.formulario.valores[indice].patron;
-                    const ide = await this.ide(PATRON);
+                    const ide = await this.getIde(PATRON);
 
-                    if(ide.length === 0){
-                        this.alertaError('Por favor carga el IDE del patron seleccionado!')
+                    if(!ide.length){
                         this.formulario.valores[indice].iec_valor[2] = '';
-                        return;
+                        throw new Error('Por favor carga el IDE del patron seleccionado!');
                     }
 
-                    this.alertaCalculando();
 
                     //Unidades de medida
                     const unidadIde = ide[0].unit_measurement;
@@ -364,8 +403,8 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     const cercanos = encontrarCercanos(arrayDeriva, promedio);
 
                     if(cercanos[0] === undefined || cercanos[1] === undefined){
-                        this.errorLimpiar(indice, 'No se encuentra el rango en el IDE');
-                        return
+                        this.errorLimpiar(indice);
+                        throw new Error('Datos no se encuentran en los rangos del IDE!');
                     }else{
                         errorIp = this.calcularInterpolacion(promedio, cercanos, rangosDeriva);
                     }
@@ -387,13 +426,8 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     let uk = 0
                     if(cercanos[0] !== undefined && cercanos[1] !== undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
 
-
-                    //Guarda Valores en la BD
-                    const VALOR_ID = await this.guardarValores(indice);
-                    this.valorTemp = {valorId: VALOR_ID, index: indice};
-
-                    let result = {
-                        valor_id: VALOR_ID,
+                    let resul = {
+                        valor_id: 0,
                         desv_ip: desviacion,
                         desv_iec: desviacionIEC,
                         error_iec: errorIec,
@@ -405,49 +439,107 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                         unidad: unidadIde,
                         uk: parseFloat(uk),
                     }
-                    let resultados = await this.guardarValoresResultados(result);
-                    this.formulario.resultados.push(resultados);
 
-                    //Guarda las Incertidumbres en la BD
-                    let incertidumbres = await this.calcularIncertidumbre(result);
-                    this.formulario.incertidumbre.push(incertidumbres);
-
-                    let incertidumbre_result = await this.incertidumbreResultado(incertidumbres, indice);
-                    this.formulario.incertidumbre_result.push(incertidumbre_result);
-
-                    let certificado = await this.calcularCertificado(indice);
-                    this.certificados.push(certificado);
-
-                    $(`#iec-valor-2-${indice}`).attr('disabled', true);
-                    this.$swal.close();
+                    await this.calculosBD(resul, indice);
 
                 }catch(error){
-                    console.warn(error)
-                    if(this.valorTemp.valorId > 0 ) axios.delete(`${this.rutas.valorIndex}/${this.valorTemp.valorId}`)
-                    if(this.valorTemp.index !== undefined ) this.errorInsertar();
-                    this.errorLimpiar(indice)
+                    console.error(error);
+                    this.alertaError(error.message)
                 }
             },
 
-            calcularCertificado(indice){
-                const unidadAconvertir = this.formulario.valores[0].iec_medida;
-                const unidad = this.formulario.resultados[indice].unidad;
-                const k = this.formulario.incertidumbre_result[indice].k;
+            async calculosBD(resultados, indice){
+                try{
+                    this.alertaCalculando();
+                    const valors = this.formulario.valores[indice];
+                    const valor_resultados = resultados;
+                    const valor_incertidumbres = await this.calcularIncertidumbre(valor_resultados);
+                    const valor_incertidumbres_resultados = await this.incertidumbreResultado(valor_incertidumbres, valor_resultados, valors.patron);
+                    const valor_certificados = await this.calcularCertificado(valor_resultados, valors, valor_incertidumbres_resultados);
 
-                let ip = this.formulario.resultados[indice].ip_corregido;
-                let iec = this.formulario.resultados[indice].iec;
-                let e = this.formulario.resultados[indice].error_iec;
-                let valor_id = this.formulario.resultados[indice].valor_id;
-                let u = this.formulario.incertidumbre_result[indice].incertidumbre_expandida;
+                    console.log({valors, valor_resultados, valor_incertidumbres, valor_incertidumbres_resultados, valor_certificados});
 
-                if(unidad !== this.medidaGlobal){
-                    ip = convertirUnidad(this.medidaGlobal, unidad, ip);
-                    iec = convertirUnidad(this.medidaGlobal, unidad, iec);
-                    e = convertirUnidad(this.medidaGlobal, unidad, e);
-                    u = convertirUnidad(this.medidaGlobal, unidad, u);
+                    const valor_id = await this.guardarValores(indice);
+                    this.formulario.valores[indice].id = valor_id;
+                    valor_resultados.valor_id = valor_id;
+                    valor_incertidumbres_resultados.valor_id = valor_id;
+                    valor_certificados.valor_id = valor_id;
+
+                    await this.guardarValoresResultados(valor_resultados);
+                    await this.guardarIncertidumbres(valor_incertidumbres, valor_id);
+                    await this.guardarIncertidumbreResultados(valor_incertidumbres_resultados);
+                    await this.guardarValorCertificados(valor_certificados);
+
+                    this.formulario.resultados.push(valor_resultados);
+                    this.certificados.push(valor_certificados);
+                    document.getElementById(`iec-valor-2-${indice}`).disabled = true;
+
+                    this.$swal.close();
+
+                }catch(err){
+                    console.error(err);
+                    this.errorLimpiar(indice);
+                    this.alertaError('Error cargando en la BD');
+                }
+            },
+
+            async calcularIncertidumbre(resultado)
+            {
+                const resolucion = await this.convertirResolucion(resultado.unidad);
+
+                const valores = {
+                    ip: resultado.ip,
+                    sIEC: resultado.desv_iec,
+                    sIP: resultado.desv_ip,
+                    n: 3,
+                    uk: resultado.uk,
+                    patron: resultado.patron,
+                    r: resolucion,
+                    unidad: resultado.unidad,
+                    // valor_id: resultado.valor_id
+                };
+
+                const modelo = this.incertidumbres.map(objeto => ({...objeto}));
+                const incertidumbres = this.cargarIncertidumbre(modelo, valores);
+
+                return incertidumbres;
+            },
+
+            incertidumbreResultado(incertidumbres, resultados, patron){
+                let uDu = incertidumbres.reduce((total, incer) => { return total + (incer.u_du ** 2) }, 0);
+                let incertidumbre_combinada = Math.sqrt(uDu);
+                let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
+                let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
+                let k = encontrark(g_libertad_efectivos);
+                let incertidumbre_expandida = incertidumbre_combinada * k;
+                let ip = resultados.ip;
+                let unidad = resultados.unidad;
+                // let valor_id = resultados.valor_id;
+
+                let data = {incertidumbre_combinada, potencia, g_libertad_efectivos, k, incertidumbre_expandida, ip, unidad, patron};
+                return data;
+            },
+
+            calcularCertificado(resultado, valores, incerResult){
+                let medidaG = this.medidaGlobal;
+                let unidadAconvertir = valores.iec_medida;
+                let unidad = resultado.unidad;
+                let k = incerResult.k;
+
+                let ip = resultado.ip_corregido;
+                let iec = resultado.iec;
+                let e = resultado.error_iec;
+                // let valor_id = resultado.valor_id;
+                let u = incerResult.incertidumbre_expandida;
+
+                if(unidad !== medidaG){
+                    ip = convertirUnidad(medidaG, unidad, ip);
+                    iec = convertirUnidad(medidaG, unidad, iec);
+                    e = convertirUnidad(medidaG, unidad, e);
+                    u = convertirUnidad(medidaG, unidad, u);
                 }
 
-                if(unidadAconvertir !== this.medidaGlobal){
+                if(unidadAconvertir !== medidaG){
                     const arrSub = unidadAconvertir.split('');
                     const diferencia = arrSub[0];
 
@@ -457,13 +549,12 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     u = convertirBaseInverso(diferencia, u);
                 }
 
-                let data = {ip, iec, e, u, k, valor_id, unidad: unidadAconvertir};
-
-                return axios.post(this.rutas.valorCertificadoStore, data)
-                    .then(response => response.data);
-                //this.certificado.push();
+                let data = {ip, iec, e, u, k, unidad: unidadAconvertir};
+                return data;
             },
 
+
+            //Calculos internos --------------------------------------------------------------------
             convertirUnidadBase(array, unidadMedida, UnidadBase){
                 if(unidadMedida !== UnidadBase){
                     const valorUno = convertirBase(unidadMedida, parseFloat(array[0]));
@@ -521,34 +612,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 return interpolacion;
             },
 
-            async calcularIncertidumbre(resultado)
-            {
-                const resolucion = await this.convertirResolucion(resultado.unidad);
-
-                const valores = {
-                    ip: resultado.ip,
-                    sIEC: resultado.desv_iec,
-                    sIP: resultado.desv_ip,
-                    n: 3,
-                    uk: resultado.uk,
-                    patron: resultado.patron,
-                    r: resolucion,
-                    unidad: resultado.unidad,
-                    valor_id: resultado.valor_id
-                };
-                console.log({valores})
-
-                const INCER_MODEL = this.incertidumbres.map(objeto => ({...objeto}));
-                const INCERTIDUMBRES = await this.cargarIncertidumbre(INCER_MODEL, valores);
-
-                let incer_result = [];
-                for(let i = 0; i < INCER_MODEL.length; i++){
-                    incer_result.push({...INCER_MODEL[i], ...INCERTIDUMBRES[i]});
-                }
-
-                return incer_result;
-            },
-
             cargarIncertidumbre(incertidumbres, valores){
                 let incer = [];
 
@@ -558,34 +621,17 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     let g_libertad = incertidumbre.tipo == 'A' ? valores.n -1 : '∞';
                     let potencia = incertidumbre.tipo == 'A' ? Math.pow(u_du, 4) / g_libertad : 0;
                     let incertidumbre_id = incertidumbre.id;
-                    let valor_id = valores.valor_id;
+                    // let valor_id = valores.valor_id;
 
-                    let data = {u, u_du, g_libertad, potencia, incertidumbre_id, valor_id};
+                    let data = {u, u_du, g_libertad, potencia, incertidumbre_id};
                     incer.push(data);
                 }
 
-                return axios.post(this.rutas.valorIncertidumbreStore, incer)
-                    .then(response => response.data);
+                return incer;
             },
 
-            incertidumbreResultado(incertidumbres, indice){
-                let uDu = incertidumbres.reduce((total, incer) => { return total + (incer.u_du ** 2) }, 0);
-                let incertidumbre_combinada = Math.sqrt(uDu);
-                let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
-                let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
-                let k = encontrark(g_libertad_efectivos);
-                let incertidumbre_expandida = incertidumbre_combinada * k;
-                let ip = this.formulario.resultados[indice].ip;
-                let unidad = this.formulario.resultados[indice].unidad;
-                let patron = this.formulario.valores[indice].patron;
-                let valor_id = incertidumbres[0].valor_id;
 
-                let data = {incertidumbre_combinada, potencia, g_libertad_efectivos, k, incertidumbre_expandida, ip, unidad, patron, valor_id};
-                return axios.post(this.rutas.valorIncertidumbreResultadoStore, data)
-                    .then(response => response.data);
-
-            },
-
+            //Metdos front --------------------------------------------------------------------
             changeUnidadMedida(event){
                 const medida = event.target.value;
                 this.selectIP = this.subMultiplos.map(unidad => {
@@ -621,26 +667,10 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 })
             },
 
-            async getDocumentos(patrones){
-                try{
-                    for (let patron of patrones){
-                        const RES = await axios.get(this.rutas.manuales, {params: {'patron': patron}})
-                        let documents = await RES.data.documents;
-
-                        if(documents){
-                            documents.forEach(documento => {
-                                if(documento.category == 'MANUAL') this.documentos.push({paton: patron, url: documento.url, nombre: documento.name})
-                            })
-                        }
-                    }
-                }catch(error){
-                    console.log(error);
-                }
-            },
-
             alertaError(mensaje){
                 this.$swal.fire('Error', mensaje, 'error')
             },
+
             alertaCalculando(){
                 this.$swal.fire({
                     title: 'Calculando!',
@@ -665,6 +695,25 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                this.registroEdit = edit;
             },
 
+            async errorLimpiar(indice)
+            {
+                //guarda historial error
+                const valor = this.formulario.valores[indice];
+                if(valor.id > 0){
+                    const historico = await this.guardarHistorico(valor);
+                    this.tableHistorial.push(historico);
+                    this.eliminarValors(valor.id);
+                }
+
+
+                this.formulario.valores[indice].iec_valor = ['', '', ''];
+                this.formulario.valores[indice].ip_valor = ['', '', ''];
+                this.formulario.valores[indice].id = 0;
+                $(`#ip-valor-0-${indice}`).attr('disabled', false);
+            },
+
+
+            //Finales --------------------------------------------------------------------
             editar(){
                 console.log(this.registroEdit.fila+', '+this.registroEdit.columna+', '+this.registroEdit.valor);
                 const fila = this.registroEdit.fila;
@@ -684,6 +733,10 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
             siguiente() {
                 this.submit();
                 this.$emit('click-next')
+            },
+
+            atras() {
+                this.$emit('click-back')
             },
 
             async submit(){
@@ -711,14 +764,16 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 }
             },
 
-            ide(patron){
+
+            //Axios --------------------------------------------------------------------
+            getIde(patron){
                 return axios.get(this.rutas.patronUmIde, {params: {'patron': patron}})
                     .then(response => response.data.ide);
             },
 
             guardarValores(indice){
                 return axios.post(this.rutas.valorStore, this.formulario.valores[indice])
-                    .then(response => this.formulario.valores[indice].id = response.data.id);
+                    .then(response => this.formulario.valores[indice].id = response.data.id)
             },
 
             guardarValoresResultados(resultado){
@@ -726,48 +781,29 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     .then(response => response.data)
             },
 
-            cargarValoresDeBD(){
-                let indice = this.form.valores.length;
-                for(let i = 0; i < this.form.valores.length; i++){
-                    this.formulario.valores[i] = this.form.valores[i];
-                    this.formulario.resultados.push(this.form.valores[i].resultados);
-                    this.certificados.push(this.form.valores[i].certificados);
-                    this.formulario.incertidumbre_result.push(['uno'])
-                    this.formulario.incertidumbre.push(['incertidumbre'])
-                }
-
-                document.getElementById(`ip-valor-0-${indice}`).disabled = false;
-                document.getElementById(`patron-${indice}`).disabled = false;
-                document.getElementById(`ip-medida-${indice}`).disabled = false;
-                document.getElementById(`iec-medida-${indice}`).disabled = false;
+            guardarIncertidumbres(incertidumbres, valor_id){
+                return axios.post(this.rutas.valorIncertidumbreStore, {incertidumbres, valor_id})
+                    .then(response => response.data);
             },
 
-            errorInsertar()
-            {
-                if(this.formulario.resultados.length){
-                    let resultado = this.formulario.resultados.some(result => result.valor_id == this.valorTemp.valorId);
-                    if(resultado) this.formulario.resultados.pop();
-                }
-
-                if(this.formulario.incertidumbre.length == (this.valorTemp.index+1) ){
-                    let incertidumbre = this.formulario.incertidumbre[this.valorTemp.index].some(result => result.valor_id == this.valorTemp.valorId);
-                    if(incertidumbre) this.formulario.incertidumbre.pop();
-                }
-
-                if(this.formulario.incertidumbre_result.length == (this.valorTemp.index+1) ){
-                    let incerResult = this.formulario.incertidumbre_result.some(result => result.valor_id == this.valorTemp.valorId);
-                    if(incerResult) this.formulario.incertidumbre.pop();
-                }
+            guardarIncertidumbreResultados(incertidumbreResultados){
+                return axios.post(this.rutas.valorIncertidumbreResultadoStore, incertidumbreResultados)
+                    .then(response => response.data);
             },
 
-            errorLimpiar(indice, mensaje = 'Ocurrió un error. Por favor verifica los datos!')
-            {
-                this.formulario.valores[indice].iec_valor = ['', '', ''];
-                this.formulario.valores[indice].ip_valor = ['', '', ''];
+            guardarValorCertificados(valorCertificados){
+                return axios.post(this.rutas.valorCertificadoStore, valorCertificados)
+                    .then(response => response.data);
+            },
 
-                $(`#ip-valor-0-${indice}`).attr('disabled', false);
-                this.alertaError(mensaje);
-                this.valorTemp = {valorId: 0, index: undefined}
+            guardarHistorico(historico){
+                return axios.post(this.rutas.guardarHistorico, historico)
+                    .then(res =>{ if(res.status == 200) return res.data });
+            },
+
+            eliminarValors(valor_id){
+                axios.delete(`${this.rutas.valorIndex}/${valor_id}`)
+                    .then(resp => resp)
             }
 
         }

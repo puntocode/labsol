@@ -12,9 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 class CmcRangoController extends Controller
 {
 
-    public function getCmcs(Request $request)
-    {
+    public function getCmcs(Request $request){
         $cmcs = CmcRango::where('procedimiento_id', $request->procedimiento_id)->where('patron_code', $request->patron_code)->get();
+        return response()->json($cmcs);
+    }
+
+    public function show(Request $request){
+        $cmcs = CmcRango::where('procedimiento_id', $request->procedimiento_id)->get();
         return response()->json($cmcs);
     }
 

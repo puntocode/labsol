@@ -66,12 +66,20 @@
             </div>
         </div>
 
-        <button type="button"
-            class="float-right btn btn-primary"
-            title="Por favor completa todos los campos para continuar"
-            :disabled="$v.$invalid"
-            @click="siguiente">Siguiente
-        </button>
+        <div class="d-flex justify-content-between">
+            <button
+                type="button"
+                class="btn btn-secondary"
+                @click="atras">Atrás
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                :disabled="$v.$invalid"
+                @click="siguiente">Siguiente
+            </button>
+        </div>
     </fieldset>
 </template>
 
@@ -119,7 +127,11 @@
                 }catch(error){
                     this.$swal.fire('Error', 'Error al actualizar', 'error');
                 }
-            }
+            },
+
+            atras() {
+                this.$emit('click-back')
+            },
         },
         //------------------------------------------------------------------------------------
 

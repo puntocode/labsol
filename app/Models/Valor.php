@@ -24,5 +24,14 @@ class Valor extends Model
         return $this->hasOne(ValorCertificado::class);
     }
 
+    public function incertidumbreResultados(){
+        return $this->hasOne(ValorIncertidumbreResultado::class);
+    }
+
+    public function incertidumbres(){
+        return $this->hasMany(ValorIncertidumbre::class);
+    }
+
+
 
 }

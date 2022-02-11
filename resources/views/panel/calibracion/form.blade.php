@@ -28,6 +28,7 @@
         window.asset = "{{ URL::asset('')  }}";
 
         const INDEX = "{{ route('panel.calibracion.index') }}";
+        const CMC_SHOW = "{{ route('panel.cmc.show') }}";
         const MANUALES = "{{ route('panel.patrones.manuales') }}";
         const VALOR_INDEX = "{{ route('panel.valors.index') }}";
         const VALOR_STORE = "{{ route('panel.valors.store') }}";
@@ -39,20 +40,21 @@
         const STORE_CALIBRACION = "{{ route('panel.calibracion.store') }}";
         const ESTADO_EXPEDIENTE = "{{ route('panel.expedientes.update_estado') }}";
         const VALOR_HISTORIAL_GET = "{{ route('panel.valor-historial.get') }}";
-        const VALOR_RESULTADO_STORE = "{{ route('panel.valor-resultado.store') }}";
+        const VALOR_RESULTADO_STORE = "{{ route('panel.valor.resultados.store') }}";
         const VALOR_HISTORIAL_STORE = "{{ route('panel.valor-historial.store') }}";
         const VALOR_RESULTADO_UPDATE = "{{ route('panel.valor.resultados.update') }}";
         const VALOR_CERTIFICADO_GET = "{{ route('panel.valor-certificados.get') }}";
         const VALOR_CERTIFICADO_STORE = "{{ route('panel.valor-certificados.store') }}";
         const VALOR_CERTIFICADO_UPDATE = "{{ route('panel.valor.certificados.update') }}";
-        const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor-incertidumbre.store') }}";
+        const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor.incertidumbre.store') }}";
         const VALOR_INCERTIDUMBRE_DELETE = "{{ route('panel.valor.incertidumbre.delete') }}";
-        const VALOR_INCERTIDUMBRE_RESULTADO_STORE = "{{ route('panel.incertidumbre-resultados.store') }}";
+        const VALOR_INCERTIDUMBRE_RESULTADO_STORE = "{{ route('panel.incertidumbre.resultados.store') }}";
         const VALOR_INCERTIDUMBRE_RESULTADO_UPDATE = "{{ route('panel.incertidumbre.resultados.update') }}";
 
         window.routes = {
             'index': INDEX,
             'store': STORE_CALIBRACION,
+            'cmcShow': CMC_SHOW,
             'manuales': MANUALES,
             'valorIndex': VALOR_INDEX,
             'valorStore': VALOR_STORE,
@@ -61,6 +63,7 @@
             'submultiplos': SUBMULTIPLOS,
             'indexExpediente': INDEX_EXPEDIENTE,
             'updateHistorico': UPDATE_HISTORICO,
+            'guardarHistorico': VALOR_HISTORIAL_STORE,
             'estadoExpediente': ESTADO_EXPEDIENTE,
             'valorHistorialGet': VALOR_HISTORIAL_GET,
             'valorResultadoStore': VALOR_RESULTADO_STORE,

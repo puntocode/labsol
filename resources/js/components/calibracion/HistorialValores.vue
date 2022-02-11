@@ -1,6 +1,6 @@
 <template>
     <div class="mt-14" v-if="historials.length">
-        <h3 class="border-bottom border-primary mb-8">Historial de Cambios</h3>
+        <h3 class="border-bottom border-primary mb-8">Historial de Errores</h3>
         <table class="table table-bordered table-sm">
             <thead class="thead-light">
                 <tr>

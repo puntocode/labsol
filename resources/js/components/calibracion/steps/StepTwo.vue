@@ -28,12 +28,21 @@
             </div>
         </div>
 
-        <button
-            type="button"
-            class="float-right next action-button btn btn-primary"
-            :disabled="$v.$invalid"
-            @click="siguiente">Siguiente
-        </button>
+        <div class="d-flex justify-content-between">
+            <button
+                type="button"
+                class="btn btn-secondary"
+                @click="atras">Atrás
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                :disabled="$v.$invalid"
+                @click="siguiente">Siguiente
+            </button>
+        </div>
+
     </fieldset>
 </template>
 
@@ -76,6 +85,10 @@
                 await this.submit();
                 this.$emit('update:form', this.formulario);
                 this.$emit('click-next')
+            },
+
+            atras() {
+                this.$emit('click-back')
             },
 
             async submit(){

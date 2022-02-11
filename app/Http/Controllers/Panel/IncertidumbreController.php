@@ -21,7 +21,6 @@ class IncertidumbreController extends Controller
     public function index()
     {
         $incertidumbres = Incertidumbre::all();
-
         return view('panel.incertidumbre.index', compact('incertidumbres'));
     }
 
@@ -33,7 +32,6 @@ class IncertidumbreController extends Controller
     public function create()
     {
         $incertidumbre = new Incertidumbre();
-
         return view('panel.incertidumbre.form', compact('incertidumbre'));
     }
 
@@ -46,9 +44,7 @@ class IncertidumbreController extends Controller
     public function store(IncertidumbreRequest $request)
     {
         $incertidumbre = Incertidumbre::create($request->validated());
-
         $request->formula_img->move(public_path('media/formulas'), "$incertidumbre->formula.jpg");
-
         return redirect()->route('panel.incertidumbre.index');
     }
 
