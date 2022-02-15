@@ -15,9 +15,9 @@ class CreateCmcRangosTable extends Migration
     {
         Schema::create('cmc_rangos', function (Blueprint $table) {
             $table->id();
-            $table->float('rango_de');
-            $table->float('rango_a');
-            $table->float('cmc');
+            $table->float('rango_de', 8,3);
+            $table->float('rango_a', 8,3);
+            $table->float('cmc', 8,3);
             $table->string('cmc_unidad', 10);
             $table->string('rango_unidad', 10);
             $table->string('patron_code', 10);

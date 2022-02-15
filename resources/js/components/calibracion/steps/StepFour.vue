@@ -40,7 +40,9 @@
             <div class="form-group row text-left border-bottom border-primary pb-10">
                 <label class="col-md-2 col-form-label">Observaciones Generales</label>
                 <div class="col-md-10">
-                    <textarea type="text" class="form-control" v-model="datos.general" disabled></textarea>
+                    <div class="card w-100">
+                        <div class="card-body p-4" v-html="datos.general"></div>
+                    </div>
                 </div>
             </div>
 
@@ -83,7 +85,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.ip_valor[0].trim() !== '' && valor.id != 0"
+                            v-if="valor.ip_valor[0].trim() !== ''"
                             :valor="valor"
                             :index="0"
                             :global="indice"
@@ -103,7 +105,7 @@
 
                     <div class="input-icons">
                        <EditValor
-                            v-if="valor.ip_valor[1].trim() !== '' && valor.id != 0"
+                            v-if="valor.ip_valor[1].trim() !== ''"
                             :valor="valor"
                             :index="1"
                             :global="indice"
@@ -123,7 +125,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.ip_valor[2].trim() !== '' && valor.id != 0"
+                            v-if="valor.ip_valor[2].trim() !== ''"
                             :valor="valor"
                             :index="2"
                             :global="indice"
@@ -155,7 +157,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.iec_valor[0].trim() !== '' && valor.id != 0"
+                            v-if="valor.iec_valor[0].trim() !== ''"
                             :valor="valor"
                             :index="0"
                             :global="indice"
@@ -175,7 +177,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.iec_valor[1].trim() !== '' && valor.id != 0"
+                            v-if="valor.iec_valor[1].trim() !== ''"
                             :valor="valor"
                             :index="1"
                             :global="indice"
@@ -194,7 +196,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.iec_valor[2].trim() !== '' && valor.id != 0"
+                            v-if="valor.id != 0"
                             :valor="valor"
                             :index="2"
                             :global="indice"
@@ -214,7 +216,7 @@
                 </div>
             </div>
 
-            <HistorialValores :calibracion_id="form.id" :table-historial="tableHistorial" />
+            <HistorialValores :calibracion_id="form.id" :historials.sync="tableHistorial" />
 
             <CertificadoTable :certificados="certificados" :redondeo="redondeo"  />
 
@@ -250,6 +252,7 @@ import CertificadoTable from "../CertificadoTable";
 import HistorialValores from "../HistorialValores";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
+import calcularCMC from "../../../functions/calcular-cmc.js";
 
     export default {
         components: { CertificadoTable, HistorialValores, EditValor, ModalValor },
@@ -262,7 +265,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 formulario: {
                     valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
                     valores: [
-                        {calibracion_id: this.form.id, patron: 'Pa', ip_medida: '', ip_valor: ['-1595', '-1596', '-1595'], iec_medida: 'mBar', iec_valor: ['-15.95', '-15.93', ''], id:0 },
+                        {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
@@ -282,7 +285,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 selectPatrones: [],
                 subMultiplos: [],
                 unidadMedidas: [],
-                valorTemp: {valorId:0, index: undefined},
                 valorEdit: { anterior: '', indice: '', tipo: '', global: 0 },
                 valorLastEdit: [],
                 tableHistorial: [],
@@ -356,8 +358,8 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     this.formulario.valores[i] = this.form.valores[i];
                     this.formulario.resultados.push(this.form.valores[i].resultados);
                     this.certificados.push(this.form.valores[i].certificados);
-                    this.formulario.incertidumbre_result.push(['uno'])
-                    this.formulario.incertidumbre.push(['incertidumbre'])
+                    // this.formulario.incertidumbre_result.push(['uno']);
+                    // this.formulario.incertidumbre.push(['incertidumbre']);
                 }
 
                 document.getElementById(`ip-valor-0-${indice}`).disabled = false;
@@ -380,6 +382,14 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     if(!ide.length){
                         this.formulario.valores[indice].iec_valor[2] = '';
                         throw new Error('Por favor carga el IDE del patron seleccionado!');
+                    }
+
+                    //Errores en el CMC
+                    if(!this.datos.cmcs) throw new Error('Por favor carga los CMC!');
+                    const existeCmc = this.datos.cmcs.some(cmc => cmc.patron_code == PATRON);
+                    if(!existeCmc){
+                        this.errorLimpiar(indice);
+                        throw new Error(`No existe cmc para ese Patron: ${PATRON}`);
                     }
 
 
@@ -451,13 +461,17 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
             async calculosBD(resultados, indice){
                 try{
                     this.alertaCalculando();
+
                     const valors = this.formulario.valores[indice];
                     const valor_resultados = resultados;
                     const valor_incertidumbres = await this.calcularIncertidumbre(valor_resultados);
+
                     const valor_incertidumbres_resultados = await this.incertidumbreResultado(valor_incertidumbres, valor_resultados, valors.patron);
+                    if(!valor_incertidumbres_resultados) throw new Error('El punto de calibración no corresponde al CMC, por lo tanto, no está acreditado!');
+
                     const valor_certificados = await this.calcularCertificado(valor_resultados, valors, valor_incertidumbres_resultados);
 
-                    console.log({valors, valor_resultados, valor_incertidumbres, valor_incertidumbres_resultados, valor_certificados});
+                    console.log('valores insertados', {valors, valor_resultados, valor_incertidumbres, valor_incertidumbres_resultados, valor_certificados});
 
                     const valor_id = await this.guardarValores(indice);
                     this.formulario.valores[indice].id = valor_id;
@@ -479,7 +493,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 }catch(err){
                     console.error(err);
                     this.errorLimpiar(indice);
-                    this.alertaError('Error cargando en la BD');
+                    this.alertaError(err.message);
                 }
             },
 
@@ -496,7 +510,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     patron: resultado.patron,
                     r: resolucion,
                     unidad: resultado.unidad,
-                    // valor_id: resultado.valor_id
                 };
 
                 const modelo = this.incertidumbres.map(objeto => ({...objeto}));
@@ -505,19 +518,35 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 return incertidumbres;
             },
 
-            incertidumbreResultado(incertidumbres, resultados, patron){
-                let uDu = incertidumbres.reduce((total, incer) => { return total + (incer.u_du ** 2) }, 0);
-                let incertidumbre_combinada = Math.sqrt(uDu);
-                let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
-                let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
-                let k = encontrark(g_libertad_efectivos);
-                let incertidumbre_expandida = incertidumbre_combinada * k;
-                let ip = resultados.ip;
-                let unidad = resultados.unidad;
-                // let valor_id = resultados.valor_id;
+            async incertidumbreResultado(incertidumbres, resultados, patron){
+                try{
+                    let uDu = incertidumbres.reduce((total, incer) => { return total + (incer.u_du ** 2) }, 0);
+                    let incertidumbre_combinada = Math.sqrt(uDu);
+                    let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
+                    let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
+                    let k = encontrark(g_libertad_efectivos);
+                    let incertidumbre_expandida = incertidumbre_combinada * k;
+                    let ip = resultados.ip;
+                    let unidad = resultados.unidad;
 
-                let data = {incertidumbre_combinada, potencia, g_libertad_efectivos, k, incertidumbre_expandida, ip, unidad, patron};
-                return data;
+                    console.log({ip, unidad});
+                    console.log({incertidumbre_combinada});
+
+                    //comparamos uc con cmc
+                    const cmcs = this.datos.cmcs.filter(cmc => cmc.patron_code == patron);
+                    const cmcDesdeHasta = await calcularCMC(ip, unidad, cmcs);
+                    if(!cmcDesdeHasta) throw new Error('Error al calcular el cmc');
+                    let cmc = cmcDesdeHasta.cmc;
+                    console.log('rango: ', cmcDesdeHasta);
+                    if(unidad !== cmcDesdeHasta.unidad) cmc = convertirUnidad(cmcDesdeHasta.unidad, unidad, cmc);
+                    if(incertidumbre_combinada < cmc) incertidumbre_combinada = cmc;
+                    console.log({incertidumbre_combinada});
+
+                    let data = {incertidumbre_combinada, potencia, g_libertad_efectivos, k, incertidumbre_expandida, ip, unidad, patron};
+                    return data;
+                }catch(err){
+                    console.error(err.message);
+                }
             },
 
             calcularCertificado(resultado, valores, incerResult){
@@ -529,7 +558,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 let ip = resultado.ip_corregido;
                 let iec = resultado.iec;
                 let e = resultado.error_iec;
-                // let valor_id = resultado.valor_id;
                 let u = incerResult.incertidumbre_expandida;
 
                 if(unidad !== medidaG){
@@ -691,20 +719,17 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     return;
                 }
 
-               $(inputName).attr('disabled', true);
-               this.registroEdit = edit;
+                $(inputName).attr('disabled', true);
             },
 
             async errorLimpiar(indice)
             {
                 //guarda historial error
                 const valor = this.formulario.valores[indice];
-                if(valor.id > 0){
-                    const historico = await this.guardarHistorico(valor);
-                    this.tableHistorial.push(historico);
-                    this.eliminarValors(valor.id);
-                }
+                const historico = await this.guardarHistorico(valor);
+                this.tableHistorial.push(historico);
 
+                if(valor.id > 0) this.eliminarValors(valor.id);
 
                 this.formulario.valores[indice].iec_valor = ['', '', ''];
                 this.formulario.valores[indice].ip_valor = ['', '', ''];

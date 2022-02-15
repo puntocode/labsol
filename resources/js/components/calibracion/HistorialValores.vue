@@ -38,11 +38,10 @@
 
 <script>
     export default {
-        props: ['calibracion_id', 'tableHistorial'],
+        props: ['calibracion_id', 'historials'],
 
         data() {
             return {
-                historials: [],
                 rutas: window.routes
             }
         },
@@ -54,22 +53,13 @@
         methods: {
             async fetch() {
                 try{
-                    let res = await axios.get(this.rutas.valorHistorialGet, {params: {calibracion_id: this.calibracion_id}});
-                    this.historials = await res.data;
+                    const res = await axios.get(this.rutas.valorHistorialGet, {params: {calibracion_id: this.calibracion_id}});
+                    const data = await res.data;
+                    this.$emit('update:historials', data)
                 }catch(error){
                     console.error(error);
                 }
             }
         },
-
-        watch:{
-            tableHistorial(){
-                this.historials = this.tableHistorial;
-            }
-        }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

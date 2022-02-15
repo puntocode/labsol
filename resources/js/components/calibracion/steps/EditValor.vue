@@ -1,5 +1,6 @@
 <template>
-    <i class="la la-edit icon" data-toggle="modal" data-target="#valorModal" @click="editar"></i>
+    <i class="la la-edit icon"></i>
+    <!-- <i class="la la-edit icon" data-toggle="modal" data-target="#valorModal" @click="editar"></i> -->
 </template>
 
 <script>

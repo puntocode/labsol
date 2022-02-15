@@ -105,7 +105,9 @@
             <div class="form-group row text-left">
                 <div class="col-12 d-flex">
                     <label class="label-line">Observaciones Generales</label>
-                    <textarea type="text" class="form-control" v-model="datos.general" disabled></textarea>
+                    <div class="card w-100">
+                        <div class="card-body p-4" v-html="datos.general"></div>
+                    </div>
                 </div>
             </div>
 

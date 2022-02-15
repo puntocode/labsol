@@ -125,7 +125,7 @@
 
                 const res = await axios.get(this.rutas.cmcShow, {params: {procedimiento_id: this.datos.procedimiento.id}});
                 const data = await res.data;
-                this.datos.cms = data;
+                this.datos.cmcs = data;
 
                 if(this.data.calibracion.instrumento == null) this.form.instrumento = this.data.instrumentos.name;
             },

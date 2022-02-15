@@ -107,25 +107,23 @@
                     this.loading = true;
                     let result;
 
-                    if(this.form.id === 0) result = await this.insertar();
-                    else  result = await this.actualizar();
+                    if(this.form.id === 0){
+                        result = await this.insertar();
+                        this.cmcRangos.push(result.cmc);
+                    }else{
+                        result = await this.actualizar();
+                        this.cmcRangos.splice(this.form.index, 1, result.cmc);
+                    }
 
                     let title = this.form.id === 0 ? 'Insertado' : 'Actualizado';
-                    this.limpiar('success', title, result.cmc);
+                    this.$swal.fire(title, `Los datos han sido ${title}`, 'success');
+
+                    this.limpiar(result.cmc);
+                    this.loading = false;
                 }catch(err){
-                    this.limpiar('error');
-                    throw new Error('Error al insertar');
+                    this.$swal.fire('Error', 'Error en los datos', 'error');
+                    this.loading = false;
                 }
-            },
-
-            insertar(){
-                return axios.post(this.rutas.insertar, this.form)
-                    .then(res =>{ if(res.status == 201) return res.data });
-            },
-
-            actualizar(){
-                return axios.put(this.rutas.actualizar, this.form)
-                    .then(res =>{ if(res.status == 200) return res.data });
             },
 
             editCmc(cmcObj){
@@ -133,19 +131,22 @@
                 this.form = cmcObj;
             },
 
-            limpiar(tipo, title = 'Insertado', datos){
-                if(tipo == 'success') this.$swal.fire(title, `CMC ${title} Correctamente!!`, 'success');
-                else this.$swal.fire('Error', 'Error en los datos', 'error');
-
-                if(title == 'Insertado')this.cmcRangos.push(datos);
-                else this.cmcRangos.splice(this.form.index, 1, datos);
-
+            limpiar(){
                 this.form.id = 0;
                 this.form.cmc = '';
                 this.form.rango_a = '';
                 this.form.rango_de = '';
-                this.loading = false;
-            }
+            },
+
+
+            insertar(){
+                return axios.post(this.rutas.insertar, this.form)
+                    .then(res =>{ if(res.status == 201) return res.data });
+            },
+            actualizar(){
+                return axios.put(this.rutas.actualizar, this.form)
+                    .then(res =>{ if(res.status == 200) return res.data });
+            },
         },
 
         watch: {
