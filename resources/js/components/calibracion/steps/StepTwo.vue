@@ -95,11 +95,10 @@
 
             async submit(){
                 try{
-                    let res = null;
-
-                    if(this.form.ema) res = await axios.put(this.rutas.updateHistorico, this.formulario);
-                    else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
-
+                    // let res = null;
+                    // if(this.form.ema) res = await axios.put(this.rutas.updateHistorico, this.formulario);
+                    // else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
+                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
                     this.formulario = await res.data;
                 }catch(error){
                     this.$swal.fire('Error', 'Error al actualizar', 'error');

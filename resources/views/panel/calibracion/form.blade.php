@@ -51,6 +51,8 @@
         const VALOR_INCERTIDUMBRE_RESULTADO_STORE = "{{ route('panel.incertidumbre.resultados.store') }}";
         const VALOR_INCERTIDUMBRE_RESULTADO_UPDATE = "{{ route('panel.incertidumbre.resultados.update') }}";
 
+        const CALIBRACION_HISTORIAL_STORE = "{{ route('panel.calibracion-historial.store') }}";
+
         window.routes = {
             'index': INDEX,
             'store': STORE_CALIBRACION,
@@ -67,22 +69,18 @@
             'estadoExpediente': ESTADO_EXPEDIENTE,
             'valorHistorialGet': VALOR_HISTORIAL_GET,
             'valorResultadoStore': VALOR_RESULTADO_STORE,
-            'valorCertificadoStore': VALOR_CERTIFICADO_STORE,
-            'valorIncertidumbreStore': VALOR_INCERTIDUMBRE_STORE,
-            'valorIncertidumbreResultadoStore': VALOR_INCERTIDUMBRE_RESULTADO_STORE,
-        };
-
-        window.routesEdit = {
-            'valorIndex': VALOR_INDEX,
-            'patronUmIde': PATRON_UM_IDE,
-            'guardarHistorico': VALOR_HISTORIAL_STORE,
-            'valoresHistorial': VALOR_HISTORIAL_GET,
-            'valoresCertificado': VALOR_CERTIFICADO_GET,
             'valorResultadoUpdate': VALOR_RESULTADO_UPDATE,
+            'valorCertificadoStore': VALOR_CERTIFICADO_STORE,
             'valorCertificadoUpdate': VALOR_CERTIFICADO_UPDATE,
             'valorIncertidumbreStore': VALOR_INCERTIDUMBRE_STORE,
             'valorIncertidumbreDelete': VALOR_INCERTIDUMBRE_DELETE,
+            'calibracionHistorialStore': CALIBRACION_HISTORIAL_STORE,
+            'valorIncertidumbreResultadoStore': VALOR_INCERTIDUMBRE_RESULTADO_STORE,
             'valorIncertidumbreResultadoUpdate': VALOR_INCERTIDUMBRE_RESULTADO_UPDATE,
+        };
+
+        window.routesEdit = {
+            'calibracionHistorialStore': CALIBRACION_HISTORIAL_STORE
         };
     </script>
 @endsection

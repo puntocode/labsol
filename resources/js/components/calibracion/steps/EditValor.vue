@@ -1,27 +1,27 @@
 <template>
-    <i class="la la-edit icon"></i>
-    <!-- <i class="la la-edit icon" data-toggle="modal" data-target="#valorModal" @click="editar"></i> -->
+    <i class="la la-edit icon" data-toggle="modal" data-target="#valorModal" @click="editar()"></i>
 </template>
 
 <script>
     export default {
-        props:['valor', 'index', 'tipo', 'global'],
+        props:['fila', 'tipo', 'columna', 'valor', 'valor_id'],
         data() {
             return {
-                editValue: { anterior: '', indice: '', tipo: '', global: 0 }
+                editValue: { anteriores: '', fila: '', columna:'', tipo: '', valor_id: 0 }
             }
         },
         methods: {
-            editar() {
+            editar(){
                 this.editValue.tipo = this.tipo;
-                this.editValue.indice = this.index;
-                this.editValue.global = this.global;
+                this.editValue.fila = this.fila;
+                this.editValue.columna = this.columna;
+                this.editValue.valor_id = this.valor_id;
+                // this.editValue.valoresForm = this.valor;
 
-                if(this.tipo === 'ip_valor') this.editValue.anterior = this.valor.ip_valor[this.index];
-                else this.editValue.anterior = this.valor.iec_valor[this.index];
+                if(this.tipo === 'ip_valor') this.editValue.anteriores = this.valor.ip_valor[this.columna];
+                else this.editValue.anteriores = this.valor.iec_valor[this.columna];
 
                 this.$emit('update:valorEdit', this.editValue);
-                this.$emit('update:lastEdit', this.valor);
             }
         },
     }

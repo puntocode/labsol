@@ -185,11 +185,11 @@
 
             async submit(){
                 try{
-                    let res = null;
+                    // let res = null;
+                    // if(this.form.unidad_medida) res = await axios.put(this.rutas.updateHistorico, this.formulario);
+                    // else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
 
-                    if(this.form.unidad_medida) res = await axios.put(this.rutas.updateHistorico, this.formulario);
-                    else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
-
+                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
                     this.formulario = await res.data;
                 }catch(error){
                     console.error(error)

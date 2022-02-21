@@ -347,7 +347,7 @@
     <div class="form-group col-md-6">
         <label>Observaciones Generales</label>
         <div class="h-auto p-0 border-0 form-control">
-            <span class="font-weight-bold">{{ $expediente->entradaInstrumentos->obs_general }}</span>
+            <span class="font-weight-bold">{!! $expediente->entradaInstrumentos->obs_general !!}</span>
         </div>
     </div>
 </div>

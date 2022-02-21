@@ -15,8 +15,9 @@ class CreateCalibracionHistorialsTable extends Migration
     {
         Schema::create('calibracion_historials', function (Blueprint $table) {
             $table->id();
-            $table->json('anteriores');
-            $table->json('nuevos');
+            $table->string('anteriores');
+            $table->string('nuevos');
+            $table->string('campo', 50);
             $table->foreignId('calibracion_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();

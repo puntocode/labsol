@@ -5,7 +5,7 @@
                 <slot></slot>
             </div>
 
-            <ModalValor
+            <!-- <ModalValor
                 :valores="valorEdit"
                 :last-value="valorLastEdit"
                 :valores-medidas="formulario.valores_medidas"
@@ -13,6 +13,14 @@
                 :form-valores.sync="formulario.valores"
                 :table-hist.sync="tableHistorial"
                 :table-cert.sync="certificados"
+            /> -->
+
+            <ModalValor
+                :valores="valorEdit"
+                :valorIp.sync="formulario.valores[valorEdit.fila].ip_valor[valorEdit.columna]"
+                :valorIec.sync="formulario.valores[valorEdit.fila].iec_valor[valorEdit.columna]"
+                :calibracion_id="form.id"
+                @editarCal="editar"
             />
 
 
@@ -87,10 +95,10 @@
                         <EditValor
                             v-if="valor.ip_valor[0].trim() !== ''"
                             :valor="valor"
-                            :index="0"
-                            :global="indice"
+                            :columna="0"
+                            :fila="indice"
+                            :valor_id="valor.id"
                             :valor-edit.sync="valorEdit"
-                            :last-edit.sync="valorLastEdit"
                             tipo="ip_valor"
                         />
                         <input
@@ -107,10 +115,10 @@
                        <EditValor
                             v-if="valor.ip_valor[1].trim() !== ''"
                             :valor="valor"
-                            :index="1"
-                            :global="indice"
+                            :columna="1"
+                            :fila="indice"
+                            :valor_id="valor.id"
                             :valor-edit.sync="valorEdit"
-                            :last-edit.sync="valorLastEdit"
                             tipo="ip_valor"
                         />
                         <input
@@ -127,10 +135,10 @@
                         <EditValor
                             v-if="valor.ip_valor[2].trim() !== ''"
                             :valor="valor"
-                            :index="2"
-                            :global="indice"
+                            :columna="2"
+                            :fila="indice"
+                            :valor_id="valor.id"
                             :valor-edit.sync="valorEdit"
-                            :last-edit.sync="valorLastEdit"
                             tipo="ip_valor"
                         />
                         <input
@@ -159,10 +167,10 @@
                         <EditValor
                             v-if="valor.iec_valor[0].trim() !== ''"
                             :valor="valor"
-                            :index="0"
-                            :global="indice"
+                            :columna="0"
+                            :fila="indice"
+                            :valor_id="valor.id"
                             :valor-edit.sync="valorEdit"
-                            :last-edit.sync="valorLastEdit"
                             tipo="iec_valor"
                         />
                         <input
@@ -179,10 +187,10 @@
                         <EditValor
                             v-if="valor.iec_valor[1].trim() !== ''"
                             :valor="valor"
-                            :index="1"
-                            :global="indice"
+                            :columna="1"
+                            :fila="indice"
+                            :valor_id="valor.id"
                             :valor-edit.sync="valorEdit"
-                            :last-edit.sync="valorLastEdit"
                             tipo="iec_valor"
                         />
                         <input
@@ -198,10 +206,10 @@
                         <EditValor
                             v-if="valor.id != 0"
                             :valor="valor"
-                            :index="2"
-                            :global="indice"
+                            :columna="2"
+                            :fila="indice"
+                            :valor_id="valor.id"
                             :valor-edit.sync="valorEdit"
-                            :last-edit.sync="valorLastEdit"
                             tipo="iec_valor"
                         />
                         <input
@@ -245,6 +253,7 @@ import ModalValor from "./ModalValor";
 import encontrark from "../../../functions/encontrar-k.js";
 import interpolar from "../../../functions/interpolar.js";
 import calcularDes from "../../../functions/calcular-desviacion.js";
+import calcularCMC from "../../../functions/calcular-cmc.js";
 import convertirBase from "../../../functions/convertir-base.js";
 import calcularFormula from "../../../functions/formulas.js";
 import convertirUnidad from "../../../functions/convertir-unidad.js";
@@ -252,7 +261,6 @@ import CertificadoTable from "../CertificadoTable";
 import HistorialValores from "../HistorialValores";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
-import calcularCMC from "../../../functions/calcular-cmc.js";
 
     export default {
         components: { CertificadoTable, HistorialValores, EditValor, ModalValor },
@@ -285,8 +293,8 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
                 selectPatrones: [],
                 subMultiplos: [],
                 unidadMedidas: [],
-                valorEdit: { anterior: '', indice: '', tipo: '', global: 0 },
-                valorLastEdit: [],
+                valorEdit: { anterior: '', fila: 0, columna: 0, tipo: '' },
+                // valorLastEdit: [],
                 tableHistorial: [],
             }
         },
@@ -388,7 +396,7 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
                     if(!this.datos.cmcs) throw new Error('Por favor carga los CMC!');
                     const existeCmc = this.datos.cmcs.some(cmc => cmc.patron_code == PATRON);
                     if(!existeCmc){
-                        this.errorLimpiar(indice);
+                        // this.errorLimpiar(indice);
                         throw new Error(`No existe cmc para ese Patron: ${PATRON}`);
                     }
 
@@ -412,8 +420,10 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
                     const arrayDeriva = rangosDeriva.map( numero => numero.ip.valor);
                     const cercanos = encontrarCercanos(arrayDeriva, promedio);
 
+                    console.log(cercanos)
+
                     if(cercanos[0] === undefined || cercanos[1] === undefined){
-                        this.errorLimpiar(indice);
+                        // this.errorLimpiar(indice);
                         throw new Error('Datos no se encuentran en los rangos del IDE!');
                     }else{
                         errorIp = this.calcularInterpolacion(promedio, cercanos, rangosDeriva);
@@ -437,7 +447,7 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
                     if(cercanos[0] !== undefined && cercanos[1] !== undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
 
                     let resul = {
-                        valor_id: 0,
+                        valor_id: this.formulario.valores[indice].id,
                         desv_ip: desviacion,
                         desv_iec: desviacionIEC,
                         error_iec: errorIec,
@@ -460,8 +470,6 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
 
             async calculosBD(resultados, indice){
                 try{
-                    this.alertaCalculando();
-
                     const valors = this.formulario.valores[indice];
                     const valor_resultados = resultados;
                     const valor_incertidumbres = await this.calcularIncertidumbre(valor_resultados);
@@ -471,29 +479,68 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
 
                     const valor_certificados = await this.calcularCertificado(valor_resultados, valors, valor_incertidumbres_resultados);
 
-                    console.log('valores insertados', {valors, valor_resultados, valor_incertidumbres, valor_incertidumbres_resultados, valor_certificados});
+                    const valores = {valors, valor_resultados, valor_incertidumbres, valor_incertidumbres_resultados, valor_certificados}
 
-                    const valor_id = await this.guardarValores(indice);
-                    this.formulario.valores[indice].id = valor_id;
-                    valor_resultados.valor_id = valor_id;
-                    valor_incertidumbres_resultados.valor_id = valor_id;
-                    valor_certificados.valor_id = valor_id;
+                    if(valor_resultados.valor_id === 0) await this.insertarValors(indice, valores);
+                    else this.updateValors(indice, valores);
+                }catch(err){
+                    console.error(err);
+                    this.alertaError('Error en los datos');
+                }
+            },
 
-                    await this.guardarValoresResultados(valor_resultados);
-                    await this.guardarIncertidumbres(valor_incertidumbres, valor_id);
-                    await this.guardarIncertidumbreResultados(valor_incertidumbres_resultados);
-                    await this.guardarValorCertificados(valor_certificados);
+            async insertarValors(index, valores){
+                try{
+                    this.alertaCalculando();
+                    console.log(valores)
 
-                    this.formulario.resultados.push(valor_resultados);
-                    this.certificados.push(valor_certificados);
-                    document.getElementById(`iec-valor-2-${indice}`).disabled = true;
+                    //insertamos en valors y esperamos el id
+                    const valor_id = await this.guardarValores(index);
+                    valores.valor_resultados.valor_id = valor_id;
+                    valores.valor_incertidumbres_resultados.valor_id = valor_id;
+                    valores.valor_certificados.valor_id = valor_id;
 
+                    await this.guardarValoresResultados(valores.valor_resultados);
+                    await this.guardarIncertidumbres(valores.valor_incertidumbres, valor_id);
+                    await this.guardarIncertidumbreResultados(valores.valor_incertidumbres_resultados);
+                    await this.guardarValorCertificados(valores.valor_certificados);
+
+                    this.formulario.valores[index].id = valor_id;
+                    this.formulario.resultados.push(valores.valor_resultados);
+                    this.certificados.push(valores.valor_certificados);
+                    document.getElementById(`iec-valor-2-${index}`).disabled = true;
                     this.$swal.close();
 
                 }catch(err){
-                    console.error(err);
-                    this.errorLimpiar(indice);
+                    this.errorLimpiar(index);
                     this.alertaError(err.message);
+                }
+            },
+
+            async updateValors(index, valores){
+                try{
+                    //actulizar la tabla valors, resultados incer, certificado
+                    this.alertaCalculando();
+                    console.log(valores)
+
+                    valores.valor_resultados.valor_id = valores.valors.id;
+                    valores.valor_incertidumbres_resultados.valor_id = valores.valors.id;
+                    valores.valor_certificados.valor_id = valores.valors.id;
+
+                    await this.actualizarValors(valores.valors);
+                    await this.actualizarValorsResultado(valores.valor_resultados);
+                    await this.actualizarValorsIncerResult(valores.valor_incertidumbres_resultados);
+                    await this.actualizarValorsCertificado(valores.valor_certificados);
+                    await this.eliminarIncertidumbres(valores.valors.id);
+                    await this.guardarIncertidumbres(valores.valor_incertidumbres, valores.valors.id);
+
+                    this.formulario.resultados.splice(index, 1, valores.valor_resultados);
+                    this.certificados.splice(index, 1, valores.valor_certificados);
+
+                    this.$swal.close();
+                }catch(err){
+                    console.log(err);
+
                 }
             },
 
@@ -523,8 +570,11 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
                     let uDu = incertidumbres.reduce((total, incer) => { return total + (incer.u_du ** 2) }, 0);
                     let incertidumbre_combinada = Math.sqrt(uDu);
                     let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
+
                     let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
-                    let k = encontrark(g_libertad_efectivos);
+                    if(g_libertad_efectivos == Infinity) g_libertad_efectivos = 2;
+
+                   let k = encontrark(g_libertad_efectivos);
                     let incertidumbre_expandida = incertidumbre_combinada * k;
                     let ip = resultados.ip;
                     let unidad = resultados.unidad;
@@ -739,24 +789,32 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
 
 
             //Finales --------------------------------------------------------------------
-            editar(){
-                console.log(this.registroEdit.fila+', '+this.registroEdit.columna+', '+this.registroEdit.valor);
-                const fila = this.registroEdit.fila;
-                const col = this.registroEdit.columna;
-                const valor = this.registroEdit.valor;
+            async editar(valor){
 
-                $(`#${valor}-${col}-${fila}`).attr('disabled', false);
-                $(`#${valor}-${col}-${fila}`).select();
+                let anterior;
 
-                if(valor === 'iec-valor' && col === 2){
-                    this.formulario.resultados.pop();
-                    this.formulario.incertidumbre.pop();
-                    this.certificado.pop();
+                if(valor.tipo === 'ip_valor'){
+                    anterior = this.formulario.valores[valor.fila].ip_valor[valor.columna];
+                    this.formulario.valores[valor.fila].ip_valor[valor.columna] = valor.nuevos;
                 }
+                else{
+                    anterior = this.formulario.valores[valor.fila].iec_valor[valor.columna];
+                    this.formulario.valores[valor.fila].iec_valor[valor.columna] = valor.nuevos;
+                }
+
+                try{
+                    await this.calcularIP(valor.fila);
+                    await this.guardarHistorico(valor);
+                }catch(err){
+                    if(valor.tipo === 'ip_valor') this.formulario.valores[valor.fila].ip_valor[valor.columna] = anterior;
+                    else this.formulario.valores[valor.fila].iec_valor[valor.columna] = anterior;
+                }
+
+
             },
 
             siguiente() {
-                this.submit();
+                // this.submit();
                 this.$emit('click-next')
             },
 
@@ -764,30 +822,30 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
                 this.$emit('click-back')
             },
 
-            async submit(){
-                try{
-                    let formulario = {...this.form};
-                    formulario.ip_medida = this.formulario.valores_medidas.ip_medida_general;
+            // async submit(){
+            //     try{
+            //         let formulario = {...this.form};
+            //         formulario.ip_medida = this.formulario.valores_medidas.ip_medida_general;
 
-                    //entra la primera vez
-                    if(!this.form.ip_medida && this.formulario.valores_medidas.ip_medida_general !== ''){
-                        console.log('Entra primera vez');
-                        let res = await axios.put(`${this.rutas.index}/${formulario.id}`, formulario);
-                        let datos = await res.data;
-                        return;
-                    }
+            //         //entra la primera vez
+            //         if(!this.form.ip_medida && this.formulario.valores_medidas.ip_medida_general !== ''){
+            //             console.log('Entra primera vez');
+            //             let res = await axios.put(`${this.rutas.index}/${formulario.id}`, formulario);
+            //             let datos = await res.data;
+            //             return;
+            //         }
 
-                    //si se cambia de valores
-                    if(this.form.ip_medida !== this.formulario.valores_medidas.ip_medida_general){
-                        console.log('Se cambia de valores');
-                        let res = await axios.put(this.rutas.updateHistorico, formulario);
-                        let datos = await res.data;
-                    }
+            //         //si se cambia de valores
+            //         if(this.form.ip_medida !== this.formulario.valores_medidas.ip_medida_general){
+            //             console.log('Se cambia de valores');
+            //             let res = await axios.put(this.rutas.updateHistorico, formulario);
+            //             let datos = await res.data;
+            //         }
 
-                }catch(error){
-                    console.error(error);
-                }
-            },
+            //     }catch(error){
+            //         console.error(error);
+            //     }
+            // },
 
 
             //Axios --------------------------------------------------------------------
@@ -829,7 +887,38 @@ import calcularCMC from "../../../functions/calcular-cmc.js";
             eliminarValors(valor_id){
                 axios.delete(`${this.rutas.valorIndex}/${valor_id}`)
                     .then(resp => resp)
-            }
+            },
+
+            actualizarValors(data){
+                return axios.put(`${this.rutas.valorIndex}/${data.id}`, data)
+                    .then(res =>{ if(res.status == 200) return res.data });
+            },
+
+            actualizarValorsResultado(resultado){
+                return axios.put(this.rutas.valorResultadoUpdate, resultado)
+                    .then(response => response.data)
+            },
+
+            actualizarValorsIncerResult(incerResultado){
+                return axios.put(this.rutas.valorIncertidumbreResultadoUpdate, incerResultado)
+                    .then(response => response.data)
+            },
+
+            actualizarValorsCertificado(certificado){
+                return axios.put(this.rutas.valorCertificadoUpdate, certificado)
+                    .then(response => response.data);
+            },
+
+            eliminarIncertidumbres(valor_id){
+                return axios.delete(this.rutas.valorIncertidumbreDelete, { data: {valor_id}} )
+                    .then(res => res.data);
+            },
+
+            guardarHistorico(historial){
+                return axios.post(this.rutas.calibracionHistorialStore, historial)
+                    .then(res =>{ if(res.status == 200) return res.data })
+                    .catch(err => console.log(err));
+            },
 
         }
 
