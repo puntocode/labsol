@@ -572,9 +572,11 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     let potencia = incertidumbres.reduce((total, incer) => { return total + incer.potencia }, 0);
 
                     let g_libertad_efectivos = Math.pow(incertidumbre_combinada, 4) / potencia;
-                    if(g_libertad_efectivos == Infinity) g_libertad_efectivos = 2;
 
-                   let k = encontrark(g_libertad_efectivos);
+                    let k = 2;
+                    if(g_libertad_efectivos !== Infinity) k = encontrark(g_libertad_efectivos);
+                    else g_libertad_efectivos = 0;
+
                     let incertidumbre_expandida = incertidumbre_combinada * k;
                     let ip = resultados.ip;
                     let unidad = resultados.unidad;

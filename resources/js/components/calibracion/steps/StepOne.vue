@@ -20,19 +20,25 @@
                 <div class="form-group row text-left">
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Instrumento <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="$v.formulario.instrumento.$model" />
+                        <input
+                            class="form-control"
+                            v-model="$v.formulario.instrumento.$model"/>
                     </div>
 
                     <div class="col-md-6 d-flex">
                         <label class="label-line">N° de Serie</label>
-                        <input type="text" class="form-control" v-model="formulario.nro_serie" />
+                        <input
+                            class="form-control"
+                            v-model="formulario.nro_serie"/>
                     </div>
                 </div>
 
                 <div class="form-group row text-left">
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Identificación <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="$v.formulario.identificacion.$model"  />
+                        <input
+                            class="form-control"
+                            v-model="$v.formulario.identificacion.$model"/>
                     </div>
 
                     <div class="col-md-6 d-flex">
@@ -68,7 +74,7 @@
                         <label class="label-line">Intervalo <span class="text-danger">*</span></label>
                         <div class="d-flex w-100">
                             <input type="number" step="0.000001" class="form-control mr-5" v-model="$v.formulario.intervalo_desde.$model" :disabled="medidasEmpty"  />
-                            <input type="text" class="form-control" :value="formulario.intervalo_desde_medida" disabled  />
+                            <input class="form-control" :value="formulario.intervalo_desde_medida" disabled  />
                         </div>
                     </div>
 
@@ -97,7 +103,10 @@
 
                     <div class="col-md-6 d-flex">
                         <label class="label-line">Modelo</label>
-                        <input type="text" class="form-control" v-model="formulario.modelo" />
+                        <input
+                            class="form-control"
+                            v-model="formulario.modelo"
+                            @blur="guardarCambiosLS('modelo', formulario.modelo, false)" />
                     </div>
                 </div>
             </div>
@@ -161,6 +170,7 @@
                 const res = await axios.get(this.rutas.submultiplos);
                 this.subMultiplos = await res.data;
                 this.unidadMedidas = this.medida != null ? this.medida.unit_measurement : [];
+                if(!this.formulario.instrumento) this.formulario.instrumento = this.form.instrumento;
             },
 
             async siguiente() {
@@ -183,12 +193,28 @@
                 this.formulario.intervalo_desde_medida = event.target.value;
             },
 
+            guardarCambiosLS(campo, newValue, validate = true){
+                try{
+                    if(!newValue && validate) throw new Error('No puedes dejar el campo vacio')
+                    if(!newValue) return;
+
+                    let array = [];
+                    array = JSON.parse(localStorage.getItem(campo)) || [];
+                    array.push(newValue);
+                    console.log(array)
+                    localStorage.setItem(campo, JSON.stringify(array));
+                }catch(err){
+                    this.$swal.fire('Error', err.message, 'error');
+                }
+            },
+
+            // compararCambios(){
+            //     let cambios = [];
+            //     if(this.form.instrumento !== this.formulario.instrumento) cambios.push({anteriores: this.form.instrumento, nuevos: this.formulario.instrumento, campo: 'instrumento'});
+            // },
+
             async submit(){
                 try{
-                    // let res = null;
-                    // if(this.form.unidad_medida) res = await axios.put(this.rutas.updateHistorico, this.formulario);
-                    // else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
-
                     const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
                     this.formulario = await res.data;
                 }catch(error){

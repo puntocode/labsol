@@ -94,7 +94,7 @@
                                 <tr>
                                     <th scope="row">Grados de libertad efectivos</th>
                                     <td><img :src="`${asset}media/formulas/g_libertad_efectivos.jpg`" alt="formula" height="55"></td>
-                                    <td>{{ resultados[index].g_libertad_efectivos.toExponential(2) }}</td>
+                                    <td>{{ resultados[index].g_libertad_efectivos == 0 ? '∞' : resultados[index].g_libertad_efectivos.toExponential(2) }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Factor de cobertura (95,45%)</th>
