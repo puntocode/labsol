@@ -5,16 +5,6 @@
                 <slot></slot>
             </div>
 
-            <!-- <ModalValor
-                :valores="valorEdit"
-                :last-value="valorLastEdit"
-                :valores-medidas="formulario.valores_medidas"
-                :incertidumbre="{resolucion: this.resol, medida_global: this.medidaGlobal, resolucion_medida: this.form.resolucion_medida, modelo: incertidumbres}"
-                :form-valores.sync="formulario.valores"
-                :table-hist.sync="tableHistorial"
-                :table-cert.sync="certificados"
-            /> -->
-
             <ModalValor
                 :valores="valorEdit"
                 :valorIp.sync="formulario.valores[valorEdit.fila].ip_valor[valorEdit.columna]"
@@ -93,7 +83,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.ip_valor[0].trim() !== ''"
+                            v-if="valor.ip_valor[0]"
                             :valor="valor"
                             :columna="0"
                             :fila="indice"
@@ -113,7 +103,7 @@
 
                     <div class="input-icons">
                        <EditValor
-                            v-if="valor.ip_valor[1].trim() !== ''"
+                            v-if="valor.ip_valor[1]"
                             :valor="valor"
                             :columna="1"
                             :fila="indice"
@@ -133,7 +123,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.ip_valor[2].trim() !== ''"
+                            v-if="valor.ip_valor[2].trim()"
                             :valor="valor"
                             :columna="2"
                             :fila="indice"
@@ -165,7 +155,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.iec_valor[0].trim() !== ''"
+                            v-if="valor.iec_valor[0]"
                             :valor="valor"
                             :columna="0"
                             :fila="indice"
@@ -185,7 +175,7 @@
 
                     <div class="input-icons">
                         <EditValor
-                            v-if="valor.iec_valor[1].trim() !== ''"
+                            v-if="valor.iec_valor[1]"
                             :valor="valor"
                             :columna="1"
                             :fila="indice"
@@ -293,8 +283,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 selectPatrones: [],
                 subMultiplos: [],
                 unidadMedidas: [],
-                valorEdit: { anterior: '', fila: 0, columna: 0, tipo: '' },
-                // valorLastEdit: [],
+                valorEdit: { anteriores: '', fila: 0, columna: 0, tipo: '' },
                 tableHistorial: [],
             }
         },
@@ -792,27 +781,20 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
             //Finales --------------------------------------------------------------------
             async editar(valor){
-
-                let anterior;
-
-                if(valor.tipo === 'ip_valor'){
-                    anterior = this.formulario.valores[valor.fila].ip_valor[valor.columna];
-                    this.formulario.valores[valor.fila].ip_valor[valor.columna] = valor.nuevos;
-                }
-                else{
-                    anterior = this.formulario.valores[valor.fila].iec_valor[valor.columna];
-                    this.formulario.valores[valor.fila].iec_valor[valor.columna] = valor.nuevos;
-                }
-
                 try{
-                    await this.calcularIP(valor.fila);
-                    await this.guardarHistorico(valor);
+                    const hist = await axios.post(this.rutas.calibracionHistorialStore, valor);
+
+                    if(valor.tipo === 'ip_valor') this.formulario.valores[valor.fila].ip_valor[valor.columna] = valor.nuevos;
+                    else this.formulario.valores[valor.fila].iec_valor[valor.columna] = valor.nuevos;
+
+                    this.calcularIP(valor.fila)
+                        .then(response => console.log(response))
+                        .catch(err =>{ throw new Error(err.message) })
+
                 }catch(err){
-                    if(valor.tipo === 'ip_valor') this.formulario.valores[valor.fila].ip_valor[valor.columna] = anterior;
-                    else this.formulario.valores[valor.fila].iec_valor[valor.columna] = anterior;
+                    let mensaje = err.message == 'Request failed with status code 401' ? 'Pin incorrecto' : err.message;
+                    this.alertaError(mensaje);
                 }
-
-
             },
 
             siguiente() {
@@ -823,31 +805,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
             atras() {
                 this.$emit('click-back')
             },
-
-            // async submit(){
-            //     try{
-            //         let formulario = {...this.form};
-            //         formulario.ip_medida = this.formulario.valores_medidas.ip_medida_general;
-
-            //         //entra la primera vez
-            //         if(!this.form.ip_medida && this.formulario.valores_medidas.ip_medida_general !== ''){
-            //             console.log('Entra primera vez');
-            //             let res = await axios.put(`${this.rutas.index}/${formulario.id}`, formulario);
-            //             let datos = await res.data;
-            //             return;
-            //         }
-
-            //         //si se cambia de valores
-            //         if(this.form.ip_medida !== this.formulario.valores_medidas.ip_medida_general){
-            //             console.log('Se cambia de valores');
-            //             let res = await axios.put(this.rutas.updateHistorico, formulario);
-            //             let datos = await res.data;
-            //         }
-
-            //     }catch(error){
-            //         console.error(error);
-            //     }
-            // },
 
 
             //Axios --------------------------------------------------------------------

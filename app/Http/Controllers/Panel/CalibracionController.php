@@ -184,4 +184,11 @@ class CalibracionController extends Controller
     }
 
 
+    public function actualizarCampo(Request $request){
+        $calibracion = Calibracion::find($request->id);
+        $actualizado = $calibracion->update([ $request->campo => $request->valor ]);
+        return response()->json($request->valor);
+    }
+
+
 }

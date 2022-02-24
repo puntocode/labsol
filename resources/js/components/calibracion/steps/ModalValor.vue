@@ -49,53 +49,60 @@
         data() {
             return {
                 form:{
+                    anteriores: '',
                     nuevos: '',
                     calibracion_id: this.calibracion_id,
                     campo: 'calibracion',
                     pin: '',
                 },
                 spin: false,
-                pinUser: '1234',
                 rutas: window.routesEdit,
             }
         },
 
         methods: {
-            //axios -------------------------------------------------------------------------
-            guardarHistorico(historial){
-                return axios.post(this.rutas.calibracionHistorialStore, this.form)
-                    .then(res =>{ if(res.status == 200) return res.data })
-                    .catch(err => console.log(err));
-            },
+
 
             //async -------------------------------------------------------------------------
             async editar(){
+                const tipo = this.valores.tipo == 'ip_valor' ? 'IP' : 'IEC';
+
                 this.spin = true;
                 this.form.anteriores = this.valores.anteriores;
+                this.form.campo = `Punto calibracion ${tipo} (${this.valores.fila + 1}, ${this.valores.columna + 1})`;
 
-                if(this.valores.valor_id === 0)
-                {
-                    const hist = await this.guardarHistorico();
+                 try{
 
-                    if(this.valores.tipo === 'ip_valor') this.$emit('update:valorIp', hist.nuevos);
-                    else this.$emit('update:valorIec', hist.nuevos);
-                }else{
-                    this.valores.nuevos = this.form.nuevos;
-                    this.valores.campo = 'calibracion';
-                    this.valores.calibracion_id = this.calibracion_id;
-                    this.$emit('editarCal', this.valores);
+                    if(this.valores.valor_id == 0){
+                        const hist = await axios.post(this.rutas.calibracionHistorialStore, this.form);
+
+                        if(this.valores.tipo === 'ip_valor') this.$emit('update:valorIp', hist.data.nuevos);
+                        else this.$emit('update:valorIec', hist.nuevos);
+
+                    }else{
+                        this.valores.nuevos = this.form.nuevos;
+                        this.valores.campo = this.form.campo;
+                        this.valores.calibracion_id = this.calibracion_id;
+                        this.valores.pin = this.form.pin;
+                        this.$emit('editarCal', this.valores);
+                    }
+
+                    document.getElementById("btn-cancel").click();
+                    this.form.nuevos = '';
+                    this.spin = false;
+
+                }catch(err){
+                    this.$swal.fire('Error', 'Pin incorrecto', 'error');
+                    this.spin = false;
                 }
 
-                document.getElementById("btn-cancel").click();
-                this.form.nuevos = '';
-                this.spin = false;
             },
 
         },
 
         computed: {
             desactivado() {
-                return this.form.nuevo == '' || (this.form.pin != this.pinUser) || this.spin;
+                return !this.form.nuevos || !this.form.pin  || this.spin;
             }
         },
 

@@ -45,6 +45,7 @@
         const VALOR_RESULTADO_UPDATE = "{{ route('panel.valor.resultados.update') }}";
         const VALOR_CERTIFICADO_GET = "{{ route('panel.valor-certificados.get') }}";
         const VALOR_CERTIFICADO_STORE = "{{ route('panel.valor-certificados.store') }}";
+        const CALIBRACION_UPDATE_CAMPO = "{{ route('panel.calibracion.update.campo') }}";
         const VALOR_CERTIFICADO_UPDATE = "{{ route('panel.valor.certificados.update') }}";
         const VALOR_INCERTIDUMBRE_STORE = "{{ route('panel.valor.incertidumbre.store') }}";
         const VALOR_INCERTIDUMBRE_DELETE = "{{ route('panel.valor.incertidumbre.delete') }}";
@@ -61,6 +62,7 @@
             'valorIndex': VALOR_INDEX,
             'valorStore': VALOR_STORE,
             'patronUmIde': PATRON_UM_IDE,
+            'updateCampo': CALIBRACION_UPDATE_CAMPO,
             'certificados': CERTIFICADOS,
             'submultiplos': SUBMULTIPLOS,
             'indexExpediente': INDEX_EXPEDIENTE,

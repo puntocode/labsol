@@ -6,17 +6,41 @@
             <div class="form-group row text-left" v-for="(patron, index) in patrones" :key="index">
                <label class="col-sm-3 col-form-label" v-text="patron.name"></label>
                 <div class="col-md-9">
-                    <SelectMultiple v-model="formulario.patrones[index].code" :options="patron.code" />
+                    <input v-if="form.patrones" class="form-control" :value="form.patrones[index].code" disabled />
+
+
+                    <div class="w-100 d-flex" v-else>
+                        <SelectMultiple class="w-100"  v-model="formulario.patrones[index].code" :options="patron.code" />
+                        <button
+                            type="button"
+                            class="btn btn-success px-2 ml-3"
+                            :disabled="!formulario.patrones[index].code"
+                            @click="updateCampo('patrones')">
+                            <i class="pl-3 pr-2 la la-check icon"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group row text-left">
                <label class="col-sm-3 col-form-label">Equipos De Medición Ambiental</label>
                 <div class="col-md-9">
-                    <select v-model="formulario.ema" class="form-control">
-                        <option value="null" disabled>-- Selecione un equipo --</option>
-                        <option v-for="(ema, i) in ambiental" :key="i">{{ ema }}</option>
-                    </select>
+                    <input v-if="form.ema" class="form-control" :value="form.ema" disabled />
+
+                    <div v-else class="d-flex w-100">
+                        <select  v-model="formulario.ema" class="form-control">
+                            <option value="null" disabled>-- Selecione un equipo --</option>
+                            <option v-for="(ema, i) in ambiental" :key="i">{{ ema }}</option>
+                        </select>
+
+                        <button
+                            type="button"
+                            class="btn btn-success px-2 ml-3"
+                            :disabled="!formulario.ema"
+                            @click="updateCampo('ema')">
+                            <i class="pl-3 pr-2 la la-check icon"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -40,7 +64,7 @@
             <button
                 type="button"
                 class="btn btn-primary"
-                :disabled="$v.$invalid"
+                :disabled="!form.patrones || !form.ema"
                 @click="siguiente">Siguiente
             </button>
         </div>
@@ -57,7 +81,8 @@
         props: ['form', 'datos'],
         data() {
             return {
-                formulario: { ...this.form },
+                formulario: {},
+                activado: {},
                 error: true,
                 patrones: [],
                 ambiental: [],
@@ -83,14 +108,28 @@
                 }
             },
 
-            async siguiente() {
-                await this.submit();
-                this.$emit('update:form', this.formulario);
+            siguiente() {
                 this.$emit('click-next')
             },
 
             atras() {
                 this.$emit('click-back')
+            },
+
+            async updateCampo(campo){
+                try{
+                    let data  = {campo, valor: this.formulario[campo], id: this.form.id};
+
+                    if(!data.valor) throw new Error('El campo es obligatorio');
+
+
+                    const res = await axios.put(this.rutas.updateCampo, data);
+                    const value = await res.data;
+
+                    if(value) this.$emit('update-form', data);
+                }catch(err){
+                    this.$swal.fire('Error', err.message, 'error');
+                }
             },
 
             async submit(){

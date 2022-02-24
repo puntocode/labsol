@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\CalibracionHistorial;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 
 class CalibracionHistorialController extends Controller
 {
@@ -38,9 +40,14 @@ class CalibracionHistorialController extends Controller
      */
     public function store(Request $request)
     {
-        $request->request->add(['user_id' => Auth::id()]);
-        $historial = CalibracionHistorial::create($this->validateData());
-        return response()->json($historial);
+        $user = Auth::user();
+        if(password_verify($request->pin, $user->password)) {
+            $request->request->add(['user_id' => Auth::id()]);
+            $historial = CalibracionHistorial::create($this->validateData());
+            return response()->json($historial);
+        }else{
+            return abort(401, 'Pin incorrecto');
+        }
     }
 
     /**

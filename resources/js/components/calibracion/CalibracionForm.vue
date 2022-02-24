@@ -12,10 +12,11 @@
 
         <!-- paso 1 --------------------------------------------------------------------------------------------------------------------->
         <step-one
-            :form.sync="form"
+            :form="form"
             :datos="datos"
             :medida="magnitud"
             @click-next="next"
+            @update-form="updateValue"
             v-if="this.steps == 1">
             <h2 class="font-weight-bold">Datos del Equipo Calibrado:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
@@ -23,10 +24,11 @@
 
         <!-- paso 2 --------------------------------------------------------------------------------------------------------------------->
         <step-two
-            :form.sync="form"
+            :form="form"
             :datos="datos"
             @click-back="back"
             @click-next="next"
+            @update-form="updateValue"
             v-if="this.steps == 2">
             <h2 class="font-weight-bold">Patrones utilizados:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
@@ -34,10 +36,11 @@
 
         <!-- paso 3 --------------------------------------------------------------------------------------------------------------------->
         <step-three
-            :form.sync="form"
+            :form="form"
             :datos="datos"
             @click-next="next"
             @click-back="back"
+            @update-form="updateValue"
             v-if="this.steps == 3">
             <h2 class="font-weight-bold">Datos iniciales de Calibración:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
@@ -58,10 +61,11 @@
 
         <!-- paso 5 --------------------------------------------------------------------------------------------------------------------->
         <step-five
-            :form.sync="form"
+            :form="form"
             :datos="datos"
             @click-next="next"
             @click-back="back"
+            @update-form="updateValue"
             v-if="this.steps == 5">
             <h2 class="font-weight-bold">Datos finales de Calibración:</h2>
             <span class="steps">Paso {{steps}} - 6</span>
@@ -127,7 +131,7 @@
                 const data = await res.data;
                 this.datos.cmcs = data;
 
-                if(this.data.calibracion.instrumento == null) this.form.instrumento = this.data.instrumentos.name;
+                //if(this.data.calibracion.instrumento == null) this.form.instrumento = this.data.instrumentos.name;
             },
 
             next(){
@@ -135,6 +139,9 @@
             },
             back(){
                 this.steps--;
+            },
+            updateValue(data){
+                this.form[data.campo] = data.valor;
             }
         },
         //------------------------------------------------------------------------------------
