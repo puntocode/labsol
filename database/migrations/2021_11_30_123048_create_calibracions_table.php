@@ -19,13 +19,13 @@ class CreateCalibracionsTable extends Migration
             $table->string('nro_serie')->nullable();
             $table->string('identificacion')->nullable();
             $table->string('unidad_medida')->nullable();
-            $table->enum('tipo', ['DIGITAL', 'ANALOGICO'])->default('DIGITAL');
+            $table->enum('tipo', ['DIGITAL', 'ANALOGICO'])->nullable();
             $table->float('resolucion')->nullable();
             $table->string('resolucion_medida')->nullable();
             $table->float('intervalo_desde')->nullable();
             $table->float('intervalo_hasta')->nullable();
             $table->string('intervalo_medida')->nullable();
-            $table->enum('marca', ['GENERICO', 'OTRO'])->default('GENERICO');
+            $table->enum('marca', ['GENERICO', 'OTRO'])->nullable();
             $table->string('especificacion_marca')->nullable();
             $table->string('modelo')->nullable();
             $table->json('patrones')->nullable();

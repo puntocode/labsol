@@ -125,10 +125,28 @@
 
                     <label class="label-line">Tipo <span class="text-danger">*</span></label>
 
-                    <select class="form-control" v-model="formulario.tipo" @change="guardarCambiosLS('tipo', formulario.tipo)">
-                        <option value="DIGITAL">Digital</option>
-                        <option value="ANALOGICO">Analógico</option>
-                    </select>
+                    <div class="input-icons" v-if="form.tipo">
+                        <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.tipo, 'tipo', 'text', selectTipo)"
+                        ></i>
+                        <input class="form-control" :value="form.tipo" disabled />
+                    </div>
+
+                    <div class="w-100 d-flex" v-else>
+                        <select else class="form-control" v-model="formulario.tipo">
+                            <option v-for="(tipo, i) in selectTipo" :value="tipo" :key="i" v-text="tipo"></option>
+                        </select>
+                        <button
+                            type="button"
+                            class="btn btn-success px-0 py-2 ml-2"
+                            :disabled="!formulario.tipo"
+                            @click="guardarCambiosLS('tipo', formulario.tipo)">
+                            <i class="pl-3 pr-2 la la-check icon"></i>
+                        </button>
+                    </div>
+
                 </div>
 
                 <div class="col-md-6 d-flex">
@@ -268,12 +286,32 @@
                 <!-------------------------------- Marca ---------------------------------------------------------------------------------------------->
 
                     <label class="label-line">Marca</label>
-                    <div class="d-flex w-100">
-                        <select class="form-control mr-5" v-model="formulario.marca" @change="guardarCambiosLS('marca', formulario.marca)">
+
+                    <div class="input-icons" :class="form.marca == 'OTRO' ? 'mr-5' : ''" v-if="form.marca">
+                        <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.marca, 'marca', 'text', ['GENERICO', 'OTRO'])"
+                        ></i>
+                        <input class="form-control" :value="form.marca" disabled />
+                    </div>
+
+                    <div class="w-100 d-flex" v-else>
+                        <select else class="form-control" v-model="formulario.marca">
                             <option value="GENERICO">Genérico</option>
                             <option value="OTRO">Otro*</option>
                         </select>
+                        <button
+                            type="button"
+                            class="btn btn-success px-0 py-2 ml-2"
+                            :disabled="!formulario.marca"
+                            @click="guardarCambiosLS('marca', formulario.marca)">
+                            <i class="pl-3 pr-2 la la-check icon"></i>
+                        </button>
+                    </div>
 
+
+                    <div class="d-flex w-100" v-if="form.marca == 'OTRO'">
                         <div class="input-icons" v-if="form.especificacion_marca">
                             <i
                                 class="la la-edit"
@@ -287,8 +325,7 @@
                             v-else
                             class="form-control"
                             v-model="formulario.especificacion_marca"
-                            :disabled="!otraMarca"
-                            @blur="guardarCambiosLS('especificacion_marca', formulario.especificacion_marca, false)"/>
+                            @blur="guardarCambiosLS('especificacion_marca', formulario.especificacion_marca, false)" />
                     </div>
                 </div>
 
@@ -343,14 +380,12 @@
         props: ['form', 'datos', 'medida'],
         data() {
             return {
-                formulario: {
-                    tipo: this.form.tipo,
-                    marca: this.form.marca,
-                },
+                formulario: {},
                 formEdit: { select: []},
                 unidadMedidas: [],
                 subMultiplos: [],
                 selectMedidas: [],
+                selectTipo: ['DIGITAL', 'ANALOGICO'],
                 rutas: window.routes,
             }
         },
@@ -436,11 +471,9 @@
 
         computed: {
             resolution(){
-                return this.formulario.tipo === 'DIGITAL' ? 'Resolución' : 'División';
+                return this.form.tipo && this.form.tipo === 'ANALOGICO' ? 'División' : 'Resolución';
             },
-            otraMarca(){
-                return this.formulario.marca === 'OTRO';
-            },
+
             medidasEmpty(){
                 return this.selectMedidas.length === 0;
             },

@@ -69,7 +69,6 @@ class ExpedienteController extends Controller
     public function show($id)
     {
         $expediente = Expediente::relaciones()->findOrFail($id);
-        // dd($expediente->toArray());
         $patrones = null;
         $valores = null;
         $ide = null;
@@ -81,7 +80,7 @@ class ExpedienteController extends Controller
         if(isset($expediente->calibracion)){
             $calibracionId = $expediente->calibracion->id;
             $valores = Valor::where('calibracion_id', $calibracionId)->get();
-            $historialCalibracion = CalibracionHistorial::where('calibracion_id', $calibracionId)->get();
+            $historialCalibracion = CalibracionHistorial::with('user')->where('calibracion_id', $calibracionId)->get();
 
             if(isset($valores)){
                 $valorResultados = ValorResultado::getValorResults($valores);
@@ -96,6 +95,7 @@ class ExpedienteController extends Controller
             $ide = PatronIde::where('patron_id', $patrones[1]->id)->first();
         }
 
+        // dd($historialCalibracion->toArray());
         $instrumentoProcedimiento = DB::table('instrumento_procedimiento')->where('instrumento_id', $expediente->instrumento_id)->first();
         $procedimiento = Procedimiento::whereId($instrumentoProcedimiento->procedimiento_id)->with('incertidumbres')->first();
 
