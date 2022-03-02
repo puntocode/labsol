@@ -98,7 +98,7 @@
                             class="la la-edit"
                             data-toggle="modal"
                             data-target="#modal-edit"
-                            @click="modalEditar(form.unidad_medida, 'unidad_medida', 'text', unidadMedidas)"
+                            @click="modalEditar(form.unidad_medida, 'unidad_medida', 'select', unidadMedidas)"
                         ></i>
                         <input class="form-control" :value="form.unidad_medida" disabled />
                     </div>
@@ -129,7 +129,7 @@
                         <i  class="la la-edit"
                             data-toggle="modal"
                             data-target="#modal-edit"
-                            @click="modalEditar(form.tipo, 'tipo', 'text', selectTipo)"
+                            @click="modalEditar(form.tipo, 'tipo', 'select', selectTipo)"
                         ></i>
                         <input class="form-control" :value="form.tipo" disabled />
                     </div>
@@ -178,7 +178,7 @@
                             <i  class="la la-edit"
                                 data-toggle="modal"
                                 data-target="#modal-edit"
-                                @click="modalEditar(form.resolucion_medida, 'resolucion_medida', 'text', selectMedidas)"
+                                @click="modalEditar(form.resolucion_medida, 'resolucion_medida', 'select', selectMedidas)"
                             ></i>
                             <input class="form-control" :value="form.resolucion_medida" disabled />
                         </div>
@@ -258,7 +258,7 @@
                             <i  class="la la-edit"
                                 data-toggle="modal"
                                 data-target="#modal-edit"
-                                @click="modalEditar(form.intervalo_medida, 'intervalo_medida', 'text', selectMedidas)"
+                                @click="modalEditar(form.intervalo_medida, 'intervalo_medida', 'select', selectMedidas)"
                             ></i>
                             <input class="form-control" :value="form.intervalo_medida" disabled />
                         </div>
@@ -291,7 +291,7 @@
                         <i  class="la la-edit"
                             data-toggle="modal"
                             data-target="#modal-edit"
-                            @click="modalEditar(form.marca, 'marca', 'text', ['GENERICO', 'OTRO'])"
+                            @click="modalEditar(form.marca, 'marca', 'select', ['GENERICO', 'OTRO'])"
                         ></i>
                         <input class="form-control" :value="form.marca" disabled />
                     </div>
@@ -381,7 +381,7 @@
         data() {
             return {
                 formulario: {},
-                formEdit: { select: []},
+                formEdit: {},
                 unidadMedidas: [],
                 subMultiplos: [],
                 selectMedidas: [],

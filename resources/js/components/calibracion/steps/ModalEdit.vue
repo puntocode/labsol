@@ -19,11 +19,13 @@
                             <div class="mx-auto col-10">
                                 <label for="date">Valor Nuevo</label>
 
-                                <select v-if="data.select.length" class="form-control" v-model.lazy="formEditar.nuevos">
+                                <select v-if="data.type === 'select'" class="form-control" v-model="formEditar.nuevos">
                                     <option v-for="(unidad, i) in data.select" :key="i" :id="`${i}-sl-editar`">{{ unidad }}</option>
                                 </select>
 
-                                <input v-else v-model="formEditar.nuevos" :type="data.type" class="form-control" step="0.01">
+                                <textarea v-if="data.type === 'text-area'" class="form-control" v-model="formEditar.nuevos"></textarea>
+
+                                <input v-if="tipoDato" v-model="formEditar.nuevos" :type="data.type" class="form-control" step="0.01">
                             </div>
                         </div>
 
@@ -97,6 +99,10 @@
          computed: {
             desactivado() {
                 return this.formEditar.nuevos == '' || this.spin || !this.formEditar.pin;
+            },
+            tipoDato(){
+                const tipoDatos = ['number', 'text', 'date'];
+                return tipoDatos.includes(this.data.type);
             }
         },
     }

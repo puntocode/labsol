@@ -14,8 +14,13 @@
                 <div class="col-md-6 d-flex">
                     <!-------------------------------- F. Fin ------------------------------------------------------------------------------------------------>
                     <label class="label-line">Fecha de Culminación<span class="text-danger">*</span></label>
-                    <div class="input-group" v-if="form.fecha_fin">
-                        <!-- <i class="la la-edit"></i> -->
+                    <div class="input-icons" v-if="form.fecha_fin">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.fecha_fin, 'fecha_fin', 'date')"
+                        ></i>
                         <input class="form-control" :value="form.fecha_fin" disabled />
                     </div>
 
@@ -41,17 +46,23 @@
                 <div class="col-md-6 d-flex">
                     <label class="label-line">Temperatura Final<span class="text-danger">*</span></label>
 
-                    <div class="input-group">
-                        <input v-if="form.temperatura_final" class="form-control" :value="form.temperatura_final" disabled />
+                    <div class="input-icons" v-if="form.temperatura_final">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.temperatura_final, 'temperatura_final', 'number')"
+                        ></i>
+                        <input class="form-control" :value="`${form.temperatura_final} ℃`" disabled />
+                    </div>
 
+                    <div class="input-group" v-else>
                         <input
-                            v-else
                             class="form-control"
                             type="number"
                             step="0.01"
                             v-model.lazy="formulario.temperatura_final"
                             @blur="updateCampo('temperatura_final')" />
-
                         <div class="input-group-append">
                             <span class="input-group-text text-icon">&#8451;</span>
                         </div>
@@ -61,18 +72,23 @@
                 <!-------------------------------- Humedad. Final ------------------------------------------------------------------------------------->
                 <div class="col-md-6 d-flex">
                     <label class="label-line">Humedad Relativa Final<span class="text-danger">*</span></label>
+                    <div class="input-icons" v-if="form.humedad_final">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.humedad_final, 'humedad_final', 'number')"
+                        ></i>
+                        <input class="form-control" :value="`${form.humedad_final} %`" disabled />
+                    </div>
 
-                    <div class="input-group">
-                        <input v-if="form.humedad_final" class="form-control" :value="form.humedad_final" disabled />
-
+                    <div class="input-group" v-else>
                         <input
-                            v-else
                             class="form-control"
                             type="number"
                             step="0.01"
                             v-model.lazy="formulario.humedad_final"
                             @blur="updateCampo('humedad_final')" />
-
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-percent"></i></span>
                         </div>
@@ -84,10 +100,20 @@
                 <!-------------------------------- Observaciones ------------------------------------------------------------------------------------->
                 <div class="col-md-12 d-flex">
                     <label class="label-line">Observaciones</label>
-                    <textarea
-                        id="obs"
+
+                    <div class="input-icons" v-if="form.obs">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.obs, 'obs', 'text-area')"
+                        ></i>
+                        <textarea v-if="form.obs" class="form-control w-100" :value="form.obs" disabled></textarea>
+                    </div>
+
+                    <textarea v-else
                         class="form-control w-100"
-                        v-model="formulario.obs"
+                        v-model.lazy="formulario.obs"
                         @blur="updateCampo('obs', false)"
                     ></textarea>
                 </div>
@@ -118,19 +144,23 @@
                 @click="siguiente">Finalizar
             </button>
         </div>
+
+        <ModalEdit :data="formEdit" @emitForm="emitForm" />
     </fieldset>
 </template>
 
 <script>
     import datePicker from 'vue-bootstrap-datetimepicker';
+    import ModalEdit from './ModalEdit';
 
     export default {
-        components: { datePicker },
+        components: { datePicker, ModalEdit },
         props: ['form', 'datos'],
         data() {
             return {
                 formulario: {},
                 options: { format: 'yyyy/MM/DD' },
+                formEdit: {},
                 rutas: window.routes,
                 username: window.username,
             }
@@ -146,6 +176,24 @@
         methods: {
             siguiente() {
                 this.$emit('click-next')
+            },
+
+            atras() {
+                this.$emit('click-back')
+            },
+
+            modalEditar(anteriores, campo, type = 'text', select = []){
+                this.formEdit = {
+                    anteriores,
+                    campo,
+                    calibracion_id: this.form.id,
+                    select,
+                    type
+                };
+            },
+
+            emitForm(editado){
+                this.$emit('update-form', editado);
             },
 
             async updateCampo(campo, obligatorio=true){
@@ -166,9 +214,6 @@
                 }
             },
 
-            atras() {
-                this.$emit('click-back')
-            },
         },
         //------------------------------------------------------------------------------------
 
@@ -187,7 +232,7 @@
     .label-line{margin: auto 0; flex: 0 0 150px;}
     .input-group-text{max-height: 37px; color:#B5B5C3;}
     .text-icon{font-size: 1.3rem; padding: 0 12px;}
-    .input-icons { width: 100%; margin-right: 6px;
-        i { position: absolute; padding: 10px; font-size: 20px; }
+    .input-icons { width: 100%; position: relative;
+        i { position: absolute; padding: 10px; color: #009BDD;  right: 0; cursor: pointer; }
     }
 </style>

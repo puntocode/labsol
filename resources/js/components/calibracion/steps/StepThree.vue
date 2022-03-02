@@ -17,8 +17,13 @@
                 <div class="col-md-6 d-flex">
                     <label class="label-line">Fecha de Inicio <span class="text-danger">*</span></label>
 
-                    <div class="input-group" v-if="form.fecha_inicio">
-                        <!-- <i class="la la-edit"></i> -->
+                    <div class="input-icons" v-if="form.fecha_inicio">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.fecha_inicio, 'fecha_inicio', 'date')"
+                        ></i>
                         <input class="form-control" :value="form.fecha_inicio" disabled />
                     </div>
 
@@ -43,8 +48,13 @@
                 <div class="col-md-6 d-flex">
                     <label class="label-line">Lugar <span class="text-danger">*</span></label>
 
-                    <div class="input-group" v-if="form.lugar">
-                        <!-- <i class="la la-edit"></i> -->
+                    <div class="input-icons" v-if="form.lugar">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.lugar, 'lugar')"
+                        ></i>
                         <input class="form-control" :value="form.lugar" disabled />
                     </div>
                     <input
@@ -60,11 +70,14 @@
                 <div class="col-md-6 d-flex">
                     <label class="label-line">Temperatura Inicial <span class="text-danger">*</span></label>
 
-                    <div class="input-group" v-if="form.temperatura_inicial">
-                        <input class="form-control" :value="form.temperatura_inicial" disabled />
-                        <div class="input-group-append">
-                            <span class="input-group-text text-icon">&#8451;</span>
-                        </div>
+                    <div class="input-icons" v-if="form.temperatura_inicial">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.temperatura_inicial, 'temperatura_inicial', 'number')"
+                        ></i>
+                        <input class="form-control" :value="`${form.temperatura_inicial} ℃`" disabled />
                     </div>
 
                     <div class="input-group" v-else>
@@ -84,11 +97,14 @@
                 <div class="col-md-6 d-flex">
                     <label class="label-line">Humedad Relativa Inicial <span class="text-danger">*</span></label>
 
-                    <div class="input-group" v-if="form.humedad_inicial">
-                        <input class="form-control" :value="form.humedad_inicial" disabled />
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-percent"></i></span>
-                        </div>
+                    <div class="input-icons" v-if="form.humedad_inicial">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.humedad_inicial, 'humedad_inicial', 'number')"
+                        ></i>
+                        <input class="form-control" :value="`${form.humedad_inicial} %`" disabled />
                     </div>
 
                     <div class="input-group" v-else>
@@ -110,7 +126,17 @@
                 <div class="col-md-12 d-flex">
                     <label class="label-line">Observaciones</label>
 
-                    <textarea v-if="form.obs" class="form-control w-100" :value="form.obs" disabled></textarea>
+
+                    <div class="input-icons" v-if="form.obs">
+                        <i
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.obs, 'obs', 'text-area')"
+                        ></i>
+                        <textarea v-if="form.obs" class="form-control w-100" :value="form.obs" disabled></textarea>
+                    </div>
+
                     <textarea v-else
                         class="form-control w-100"
                         v-model.lazy="formulario.obs"
@@ -143,19 +169,23 @@
                 @click="siguiente">Siguiente
             </button>
         </div>
+
+        <ModalEdit :data="formEdit" @emitForm="emitForm" />
     </fieldset>
 </template>
 
 <script>
     import datePicker from 'vue-bootstrap-datetimepicker';
+    import ModalEdit from './ModalEdit';
 
     export default {
-        components: { datePicker },
+        components: { datePicker, ModalEdit },
         props: ['form', 'datos'],
         data() {
             return {
                 formulario: {},
                 options: { format: 'yyyy/MM/DD' },
+                formEdit: {},
                 rutas: window.routes
             }
         },
@@ -170,11 +200,26 @@
             fetch(){
                 if(!this.form.fecha_inicio) this.formulario.fecha_inicio = new Date().toISOString().substr(0, 10);
                 this.formulario.lugar = this.datos.tipo == 'LS' ? 'Labsol' : '';
-                console.log(this.formulario)
             },
 
-            async siguiente() {
+            siguiente() {
                 this.$emit('click-next')
+            },
+            atras() {
+                this.$emit('click-back')
+            },
+            modalEditar(anteriores, campo, type = 'text', select = []){
+                this.formEdit = {
+                    anteriores,
+                    campo,
+                    calibracion_id: this.form.id,
+                    select,
+                    type
+                };
+            },
+
+            emitForm(editado){
+                this.$emit('update-form', editado);
             },
 
             async updateCampo(campo, obligatorio=true){
@@ -194,9 +239,8 @@
                 }
             },
 
-            atras() {
-                this.$emit('click-back')
-            },
+
+
         },
         //------------------------------------------------------------------------------------
 
@@ -215,8 +259,10 @@
     .label-line{margin: auto 0; flex: 0 0 150px;}
     .input-group-text{max-height: 37px; color:#B5B5C3;}
     .text-icon{font-size: 1.3rem; padding: 0 12px;}
-    .input-icons { width: 100%; margin-right: 6px;
-        i { position: absolute; padding: 10px; font-size: 20px; }
+    .input-icons { width: 100%; position: relative;
+        i { position: absolute; padding: 10px; color: #009BDD;  right: 0; cursor: pointer; }
     }
+
+
 </style>
 

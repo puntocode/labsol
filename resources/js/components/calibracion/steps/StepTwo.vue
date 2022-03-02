@@ -25,7 +25,14 @@
             <div class="form-group row text-left">
                <label class="col-sm-3 col-form-label">Equipos De Medición Ambiental</label>
                 <div class="col-md-9">
-                    <input v-if="form.ema" class="form-control" :value="form.ema" disabled />
+                    <div class="input-icons" v-if="form.ema">
+                        <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.ema, 'ema', 'select', ambiental)"
+                        ></i>
+                        <input class="form-control" :value="form.ema" disabled />
+                    </div>
 
                     <div v-else class="d-flex w-100">
                         <select  v-model="formulario.ema" class="form-control">
@@ -69,19 +76,24 @@
             </button>
         </div>
 
+        <ModalEdit :data="formEdit" @emitForm="emitForm" />
+
     </fieldset>
 </template>
 
 <script>
     import {required} from "vuelidate/lib/validators";
     import SelectMultiple from 'v-select2-multiple-component';
+    import ModalEdit from './ModalEdit';
+
 
     export default {
-        components: { SelectMultiple },
+        components: { SelectMultiple, ModalEdit },
         props: ['form', 'datos'],
         data() {
             return {
                 formulario: {},
+                formEdit: { select: [] },
                 activado: {},
                 error: true,
                 patrones: [],
@@ -107,6 +119,15 @@
                     this.formulario.patrones = this.patrones.map(patron => { return {name: patron.name, code: []} });
                 }
             },
+            modalEditar(anteriores, campo, type = 'text', select = []){
+                this.formEdit = {
+                    anteriores,
+                    campo,
+                    calibracion_id: this.form.id,
+                    select,
+                    type
+                };
+            },
 
             siguiente() {
                 this.$emit('click-next')
@@ -122,7 +143,6 @@
 
                     if(!data.valor) throw new Error('El campo es obligatorio');
 
-
                     const res = await axios.put(this.rutas.updateCampo, data);
                     const value = await res.data;
 
@@ -132,16 +152,8 @@
                 }
             },
 
-            async submit(){
-                try{
-                    // let res = null;
-                    // if(this.form.ema) res = await axios.put(this.rutas.updateHistorico, this.formulario);
-                    // else res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
-                    const res = await axios.put(`${this.rutas.index}/${this.formulario.id}`, this.formulario);
-                    this.formulario = await res.data;
-                }catch(error){
-                    this.$swal.fire('Error', 'Error al actualizar', 'error');
-                }
+            emitForm(editado){
+                this.$emit('update-form', editado);
             }
         },
         //------------------------------------------------------------------------------------
@@ -163,17 +175,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-table{
-    background: #fff none repeat scroll 0 0;
-    border-left: 1px solid #000;
-    border-top: 1px solid #000;
-    .form-table{border:0px solid #000; margin:0; background:transparent; width:100%}
-    tr{ background:#eee;
-        td{border-right:1px solid #000; border-bottom:1px solid #000; padding: 0 4px;}
-        .bg-notext{background:#ccc;}
-        .td-cero{background-color: #fff; border-top: 1px solid #fff; border-left: 1px solid #fff;}
-        .borb-0{border-bottom: 1px solid #fff;}
+    .input-icons { width: 100%; position: relative;
+        i { position: absolute; padding: 10px; color: #009BDD;  right: 0; cursor: pointer; }
     }
-}
 </style>
