@@ -47,9 +47,31 @@
             <div class="row mt-12">
                 <div class="col-md-5 offset-md-2 text-center">
                     <h4 class="mb-4">Indicación del Patrón (IP)</h4>
-                    <select class="form-control" v-model="formulario.valores_medidas.ip_medida_general" @change="changeUnidadMedida($event)">
-                        <option v-for="(unidad, index) in unidadMedidas" :key="index">{{ unidad }}</option>
-                    </select>
+
+                    <div class="input-icons" v-if="form.ip_medida">
+                        <!-- <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                           @click="modalEditar(form.ip_medida, 'ip_medida', 'select', unidadMedidas)"
+                        ></i> -->
+                        <input class="form-control" :value="form.ip_medida" disabled />
+                    </div>
+
+                    <div class="d-flex" v-else>
+                        <select class="form-control" v-model="formulario.ip_medida">
+                            <option v-for="(unidad, index) in unidadMedidas" :key="index">{{ unidad }}</option>
+                        </select>
+
+                        <button
+                            type="button"
+                            class="btn btn-success px-2 ml-3"
+                            :disabled="!formulario.ip_medida"
+                            @click="updateCampo('ip_medida')">
+                            <i class="pl-3 pr-2 la la-check icon"></i>
+                        </button>
+                    </div>
+
+
                 </div>
 
                 <div class="col-md-5 text-center">
@@ -58,26 +80,33 @@
                 </div>
             </div>
 
-            <!-------------------------------- Formulario ------------------------------------------------------------------------------------------------>
+            <!-------------------------------- Formulario Patron------------------------------------------------------------------------------------------->
             <div class="row mt-4" v-for="(valor, indice) in formulario.valores" :key="indice">
                 <div class="col-md-2">
+
+                    <input class="form-control" disabled :value="valor.patron" v-if="valor.id">
                     <select
+                        v-else
                         class="form-control"
                         v-model="valor.patron"
-                        :disabled="formulario.resultados.length != indice || valor.id > 0"
+                        :disabled="formulario.resultados.length != indice || valor.id > 0 || !form.ip_medida"
                         :id="`patron-${indice}`">
                         <option v-for="(patron, i) in selectPatrones" :key="i">{{ patron }}</option>
                     </select>
+
                 </div>
 
                 <!-------------------------------- Input IP --------------------------------------------------->
                 <div class="col-md-5 d-flex">
+
+                    <input class="form-control mr-3" disabled :value="valor.ip_medida" v-if="valor.id">
                     <select
+                        v-else
                         class="form-control mr-3"
                         v-model="valor.ip_medida"
                         @change="changeUMValor($event, indice, 'ip')"
                         :id="`ip-medida-${indice}`"
-                        :disabled="formulario.resultados.length != indice || valor.id > 0">
+                        :disabled="formulario.resultados.length != indice || valor.id > 0 || !form.ip_medida">
                         <option v-for="(ip, i) in selectIP" :key="i">{{ ip }}</option>
                     </select>
 
@@ -234,11 +263,14 @@
             </div>
         </div>
 
+        <ModalEdit :data="formEdit" @emitForm="emitForm" />
+
     </fieldset>
 </template>
 
 <script>
 import EditValor from "./EditValor";
+import ModalEdit from './ModalEdit';
 import ModalValor from "./ModalValor";
 import encontrark from "../../../functions/encontrar-k.js";
 import interpolar from "../../../functions/interpolar.js";
@@ -252,8 +284,9 @@ import HistorialValores from "../HistorialValores";
 import encontrarCercanos from "../../../functions/encontrar-cercanos.js";
 import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
+
     export default {
-        components: { CertificadoTable, HistorialValores, EditValor, ModalValor },
+        components: { CertificadoTable, HistorialValores, EditValor, ModalValor, ModalEdit },
         props: ['form', 'medida', 'datos', 'incertidumbres'],
         data() {
             return {
@@ -273,6 +306,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     incertidumbre: [],
                     incertidumbre_result: []
                 },
+                formEdit: {},
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
                 registroEdit: {},
@@ -329,6 +363,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     this.selectIEC.push(unidad);
                 });
 
+                if(this.form.ip_medida) this.changeUnidadMedida();
                 if(this.form.valores.length) this.cargarValoresDeBD();
             },
 
@@ -701,8 +736,8 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
 
             //Metdos front --------------------------------------------------------------------
-            changeUnidadMedida(event){
-                const medida = event.target.value;
+            changeUnidadMedida(){
+                const medida = this.form.ip_medida;
                 this.selectIP = this.subMultiplos.map(unidad => {
                     return unidad.simbolo === '-' ? medida : unidad.simbolo+medida;
                 });
@@ -797,13 +832,31 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 }
             },
 
+            async updateCampo(campo){
+                try{
+                    let data  = {campo, valor: this.formulario[campo], id: this.form.id};
+
+                    if(!data.valor) throw new Error('El campo es obligatorio');
+
+                    const res = await axios.put(this.rutas.updateCampo, data);
+                    const value = await res.data;
+
+                    if(value) this.$emit('update-form', data);
+                }catch(err){
+                    this.$swal.fire('Error', err.message, 'error');
+                }
+            },
+
             siguiente() {
-                // this.submit();
                 this.$emit('click-next')
             },
 
             atras() {
                 this.$emit('click-back')
+            },
+
+            emitForm(editado){
+                this.$emit('update-form', editado);
             },
 
 
@@ -879,6 +932,13 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     .catch(err => console.log(err));
             },
 
+        },
+
+        //Finales --------------------------------------------------------------------
+        watch: {
+            'form.ip_medida': function(){
+                this.changeUnidadMedida();
+            }
         }
 
     }
@@ -886,7 +946,11 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
 
 <style lang="scss" scoped>
-    .input-icons { width: 100%; margin-right: 6px;
-        i { position: absolute; }
+    // .input-icons { width: 100%; margin-right: 6px;
+    //     i { position: absolute; }
+    // }
+
+    .input-icons { width: 100%; position: relative; margin-right: 6px;
+        i { position: absolute; padding: 10px; color: #009BDD;  right: 0; cursor: pointer; }
     }
 </style>

@@ -48,12 +48,13 @@
 
         <!-- paso 4 --------------------------------------------------------------------------------------------------------------------->
         <step-four
-            :form.sync="form"
+            :form="form"
             :medida="magnitud"
             :incertidumbres="data.instrumentos.procedimiento[0].incertidumbres"
             :datos="datos"
             @click-next="next"
             @click-back="back"
+            @update-form="updateValue"
             v-if="this.steps == 4">
             <h2 class="font-weight-bold">Valores Obtenidos:</h2>
             <span class="steps">Paso {{steps}} - 6</span>

@@ -355,7 +355,7 @@
 @if (count($historialCalibracion))
     <div class="mt-6 row">
         <div class="col-12 border-bottom border-primary mb-6">
-            <h3>8. Hitorial Cambios</h3>
+            <h3>8. Historial de Cambios</h3>
         </div>
 
         <historial-calibracion :historial="{{ $historialCalibracion }}"></historial-calibracion>

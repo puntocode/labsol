@@ -5,8 +5,16 @@
 
             <div class="form-group row text-left" v-for="(patron, index) in patrones" :key="index">
                <label class="col-sm-3 col-form-label" v-text="patron.name"></label>
+
                 <div class="col-md-9">
-                    <input v-if="form.patrones" class="form-control" :value="form.patrones[index].code" disabled />
+                    <div class="input-icons" v-if="form.patrones[index].code">
+                        <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                            @click="modalEditar(form.patrones[index].code, 'patrones', 'select-multiple', patrones[index].code, {select: form.patrones, index })"
+                        ></i>
+                        <input class="form-control" :value="form.patrones[index].code" disabled />
+                    </div>
 
 
                     <div class="w-100 d-flex" v-else>
@@ -93,7 +101,7 @@
         data() {
             return {
                 formulario: {},
-                formEdit: { select: [] },
+                formEdit: {},
                 activado: {},
                 error: true,
                 patrones: [],
@@ -119,13 +127,14 @@
                     this.formulario.patrones = this.patrones.map(patron => { return {name: patron.name, code: []} });
                 }
             },
-            modalEditar(anteriores, campo, type = 'text', select = []){
+            modalEditar(anteriores, campo, type = 'text', select = [], patron = null){
                 this.formEdit = {
                     anteriores,
                     campo,
                     calibracion_id: this.form.id,
                     select,
-                    type
+                    type,
+                    patron
                 };
             },
 

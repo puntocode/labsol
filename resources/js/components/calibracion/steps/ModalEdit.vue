@@ -18,6 +18,7 @@
                         <div class="mb-6 row">
                             <div class="mx-auto col-10">
                                 <label for="date">Valor Nuevo</label>
+                                <input v-if="tipoDato" v-model="formEditar.nuevos" :type="data.type" class="form-control" step="0.01">
 
                                 <select v-if="data.type === 'select'" class="form-control" v-model="formEditar.nuevos">
                                     <option v-for="(unidad, i) in data.select" :key="i" :id="`${i}-sl-editar`">{{ unidad }}</option>
@@ -25,7 +26,7 @@
 
                                 <textarea v-if="data.type === 'text-area'" class="form-control" v-model="formEditar.nuevos"></textarea>
 
-                                <input v-if="tipoDato" v-model="formEditar.nuevos" :type="data.type" class="form-control" step="0.01">
+                                <SelectMultiple v-if="data.type === 'select-multiple'" class="w-100"  v-model="formEditar.nuevos" :options="data.select" />
                             </div>
                         </div>
 
@@ -50,7 +51,10 @@
 </template>
 
 <script>
+    import SelectMultiple from 'v-select2-multiple-component';
+
     export default {
+        components: { SelectMultiple },
         props: ['data'],
         data() {
             return {
@@ -78,9 +82,24 @@
 
                 try{
 
-                    await axios.post(this.rutas.calibracionHistorialStore, this.formEditar);
-
                     let editar = {campo: this.formEditar.campo, valor: this.formEditar.nuevos, id: this.formEditar.calibracion_id};
+
+                    if(this.data.patron){
+                        //campo tipo array en patrones
+                        const index = this.data.patron.index;
+                        let newEdit = this.data.patron.select.slice();
+                        newEdit[index].code = this.formEditar.nuevos;
+                        editar.valor = newEdit;
+
+                        //campo tipo string en formEditar
+                        const anterior = this.data.anteriores.join();
+                        const nuevo = this.formEditar.nuevos.join();
+                        this.formEditar.nuevos = nuevo;
+                        this.formEditar.anteriores = anterior;
+                        this.formEditar.campo = `Patron: ${newEdit[index].name}`;
+                    }
+
+                    await axios.post(this.rutas.calibracionHistorialStore, this.formEditar);
                     await axios.put(this.rutas.updateCampo, editar);
 
                     document.getElementById("boton-cancel").click();
