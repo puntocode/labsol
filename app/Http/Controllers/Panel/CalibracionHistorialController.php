@@ -95,6 +95,16 @@ class CalibracionHistorialController extends Controller
         //
     }
 
+    public function comprobarPassword(Request $request)
+    {
+        $user = Auth::user();
+        if(password_verify($request->pin, $user->password)) {
+            return response()->json($user);
+        }else{
+            return abort(401, 'Pin incorrecto');
+        }
+    }
+
 
     public function validateData()
     {

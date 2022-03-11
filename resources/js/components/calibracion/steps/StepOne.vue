@@ -93,15 +93,7 @@
 
                     <label class="label-line">U. de Medida <span class="text-danger">*</span></label>
 
-                    <div class="input-icons" v-if="form.unidad_medida">
-                        <i
-                            class="la la-edit"
-                            data-toggle="modal"
-                            data-target="#modal-edit"
-                            @click="modalEditar(form.unidad_medida, 'unidad_medida', 'select', unidadMedidas)"
-                        ></i>
-                        <input class="form-control" :value="form.unidad_medida" disabled />
-                    </div>
+                    <input v-if="form.unidad_medida" class="form-control" :value="form.unidad_medida" disabled />
 
                     <div class="w-100 d-flex" v-else>
                         <select class="form-control" v-model.lazy="formulario.unidad_medida">
@@ -155,14 +147,8 @@
                     <label class="label-line">{{resolution}} <span class="text-danger">*</span></label>
                     <div class="d-flex w-100">
 
-                        <div class="input-icons mr-5" v-if="form.resolucion">
-                            <i  class="la la-edit"
-                                data-toggle="modal"
-                                data-target="#modal-edit"
-                                @click="modalEditar(form.resolucion, 'resolucion', 'number')"
-                            ></i>
-                            <input class="form-control" :value="form.resolucion" disabled />
-                        </div>
+                        <input class="form-control mr-5" v-if="form.resolucion" :value="form.resolucion" disabled />
+
                         <input
                             v-else
                             type="number"
@@ -174,14 +160,8 @@
 
                 <!-------------------------------- Resolucion Medida ---------------------------------------------------------------------------------------------->
 
-                        <div class="input-icons" v-if="form.resolucion_medida">
-                            <i  class="la la-edit"
-                                data-toggle="modal"
-                                data-target="#modal-edit"
-                                @click="modalEditar(form.resolucion_medida, 'resolucion_medida', 'select', selectMedidas)"
-                            ></i>
-                            <input class="form-control" :value="form.resolucion_medida" disabled />
-                        </div>
+                        <input class="form-control"  v-if="form.resolucion_medida" :value="form.resolucion_medida" disabled />
+
                         <div v-else class="d-flex w-100">
                             <select
                                 class="form-control"

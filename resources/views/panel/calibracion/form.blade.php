@@ -28,11 +28,11 @@
         window.asset = "{{ URL::asset('')  }}";
 
         const INDEX = "{{ route('panel.calibracion.index') }}";
+        const AGENDA = "{{ route('panel.expedientes.agenda') }}";
         const CMC_SHOW = "{{ route('panel.cmc.show') }}";
         const MANUALES = "{{ route('panel.patrones.manuales') }}";
         const VALOR_INDEX = "{{ route('panel.valors.index') }}";
         const VALOR_STORE = "{{ route('panel.valors.store') }}";
-        const CERTIFICADOS = "{{ route('panel.certificados.index') }}";
         const SUBMULTIPLOS = "{{ route('panel.patrones.unidades_medidas') }}";
         const PATRON_UM_IDE = "{{ route('panel.patron.ide.um') }}";
         const INDEX_EXPEDIENTE = "{{ route('panel.expedientes.index') }}";
@@ -53,9 +53,11 @@
         const VALOR_INCERTIDUMBRE_RESULTADO_UPDATE = "{{ route('panel.incertidumbre.resultados.update') }}";
 
         const CALIBRACION_HISTORIAL_STORE = "{{ route('panel.calibracion-historial.store') }}";
+        const COMPROBAR_PIN = "{{ route('panel.comprobar.password') }}";
 
         window.routes = {
             'index': INDEX,
+            'agenda': AGENDA,
             'store': STORE_CALIBRACION,
             'cmcShow': CMC_SHOW,
             'manuales': MANUALES,
@@ -63,7 +65,6 @@
             'valorStore': VALOR_STORE,
             'patronUmIde': PATRON_UM_IDE,
             'updateCampo': CALIBRACION_UPDATE_CAMPO,
-            'certificados': CERTIFICADOS,
             'submultiplos': SUBMULTIPLOS,
             'indexExpediente': INDEX_EXPEDIENTE,
             'updateHistorico': UPDATE_HISTORICO,
@@ -82,6 +83,8 @@
         };
 
         window.routesEdit = {
+            'updateCampo': CALIBRACION_UPDATE_CAMPO,
+            'comprobarPin': COMPROBAR_PIN,
             'calibracionHistorialStore': CALIBRACION_HISTORIAL_STORE
         };
     </script>

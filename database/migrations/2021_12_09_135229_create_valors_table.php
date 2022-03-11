@@ -16,9 +16,9 @@ class CreateValorsTable extends Migration
         Schema::create('valors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('calibracion_id')->constrained()->onDelete('cascade');
-            $table->string('iec_medida', 10);
+            $table->string('iec_medida', 10)->nullable();
+            $table->string('ip_medida', 10)->nullable();
             $table->json('iec_valor');
-            $table->string('ip_medida', 10);
             $table->json('ip_valor');
             $table->string('patron', 25);
             $table->timestamps();

@@ -32,7 +32,10 @@ class ValorCertificadoController extends Controller
 
     public function updateValorCertificado(Request $request){
         $valorCertificado = ValorCertificado::where('valor_id', $request->valor_id)->first();
-        $valorCertificado->update($this->validateData());
+
+        if($valorCertificado) $valorCertificado->update($this->validateData());
+        else $valorCertificado = ValorCertificado::create($this->validateData());
+
         return response()->json($valorCertificado);
     }
 

@@ -6,12 +6,17 @@
             </div>
 
             <ModalValor
-                :valores="valorEdit"
-                :valorIp.sync="formulario.valores[valorEdit.fila].ip_valor[valorEdit.columna]"
-                :valorIec.sync="formulario.valores[valorEdit.fila].iec_valor[valorEdit.columna]"
-                :calibracion_id="form.id"
-                @editarCal="editar"
-            />
+                :valorIp.sync="formulario.valores[formValor.fila].ip_valor[formValor.columna]"
+                :valorIec.sync="formulario.valores[formValor.fila].iec_valor[formValor.columna]"
+                :data="formValor"
+                @editarValor="editarValor" />
+
+            <EditValor
+                :data="formEdit"
+                :tabla="formulario.resultados.length"
+                :valores.sync="formulario.valores"
+                @updateForm="updateForm"
+                @limpiarResults="limpiarResults" />
 
 
             <!-------------------------------- Documentos ------------------------------------------------------------------------------------------------>
@@ -32,7 +37,45 @@
                         {{documento.nombre }}
                     </a>
                 </div>
+            </div>
 
+            <!-------------------------------- Medidas Generales ------------------------------------------------------------------------------------------>
+
+            <div class="row mb-10 text-left">
+                <div class="col-md-2">
+                    <label>Unidad de Medida</label>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-icons">
+                        <!-- <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                           @click="modalEditar(form.unidad_medida, 'unidad_medida', 'select', unidadMedidas)"
+                        ></i> -->
+                        <input class="form-control" :value="form.unidad_medida" disabled />
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <label class="mx-5">Resolución</label>
+
+                    <div class="input-icons">
+                        <!-- <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                           @click="modalEditar(form.resolucion, 'resolucion', 'number')"
+                        ></i> -->
+                        <input class="form-control" :value="form.resolucion" disabled />
+                    </div>
+
+                    <div class="input-icons">
+                        <!-- <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#modal-edit"
+                           @click="modalEditar(form.resolucion_medida, 'resolucion_medida', 'select', selectIP)"
+                        ></i> -->
+                        <input class="form-control" :value="form.resolucion_medida" disabled />
+                    </div>
+                </div>
             </div>
 
             <div class="form-group row text-left border-bottom border-primary pb-10">
@@ -44,16 +87,19 @@
                 </div>
             </div>
 
+
+            <!-------------------------------- Cabecera ---------------------------------------------------------------------------------------------->
+
             <div class="row mt-12">
                 <div class="col-md-5 offset-md-2 text-center">
                     <h4 class="mb-4">Indicación del Patrón (IP)</h4>
 
                     <div class="input-icons" v-if="form.ip_medida">
-                        <!-- <i  class="la la-edit"
+                        <i  class="la la-edit"
                             data-toggle="modal"
-                            data-target="#modal-edit"
+                            data-target="#modalUnidades"
                            @click="modalEditar(form.ip_medida, 'ip_medida', 'select', unidadMedidas)"
-                        ></i> -->
+                        ></i>
                         <input class="form-control" :value="form.ip_medida" disabled />
                     </div>
 
@@ -76,7 +122,7 @@
 
                 <div class="col-md-5 text-center">
                     <h4 class="mb-4">Indicación del Equipo Calibrado (IEC)</h4>
-                    <input v-model="formulario.valores_medidas.iec_medida_general" class="form-control" disabled>
+                    <input :value="form.unidad_medida" class="form-control" disabled>
                 </div>
             </div>
 
@@ -84,7 +130,14 @@
             <div class="row mt-4" v-for="(valor, indice) in formulario.valores" :key="indice">
                 <div class="col-md-2">
 
-                    <input class="form-control" disabled :value="valor.patron" v-if="valor.id">
+                    <div class="input-icons" v-if="valor.patron && valor.id">
+                        <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.patron, 'patron', valor.id, 'select', indice, null, selectPatrones)"
+                        ></i>
+                        <input class="form-control" :value="valor.patron" disabled />
+                    </div>
                     <select
                         v-else
                         class="form-control"
@@ -99,27 +152,33 @@
                 <!-------------------------------- Input IP --------------------------------------------------->
                 <div class="col-md-5 d-flex">
 
-                    <input class="form-control mr-3" disabled :value="valor.ip_medida" v-if="valor.id">
+                    <div class="input-icons" v-if="valor.ip_medida && valor.id">
+                        <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.ip_medida, 'ip_medida', valor.id, 'select', indice, null, selectIP)"
+                        ></i>
+                        <input class="form-control" :value="valor.ip_medida" disabled />
+                    </div>
                     <select
                         v-else
                         class="form-control mr-3"
                         v-model="valor.ip_medida"
                         @change="changeUMValor($event, indice, 'ip')"
                         :id="`ip-medida-${indice}`"
-                        :disabled="formulario.resultados.length != indice || valor.id > 0 || !form.ip_medida">
+                        :disabled="!form.ip_medida || formulario.resultados.length != indice">
                         <option v-for="(ip, i) in selectIP" :key="i">{{ ip }}</option>
                     </select>
 
+                <!-------------------------------- IP Valores --------------------------------------------------->
+
                     <div class="input-icons">
-                        <EditValor
-                            v-if="valor.ip_valor[0]"
-                            :valor="valor"
-                            :columna="0"
-                            :fila="indice"
-                            :valor_id="valor.id"
-                            :valor-edit.sync="valorEdit"
-                            tipo="ip_valor"
-                        />
+                        <i v-if="valor.ip_valor[0]"
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.ip_valor[0], 'ip_valor', valor.id, 'number', indice, 0)"
+                        ></i>
                         <input
                             type="number"
                             step="0.01"
@@ -131,15 +190,12 @@
                     </div>
 
                     <div class="input-icons">
-                       <EditValor
-                            v-if="valor.ip_valor[1]"
-                            :valor="valor"
-                            :columna="1"
-                            :fila="indice"
-                            :valor_id="valor.id"
-                            :valor-edit.sync="valorEdit"
-                            tipo="ip_valor"
-                        />
+                       <i v-if="valor.ip_valor[1]"
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.ip_valor[1], 'ip_valor', valor.id, 'number', indice, 1)"
+                        ></i>
                         <input
                             type="number"
                             step="0.01"
@@ -151,15 +207,12 @@
                     </div>
 
                     <div class="input-icons">
-                        <EditValor
-                            v-if="valor.ip_valor[2].trim()"
-                            :valor="valor"
-                            :columna="2"
-                            :fila="indice"
-                            :valor_id="valor.id"
-                            :valor-edit.sync="valorEdit"
-                            tipo="ip_valor"
-                        />
+                        <i v-if="valor.ip_valor[2]"
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.ip_valor[2], 'ip_valor', valor.id, 'number', indice, 2)"
+                        ></i>
                         <input
                             type="number"
                             step="0.01"
@@ -173,25 +226,32 @@
 
                 <!-------------------------------- Input IEC -------------------------------------------------->
                 <div class="col-md-5 d-flex">
-                    <select
+                    <div class="input-icons" v-if="valor.iec_medida && valor.id">
+                        <i  class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.iec_medida, 'iec_medida', valor.id, 'select', indice, null, selectIEC)"
+                        ></i>
+                        <input class="form-control" :value="valor.iec_medida" disabled />
+                    </div>
+                    <select v-else
                         class="form-control mr-3"
                         v-model="valor.iec_medida"
                         :id="`iec-medida-${indice}`"
-                        :disabled="formulario.resultados.length != indice || valor.id > 0"
+                        :disabled="formulario.resultados.length != indice"
                         @change="changeUMValor($event, indice, 'iec')" >
                         <option v-for="(iec, i) in selectIEC" :key="i">{{ iec }}</option>
                     </select>
 
+                <!-------------------------------- IEC Valores -------------------------------------------------->
+
                     <div class="input-icons">
-                        <EditValor
-                            v-if="valor.iec_valor[0]"
-                            :valor="valor"
-                            :columna="0"
-                            :fila="indice"
-                            :valor_id="valor.id"
-                            :valor-edit.sync="valorEdit"
-                            tipo="iec_valor"
-                        />
+                        <i v-if="valor.iec_valor[0]"
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.iec_valor[0], 'iec_valor', valor.id, 'number', indice, 0)"
+                        ></i>
                         <input
                             type="number"
                             step="0.01"
@@ -203,15 +263,12 @@
                     </div>
 
                     <div class="input-icons">
-                        <EditValor
-                            v-if="valor.iec_valor[1]"
-                            :valor="valor"
-                            :columna="1"
-                            :fila="indice"
-                            :valor_id="valor.id"
-                            :valor-edit.sync="valorEdit"
-                            tipo="iec_valor"
-                        />
+                        <i v-if="valor.iec_valor[1]"
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.iec_valor[1], 'iec_valor', valor.id, 'number', indice, 1)"
+                        ></i>
                         <input
                             type="number"
                             step="0.01" class="form-control mr-3"
@@ -222,21 +279,18 @@
                     </div>
 
                     <div class="input-icons">
-                        <EditValor
-                            v-if="valor.id != 0"
-                            :valor="valor"
-                            :columna="2"
-                            :fila="indice"
-                            :valor_id="valor.id"
-                            :valor-edit.sync="valorEdit"
-                            tipo="iec_valor"
-                        />
+                        <i v-if="valor.iec_valor[2]"
+                            class="la la-edit"
+                            data-toggle="modal"
+                            data-target="#valorModal"
+                           @click="modalValor(valor.iec_valor[2], 'iec_valor', valor.id, 'number', indice, 2)"
+                        ></i>
                         <input
                             type="number"
                             step="0.01"
                             class="form-control"
                             :id="`iec-valor-2-${indice}`"
-                            @blur="calcularIP(indice)"
+                            @blur="insertValores(indice)"
                             v-model="valor.iec_valor[2]"
                             :disabled="valor.ip_valor[2] === '' || valor.iec_valor[1] === '' || valor.id > 0">
                     </div>
@@ -263,7 +317,7 @@
             </div>
         </div>
 
-        <ModalEdit :data="formEdit" @emitForm="emitForm" />
+        <!-- <ModalEdit :data="formEdit" @emitForm="emitForm" /> -->
 
     </fieldset>
 </template>
@@ -294,7 +348,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 certificados: [],
                 documentos: [],
                 formulario: {
-                    valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
+                    //valores_medidas: { ip_medida_general: '', iec_medida_general: this.form.unidad_medida },
                     valores: [
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
                         {calibracion_id: this.form.id, patron: '', ip_medida: '', ip_valor: ['', '', ''], iec_medida: '', iec_valor: ['', '', ''], id:0 },
@@ -307,6 +361,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     incertidumbre_result: []
                 },
                 formEdit: {},
+                formValor: { fila:0, columna: 0},
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
                 registroEdit: {},
@@ -351,7 +406,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
                 //si existe un solo patron entonces autocompletar los patrones
                 if(this.selectPatrones.length == 1) this.formulario.valores.forEach( valor => valor.patron = this.selectPatrones[0] );
-                if(this.form.ip_medida) this.formulario.valores_medidas.ip_medida_general = this.form.ip_medida;
+                //if(this.form.ip_medida) this.formulario.valores_medidas.ip_medida_general = this.form.ip_medida;
 
                 this.getDocumentos(this.selectPatrones);
 
@@ -402,67 +457,92 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
 
             //Calculos para la BD -----------------------------------------------------------------
-            async calcularIP(indice)
+            async insertValores(indice)
             {
                 try{
                     if( this.formulario.valores[indice].iec_valor[2] === '' ) throw new Error('No puedes dejar campos vacíos');
 
-                    // Buscamos la unidad de medida en el IDE
-                    const PATRON = this.formulario.valores[indice].patron;
-                    const ide = await this.getIde(PATRON);
+                    const valores = this.formulario.valores[indice];
 
-                    if(!ide.length){
-                        this.formulario.valores[indice].iec_valor[2] = '';
-                        throw new Error('Por favor carga el IDE del patron seleccionado!');
+                    const result = await this.calcularResult(valores);
+                    if(!result) return;
+
+                    const calculos = await this.calculosBD(result, valores);
+                    if(!calculos) return;
+
+                    const insertado = await this.insertarValors(calculos, indice);
+                    if(insertado){
+                        this.formulario.valores[indice] = insertado.valors;
+                        this.formulario.resultados.push(insertado.valor_resultados);
+                        this.certificados.push(insertado.valor_certificados);
                     }
 
+                }catch(error){
+                    console.error(error);
+                    this.alertaError(error.message)
+                }
+            },
+
+            async editarValor(form){
+                try{
+                    const valoresTemp = this.obtenerValores(form);
+
+                    const result = await this.calcularResult(valoresTemp);
+                    if(!result) return;
+
+                    const calculos = await this.calculosBD(result, valoresTemp);
+                    if(!calculos) return;
+
+                    const actualizado = await this.updateValors(calculos);
+
+                    if(actualizado) this.actualizado(form, valoresTemp, calculos);
+
+                }catch(err){
+                    console.error('errorEditar', err);
+                }
+            },
+
+            async calcularResult(valores)
+            {
+                try{
                     //Errores en el CMC
                     if(!this.datos.cmcs) throw new Error('Por favor carga los CMC!');
+
+                    const PATRON = valores.patron;
+                    const ide = await this.getIde(PATRON);
+
+                    if(!ide) throw new Error('no existe ide');
+
                     const existeCmc = this.datos.cmcs.some(cmc => cmc.patron_code == PATRON);
-                    if(!existeCmc){
-                        // this.errorLimpiar(indice);
-                        throw new Error(`No existe cmc para ese Patron: ${PATRON}`);
-                    }
+                    if(!existeCmc) throw new Error(`No existe cmc para ese Patron: ${PATRON}`);
 
-
-                    //Unidades de medida
                     const unidadIde = ide[0].unit_measurement;
-                    const rangosDeriva = ide[0].rangos[0].rango_derivas;
-                    const unidadIPgeneral = this.formulario.valores_medidas.ip_medida_general;
-                    const unidadMedidaIP = this.formulario.valores[indice].ip_medida;
 
-                    //Array de valores convertidos a unidad Base
-                    const arrayValores = await this.convertirUnidadBase(this.formulario.valores[indice].ip_valor, unidadMedidaIP, unidadIPgeneral);
-                    const arrayEnIde = await this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
+                    //Caluculos IP -------------------------------------------
+                    const arrayEnIde = this.getArrayUnIde(valores, unidadIde);
 
-                    //Calculo IP
                     const promedio = (arrayEnIde.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
                     const desviacion = calcularDes(arrayEnIde);
-                    let errorIp = null;
 
-                    //array con la columna deriva para encontrar Error Patron
+                    let errorIp = null;
+                    const rangosDeriva = ide[0].rangos[0].rango_derivas;
                     const arrayDeriva = rangosDeriva.map( numero => numero.ip.valor);
+
                     const cercanos = encontrarCercanos(arrayDeriva, promedio);
 
-                    console.log(cercanos)
-
                     if(cercanos[0] === undefined || cercanos[1] === undefined){
-                        // this.errorLimpiar(indice);
                         throw new Error('Datos no se encuentran en los rangos del IDE!');
                     }else{
                         errorIp = this.calcularInterpolacion(promedio, cercanos, rangosDeriva);
                     }
 
-                    //Calculo IP corregido
                     let ipCorregido = promedio;
                     if(errorIp !== null) ipCorregido += parseFloat(errorIp);
 
 
-                    //Calculo IEC
-                    const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
-                    const unidadMedidaIEC = this.formulario.valores[indice].iec_medida;
-                    const arrayValoresIEC = this.convertirUnidadBase(this.formulario.valores[indice].iec_valor, unidadMedidaIEC, unidadIECgeneral);
-                    const arrayEnIdeIEC = this.convertirUnidadIde(arrayValoresIEC, unidadIECgeneral, unidadIde)
+                    //Caluculos IEC -------------------------------------------
+                    const arrayEnIdeIEC = this.getArrayUnIEC(valores, unidadIde);
+
                     const promedioIEC = (arrayEnIdeIEC.reduce((a, b) => a + b, 0)) / arrayEnIde.length;
                     const desviacionIEC = calcularDes(arrayEnIdeIEC);
                     const errorIec = promedioIEC - ipCorregido;
@@ -470,8 +550,9 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     let uk = 0
                     if(cercanos[0] !== undefined && cercanos[1] !== undefined) uk = this.calcularInterpolacion(promedio, cercanos, rangosDeriva, false);
 
-                    let resul = {
-                        valor_id: this.formulario.valores[indice].id,
+                    //return result -------------------------------------------
+                    let result = {
+                        valor_id: valores.id,
                         desv_ip: desviacion,
                         desv_iec: desviacionIEC,
                         error_iec: errorIec,
@@ -484,17 +565,34 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                         uk: parseFloat(uk),
                     }
 
-                    await this.calculosBD(resul, indice);
-
-                }catch(error){
-                    console.error(error);
-                    this.alertaError(error.message)
+                    return result;
+                }catch(err){
+                    console.error('errorResult', err);
+                    this.$swal.fire('Error', err.message, 'error');
                 }
             },
 
-            async calculosBD(resultados, indice){
+            getArrayUnIde(valores, unidadIde){
+                // const unidadIPgeneral = this.formulario.valores_medidas.ip_medida_general;
+                const unidadIPgeneral = this.form.ip_medida;
+                const unidadMedidaIP = valores.ip_medida;
+                const arrayValores = this.convertirUnidadBase(valores.ip_valor, unidadMedidaIP, unidadIPgeneral);
+                const arrayEnIde = this.convertirUnidadIde(arrayValores, unidadIPgeneral, unidadIde)
+                return arrayEnIde;
+            },
+
+            getArrayUnIEC(valores, unidadIde){
+                //const unidadIECgeneral = this.formulario.valores_medidas.iec_medida_general;
+                const unidadIECgeneral = this.form.unidad_medida;
+                const unidadMedidaIEC = valores.iec_medida;
+                const arrayValoresIEC = this.convertirUnidadBase(valores.iec_valor, unidadMedidaIEC, unidadIECgeneral);
+                const arrayEnIdeIEC = this.convertirUnidadIde(arrayValoresIEC, unidadIECgeneral, unidadIde)
+                return arrayEnIdeIEC;
+            },
+
+            async calculosBD(resultados, valors){
                 try{
-                    const valors = this.formulario.valores[indice];
+                    //const valors = this.formulario.valores[indice];
                     const valor_resultados = resultados;
                     const valor_incertidumbres = await this.calcularIncertidumbre(valor_resultados);
 
@@ -505,47 +603,47 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
                     const valores = {valors, valor_resultados, valor_incertidumbres, valor_incertidumbres_resultados, valor_certificados}
 
-                    if(valor_resultados.valor_id === 0) await this.insertarValors(indice, valores);
-                    else this.updateValors(indice, valores);
+                    return valores;
                 }catch(err){
-                    console.error(err);
+                    console.error('ErrorCalculoBd', err);
                     this.alertaError('Error en los datos');
                 }
             },
 
-            async insertarValors(index, valores){
+            async insertarValors(valores){
+                let valor_id;
+
                 try{
                     this.alertaCalculando();
-                    console.log(valores)
 
                     //insertamos en valors y esperamos el id
-                    const valor_id = await this.guardarValores(index);
-                    valores.valor_resultados.valor_id = valor_id;
-                    valores.valor_incertidumbres_resultados.valor_id = valor_id;
-                    valores.valor_certificados.valor_id = valor_id;
+                    const valors = await this.guardarValores(valores.valors);
+                    valor_id = valors.id;
+
+                    valores.valors = valors;
+                    valores.valor_resultados.valor_id = valors.id;
+                    valores.valor_incertidumbres_resultados.valor_id = valors.id;
+                    valores.valor_certificados.valor_id = valors.id;
 
                     await this.guardarValoresResultados(valores.valor_resultados);
-                    await this.guardarIncertidumbres(valores.valor_incertidumbres, valor_id);
+                    await this.guardarIncertidumbres(valores.valor_incertidumbres, valors.id);
                     await this.guardarIncertidumbreResultados(valores.valor_incertidumbres_resultados);
                     await this.guardarValorCertificados(valores.valor_certificados);
 
-                    this.formulario.valores[index].id = valor_id;
-                    this.formulario.resultados.push(valores.valor_resultados);
-                    this.certificados.push(valores.valor_certificados);
-                    document.getElementById(`iec-valor-2-${index}`).disabled = true;
                     this.$swal.close();
+                    return valores
 
                 }catch(err){
-                    this.errorLimpiar(index);
-                    this.alertaError(err.message);
+                    this.eliminarValors(valor_id);
+                    console.error('ErrorInsertBD', err);
+                    this.alertaError('Error al insertar en la BD');
                 }
             },
 
-            async updateValors(index, valores){
+            async updateValors(valores){
                 try{
                     //actulizar la tabla valors, resultados incer, certificado
                     this.alertaCalculando();
-                    console.log(valores)
 
                     valores.valor_resultados.valor_id = valores.valors.id;
                     valores.valor_incertidumbres_resultados.valor_id = valores.valors.id;
@@ -558,13 +656,11 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     await this.eliminarIncertidumbres(valores.valors.id);
                     await this.guardarIncertidumbres(valores.valor_incertidumbres, valores.valors.id);
 
-                    this.formulario.resultados.splice(index, 1, valores.valor_resultados);
-                    this.certificados.splice(index, 1, valores.valor_certificados);
-
                     this.$swal.close();
+                    return true;
                 }catch(err){
-                    console.log(err);
-
+                    console.error('ErrorActualizandoBD', err);
+                    this.alertaError(err.message);
                 }
             },
 
@@ -725,7 +821,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     let g_libertad = incertidumbre.tipo == 'A' ? valores.n -1 : '∞';
                     let potencia = incertidumbre.tipo == 'A' ? Math.pow(u_du, 4) / g_libertad : 0;
                     let incertidumbre_id = incertidumbre.id;
-                    // let valor_id = valores.valor_id;
 
                     let data = {u, u_du, g_libertad, potencia, incertidumbre_id};
                     incer.push(data);
@@ -744,7 +839,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
             },
 
             changeUMValor(event, index, name){
-                if(index === 0){
+                if(index === 0 && this.formulario.valores[index].id === 0){
                     const medida = event.target.value;
                     this.$swal.fire({
                         title: 'Cambiar',
@@ -761,6 +856,9 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                     });
 
                 }
+
+                if(this.formulario.valores[index].id > 0) this.editarValor({fila: index});
+
                 return;
             },
 
@@ -789,7 +887,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 })
             },
 
-            bloquear(inputName, edit){
+            bloquear(inputName){
                 if( $(inputName).val() === '' ){
                     this.alertaError('No puedes dejar un campo vacío!!');
                     return;
@@ -798,40 +896,41 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 $(inputName).attr('disabled', true);
             },
 
-            async errorLimpiar(indice)
-            {
-                //guarda historial error
-                const valor = this.formulario.valores[indice];
-                const historico = await this.guardarHistorico(valor);
-                this.tableHistorial.push(historico);
+            modalEditar(anteriores, campo, type = 'text', select = []){
+                this.formEdit = {
+                    anteriores,
+                    campo,
+                    type,
+                    select,
+                    tabla: this.formulario.resultados.length,
+                    calibracion_id: this.form.id
+                };
+            },
 
-                if(valor.id > 0) this.eliminarValors(valor.id);
+            modalValor(anteriores, campo, valor_id, type, fila, columna, select = []){
+                this.formValor = {
+                    anteriores,
+                    campo,
+                    type,
+                    select,
+                    fila,
+                    columna,
+                    valor_id,
+                    calibracion_id: this.form.id
+                }
+            },
 
-                this.formulario.valores[indice].iec_valor = ['', '', ''];
-                this.formulario.valores[indice].ip_valor = ['', '', ''];
-                this.formulario.valores[indice].id = 0;
-                $(`#ip-valor-0-${indice}`).attr('disabled', false);
+            limpiarResults(){
+                this.formulario.resultados = [];
+                this.certificados = [];
+            },
+
+            updateForm(data){
+                this.$emit('update-form', data);
             },
 
 
             //Finales --------------------------------------------------------------------
-            async editar(valor){
-                try{
-                    const hist = await axios.post(this.rutas.calibracionHistorialStore, valor);
-
-                    if(valor.tipo === 'ip_valor') this.formulario.valores[valor.fila].ip_valor[valor.columna] = valor.nuevos;
-                    else this.formulario.valores[valor.fila].iec_valor[valor.columna] = valor.nuevos;
-
-                    this.calcularIP(valor.fila)
-                        .then(response => console.log(response))
-                        .catch(err =>{ throw new Error(err.message) })
-
-                }catch(err){
-                    let mensaje = err.message == 'Request failed with status code 401' ? 'Pin incorrecto' : err.message;
-                    this.alertaError(mensaje);
-                }
-            },
-
             async updateCampo(campo){
                 try{
                     let data  = {campo, valor: this.formulario[campo], id: this.form.id};
@@ -843,8 +942,23 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
                     if(value) this.$emit('update-form', data);
                 }catch(err){
+                    console.error('ErrorUpdateCampo', err);
                     this.$swal.fire('Error', err.message, 'error');
                 }
+            },
+
+            obtenerValores(editForm){
+                const valores = Object.assign({}, this.formulario.valores[editForm.fila]);
+
+                switch(editForm.campo){
+                    case 'patron'    : valores.patron                      = editForm.nuevos; break;
+                    case 'ip_medida' : valores.ip_medida                   = editForm.nuevos; break;
+                    case 'iec_medida': valores.iec_medida                  = editForm.nuevos; break;
+                    case 'ip_valor'  : valores.ip_valor[editForm.columna]  = editForm.nuevos; break;
+                    case 'iec_valor' : valores.iec_valor[editForm.columna] = editForm.nuevos; break;
+                }
+
+                return valores;
             },
 
             siguiente() {
@@ -859,16 +973,30 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 this.$emit('update-form', editado);
             },
 
+            actualizado(formEdit, valores, calculos){
+                this.formulario.resultados.splice(formEdit.fila, 1, calculos.valor_resultados);
+                this.certificados.splice(formEdit.fila, 1, calculos.valor_certificados);
+
+                this.formulario.valores[formEdit.fila] = valores;
+
+                let columna = formEdit.columna == null ? '' : `, ${formEdit.columna + 1}`;
+                formEdit.campo =`${formEdit.campo} (${formEdit.fila + 1}${columna})`;
+
+                axios.post(this.rutas.calibracionHistorialStore, formEdit)
+                    .then(resp => console.log('historial guardado'));
+            },
+
 
             //Axios --------------------------------------------------------------------
             getIde(patron){
                 return axios.get(this.rutas.patronUmIde, {params: {'patron': patron}})
-                    .then(response => response.data.ide);
+                    .then(response => response.data.ide)
+                    .catch(err => 'No tiene ide cargado');
             },
 
-            guardarValores(indice){
-                return axios.post(this.rutas.valorStore, this.formulario.valores[indice])
-                    .then(response => this.formulario.valores[indice].id = response.data.id)
+            guardarValores(valors){
+                return axios.post(this.rutas.valorStore, valors)
+                    .then(response => response.data)
             },
 
             guardarValoresResultados(resultado){
@@ -946,10 +1074,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
 
 <style lang="scss" scoped>
-    // .input-icons { width: 100%; margin-right: 6px;
-    //     i { position: absolute; }
-    // }
-
     .input-icons { width: 100%; position: relative; margin-right: 6px;
         i { position: absolute; padding: 10px; color: #009BDD;  right: 0; cursor: pointer; }
     }

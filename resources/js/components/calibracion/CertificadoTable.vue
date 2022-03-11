@@ -97,6 +97,12 @@
                     return;
                 }
 
+                if(this.key !== 0 && !this.certificados.length){
+                    this.limpiarGrafico();
+                    this.key = 0;
+                    return;
+                }
+
                 const indice = this.certificados.length - 1;
                 this.data[0].x.push(this.certificados[indice].ip);
                 this.data[0].y.push(this.certificados[indice].e);

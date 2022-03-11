@@ -8,7 +8,7 @@
             <success-animation></success-animation>
             <div class="col-12 text-center">
                 <p class="mb-4" style="color: #4bb71b; font-size: 35px;">La Calibración ha Finalizado</p>
-                <a :href="this.rutas.certificados" class="btn btn-primary">Ver certificado</a>
+                <a :href="this.rutas.agenda" class="btn btn-primary">TERMINAR</a>
             </div>
         </div>
     </fieldset>

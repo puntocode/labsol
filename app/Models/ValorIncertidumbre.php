@@ -8,5 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class ValorIncertidumbre extends Model
 {
     use HasFactory;
-    protected $fillable = ['u', 'u_du', 'g_libertad', 'potencia', 'incertidumbre_id', 'valor_id'];
+    protected $fillable = [
+        'u',
+        'u_du',
+        'g_libertad',
+        'potencia',
+        'incertidumbre_id',
+        'valor_id',
+    ];
 }

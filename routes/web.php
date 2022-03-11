@@ -117,6 +117,7 @@ Route::namespace('App\Http\Controllers\Panel')->prefix('panel')->name('panel.')-
 
     # -- Calibración Historial  --
     Route::resource('/calibracion-historial', 'CalibracionHistorialController')->middleware('can:panel.database');
+    Route::get('/calibracion-hist/password', 'CalibracionHistorialController@comprobarPassword')->name('comprobar.password')->middleware('can:panel.database');
 
 
     # -- Patrones --

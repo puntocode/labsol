@@ -116,14 +116,15 @@ class CalibracionController extends Controller
 
         $expediente = Expediente::calibration()->findOrFail($expediente_id);
 
-
         //Guarda el historial de estados ---------------------------------
-        $expediente->historial()->create([
-            'estado_anterior' => $expediente->expediente_estado_id,
-            'estado_nuevo' => 11,
-            'estado_comentario' => 'Inicia el proceso de calibración',
-            'user_id' => Auth::id(),
-        ]);
+        if($expediente->expediente_estado_id !== 11){
+            $expediente->historial()->create([
+                'estado_anterior' => $expediente->expediente_estado_id,
+                'estado_nuevo' => 11,
+                'estado_comentario' => 'Inicia el proceso de calibración',
+                'user_id' => Auth::id(),
+            ]);
+        }
 
         //Actualiza al tecnico que está logueado ---------------------------------
         $expediente->update([

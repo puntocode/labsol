@@ -3,22 +3,27 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white">Editar Valor</h5>
+                    <h5 class="modal-title text-white">Editar Campo</h5>
                 </div>
 
-                <form class="mb-5" autocomplete="off" @submit.prevent="editar">
+                <form class="mb-5" autocomplete="off" @submit.prevent="submit">
                     <div class="modal-body">
                         <div class="mb-6 row">
                             <div class="mx-auto col-10">
                                 <label for="date">Valor Anterior</label>
-                                <input type="number" v-model="valores.anteriores" class="form-control" disabled>
+                                <input :value="data.anteriores" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="mb-6 row">
                             <div class="mx-auto col-10">
                                 <label for="date">Valor Nuevo</label>
-                                <input type="number" v-model="form.nuevos" class="form-control" step="0.01">
+
+                                <input v-if="data.type === 'number'" v-model="form.nuevos" type="number" class="form-control" step="0.01">
+
+                                <select v-else class="form-control" v-model="form.nuevos">
+                                    <option v-for="(unidad, i) in data.select" :key="i" :id="`${i}-sl-medida`">{{ unidad }}</option>
+                                </select>
                             </div>
                         </div>
 
@@ -45,15 +50,13 @@
 <script>
 
     export default {
-        props:[ 'valores', 'calibracion_id' ],
+        props:[ 'data' ],
         data() {
             return {
                 form:{
                     anteriores: '',
                     nuevos: '',
-                    calibracion_id: this.calibracion_id,
-                    campo: 'calibracion',
-                    pin: '',
+                    pin: ''
                 },
                 spin: false,
                 rutas: window.routesEdit,
@@ -61,42 +64,52 @@
         },
 
         methods: {
+            async submit(){
+                try{
+                    this.spin = true;
+                    this.form.anteriores = this.data.anteriores;
+                    this.form.campo = this.data.campo;
+                    this.form.calibracion_id = this.data.calibracion_id;
+                    this.form.valor_id = this.data.valor_id;
+                    this.form.fila = this.data.fila;
+                    this.form.columna = this.data.columna;
 
+                    await this.comprobarPin();
 
-            //async -------------------------------------------------------------------------
-            async editar(){
-                const tipo = this.valores.tipo == 'ip_valor' ? 'IP' : 'IEC';
-
-                this.spin = true;
-                this.form.anteriores = this.valores.anteriores;
-                this.form.campo = `Punto calibracion ${tipo} (${this.valores.fila + 1}, ${this.valores.columna + 1})`;
-
-                 try{
-
-                    if(this.valores.valor_id == 0){
-                        const hist = await axios.post(this.rutas.calibracionHistorialStore, this.form);
-
-                        if(this.valores.tipo === 'ip_valor') this.$emit('update:valorIp', hist.data.nuevos);
-                        else this.$emit('update:valorIec', hist.nuevos);
-
+                    if(this.form.valor_id){
+                        this.$emit('editarValor', this.form);
                     }else{
-                        this.valores.nuevos = this.form.nuevos;
-                        this.valores.campo = this.form.campo;
-                        this.valores.calibracion_id = this.calibracion_id;
-                        this.valores.pin = this.form.pin;
-                        this.$emit('editarCal', this.valores);
+                        if(this.form.campo == 'ip_valor') this.$emit('update:valorIp', this.form.nuevos);
+                        else this.$emit('update:valorIec', this.form.nuevos);
+
+                        this.form.campo = `${this.form.campo} (${this.form.fila + 1}, ${this.form.columna + 1})`;
+                        await this.guardarHistorico();
                     }
 
                     document.getElementById("btn-cancel").click();
-                    this.form.nuevos = '';
-                    this.spin = false;
-
                 }catch(err){
-                    this.$swal.fire('Error', 'Pin incorrecto', 'error');
-                    this.spin = false;
+                    this.$swal.fire('Error', err, 'error');
                 }
 
+                this.spin = false;
             },
+
+
+            comprobarPin(){
+                return new Promise ((resolve, reject) => {
+                    const params = {params: {pin: this.form.pin}}
+                    axios.get(this.rutas.comprobarPin, params)
+                        .then(resp => resolve(resp.data))
+                        .catch(err => reject('Pin Incorrecto'));
+                })
+            },
+
+             guardarHistorico(){
+                return axios.post(this.rutas.calibracionHistorialStore, this.form)
+                    .then(res =>{ if(res.status == 200) return res.data })
+                    .catch(err => console.log(err));
+            },
+
 
         },
 
@@ -108,7 +121,3 @@
 
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
