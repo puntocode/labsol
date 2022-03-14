@@ -7,7 +7,7 @@
                <label class="col-sm-3 col-form-label" v-text="patron.name"></label>
 
                 <div class="col-md-9">
-                    <div class="input-icons" v-if="form.patrones[index].code">
+                    <div class="input-icons" v-if="form.patrones && form.patrones[index].code">
                         <i  class="la la-edit"
                             data-toggle="modal"
                             data-target="#modal-edit"
@@ -18,7 +18,7 @@
 
 
                     <div class="w-100 d-flex" v-else>
-                        <SelectMultiple class="w-100"  v-model="formulario.patrones[index].code" :options="patron.code" />
+                        <SelectMultiple class="w-100" v-model="formulario.patrones[index].code" :options="patron.code" />
                         <button
                             type="button"
                             class="btn btn-success px-2 ml-3"
@@ -43,7 +43,7 @@
                     </div>
 
                     <div v-else class="d-flex w-100">
-                        <select  v-model="formulario.ema" class="form-control">
+                        <select v-model="formulario.ema" class="form-control">
                             <option value="null" disabled>-- Selecione un equipo --</option>
                             <option v-for="(ema, i) in ambiental" :key="i">{{ ema }}</option>
                         </select>
