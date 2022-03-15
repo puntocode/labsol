@@ -120,7 +120,7 @@ class HistorialController extends Controller
     public function deleteCertificate($id){
         $history = Historycalibration::findOrFail($id);
         $path = public_path()."/media/docs/historial-calibracion/".$history->certificate;
-        unlink($path);
+        if(file_exists($path)) unlink($path);
         $history->certificate = null;
         $history->save();
         return response()->json(Response::HTTP_OK);

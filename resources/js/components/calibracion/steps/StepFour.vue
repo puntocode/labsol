@@ -30,6 +30,13 @@
                         Alcance Acreditado
                     </a>
 
+                     <a v-if="datos.procedimiento.pdf"
+                        class="badge badge-info mr-5"
+                        target="_blank"
+                        :href="`${asset}media/docs/procedimientos/${datos.procedimiento.pdf}`">
+                        {{ datos.procedimiento.pdf }}
+                    </a>
+
                     <a  v-for="(documento, index) of documentos" :key="index"
                         class="badge badge-info mr-5"
                         target="_blank"
@@ -47,11 +54,11 @@
                 </div>
                 <div class="col-md-4">
                     <div class="input-icons">
-                        <!-- <i  class="la la-edit"
+                        <i  class="la la-edit"
                             data-toggle="modal"
-                            data-target="#modal-edit"
+                            data-target="#modalUnidades"
                            @click="modalEditar(form.unidad_medida, 'unidad_medida', 'select', unidadMedidas)"
-                        ></i> -->
+                        ></i>
                         <input class="form-control" :value="form.unidad_medida" disabled />
                     </div>
                 </div>
@@ -59,20 +66,20 @@
                     <label class="mx-5">Resolución</label>
 
                     <div class="input-icons">
-                        <!-- <i  class="la la-edit"
+                        <i  class="la la-edit"
                             data-toggle="modal"
-                            data-target="#modal-edit"
+                            data-target="#modalUnidades"
                            @click="modalEditar(form.resolucion, 'resolucion', 'number')"
-                        ></i> -->
+                        ></i>
                         <input class="form-control" :value="form.resolucion" disabled />
                     </div>
 
                     <div class="input-icons">
-                        <!-- <i  class="la la-edit"
+                        <i  class="la la-edit"
                             data-toggle="modal"
-                            data-target="#modal-edit"
-                           @click="modalEditar(form.resolucion_medida, 'resolucion_medida', 'select', selectIP)"
-                        ></i> -->
+                            data-target="#modalUnidades"
+                           @click="modalEditar(form.resolucion_medida, 'resolucion_medida', 'select', selectIEC)"
+                        ></i>
                         <input class="form-control" :value="form.resolucion_medida" disabled />
                     </div>
                 </div>
@@ -116,8 +123,6 @@
                             <i class="pl-3 pr-2 la la-check icon"></i>
                         </button>
                     </div>
-
-
                 </div>
 
                 <div class="col-md-5 text-center">
@@ -365,7 +370,6 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 medidaGlobal: this.form.unidad_medida,
                 redondeo: 2,
                 registroEdit: {},
-                resol: this.form.resolucion,
                 rutas: window.routes,
                 selectIEC: [],
                 selectIP: [],
@@ -410,8 +414,8 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
 
                 this.getDocumentos(this.selectPatrones);
 
-                const RESP = await axios.get(this.rutas.submultiplos);
-                this.subMultiplos = await RESP.data;
+                const resp = await axios.get(this.rutas.submultiplos);
+                this.subMultiplos = await resp.data;
 
                 this.subMultiplos.forEach(multiplo =>{
                     let unidad = multiplo.simbolo === '-' ? this.medidaGlobal : multiplo.simbolo + this.medidaGlobal;
@@ -426,7 +430,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
                 try{
                     for (let patron of patrones){
                         const RES = await axios.get(this.rutas.manuales, {params: {'patron': patron}})
-                        let documents = await RES.data.documents;
+                        const documents = await RES.data.documents;
 
                         if(documents){
                             documents.forEach(documento => {
@@ -778,7 +782,7 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
             },
 
             convertirResolucion(unidad){
-                let resolucion = this.resol;
+                let resolucion = this.form.resolucion;
 
                 if(this.medidaGlobal !== this.form.resolucion_medida){
                     resolucion = convertirBase(this.form.resolucion_medida, parseFloat(resolucion));
@@ -834,6 +838,12 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
             changeUnidadMedida(){
                 const medida = this.form.ip_medida;
                 this.selectIP = this.subMultiplos.map(unidad => {
+                    return unidad.simbolo === '-' ? medida : unidad.simbolo+medida;
+                });
+            },
+            changeUnidadMedidaIEC(){
+                const medida = this.form.unidad_medida;
+                this.selectIEC = this.subMultiplos.map(unidad => {
                     return unidad.simbolo === '-' ? medida : unidad.simbolo+medida;
                 });
             },
@@ -1066,6 +1076,9 @@ import convertirBaseInverso from "../../../functions/convertir-base-inverso.js";
         watch: {
             'form.ip_medida': function(){
                 this.changeUnidadMedida();
+            },
+            'form.unidad_medida': function(){
+                this.changeUnidadMedidaIEC();
             }
         }
 

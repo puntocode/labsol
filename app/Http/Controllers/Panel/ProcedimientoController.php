@@ -172,7 +172,7 @@ class ProcedimientoController extends Controller
     public function deleteDocument($id){
         $procedimiento = Procedimiento::findOrFail($id);
         $path = public_path()."/media/docs/procedimientos/".$procedimiento->pdf;
-        unlink($path);
+        if(file_exists($path)) unlink($path);
         $procedimiento->pdf = null;
         $procedimiento->save();
         return response()->json(Response::HTTP_OK);

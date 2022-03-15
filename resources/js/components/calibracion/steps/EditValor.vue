@@ -70,10 +70,11 @@
                     this.form.campo = this.data.campo;
                     this.form.calibracion_id = this.data.calibracion_id;
 
-                    await this.comprobarPin();
+                    const his = await this.comprobarPin();
+                    console.log(his);
 
                     if(this.data.tabla){
-                        this.valores.forEach(valor => valor.ip_medida = '');
+                        this.limpiarTabla();
                         this.$emit('limpiarResults');
                         this.$emit('update:valores', this.valores);
                     }
@@ -93,8 +94,7 @@
 
             comprobarPin(){
                 return new Promise ((resolve, reject) => {
-                    const params = {params: {pin: this.form.pin}}
-                    axios.get(this.rutas.comprobarPin, params)
+                    axios.post(this.rutas.calibracionHistorialStore, this.form)
                         .then(resp => resolve(resp.data))
                         .catch(err => reject('Pin Incorrecto'));
                 })
@@ -104,9 +104,18 @@
                 console.log('eliminar resultados', id);
             },
 
+            limpiarTabla(){
+                if(this.data.campo === 'ip_medida'){
+                    this.valores.forEach(valor => valor.ip_medida  = '');
+                    return
+                }
+
+                this.valores.forEach(valor => valor.iec_medida = '');
+            },
+
             updateCalibracion(){
                 return new Promise ((resolve, reject) => {
-                    let data  = {campo:this.form.campo, valor: this.form.nuevos, id: this.form.calibracion_id};
+                    let data  = {campo:this.form.campo, valor: this.form.nuevos, id: this.form.calibracion_id, pin: this.form.pin};
 
                     axios.put(this.rutas.updateCampo, data)
                         .then(resp => resolve(resp.data))
