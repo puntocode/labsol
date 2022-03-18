@@ -344,7 +344,7 @@
         <button type="button"
             class="float-right next action-button btn btn-primary"
             title="Por favor completa todos los campos para continuar"
-            :disabled="!form.intervalo_medida"
+            :disabled="!form.modelo"
             @click="siguiente">Siguiente
         </button>
 
@@ -399,6 +399,7 @@
                     && this.form.intervalo_desde
                     && this.form.intervalo_hasta
                     && this.form.intervalo_medida
+                    && this.form.modelo
                 ){
                     this.$emit('click-next');
                 }else{
